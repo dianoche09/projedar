@@ -59,7 +59,7 @@ export default async function LeadSorgu({
       .limit(25);
     q1 = telefonAramasi
       ? q1.eq("telefon_norm", normalizeTelefon(sorgu))
-      : q1.ilike("ad", sorgu);
+      : q1.ilike("ad", sorgu.replace(/[%_\\]/g, "\\$&")); // wildcard escape — "%" ile substring fishing engeli
     const { data: leads } = await q1;
 
     const emlakciIds = [

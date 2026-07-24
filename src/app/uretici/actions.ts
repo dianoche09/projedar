@@ -258,9 +258,16 @@ export async function tipGorseliYukle(formData: FormData) {
   if (!(dosya instanceof File) || dosya.size === 0) hataya(geri, "Görsel seçilmedi");
 
   const admin = createAdminClient();
-  // eski plan görselini sil (varsa)
-  const { data: tip } = await admin.from("daire_tipi").select("plan_url").eq("id", tip_id).single();
-  const eskiYol = medyaYolu(tip?.plan_url ?? null);
+  // IDOR kalkanı: tip bu projeye ait mi? Değilse Storage/DB'ye DOKUNMA (başka üreticinin tipi ezilmesin)
+  const { data: tip } = await admin
+    .from("daire_tipi")
+    .select("plan_url")
+    .eq("id", tip_id)
+    .eq("proje_id", proje_id)
+    .single();
+  if (!tip) hataya(geri, "Daire tipi bu projede bulunamadı");
+  // eski plan görselini sil (varsa) — sahiplik yukarıda doğrulandı
+  const eskiYol = medyaYolu(tip.plan_url ?? null);
   if (eskiYol) await admin.storage.from(MEDYA_BUCKET).remove([eskiYol]);
 
   const uzanti = dosya.name.includes(".") ? dosya.name.split(".").pop()!.toLowerCase() : "png";
@@ -272,8 +279,14 @@ export async function tipGorseliYukle(formData: FormData) {
   if (upErr) hataya(geri, `Yükleme hatası: ${upErr.message}`);
 
   const { data: pub } = admin.storage.from(MEDYA_BUCKET).getPublicUrl(yol);
-  const { error } = await admin.from("daire_tipi").update({ plan_url: pub.publicUrl }).eq("id", tip_id);
+  const { data: gnc, error } = await admin
+    .from("daire_tipi")
+    .update({ plan_url: pub.publicUrl })
+    .eq("id", tip_id)
+    .eq("proje_id", proje_id)
+    .select("id");
   if (error) hataya(geri, error.message);
+  if (!gnc || gnc.length === 0) hataya(geri, "Daire tipi bu projede bulunamadı");
   revalidatePath(geri);
   redirect(`${geri}?mesaj=${encodeURIComponent("Tip görseli yüklendi")}`);
 }
@@ -927,15 +940,17 @@ export async function medyaSil(formData: FormData) {
   if (!(await projeSahibiMi(supabase, proje_id))) return;
 
   const admin = createAdminClient();
+  // IDOR kalkanı: belge bu projeye ait değilse hiçbir şey silme
   const { data: belge } = await admin
     .from("proje_belge")
     .select("id, url")
     .eq("id", id.data)
+    .eq("proje_id", proje_id)
     .single();
   if (belge) {
     const yol = medyaYolu(belge.url);
     if (yol) await admin.storage.from(MEDYA_BUCKET).remove([yol]);
-    await admin.from("proje_belge").delete().eq("id", belge.id);
+    await admin.from("proje_belge").delete().eq("id", belge.id).eq("proje_id", proje_id);
   }
   revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
   revalidatePath(`/uretici/proje/${proje_id}`);
