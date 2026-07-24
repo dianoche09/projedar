@@ -385,7 +385,7 @@ export default async function PublicBirimPage({
             {/* Lead Formu — baskıda gizli (müşteriye PDF'te gerekmez) */}
             <div className="print:hidden">
               {b.satilabilir && bDurum === "musait" ? (
-                <LeadForm projeId={p?.id} birimId={b.id} emlakciId={emlakci} />
+                <LeadForm projeId={p?.id} birimId={b.id} emlakciId={emlakci} token={token} />
               ) : (
                 <div className="rounded-2xl border border-hair bg-paper p-5 text-center">
                   <p className="text-sm text-gray font-medium">

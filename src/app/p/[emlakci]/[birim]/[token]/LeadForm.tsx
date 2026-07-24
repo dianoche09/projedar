@@ -6,10 +6,12 @@ export default function LeadForm({
   projeId,
   birimId,
   emlakciId,
+  token,
 }: {
   projeId: string;
   birimId: string;
   emlakciId: string;
+  token: string;
 }) {
   const [ad, setAd] = useState("");
   const [telefon, setTelefon] = useState("");
@@ -37,6 +39,7 @@ export default function LeadForm({
           projeId,
           birimId,
           emlakciId,
+          token,
           ad,
           telefon,
           kvkk,
