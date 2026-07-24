@@ -8,7 +8,6 @@ import { HeroBina } from "@/components/HeroBina";
 import { Sayaclar } from "@/components/Sayaclar";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
-import { PaylasimVitrin } from "@/components/PaylasimVitrin";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck } from "lucide-react";
@@ -35,7 +34,7 @@ const GORUR = [
 
 /** Güven / teminat unsurları (sahte logo yerine dürüst güven). */
 const GUVEN = [
-  { Icon: ShieldCheck, b: "Çift-satış kalkanı", a: "Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki kez satılamaz." },
+  { Icon: ShieldCheck, b: "Sıfır çift-satış", a: "Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki kez satılamaz — kapora/ödeme şartı olmadan." },
   { Icon: Database, b: "RLS veri güvenliği", a: "Görünürlük veritabanı katmanında zorunlu; danışman yalnız kendine açılanı görür." },
   { Icon: BadgeCheck, b: "Doğrulanmış projeler", a: "Her proje doğrulama rozetiyle yayınlanır; kaynağı belirsiz ilan yok." },
   { Icon: CircleSlash, b: "Komisyon yok", a: "Satıştan pay almıyoruz; danışman için başlangıçta tamamen ücretsiz." },
@@ -90,7 +89,7 @@ const FAYDA = {
       ["Canlı havuzdaki projeler tek yerde", "dağınık Excel, eski PDF, WhatsApp yok."],
       ["Her zaman canlı fiyat", "eski fiyatla müşteri önünde rezil olma."],
       ["Tek dokunuşla paylaş", "fiyat o anki canlı değerden basılır."],
-      ["Başlangıçta tamamen ücretsiz", "komisyon da yok."],
+      ["Kazancın %100'ü sende", "komisyondan pay almayız; başlangıçta tamamen ücretsiz."],
     ],
   },
 } as const;
@@ -182,30 +181,30 @@ export default async function Home() {
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-16 sm:px-6 lg:pb-28 lg:pt-28">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(30,155,138,0.22)] bg-[var(--color-teal-soft)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[var(--color-teal-d)]">
-              <span className="size-2 rounded-full bg-green nabiz" /> TAHSİSLİ CANLI SATIŞ AĞI
+              <span className="size-2 rounded-full bg-green nabiz" /> GELİŞTİRİCİ FİRMALAR İÇİN CANLI PROJE SATIŞ AĞI
             </span>
             <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              Canlı stok. Yetkili ağ.
+              Envanter kontrolü sende.
               <br />
-              <span className="text-teal">Tek doğru kaynak.</span>
+              <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-<strong className="font-semibold text-ink">Geliştirici firmalar için canlı proje satış ağı.</strong> Projenizi seçili danışman ve ofislere <strong className="font-semibold text-ink">tahsis edin</strong>; stok, fiyat, opsiyon ve talep hareketlerini tek merkezden yönetin. İlan portalı değil, <strong className="font-semibold text-ink">komisyonsuz</strong> altyapı — yanlış fiyat yok, çift satış yok.
+<strong className="font-semibold text-ink">Çok müteahhit, tek canlı havuz, yetkili danışman ağı.</strong> Stoğunuzu seçili danışman ve ofislere <strong className="font-semibold text-ink">tahsis edin</strong>; fiyat, opsiyon ve talebi tek merkezden yönetin. İlan portalı değil, <strong className="font-semibold text-ink">komisyonsuz</strong> altyapı — <strong className="font-semibold text-ink">aynı daire iki kez satılamaz</strong>: çift-satış kalkanı veritabanı seviyesinde kilitler.
             </p>
             <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-2">
-              <Link href="/kayit?rol=uretici" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
+              <Link href="/muteahhit" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
                 <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[#7fd9c8]">Proje sahibiyim</span>
                 <span className="font-display text-[15px] font-bold">Projemi ağa aç →</span>
                 <span className="text-[11px] leading-snug text-white/80">Stoğu, fiyatı ve kimin göreceğini tahsisle yönet.</span>
               </Link>
-              <Link href="/kayit?rol=emlakci" className="group flex flex-col gap-0.5 rounded-[15px] border border-[var(--cizgi-2)] bg-white p-4 text-ink transition-all hover:-translate-y-0.5 hover:border-teal hover:shadow-[var(--golge-3)]">
+              <Link href="/emlakci" className="group flex flex-col gap-0.5 rounded-[15px] border border-[var(--cizgi-2)] bg-white p-4 text-ink transition-all hover:-translate-y-0.5 hover:border-teal hover:shadow-[var(--golge-3)]">
                 <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--color-teal-d)]">Gayrimenkul danışmanıyım</span>
                 <span className="font-display text-[15px] font-bold">Yetkili projelerimi gör →</span>
                 <span className="text-[11px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör, paylaş, opsiyon al. Ücretsiz.</span>
               </Link>
             </div>
             <div className="mt-5 flex flex-wrap gap-2">
-              {["Komisyonsuz", "Tahsisli görünürlük", "Çift-satış kalkanı"].map((t) => (
+              {["Komisyonsuz", "Tahsisli görünürlük", "Sıfır çift-satış"].map((t) => (
                 <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--cizgi-2)] bg-white/70 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur-sm">
                   <span className="size-[5px] rounded-full bg-teal" /> {t}
                 </span>
@@ -270,6 +269,40 @@ export default async function Home() {
       {/* ============ İSTATİSTİK ŞERİDİ ============ */}
       <section className="relative px-5 py-10 sm:px-6"><Sayaclar /></section>
 
+      {/* ============ ÇOK-MÜTEAHHİT AĞ ETKİSİ ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Ağ etkisi</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Tek-müteahhit aracı değil. Ağ.</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Tek-proje satış yazılımları her firmayı kendi izole adasında tutar. ProjePazar hepsini tek canlı havuzda birleştirir: bir danışman onlarca müteahhidin kendisine tahsisli stoğunu tek ekrandan görür.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mx-auto mt-12 flex max-w-4xl flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+              <div className="kart flex-1 p-6 text-center">
+                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Çok müteahhit</p>
+                <p className="mt-2 font-display text-lg font-bold text-ink">Onlarca proje sahibi</p>
+                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Her biri stoğunu, fiyatını ve tahsisini tek panelden yönetir.</p>
+              </div>
+              <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
+              <div className="kart signal-top flex-1 p-6 text-center" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Tek canlı havuz</p>
+                <p className="mt-2 font-display text-lg font-bold text-ink">Tek doğru kaynak</p>
+                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Fiyat, durum ve tazelik tek yerde — kopya yok, sıfır çift-satış.</p>
+              </div>
+              <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
+              <div className="kart flex-1 p-6 text-center">
+                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Yetkili danışman ağı</p>
+                <p className="mt-2 font-display text-lg font-bold text-ink">Doğru danışmana</p>
+                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Her danışman yalnız kendine tahsisli daireleri görür ve paylaşır.</p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ============ İKİ TARAFLI FAYDA ============ */}
       <section id="kimler-icin" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
@@ -316,10 +349,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ TEK TIKLA PAYLAŞ (sosyal/birebir) ============ */}
+      {/* ============ KAPALI DEVRE ŞERİDİ ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal><PaylasimVitrin /></Reveal>
+        <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-6">
+          <Reveal>
+            <div className="flex flex-col items-center justify-center gap-2.5 text-center sm:flex-row sm:gap-3.5">
+              <span className="inline-grid size-9 flex-none place-items-center rounded-xl bg-[var(--color-teal-soft)]" aria-hidden>
+                <Lock size={17} strokeWidth={1.75} color="var(--color-teal-d)" />
+              </span>
+              <p className="text-pretty text-sm font-medium text-ink sm:text-[15px]">
+                <strong className="font-semibold">İlan yok, tahsis var</strong> — paylaşım birebir ve kapalı devre. Fiyat her zaman canlı basılır.
+              </p>
+            </div>
+          </Reveal>
         </div>
       </section>
 
