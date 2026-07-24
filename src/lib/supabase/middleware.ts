@@ -5,6 +5,8 @@ import { NextResponse, type NextRequest } from "next/server";
 function herkeseAcik(pathname: string): boolean {
   return (
     pathname === "/" ||
+    pathname.startsWith("/muteahhit") || // public rol landing (üretici)
+    pathname.startsWith("/emlakci") || // public rol landing (emlakçı)
     pathname.startsWith("/login") ||
     pathname.startsWith("/kayit") || // self-registration
     pathname.startsWith("/p/") || // imzalı paylaşım landing
