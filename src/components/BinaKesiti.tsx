@@ -70,7 +70,7 @@ export function BinaKesiti({
   return (
     <div className="space-y-4">
       {cokBlok ? (
-        <div className="flex gap-1.5 overflow-x-auto pb-1">
+        <div className="flex flex-wrap gap-1.5 pb-1">
           {bloklar.map((blok) => {
             const bb = birimler.filter((b) => b.blok_id === blok.id && b.ana_birim_id == null);
             const m = bb.filter((b) => b.durum === "musait").length;
@@ -155,10 +155,10 @@ export function BinaKesiti({
                           key={kat}
                           className="flex items-center gap-2.5 border-b border-white/[0.06] px-3.5 py-2 last:border-b-0"
                         >
-                          <span className="w-8 shrink-0 text-right font-mono text-[10px] font-semibold text-white/45">
+                          <span className="w-8 shrink-0 text-right font-mono text-[10px] font-semibold text-white/45 max-sm:w-6">
                             K{kat}
                           </span>
-                          <div className="flex flex-1 flex-wrap gap-1.5">
+                          <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                             {kb.map((b) => {
                               const tip = b.tip_id ? tipMap.get(b.tip_id) : null;
                               const shareUrl = shareUrlMap?.[b.id] ?? "";

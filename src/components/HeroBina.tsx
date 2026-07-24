@@ -77,12 +77,14 @@ export function HeroBina({ mobil = false }: { mobil?: boolean }) {
         );
       })}
 
-      {/* alt künye + lejant */}
-      <div className="absolute bottom-6 right-5 flex flex-col items-end gap-2 text-right">
-        <div>
-          <div className="font-display text-base font-bold text-ink drop-shadow-sm">Çankaya Vadi</div>
-          <div className="flex items-center justify-end gap-1.5 font-mono text-[11px] text-ink-soft"><span className="size-1.5 rounded-full bg-green nabiz" /> 142 birim · canlı</div>
-        </div>
+      {/* alt künye + lejant (mobil kartta yalnız lejant, kompakt) */}
+      <div className={mobil ? "absolute bottom-3 right-3 flex flex-col items-end gap-2 text-right" : "absolute bottom-6 right-5 flex flex-col items-end gap-2 text-right"}>
+        {mobil ? null : (
+          <div>
+            <div className="font-display text-base font-bold text-ink drop-shadow-sm">Çankaya Vadi</div>
+            <div className="flex items-center justify-end gap-1.5 font-mono text-[11px] text-ink-soft"><span className="size-1.5 rounded-full bg-green nabiz" /> 142 birim · canlı</div>
+          </div>
+        )}
         <div className="flex items-center gap-2.5 rounded-full border border-[var(--cizgi)] bg-white/80 px-3 py-1.5 font-mono text-[10px] text-ink-soft backdrop-blur-sm">
           <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full" style={{ background: RENK.musait }} /> müsait</span>
           <span className="inline-flex items-center gap-1"><span className="size-2 rounded-full" style={{ background: RENK.opsiyon }} /> opsiyon</span>
