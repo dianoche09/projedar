@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | ProjePazar",
     description:
-      "Envanter kontrolü sende: stok, fiyat ve kimin göreceği tek noktadan. Çift satış yapısal olarak imkânsız. Komisyonsuz, kapalı devre satış ağı.",
+      "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde imkânsız. Komisyonsuz, kapalı devre.",
     type: "website",
     siteName: "ProjePazar",
     url: `${SITE}/muteahhit`,
@@ -151,7 +151,10 @@ export default function MuteahhitSayfasi() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0">
+            <span className="hidden sm:block"><Logo size={26} wordmark /></span>
+            <span className="sm:hidden"><Logo size={28} /></span>
+          </Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
@@ -159,7 +162,10 @@ export default function MuteahhitSayfasi() {
           </div>
           <div className="flex items-center gap-2.5">
             <Link href="/login" className="btn-ghost hidden sm:inline-flex">Giriş yap</Link>
-            <Link href="/kayit?rol=uretici" className="btn-action hover:-translate-y-0.5">Projenizi konuşalım</Link>
+            <Link href="/kayit?rol=uretici" className="btn-action whitespace-nowrap hover:-translate-y-0.5">
+              <span className="hidden sm:inline">Projenizi konuşalım</span>
+              <span className="sm:hidden">Görüşelim</span>
+            </Link>
           </div>
         </nav>
       </header>
@@ -173,12 +179,12 @@ export default function MuteahhitSayfasi() {
               <span className="size-2 rounded-full bg-green nabiz" /> MÜTEAHHİTLER İÇİN
             </span>
             <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              Envanter kontrolü sende.
+              “Bu daire hâlâ müsait mi?”
               <br />
-              <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
+              <span className="text-teal">Ağınızda bu soru sorulmaz.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Geliştirici firmalar için <strong className="font-semibold text-ink">tahsisli canlı proje satış ağı</strong>, stok, fiyat ve kimin göreceği tek noktadan, <strong className="font-semibold text-ink">sizde</strong>.
+              Geliştirici firmalar için <strong className="font-semibold text-ink">tahsisli canlı proje satış ağı</strong>: stok, fiyat ve kimin göreceği tek noktada, <strong className="font-semibold text-ink">sizde</strong>. Çift satış veritabanı seviyesinde imkânsız.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/kayit?rol=uretici" className="btn-action px-7 text-[15px] max-sm:min-h-[52px] hover:-translate-y-0.5">Projenizi konuşalım</Link>

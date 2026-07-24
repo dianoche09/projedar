@@ -161,7 +161,10 @@ export default async function Home() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0">
+            <span className="hidden sm:block"><Logo size={26} wordmark /></span>
+            <span className="sm:hidden"><Logo size={28} /></span>
+          </Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
@@ -184,12 +187,12 @@ export default async function Home() {
               <span className="size-2 rounded-full bg-green nabiz" /> GELİŞTİRİCİ FİRMALAR İÇİN CANLI PROJE SATIŞ AĞI
             </span>
             <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              Envanter kontrolü sende.
+              “Bu daire hâlâ müsait mi?”
               <br />
-              <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
+              <span className="text-teal">Bu soru artık sorulmuyor.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-<strong className="font-semibold text-ink">Çok müteahhit, tek canlı havuz, yetkili danışman ağı.</strong> Stoğunuzu seçili danışman ve ofislere <strong className="font-semibold text-ink">tahsis edin</strong>; fiyat, opsiyon ve talebi tek merkezden yönetin. İlan portalı değil, <strong className="font-semibold text-ink">komisyonsuz</strong> altyapı, <strong className="font-semibold text-ink">aynı daire iki kez satılamaz</strong>: çift-satış kalkanı veritabanı seviyesinde kilitler.
+<strong className="font-semibold text-ink">Stok, fiyat ve durum tek canlı havuzda.</strong> Paylaşılan her linkte fiyat canlı basılır; opsiyonlanan daire kilitlenir, <strong className="font-semibold text-ink">kimse üstüne satamaz</strong>. İlan portalı değil: <strong className="font-semibold text-ink">komisyonsuz</strong>, tahsisli, kapalı devre satış ağı.
             </p>
             <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-2">
               <Link href="/muteahhit" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
@@ -209,6 +212,10 @@ export default async function Home() {
                   <span className="size-[5px] rounded-full bg-teal" /> {t}
                 </span>
               ))}
+            </div>
+            {/* mobil: bina görseli metnin ARKASINA binmesin, ayrı canlı kart olarak */}
+            <div className="relative mt-10 h-72 overflow-hidden rounded-[20px] border border-[var(--cizgi)] shadow-[var(--golge-2)] lg:hidden">
+              <HeroBina mobil />
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ const SUTUN = [54, 64, 74, 84, 94]; // left % (görsel sağ ağırlıklı)
 const NOKTALAR = KATLAR.flatMap((top, ki) => SUTUN.map((left, si) => ({ top, left, kod: `A-${8 - ki}-${si + 1}` })));
 const BASLANGIC: Durum[] = NOKTALAR.map((_, i) => { const h = (i * 7) % 10; return h < 5 ? "musait" : h < 7 ? "opsiyon" : "satildi"; });
 
-export function HeroBina() {
+export function HeroBina({ mobil = false }: { mobil?: boolean }) {
   const [durumlar, setDurumlar] = useState<Durum[]>(BASLANGIC);
   const [son, setSon] = useState<{ durum: Durum; i: number }>({ durum: "satildi", i: 7 });
 
@@ -38,17 +38,19 @@ export function HeroBina() {
   const maske = "radial-gradient(135% 120% at 92% 40%, #000 40%, rgba(0,0,0,0.55) 62%, transparent 80%)";
 
   return (
-    <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-full lg:w-[66%]">
+    <div className={mobil ? "pointer-events-none absolute inset-0 z-0" : "pointer-events-none absolute inset-y-0 right-0 z-0 hidden lg:block lg:w-[66%]"}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/gorseller/hero-bina.jpg"
         alt=""
         aria-hidden
         className="size-full object-cover"
-        style={{ WebkitMaskImage: maske, maskImage: maske }}
+        style={mobil ? undefined : { WebkitMaskImage: maske, maskImage: maske }}
       />
-      {/* sol/zemin renk eritme — metin tarafı okunur kalsın */}
-      <div className="absolute inset-0" aria-hidden style={{ background: "linear-gradient(90deg, var(--color-paper) 0%, rgba(238,241,246,0.55) 22%, transparent 46%)" }} />
+      {/* sol/zemin renk eritme — metin tarafı okunur kalsın (yalnız desktop arka plan modunda) */}
+      {mobil ? null : (
+        <div className="absolute inset-0" aria-hidden style={{ background: "linear-gradient(90deg, var(--color-paper) 0%, rgba(238,241,246,0.55) 22%, transparent 46%)" }} />
+      )}
       <div className="absolute inset-x-0 bottom-0 h-24" aria-hidden style={{ background: "linear-gradient(180deg, transparent, rgba(238,241,246,0.85))" }} />
 
       {/* canlı durum işaretleri */}
