@@ -284,19 +284,19 @@ export default async function Home() {
               <div className="kart flex-1 p-6 text-center">
                 <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Çok müteahhit</p>
                 <p className="mt-2 font-display text-lg font-bold text-ink">Onlarca proje sahibi</p>
-                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Her biri stoğunu, fiyatını ve tahsisini tek panelden yönetir.</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Her biri stoğunu, fiyatını ve tahsisini tek panelden yönetir.</p>
               </div>
               <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
               <div className="kart signal-top flex-1 p-6 text-center" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
                 <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Tek canlı havuz</p>
                 <p className="mt-2 font-display text-lg font-bold text-ink">Tek doğru kaynak</p>
-                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Fiyat, durum ve tazelik tek yerde — kopya yok, sıfır çift-satış.</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Fiyat, durum ve tazelik tek yerde — kopya yok, sıfır çift-satış.</p>
               </div>
               <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
               <div className="kart flex-1 p-6 text-center">
                 <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Yetkili danışman ağı</p>
                 <p className="mt-2 font-display text-lg font-bold text-ink">Doğru danışmana</p>
-                <p className="mt-1.5 text-[13px] leading-snug text-ink-soft">Her danışman yalnız kendine tahsisli daireleri görür ve paylaşır.</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Her danışman yalnız kendine tahsisli daireleri görür ve paylaşır.</p>
               </div>
             </div>
           </Reveal>
@@ -318,7 +318,7 @@ export default async function Home() {
               <Reveal key={f.rol} delay={i * 120}>
                 <div className="kart signal-top flex h-full flex-col p-7" style={{ ["--_sig" as string]: f.sinyal }}>
                   <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">{f.rol}</p>
-                  <h3 className="mt-1.5 font-display text-xl font-bold tracking-tight text-ink">{f.baslik}</h3>
+                  <h3 className="mt-1.5 font-display text-lg font-bold tracking-tight text-ink">{f.baslik}</h3>
                   <p className="mb-4 mt-0.5 text-[13px] text-ink-soft">{f.alt}</p>
                   <ul className="flex flex-col gap-3">
                     {f.maddeler.map(([vurgu, devam]) => (
@@ -433,7 +433,7 @@ export default async function Home() {
           <div className="mx-auto mt-12 grid max-w-4xl gap-5 md:grid-cols-2">
             <Reveal>
               <div className="h-full rounded-[20px] border border-[var(--cizgi)] p-6" style={{ background: "linear-gradient(180deg,#fbf1ef,#f8e9e6)" }}>
-                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold text-[#a23f34]">⚠ Dağınık portal · Excel · WhatsApp</p>
+                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold tracking-tight text-[#a23f34]">⚠ Dağınık portal · Excel · WhatsApp</p>
                 <ul className="flex flex-col">
                   {VS_KOTU.map((t) => (<li key={t} className="flex gap-2.5 border-t border-dashed border-[rgba(16,36,58,0.1)] py-2 text-[13.5px] text-ink first:border-t-0"><span className="font-bold text-red">✕</span> {t}</li>))}
                 </ul>
@@ -441,7 +441,7 @@ export default async function Home() {
             </Reveal>
             <Reveal delay={120}>
               <div className="kart h-full p-6">
-                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold text-[var(--color-teal-d)]">◆ ProjePazar</p>
+                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold tracking-tight text-[var(--color-teal-d)]">◆ ProjePazar</p>
                 <ul className="flex flex-col">
                   {VS_IYI.map((t) => (<li key={t} className="flex gap-2.5 border-t border-dashed border-[rgba(16,36,58,0.1)] py-2 text-[13.5px] text-ink first:border-t-0"><span className="font-bold text-green">✓</span> {t}</li>))}
                 </ul>

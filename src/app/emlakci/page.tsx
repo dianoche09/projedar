@@ -213,7 +213,7 @@ export default function EmlakciLanding() {
             {/* SOL — kaos temsili (grup mockup'ı) */}
             <Reveal>
               <div className="h-full rounded-[20px] border border-[var(--cizgi)] bg-[var(--color-red-soft)] p-6">
-                <p className="flex items-center gap-2 font-display text-base font-bold text-red">⚠ Bugünkü düzen: dağınık gruplar</p>
+                <p className="flex items-center gap-2 font-display text-base font-bold tracking-tight text-red">⚠ Bugünkü düzen: dağınık gruplar</p>
                 <div className="mt-4 rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
                   <div className="mb-3 flex items-center justify-between border-b border-[var(--cizgi)] pb-2.5">
                     <span className="font-display text-[13px] font-bold text-ink">Proje Fırsatları 2026</span>

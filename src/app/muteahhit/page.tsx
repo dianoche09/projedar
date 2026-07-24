@@ -172,7 +172,7 @@ export default function MuteahhitSayfasi() {
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(30,155,138,0.22)] bg-[var(--color-teal-soft)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[var(--color-teal-d)]">
               <span className="size-2 rounded-full bg-green nabiz" /> MÜTEAHHİTLER İÇİN
             </span>
-            <h1 className="mt-5 font-display text-[38px] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-[54px]">
+            <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
               Envanter kontrolü sende.
               <br />
               <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
@@ -227,7 +227,7 @@ export default function MuteahhitSayfasi() {
                     <k.Icon size={22} strokeWidth={1.75} color="var(--color-teal-d)" />
                   </span>
                   <h3 className="mt-4 font-display text-lg font-bold tracking-tight text-ink">{k.baslik}</h3>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">{k.metin}</p>
+                  <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{k.metin}</p>
                 </div>
               </Reveal>
             ))}
@@ -307,7 +307,7 @@ export default function MuteahhitSayfasi() {
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-2 px-5 py-10 text-center sm:px-6">
           <span className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Konumlandırma</span>
-          <p className="max-w-2xl text-pretty font-display text-lg font-bold tracking-tight text-ink sm:text-xl">
+          <p className="max-w-2xl text-pretty font-display text-lg font-bold tracking-tight text-ink">
             İlan değil, tahsis. Kapalı devre paylaşım — <span className="text-teal">EİDS ilan rejimine takılmadan.</span>
           </p>
         </div>

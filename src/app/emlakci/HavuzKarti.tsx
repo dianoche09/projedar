@@ -84,7 +84,7 @@ export function HavuzKarti() {
       {/* başlık — tahsisli havuz + canlılık rozeti */}
       <div className="border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-4">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="font-display text-base font-bold text-ink">Sana tahsisli havuz</span>
+          <span className="font-display text-base font-bold tracking-tight text-ink">Sana tahsisli havuz</span>
           <span className="rounded-full bg-[var(--color-teal-soft)] px-2 py-0.5 text-[10px] font-semibold text-[var(--color-teal-d)]">✓ Doğrulanmış projeler</span>
         </div>
         <span className="taze t-0 mt-1.5">

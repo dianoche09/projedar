@@ -100,7 +100,7 @@ export function TazelikDemo() {
       {/* durum mesajı */}
       <div className="flex items-start gap-3 border-t border-[var(--cizgi)] px-5 py-4">
         <span className={`durum ${mesaj.rozet} mt-0.5`}><span className="nokta" />{mesaj.baslik}</span>
-        <p className="text-[13px] leading-snug text-ink-soft">{mesaj.metin}</p>
+        <p className="text-[13px] leading-relaxed text-ink-soft">{mesaj.metin}</p>
       </div>
     </div>
   );
