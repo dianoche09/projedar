@@ -11,6 +11,12 @@
 --      db/2026-06-28_odeme-plani.sql             (birim.odeme_plani)
 --      db/2026-06-29_opsiyon-talep-onay.sql      (opsiyon talep→onay RPC + RLS admin-only + mahal.marka)
 --      db/2026-06-29b_opsiyon-talep-saglamlik.sql (bekleyen-talep unique index + onay FOR UPDATE)
+--      db/2026-06-29c_kyc-belge-dogrulama.sql    (KYC/belge doğrulama gate — doğrulanana dek demo)
+--      db/2026-06-29d_tahsis-daire-kapsam.sql    (tahsis daire-bazlı kapsam: kapsam.birimler)
+--      db/2026-06-30_eklenti-birim.sql           (eklenti birim: otopark/depo → ana_birim_id)
+--      db/2026-07-01_emlakci-kategorizasyon-segment.sql (emlakçı marka/şehir/uzmanlık + segment tahsis)
+--      db/2026-07-01b_bildirim.sql               (bildirim tablosu + self RLS)
+--      db/2026-07-24_lead-select-rls.sql         (lead_select DARALTMA: üretici SELECT kolu kaldırıldı)
 
 -- =========================================================
 -- ENUMS
