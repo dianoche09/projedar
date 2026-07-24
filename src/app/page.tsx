@@ -45,12 +45,12 @@ const GUVEN = [
 const SITE = "https://projepazar.vercel.app";
 
 export const metadata: Metadata = {
-  title: "ProjePazar, Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
+  title: "ProjePazar: Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
   description:
     "İlan portalı değil. Proje sahibi stoğunu ve fiyatını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla paylaşır. Yanlış fiyat yok, eksik bilgi yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ProjePazar, Tüm projeler tek canlı havuzda",
+    title: "ProjePazar: Tüm projeler tek canlı havuzda",
     description:
       "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan ağ. Yanlış fiyat yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
     type: "website",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     url: SITE,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "ProjePazar, Tüm projeler tek canlı havuzda" },
+  twitter: { card: "summary_large_image", title: "ProjePazar: Tüm projeler tek canlı havuzda" },
 };
 
 const NAV = [

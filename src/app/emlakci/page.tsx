@@ -27,12 +27,12 @@ import {
 const SITE = "https://projepazar.vercel.app";
 
 export const metadata: Metadata = {
-  title: "Emlakçılar için ProjePazar, Ücretsiz | Komisyonun %100'ü senin",
+  title: "Emlakçılar için ProjePazar: Ücretsiz | Komisyonun %100'ü senin",
   description:
     "Sana tahsisli müteahhit stoğunu tek canlı havuzda gör, WhatsApp'tan birebir paylaş, opsiyonla kilitle. Tamamen ücretsiz; satışına girmeyiz, komisyonundan pay almayız.",
   alternates: { canonical: "/emlakci" },
   openGraph: {
-    title: "Emlakçılar için ProjePazar, Tamamen ücretsiz, komisyonun %100'ü senin",
+    title: "Emlakçılar için ProjePazar: Tamamen ücretsiz, komisyonun %100'ü senin",
     description:
       "Tahsisli müteahhit stoğu tek canlı havuzda. Fiyat her zaman güncel, opsiyon veritabanı seviyesinde kilitli, komisyonundan pay alınmaz.",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     url: `${SITE}/emlakci`,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Emlakçılar için ProjePazar, Komisyonun %100'ü senin" },
+  twitter: { card: "summary_large_image", title: "Emlakçılar için ProjePazar: Komisyonun %100'ü senin" },
 };
 
 const NAV = [
