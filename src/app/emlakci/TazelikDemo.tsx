@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Tazelik rozet sistemi mini demosu — "● X önce" imzasının yeşil→amber→kırmızı
+ * Tazelik rozet sistemi mini demosu, "● X önce" imzasının yeşil→amber→kırmızı
  * geçişini canlı gösterir. Gün otomatik akar; kaydırıcıyla elle de gezilir
  * (elle dokununca otomatik akış kısa süre durur). Eşikler globals.css .taze ile birebir.
  */
@@ -19,10 +19,10 @@ function tazeGorsel(gun: number): { sinif: string; etiket: string } {
 
 function tazeMesaj(gun: number): { rozet: string; baslik: string; metin: string } {
   if (gun <= 7)
-    return { rozet: "d-musait", baslik: "Taze — paylaş", metin: "Veri güncel; gönül rahatlığıyla müşterine gönder." };
+    return { rozet: "d-musait", baslik: "Taze, paylaş", metin: "Veri güncel; gönül rahatlığıyla müşterine gönder." };
   if (gun <= 15)
-    return { rozet: "d-opsiyon", baslik: "Bayatlıyor — teyit et", metin: "Rozet sarıya döndü; paylaşmadan önce havuzdaki canlı değere bak." };
-  return { rozet: "d-satildi", baslik: "Eski — paylaşma", metin: "Bu ekran görüntüsüne güvenme; canlı havuz zaten doğrusunu gösteriyor." };
+    return { rozet: "d-opsiyon", baslik: "Bayatlıyor, teyit et", metin: "Rozet sarıya döndü; paylaşmadan önce havuzdaki canlı değere bak." };
+  return { rozet: "d-satildi", baslik: "Eski, paylaşma", metin: "Bu ekran görüntüsüne güvenme; canlı havuz zaten doğrusunu gösteriyor." };
 }
 
 export function TazelikDemo() {
@@ -59,7 +59,7 @@ export function TazelikDemo() {
         örnek görünüm
       </span>
 
-      {/* örnek birim satırı — rozet gün ilerledikçe renk değiştirir */}
+      {/* örnek birim satırı, rozet gün ilerledikçe renk değiştirir */}
       <div className="flex flex-wrap items-center gap-3 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export function TazelikDemo() {
         <span className="font-mono text-[17px] font-semibold text-ink">₺8,75M</span>
       </div>
 
-      {/* zaman kaydırıcısı — son güncellemeden bu yana geçen gün */}
+      {/* zaman kaydırıcısı, son güncellemeden bu yana geçen gün */}
       <div className="px-5 py-4">
         <div className="mb-1.5 flex items-center justify-between font-mono text-[10.5px] text-[var(--ink-faint)]">
           <span>Son güncellemeden bu yana</span>

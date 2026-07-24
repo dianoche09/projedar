@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 /* =========================================================
-   /emlakci — gayrimenkul danışmanı için public rol landing'i.
+   /emlakci, gayrimenkul danışmanı için public rol landing'i.
    Rakip Analizi 5-6: NHB/Topli emlakçı vaadi ama KOMİSYONSUZ + tahsisli;
    ikna aracı ikon değil, canlı simülasyon (HavuzKarti + TazelikDemo).
    ========================================================= */
@@ -27,12 +27,12 @@ import {
 const SITE = "https://projepazar.vercel.app";
 
 export const metadata: Metadata = {
-  title: "Emlakçılar için ProjePazar — Ücretsiz | Komisyonun %100'ü senin",
+  title: "Emlakçılar için ProjePazar, Ücretsiz | Komisyonun %100'ü senin",
   description:
     "Sana tahsisli müteahhit stoğunu tek canlı havuzda gör, WhatsApp'tan birebir paylaş, opsiyonla kilitle. Tamamen ücretsiz; satışına girmeyiz, komisyonundan pay almayız.",
   alternates: { canonical: "/emlakci" },
   openGraph: {
-    title: "Emlakçılar için ProjePazar — Tamamen ücretsiz, komisyonun %100'ü senin",
+    title: "Emlakçılar için ProjePazar, Tamamen ücretsiz, komisyonun %100'ü senin",
     description:
       "Tahsisli müteahhit stoğu tek canlı havuzda. Fiyat her zaman güncel, opsiyon veritabanı seviyesinde kilitli, komisyonundan pay alınmaz.",
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     url: `${SITE}/emlakci`,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Emlakçılar için ProjePazar — Komisyonun %100'ü senin" },
+  twitter: { card: "summary_large_image", title: "Emlakçılar için ProjePazar, Komisyonun %100'ü senin" },
 };
 
 const NAV = [
@@ -56,30 +56,30 @@ const DERT = [
   "Müşteri karşısında yanlış fiyat, kaybedilen güven",
 ];
 const COZUM = [
-  "Tek canlı havuz — sürüm yok, tek doğru kaynak",
+  "Tek canlı havuz, sürüm yok, tek doğru kaynak",
   "“● X önce” damgası her verinin üstünde",
   "Durum ekranda canlı: telefonla sormak yok",
 ];
 
-/** 3 adım — havuz → paylaş → opsiyon. */
+/** 3 adım, havuz → paylaş → opsiyon. */
 const ADIMLAR = [
   {
     no: "01",
     Icon: LayoutGrid,
     baslik: "Havuzunu gör",
-    metin: "Sadece sana tahsisli müteahhit stoğu tek canlı ekranda. Dağınık Excel, eski PDF, grup mesajı yok — fiyat ve durum her an güncel.",
+    metin: "Sadece sana tahsisli müteahhit stoğu tek canlı ekranda. Dağınık Excel, eski PDF, grup mesajı yok, fiyat ve durum her an güncel.",
   },
   {
     no: "02",
     Icon: Share2,
     baslik: "Paylaş",
-    metin: "Müşterine tek link gönder; fiyat o anki canlı değerden basılır. WhatsApp'tan birebir — ekran görüntüsü değil, canlı mikrosite.",
+    metin: "Müşterine tek link gönder; fiyat o anki canlı değerden basılır. WhatsApp'tan birebir, ekran görüntüsü değil, canlı mikrosite.",
   },
   {
     no: "03",
     Icon: Lock,
     baslik: "Opsiyonla kilitle",
-    metin: "Müşterin için birimi tut. Aktif opsiyon veritabanı seviyesinde kilitlenir; kimse üstüne satamaz — bu uygulama sözü değil, DB garantisi.",
+    metin: "Müşterin için birimi tut. Aktif opsiyon veritabanı seviyesinde kilitlenir; kimse üstüne satamaz, bu uygulama sözü değil, DB garantisi.",
   },
 ];
 
@@ -93,7 +93,7 @@ const GUVENCE = [
 const SSS: { s: string; c: string }[] = [
   {
     s: "Emlakçı için gerçekten ücretsiz mi? Gizli bir ücret var mı?",
-    c: "Evet, tamamen ücretsizdir. Üyelik ücreti, aidat veya kullanım bedeli yoktur; hiçbir satıştan komisyon ya da pay alınmaz. Platform gelirini müteahhit tarafındaki anlaşmalardan kazanır — emlakçıdan değil.",
+    c: "Evet, tamamen ücretsizdir. Üyelik ücreti, aidat veya kullanım bedeli yoktur; hiçbir satıştan komisyon ya da pay alınmaz. Platform gelirini müteahhit tarafındaki anlaşmalardan kazanır, emlakçıdan değil.",
   },
   {
     s: "Tahsis nasıl çalışır, hangi projeleri görürüm?",
@@ -113,7 +113,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "KYC / belge doğrulaması neden var?",
-    c: "ProjePazar doğrulanmış danışman ağıdır. Yetki belgeni yüklersin, doğrulanınca rozetini alırsın. Müteahhitler stoklarını doğrulanmış danışmanlara gönül rahatlığıyla açar — bu gate ağdaki herkesin işini ve itibarını korur.",
+    c: "ProjePazar doğrulanmış danışman ağıdır. Yetki belgeni yüklersin, doğrulanınca rozetini alırsın. Müteahhitler stoklarını doğrulanmış danışmanlara gönül rahatlığıyla açar, bu gate ağdaki herkesin işini ve itibarını korur.",
   },
 ];
 
@@ -153,7 +153,7 @@ export default function EmlakciLanding() {
           <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
-              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
+              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
             ))}
           </div>
           <div className="flex items-center gap-2.5">
@@ -178,13 +178,13 @@ export default function EmlakciLanding() {
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
               Sana tahsisli müteahhit stoğunu <strong className="font-semibold text-ink">tek canlı havuzda</strong> gör, WhatsApp&rsquo;tan{" "}
-              <strong className="font-semibold text-ink">birebir paylaş</strong>, <strong className="font-semibold text-ink">opsiyonla kilitle</strong> — fiyat her zaman güncel.
+              <strong className="font-semibold text-ink">birebir paylaş</strong>, <strong className="font-semibold text-ink">opsiyonla kilitle</strong>, fiyat her zaman güncel.
             </p>
             <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
               <MagneticButton href="/kayit?rol=emlakci" className="btn-action h-[52px] px-8 text-[15px] font-bold">
                 Ücretsiz Başla
               </MagneticButton>
-              <a href="#canli-havuz" className="btn-ghost h-[52px] px-7 text-[15px]">Canlı havuzu gör ↓</a>
+              <a href="#canli-havuz" className="btn-ghost h-[52px] px-7 text-[15px] hover:-translate-y-0.5">Canlı havuzu gör ↓</a>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Komisyon paylaşımı yok", "Sadece sana tahsisli stok", "Fiyat her zaman canlı"].map((t) => (
@@ -205,12 +205,12 @@ export default function EmlakciLanding() {
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Dert → çözüm</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Grup mesajı değil.<br className="hidden sm:block" /> Canlı havuz.</h2>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-                WhatsApp gruplarında dolaşan bayat fiyat listeleri, Drive linkleri, &ldquo;bu daire hâlâ müsait mi?&rdquo; telefonları — hepsi tek canlı ekrana iner.
+                WhatsApp gruplarında dolaşan bayat fiyat listeleri, Drive linkleri, &ldquo;bu daire hâlâ müsait mi?&rdquo; telefonları, hepsi tek canlı ekrana iner.
               </p>
             </div>
           </Reveal>
           <div className="mt-12 grid items-start gap-5 md:grid-cols-2">
-            {/* SOL — kaos temsili (grup mockup'ı) */}
+            {/* SOL, kaos temsili (grup mockup'ı) */}
             <Reveal>
               <div className="h-full rounded-[20px] border border-[var(--cizgi)] bg-[var(--color-red-soft)] p-6">
                 <p className="flex items-center gap-2 font-display text-base font-bold tracking-tight text-red">⚠ Bugünkü düzen: dağınık gruplar</p>
@@ -233,7 +233,7 @@ export default function EmlakciLanding() {
                     <div className="max-w-[85%] self-end rounded-xl rounded-br-sm bg-[var(--color-amber-soft)] px-3 py-2.5 text-[12px] text-ink">Dün kapora alındı diye duydum, emin değilim…</div>
                     <div className="flex items-center gap-2.5 rounded-xl bg-[var(--color-soft)] px-3 py-2.5">
                       <PhoneMissed size={16} strokeWidth={1.75} className="flex-none text-red" aria-hidden />
-                      <span className="text-[12px] text-ink-soft">Cevapsız arama — satış ofisi (3)</span>
+                      <span className="text-[12px] text-ink-soft">Cevapsız arama, satış ofisi (3)</span>
                     </div>
                   </div>
                 </div>
@@ -246,7 +246,7 @@ export default function EmlakciLanding() {
                 </ul>
               </div>
             </Reveal>
-            {/* SAĞ — canlı havuz kartı */}
+            {/* SAĞ, canlı havuz kartı */}
             <Reveal delay={120}>
               <div className="flex h-full flex-col">
                 <HavuzKarti />
@@ -289,16 +289,16 @@ export default function EmlakciLanding() {
               </Reveal>
             ))}
           </ol>
-          {/* KYC / doğrulama — olumlu gate */}
+          {/* KYC / doğrulama, olumlu gate */}
           <Reveal delay={120}>
             <div className="kart signal-top mx-auto mt-10 flex max-w-3xl items-start gap-4 p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
               <span className="inline-grid size-11 flex-none place-items-center rounded-2xl bg-[var(--color-teal-soft)]" aria-hidden>
                 <BadgeCheck size={22} strokeWidth={1.75} color="var(--color-teal-d)" />
               </span>
               <div>
-                <h3 className="font-display text-[15px] font-bold tracking-tight text-ink">Doğrulanmış danışman ağı — belgeni yükle, rozetini al</h3>
+                <h3 className="font-display text-[15px] font-bold tracking-tight text-ink">Doğrulanmış danışman ağı, belgeni yükle, rozetini al</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
-                  ProjePazar kapalı ve doğrulanmış bir ağdır. Yetki belgen doğrulanınca rozetini alırsın; müteahhitler stoklarını rozetli danışmanlara gönül rahatlığıyla açar. Doğrulama seni yavaşlatmaz — seni ağın güvenilir yüzü yapar.
+                  ProjePazar kapalı ve doğrulanmış bir ağdır. Yetki belgen doğrulanınca rozetini alırsın; müteahhitler stoklarını rozetli danışmanlara gönül rahatlığıyla açar. Doğrulama seni yavaşlatmaz, seni ağın güvenilir yüzü yapar.
                 </p>
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function EmlakciLanding() {
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Komisyon güvencesi</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Söz değil, mimari</h2>
               <p className="mx-auto mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-                Bazı platformlar komisyon &ldquo;garantisi&rdquo; söz verir. Biz söze gerek bırakmayız: satışına hiç girmeyiz, komisyonundan pay almayız — kazancın %100&rsquo;ü senin. Lead&rsquo;in senindir, müteahhitle aranda kalır.
+                Bazı platformlar komisyon &ldquo;garantisi&rdquo; söz verir. Biz söze gerek bırakmayız: satışına hiç girmeyiz, komisyonundan pay almayız, kazancın %100&rsquo;ü senin. Lead&rsquo;in senindir, müteahhitle aranda kalır.
               </p>
             </div>
           </Reveal>
@@ -347,13 +347,13 @@ export default function EmlakciLanding() {
                 </p>
                 <ul className="mt-6 flex flex-col gap-2.5">
                   {[
-                    ["Yeşil", "veri taze — paylaşıma hazır"],
-                    ["Sarı", "bayatlıyor — havuzdan canlı değeri teyit et"],
-                    ["Kırmızı", "eski — canlı havuz zaten doğrusunu gösteriyor"],
+                    ["Yeşil", "veri taze, paylaşıma hazır"],
+                    ["Sarı", "bayatlıyor, havuzdan canlı değeri teyit et"],
+                    ["Kırmızı", "eski, canlı havuz zaten doğrusunu gösteriyor"],
                   ].map(([r, t]) => (
                     <li key={r} className="flex gap-2.5 text-[13.5px] leading-snug text-ink">
                       <span className={`mt-1 size-2.5 flex-none rounded-full ${r === "Yeşil" ? "bg-green" : r === "Sarı" ? "bg-amber" : "bg-red"}`} aria-hidden />
-                      <span><strong className="font-semibold">{r}</strong> — {t}</span>
+                      <span><strong className="font-semibold">{r}</strong>, {t}</span>
                     </li>
                   ))}
                 </ul>
@@ -376,7 +376,7 @@ export default function EmlakciLanding() {
           <div className="mt-12 flex flex-col gap-3">
             {SSS.map((q, i) => (
               <Reveal key={q.s} delay={i * 50}>
-                <details className="sss-item kart p-0">
+                <details className="sss-item kart p-0 hover:-translate-y-0.5">
                   <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">
                     {q.s}
                     <span className="ok flex-none text-teal" aria-hidden>▾</span>
@@ -411,11 +411,11 @@ export default function EmlakciLanding() {
                   Sana tahsisli canlı havuz seni bekliyor: doğru fiyat, tek link, opsiyon kilidi. Kayıt ücretsiz, belgen doğrulanınca rozetinle ağa katılırsın.
                 </p>
                 <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  <Link href="/kayit?rol=emlakci" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-9 text-[15px] font-bold text-ink transition-all hover:bg-white/90 sm:w-auto">
+                  <Link href="/kayit?rol=emlakci" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-9 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:w-auto">
                     Ücretsiz Başla
                   </Link>
-                  <Link href="/login" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/15 sm:w-auto">
-                    Zaten üyeyim — giriş yap
+                  <Link href="/login" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:w-auto">
+                    Zaten üyeyim, giriş yap
                   </Link>
                 </div>
               </div>
@@ -432,12 +432,12 @@ export default function EmlakciLanding() {
             <p className="max-w-xs text-center text-xs leading-relaxed text-ink-soft md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
           </div>
           <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-ink-soft">
-            <Link href="/kullanim-kosullari" className="transition-colors hover:text-ink hover:underline">Kullanım Koşulları</Link>
-            <Link href="/gizlilik" className="transition-colors hover:text-ink hover:underline">Gizlilik</Link>
-            <Link href="/kvkk-aydinlatma" className="transition-colors hover:text-ink hover:underline">KVKK Aydınlatma</Link>
+            <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-ink hover:underline">Kullanım Koşulları</Link>
+            <Link href="/gizlilik" className="transition-colors duration-200 hover:text-ink hover:underline">Gizlilik</Link>
+            <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar — Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );

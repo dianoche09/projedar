@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { NasilCalisirAdimlar } from "./NasilCalisirAdimlar";
 import { CircleSlash, SlidersHorizontal, Database } from "lucide-react";
 
-/** Müteahhit (üretici) rol landing'i — güven-önce, veri-öne, komuta merkezi dili. */
+/** Müteahhit (üretici) rol landing'i, güven-önce, veri-öne, komuta merkezi dili. */
 
 const SITE = "https://projepazar.vercel.app";
 
@@ -33,12 +33,12 @@ const NAV = [
   { etiket: "Sık sorulanlar", href: "#sss" },
 ];
 
-/** Üç kale — model konumlaması (Rakip Analizi 5.3). */
+/** Üç kale, model konumlaması (Rakip Analizi 5.3). */
 const KALELER = [
   {
     Icon: CircleSlash,
     baslik: "Komisyonsuz",
-    metin: "Satıştan pay almayız — sabit yıllık anlaşma. Ne kadar satarsan sat, maliyetin değişmez; işlemin içine girmeyiz.",
+    metin: "Satıştan pay almayız, sabit yıllık anlaşma. Ne kadar satarsan sat, maliyetin değişmez; işlemin içine girmeyiz.",
     sinyal: "var(--color-teal)",
   },
   {
@@ -55,13 +55,13 @@ const KALELER = [
   },
 ];
 
-/** Karşılaştırma — isim vermeden model kıyası. */
+/** Karşılaştırma, isim vermeden model kıyası. */
 const KIYAS_SATIRLARI: { etiket: string; portal: string; crm: string; biz: string }[] = [
   {
     etiket: "Komisyon",
     portal: "Satıştan pay alır",
     crm: "Lisans + modül ücreti",
-    biz: "Sıfır komisyon — sabit yıllık anlaşma",
+    biz: "Sıfır komisyon, sabit yıllık anlaşma",
   },
   {
     etiket: "Stok kontrolü",
@@ -73,7 +73,7 @@ const KIYAS_SATIRLARI: { etiket: string; portal: string; crm: string; biz: strin
     etiket: "Çift-satış garantisi",
     portal: "Söze ve operasyona bağlı",
     crm: "Uygulama katmanında, delinebilir",
-    biz: "Veritabanı kilidi — yapısal olarak imkânsız",
+    biz: "Veritabanı kilidi, yapısal olarak imkânsız",
   },
   {
     etiket: "Tazelik",
@@ -108,7 +108,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "Bu bir ilan portalı mı? EİDS'e takılır mıyım?",
-    c: "İlan portalı değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız tahsisli emlakçıların kapalı havuzunda görünür. İlan değil, tahsis — kapalı devre paylaşım modeli budur.",
+    c: "İlan portalı değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız tahsisli emlakçıların kapalı havuzunda görünür. İlan değil, tahsis, kapalı devre paylaşım modeli budur.",
   },
   {
     s: "Başlamak için ne gerekiyor?",
@@ -154,17 +154,17 @@ export default function MuteahhitSayfasi() {
           <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
-              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
+              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
             ))}
           </div>
           <div className="flex items-center gap-2.5">
             <Link href="/login" className="btn-ghost hidden sm:inline-flex">Giriş yap</Link>
-            <Link href="/kayit?rol=uretici" className="btn-action">Projenizi konuşalım</Link>
+            <Link href="/kayit?rol=uretici" className="btn-action hover:-translate-y-0.5">Projenizi konuşalım</Link>
           </div>
         </nav>
       </header>
 
-      {/* ============ HERO — güven önce, görsel yok, veri öne ============ */}
+      {/* ============ HERO, güven önce, görsel yok, veri öne ============ */}
       <section className="relative isolate overflow-hidden">
         <div className="hero-aurora" aria-hidden />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-16 sm:px-6 lg:pb-24 lg:pt-24">
@@ -178,11 +178,11 @@ export default function MuteahhitSayfasi() {
               <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Geliştirici firmalar için <strong className="font-semibold text-ink">tahsisli canlı proje satış ağı</strong> — stok, fiyat ve kimin göreceği tek noktadan, <strong className="font-semibold text-ink">sizde</strong>.
+              Geliştirici firmalar için <strong className="font-semibold text-ink">tahsisli canlı proje satış ağı</strong>, stok, fiyat ve kimin göreceği tek noktadan, <strong className="font-semibold text-ink">sizde</strong>.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/kayit?rol=uretici" className="btn-action px-7 text-[15px] max-sm:min-h-[52px]">Projenizi konuşalım</Link>
-              <a href="#nasil-calisir" className="btn-ghost px-7 text-[15px] max-sm:min-h-[52px]">Nasıl çalışır</a>
+              <Link href="/kayit?rol=uretici" className="btn-action px-7 text-[15px] max-sm:min-h-[52px] hover:-translate-y-0.5">Projenizi konuşalım</Link>
+              <a href="#nasil-calisir" className="btn-ghost px-7 text-[15px] max-sm:min-h-[52px] hover:-translate-y-0.5">Nasıl çalışır</a>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Komisyonsuz", "Tahsisli görünürlük", "DB seviyesinde opsiyon kilidi", "Kapalı devre"].map((t) => (
@@ -195,7 +195,7 @@ export default function MuteahhitSayfasi() {
         </div>
       </section>
 
-      {/* ============ NASIL ÇALIŞIR — 4 adım, canlı mini-simülasyonlar ============ */}
+      {/* ============ NASIL ÇALIŞIR, 4 adım, canlı mini-simülasyonlar ============ */}
       <section id="nasil-calisir" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
@@ -235,7 +235,7 @@ export default function MuteahhitSayfasi() {
         </div>
       </section>
 
-      {/* ============ KARŞILAŞTIRMA — isim vermeden ============ */}
+      {/* ============ KARŞILAŞTIRMA, isim vermeden ============ */}
       <section id="karsilastirma" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
@@ -272,7 +272,7 @@ export default function MuteahhitSayfasi() {
         </div>
       </section>
 
-      {/* ============ KURUCU MÜTEAHHİT — mekanikli, dürüst kıtlık ============ */}
+      {/* ============ KURUCU MÜTEAHHİT, mekanikli, dürüst kıtlık ============ */}
       <section id="kurucu" className="relative scroll-mt-20">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
@@ -296,7 +296,7 @@ export default function MuteahhitSayfasi() {
               </ul>
               <p className="mt-5 font-mono text-[11.5px] text-[var(--ink-faint)]">Sahte sayaç yok: bölgenizdeki güncel kontenjan durumunu görüşmede net söyleriz.</p>
               <div className="mt-6">
-                <Link href="/kayit?rol=uretici" className="btn-primary px-7 text-[15px] max-sm:min-h-[52px] max-sm:w-full">Kontenjan durumunu sor</Link>
+                <Link href="/kayit?rol=uretici" className="btn-primary px-7 text-[15px] max-sm:min-h-[52px] max-sm:w-full hover:-translate-y-0.5">Kontenjan durumunu sor</Link>
               </div>
             </div>
           </Reveal>
@@ -305,11 +305,13 @@ export default function MuteahhitSayfasi() {
 
       {/* ============ EİDS / UYUMLULUK ŞERİDİ ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-2 px-5 py-10 text-center sm:px-6">
-          <span className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Konumlandırma</span>
-          <p className="max-w-2xl text-pretty font-display text-lg font-bold tracking-tight text-ink">
-            İlan değil, tahsis. Kapalı devre paylaşım — <span className="text-teal">EİDS ilan rejimine takılmadan.</span>
-          </p>
+        <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6">
+          <Reveal className="flex flex-col items-center gap-2 text-center">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Konumlandırma</span>
+            <p className="max-w-2xl text-pretty font-display text-lg font-bold tracking-tight text-ink">
+              İlan değil, tahsis. Kapalı devre paylaşım, <span className="text-teal">EİDS ilan rejimine takılmadan.</span>
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -325,7 +327,7 @@ export default function MuteahhitSayfasi() {
           <div className="mt-12 flex flex-col gap-3">
             {SSS.map((q, i) => (
               <Reveal key={q.s} delay={i * 50}>
-                <details className="sss-item kart p-0">
+                <details className="sss-item kart p-0 hover:-translate-y-0.5">
                   <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">
                     {q.s}
                     <span className="ok flex-none text-teal" aria-hidden>▾</span>
@@ -349,11 +351,11 @@ export default function MuteahhitSayfasi() {
                   <span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>
                 ))}
               </div>
-              <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Stoğun, fiyatın, ağın — tek komuta merkezinden.</h2>
+              <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Stoğun, fiyatın, ağın, tek komuta merkezinden.</h2>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Projeni ağa açmadan önce modeli birlikte konuşalım: stok yapın, tahsis kuralların, bölgendeki kurucu kontenjanı.</p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link href="/kayit?rol=uretici" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all hover:bg-white/90 sm:min-h-[44px] sm:w-auto">Projenizi konuşalım</Link>
-                <a href="#nasil-calisir" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Nasıl çalışır</a>
+                <Link href="/kayit?rol=uretici" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:min-h-[44px] sm:w-auto">Projenizi konuşalım</Link>
+                <a href="#nasil-calisir" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Nasıl çalışır</a>
               </div>
             </div>
           </div>
@@ -368,12 +370,12 @@ export default function MuteahhitSayfasi() {
             <p className="max-w-xs text-center text-xs leading-relaxed text-ink-soft md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
           </div>
           <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-ink-soft">
-            <Link href="/kullanim-kosullari" className="transition-colors hover:text-ink hover:underline">Kullanım Koşulları</Link>
-            <Link href="/gizlilik" className="transition-colors hover:text-ink hover:underline">Gizlilik</Link>
-            <Link href="/kvkk-aydinlatma" className="transition-colors hover:text-ink hover:underline">KVKK Aydınlatma</Link>
+            <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-ink hover:underline">Kullanım Koşulları</Link>
+            <Link href="/gizlilik" className="transition-colors duration-200 hover:text-ink hover:underline">Gizlilik</Link>
+            <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar — Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );

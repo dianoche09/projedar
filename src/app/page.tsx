@@ -12,7 +12,7 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck } from "lucide-react";
 
-/** Proje anatomisi — proje sahibi ne yükler / danışman ne görür. */
+/** Proje anatomisi, proje sahibi ne yükler / danışman ne görür. */
 const YUKLER = [
   "Proje künyesi: ad, konum, teslim tarihi, doğrulama",
   "Blok · kat · daire yapısı (bina kesiti)",
@@ -34,7 +34,7 @@ const GORUR = [
 
 /** Güven / teminat unsurları (sahte logo yerine dürüst güven). */
 const GUVEN = [
-  { Icon: ShieldCheck, b: "Sıfır çift-satış", a: "Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki kez satılamaz — kapora/ödeme şartı olmadan." },
+  { Icon: ShieldCheck, b: "Sıfır çift-satış", a: "Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki kez satılamaz, kapora/ödeme şartı olmadan." },
   { Icon: Database, b: "RLS veri güvenliği", a: "Görünürlük veritabanı katmanında zorunlu; danışman yalnız kendine açılanı görür." },
   { Icon: BadgeCheck, b: "Doğrulanmış projeler", a: "Her proje doğrulama rozetiyle yayınlanır; kaynağı belirsiz ilan yok." },
   { Icon: CircleSlash, b: "Komisyon yok", a: "Satıştan pay almıyoruz; danışman için başlangıçta tamamen ücretsiz." },
@@ -45,12 +45,12 @@ const GUVEN = [
 const SITE = "https://projepazar.vercel.app";
 
 export const metadata: Metadata = {
-  title: "ProjePazar — Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
+  title: "ProjePazar, Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
   description:
     "İlan portalı değil. Proje sahibi stoğunu ve fiyatını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla paylaşır. Yanlış fiyat yok, eksik bilgi yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ProjePazar — Tüm projeler tek canlı havuzda",
+    title: "ProjePazar, Tüm projeler tek canlı havuzda",
     description:
       "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan ağ. Yanlış fiyat yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
     type: "website",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     url: SITE,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "ProjePazar — Tüm projeler tek canlı havuzda" },
+  twitter: { card: "summary_large_image", title: "ProjePazar, Tüm projeler tek canlı havuzda" },
 };
 
 const NAV = [
@@ -117,8 +117,8 @@ const VS_KOTU = [
 const VS_IYI = [
   "Fiyat tek kaynakta; paylaşımda canlı değerden basılır",
   "Çift-satış kalkanı veritabanı seviyesinde kilitler",
-  'Her veride "● X önce" — bayatladıkça rozet renk değiştirir',
-  "Tahsis proje sahibinde — kim neyi görür, sen belirlersin",
+  'Her veride "● X önce", bayatladıkça rozet renk değiştirir',
+  "Tahsis proje sahibinde, kim neyi görür, sen belirlersin",
 ];
 
 const SSS: { s: string; c: string }[] = [
@@ -164,7 +164,7 @@ export default async function Home() {
           <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
-              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
+              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
             ))}
           </div>
           <div className="flex items-center gap-2.5">
@@ -189,15 +189,15 @@ export default async function Home() {
               <span className="text-teal">Çift satış yapısal olarak imkânsız.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-<strong className="font-semibold text-ink">Çok müteahhit, tek canlı havuz, yetkili danışman ağı.</strong> Stoğunuzu seçili danışman ve ofislere <strong className="font-semibold text-ink">tahsis edin</strong>; fiyat, opsiyon ve talebi tek merkezden yönetin. İlan portalı değil, <strong className="font-semibold text-ink">komisyonsuz</strong> altyapı — <strong className="font-semibold text-ink">aynı daire iki kez satılamaz</strong>: çift-satış kalkanı veritabanı seviyesinde kilitler.
+<strong className="font-semibold text-ink">Çok müteahhit, tek canlı havuz, yetkili danışman ağı.</strong> Stoğunuzu seçili danışman ve ofislere <strong className="font-semibold text-ink">tahsis edin</strong>; fiyat, opsiyon ve talebi tek merkezden yönetin. İlan portalı değil, <strong className="font-semibold text-ink">komisyonsuz</strong> altyapı, <strong className="font-semibold text-ink">aynı daire iki kez satılamaz</strong>: çift-satış kalkanı veritabanı seviyesinde kilitler.
             </p>
             <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-2">
-              <Link href="/muteahhit" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
+              <Link href="/muteahhit" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
                 <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[#7fd9c8]">Proje sahibiyim</span>
                 <span className="font-display text-[15px] font-bold">Projemi ağa aç →</span>
                 <span className="text-[11px] leading-snug text-white/80">Stoğu, fiyatı ve kimin göreceğini tahsisle yönet.</span>
               </Link>
-              <Link href="/emlakci" className="group flex flex-col gap-0.5 rounded-[15px] border border-[var(--cizgi-2)] bg-white p-4 text-ink transition-all hover:-translate-y-0.5 hover:border-teal hover:shadow-[var(--golge-3)]">
+              <Link href="/emlakci" className="group flex flex-col gap-0.5 rounded-[15px] border border-[var(--cizgi-2)] bg-white p-4 text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-teal hover:shadow-[var(--golge-3)]">
                 <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--color-teal-d)]">Gayrimenkul danışmanıyım</span>
                 <span className="font-display text-[15px] font-bold">Yetkili projelerimi gör →</span>
                 <span className="text-[11px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör, paylaş, opsiyon al. Ücretsiz.</span>
@@ -290,7 +290,7 @@ export default async function Home() {
               <div className="kart signal-top flex-1 p-6 text-center" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
                 <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Tek canlı havuz</p>
                 <p className="mt-2 font-display text-lg font-bold text-ink">Tek doğru kaynak</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Fiyat, durum ve tazelik tek yerde — kopya yok, sıfır çift-satış.</p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Fiyat, durum ve tazelik tek yerde, kopya yok, sıfır çift-satış.</p>
               </div>
               <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
               <div className="kart flex-1 p-6 text-center">
@@ -309,7 +309,7 @@ export default async function Home() {
           <Reveal>
             <div className="max-w-2xl">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">İki taraf, tek gerçek</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Aynı canlı bilgi —<br className="hidden sm:block" /> iki taraf da kazanır</h2>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Aynı canlı bilgi, <br className="hidden sm:block" /> iki taraf da kazanır</h2>
               <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Proje sahibi kontrolü bırakmaz, danışman doğru veriyle satar. Tek doğru kaynak ikisini de korur.</p>
             </div>
           </Reveal>
@@ -324,7 +324,7 @@ export default async function Home() {
                     {f.maddeler.map(([vurgu, devam]) => (
                       <li key={vurgu} className="flex gap-2.5 text-[13.5px] leading-snug text-ink">
                         <span className="mt-0.5 inline-grid size-5 flex-none place-items-center rounded-md bg-[var(--color-soft)] text-xs font-bold text-teal">✓</span>
-                        <span><strong className="font-semibold">{vurgu}</strong> — {devam}</span>
+                        <span><strong className="font-semibold">{vurgu}</strong>, {devam}</span>
                       </li>
                     ))}
                   </ul>
@@ -342,7 +342,7 @@ export default async function Home() {
             <div className="mx-auto mb-12 max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Bir daireye dokun, gerisini gör</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat — hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat, hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
             </div>
           </Reveal>
           <Reveal delay={100}><CanliHavuzDemo /></Reveal>
@@ -358,7 +358,7 @@ export default async function Home() {
                 <Lock size={17} strokeWidth={1.75} color="var(--color-teal-d)" />
               </span>
               <p className="text-pretty text-sm font-medium text-ink sm:text-[15px]">
-                <strong className="font-semibold">İlan yok, tahsis var</strong> — paylaşım birebir ve kapalı devre. Fiyat her zaman canlı basılır.
+                <strong className="font-semibold">İlan yok, tahsis var</strong>, paylaşım birebir ve kapalı devre. Fiyat her zaman canlı basılır.
               </p>
             </div>
           </Reveal>
@@ -372,7 +372,7 @@ export default async function Home() {
             <div className="mx-auto max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Akış</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Nasıl çalışır?</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Stoktan satışa dört adım — her adımda tek doğru kaynak korunur, her değişiklik anında herkese yansır.</p>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Stoktan satışa dört adım, her adımda tek doğru kaynak korunur, her değişiklik anında herkese yansır.</p>
             </div>
           </Reveal>
           <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -387,7 +387,7 @@ export default async function Home() {
             ))}
           </ol>
 
-          {/* proje anatomisi — akışın devamı: ne yüklenir / ne görülür */}
+          {/* proje anatomisi, akışın devamı: ne yüklenir / ne görülür */}
           <Reveal>
             <div className="mx-auto mt-20 max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Proje detayı</p>
@@ -492,7 +492,7 @@ export default async function Home() {
           <div className="mt-12 flex flex-col gap-3">
             {SSS.map((q, i) => (
               <Reveal key={q.s} delay={i * 50}>
-                <details className="sss-item kart p-0">
+                <details className="sss-item kart p-0 hover:-translate-y-0.5">
                   <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">
                     {q.s}
                     <span className="ok flex-none text-teal" aria-hidden>▾</span>
@@ -531,8 +531,8 @@ export default async function Home() {
                   <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Tüm projeler tek canlı havuzda. Sen de katıl.</h2>
                   <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-white/75">Proje sahibiysen stoğunu tek noktadan yönet; gayrimenkul danışmanıysan canlı projeleri doğru fiyatla paylaş. Kapalı, davetli bir B2B ağa katıl.</p>
                   <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
-                    <Link href="/kayit?rol=uretici" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all hover:bg-white/90 sm:w-auto">Proje sahibiyim</Link>
-                    <Link href="/kayit?rol=emlakci" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:bg-white/15 sm:w-auto">Gayrimenkul danışmanıyım</Link>
+                    <Link href="/kayit?rol=uretici" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:w-auto">Proje sahibiyim</Link>
+                    <Link href="/kayit?rol=emlakci" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:w-auto">Gayrimenkul danışmanıyım</Link>
                   </div>
                 </div>
               </div>
@@ -549,12 +549,12 @@ export default async function Home() {
             <p className="max-w-xs text-center text-xs leading-relaxed text-ink-soft md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
           </div>
           <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-ink-soft">
-            <Link href="/kullanim-kosullari" className="transition-colors hover:text-ink hover:underline">Kullanım Koşulları</Link>
-            <Link href="/gizlilik" className="transition-colors hover:text-ink hover:underline">Gizlilik</Link>
-            <Link href="/kvkk-aydinlatma" className="transition-colors hover:text-ink hover:underline">KVKK Aydınlatma</Link>
+            <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-ink hover:underline">Kullanım Koşulları</Link>
+            <Link href="/gizlilik" className="transition-colors duration-200 hover:text-ink hover:underline">Gizlilik</Link>
+            <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar — Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );

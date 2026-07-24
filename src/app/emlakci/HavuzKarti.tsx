@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { Share2 } from "lucide-react";
 
 /**
- * Mini canlı havuz kartı — /emlakci landing "dert→çözüm" bloğunun sağ tarafı.
+ * Mini canlı havuz kartı, /emlakci landing "dert→çözüm" bloğunun sağ tarafı.
  * Scripted olay döngüsüyle canlı güncelleme hissi verir (fiyat/durum değişir,
- * tazelik "şimdi"ye döner, satır kısa süre parlar). Veriler ÖRNEK — rozetli.
+ * tazelik "şimdi"ye döner, satır kısa süre parlar). Veriler ÖRNEK, rozetli.
  */
 
 type Durum = "musait" | "opsiyon";
@@ -19,7 +19,7 @@ const BASLANGIC: Birim[] = [
   { kod: "C-5-3", tip: "3+1", net: 138, fiyat: "₺8,40M", durum: "musait", taze: "1 sa önce" },
 ];
 
-/** Scripted olay döngüsü — örnek görünüm; gerçek üründe kaynak Supabase Realtime. */
+/** Scripted olay döngüsü, örnek görünüm; gerçek üründe kaynak Supabase Realtime. */
 const OLAYLAR: { kod: string; fiyat?: string; durum?: Durum }[] = [
   { kod: "A-7-2", fiyat: "₺8,90M" },
   { kod: "C-5-3", durum: "opsiyon" },
@@ -81,7 +81,7 @@ export function HavuzKarti() {
         örnek görünüm
       </span>
 
-      {/* başlık — tahsisli havuz + canlılık rozeti */}
+      {/* başlık, tahsisli havuz + canlılık rozeti */}
       <div className="border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-4">
         <div className="flex flex-wrap items-center gap-3">
           <span className="font-display text-base font-bold tracking-tight text-ink">Sana tahsisli havuz</span>
@@ -92,7 +92,7 @@ export function HavuzKarti() {
         </span>
       </div>
 
-      {/* birim satırları — canlı fiyat + durum + tazelik */}
+      {/* birim satırları, canlı fiyat + durum + tazelik */}
       <ul className="flex flex-col">
         {birimler.map((b) => {
           const d = DURUM_GORSEL[b.durum];
@@ -118,10 +118,10 @@ export function HavuzKarti() {
         })}
       </ul>
 
-      {/* alt bar — paylaş + canlı fiyat notu */}
+      {/* alt bar, paylaş + canlı fiyat notu */}
       <div className="relative flex items-center justify-between gap-3 border-t border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-3.5">
         <span className="font-mono text-[10.5px] text-[var(--ink-faint)]">Fiyat paylaşımda canlı değerden basılır</span>
-        <button type="button" onClick={paylas} className="btn-action px-4 text-[13px]">
+        <button type="button" onClick={paylas} className="btn-action px-4 text-[13px] hover:-translate-y-0.5">
           <Share2 size={14} strokeWidth={2} /> Müşteriye paylaş
         </button>
         <span

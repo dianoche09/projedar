@@ -1,7 +1,7 @@
 import { Reveal } from "@/components/Reveal";
 
 /**
- * "Nasıl çalışır" 4 adım — statik ikon yerine canlı CSS mini-simülasyonlar.
+ * "Nasıl çalışır" 4 adım, statik ikon yerine canlı CSS mini-simülasyonlar.
  * CanliHavuzDemo'nun sadeleştirilmiş kardeşleri: JS state yok, saf CSS döngü animasyonu.
  * Tüm simülasyonlar dekoratif (aria-hidden) ve "örnek" olarak işaretli.
  */
@@ -22,7 +22,7 @@ const ADIMLAR = [
   {
     no: "01",
     baslik: "Stoğunu yükle",
-    metin: "Blok, kat, daire, fiyat ve ödeme planı tek doğru kaynağa alınır. Fiyat yalnız birim kaydında tutulur — hiçbir yerde kopyalanmaz.",
+    metin: "Blok, kat, daire, fiyat ve ödeme planı tek doğru kaynağa alınır. Fiyat yalnız birim kaydında tutulur, hiçbir yerde kopyalanmaz.",
   },
   {
     no: "02",
@@ -37,7 +37,7 @@ const ADIMLAR = [
   {
     no: "04",
     baslik: "Opsiyon kilidi devreye girer",
-    metin: "Opsiyon alınan daire anında kilitlenir. DB kilidi: aynı birime ikinci opsiyon teknik olarak imkânsız — söz değil, veritabanı kuralı.",
+    metin: "Opsiyon alınan daire anında kilitlenir. DB kilidi: aynı birime ikinci opsiyon teknik olarak imkânsız, söz değil, veritabanı kuralı.",
   },
 ];
 
@@ -95,7 +95,7 @@ function TahsisSim() {
 function HavuzSim() {
   return (
     <div className="relative" aria-hidden>
-      {/* arkada soluk kart — havuzdaki diğer tahsisli birimler hissi */}
+      {/* arkada soluk kart, havuzdaki diğer tahsisli birimler hissi */}
       <div className="absolute inset-x-2 -top-1.5 h-8 rounded-xl border border-[var(--cizgi)] bg-white/55" />
       <div className="relative rounded-xl border border-[var(--cizgi)] bg-white p-3 shadow-[var(--golge-1)]">
         <div className="flex items-center justify-between gap-2">
@@ -119,7 +119,7 @@ function OpsiyonKilitSim() {
   return (
     <div aria-hidden>
       <div className="relative overflow-hidden rounded-xl border border-[var(--cizgi)] bg-white p-3 pt-3.5 shadow-[var(--golge-1)]">
-        {/* üst sinyal şeridi — müsait yeşil ↔ opsiyon amber çapraz geçiş */}
+        {/* üst sinyal şeridi, müsait yeşil ↔ opsiyon amber çapraz geçiş */}
         <span className="msim-a absolute inset-x-0 top-0 h-1 bg-green" />
         <span className="msim-b absolute inset-x-0 top-0 h-1 bg-amber" />
         <div className="flex items-center justify-between gap-2">
@@ -130,7 +130,7 @@ function OpsiyonKilitSim() {
           </span>
         </div>
         <div className="msim-red mt-2 flex items-center gap-1.5 rounded-lg bg-[var(--color-red-soft)] px-2 py-1.5 font-mono text-[9.5px] font-semibold text-[#a23f34]">
-          <span aria-hidden>✕</span> 2. opsiyon denemesi — veritabanı reddetti
+          <span aria-hidden>✕</span> 2. opsiyon denemesi, veritabanı reddetti
         </div>
       </div>
       <p className="mt-2 text-center font-mono text-[9px] text-[var(--ink-faint)]">DB kilidi: ikinci opsiyon teknik olarak imkânsız</p>
