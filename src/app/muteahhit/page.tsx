@@ -339,7 +339,7 @@ export default function MuteahhitSayfasi() {
       </section>
 
       {/* ============ KAPANIŞ CTA ============ */}
-      <section className="relative px-5 pb-24 pt-4 sm:px-6">
+      <section className="relative px-5 pb-24 pt-20 sm:px-6">
         <Reveal>
           <div className="komuta relative mx-auto w-full max-w-5xl overflow-hidden rounded-[26px]">
             <div className="komuta-grid absolute inset-0" aria-hidden />

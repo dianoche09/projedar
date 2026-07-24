@@ -351,7 +351,7 @@ export default async function Home() {
 
       {/* ============ KAPALI DEVRE ŞERİDİ ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-6">
+        <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6">
           <Reveal>
             <div className="flex flex-col items-center justify-center gap-2.5 text-center sm:flex-row sm:gap-3.5">
               <span className="inline-grid size-9 flex-none place-items-center rounded-xl bg-[var(--color-teal-soft)]" aria-hidden>
@@ -395,7 +395,7 @@ export default async function Home() {
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Proje sahibi her şeyi tek noktadan yükler; gayrimenkul danışmanı satışa lazım olanı canlı görür.</p>
             </div>
           </Reveal>
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
             <Reveal>
               <div className="kart signal-top flex h-full flex-col p-7" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
                 <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Proje sahibi yükler</p>

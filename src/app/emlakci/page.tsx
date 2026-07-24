@@ -291,7 +291,7 @@ export default function EmlakciLanding() {
           </ol>
           {/* KYC / doğrulama — olumlu gate */}
           <Reveal delay={120}>
-            <div className="kart signal-top mx-auto mt-8 flex max-w-3xl items-start gap-4 p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+            <div className="kart signal-top mx-auto mt-10 flex max-w-3xl items-start gap-4 p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
               <span className="inline-grid size-11 flex-none place-items-center rounded-2xl bg-[var(--color-teal-soft)]" aria-hidden>
                 <BadgeCheck size={22} strokeWidth={1.75} color="var(--color-teal-d)" />
               </span>
