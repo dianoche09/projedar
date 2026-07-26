@@ -59,7 +59,12 @@ export default async function FiyatOnerisi() {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data: projeler } = await supabase.from("proje").select("id, ad").eq("uretici_id", user.id);
+  // Sahiplik: profiles.id → uretici.sahip_id → proje.uretici_id (şema deseni; user.id doğrudan uretici_id DEĞİL)
+  const { data: firmalar } = await supabase.from("uretici").select("id").eq("sahip_id", user.id);
+  const firmaIds = (firmalar ?? []).map((f) => f.id as string);
+  const { data: projeler } = firmaIds.length
+    ? await supabase.from("proje").select("id, ad").in("uretici_id", firmaIds)
+    : { data: [] as { id: string; ad: string }[] };
   const projeAd = new Map((projeler ?? []).map((p) => [p.id as string, p.ad as string]));
   const projeIds = (projeler ?? []).map((p) => p.id as string);
 

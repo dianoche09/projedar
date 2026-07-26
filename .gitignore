@@ -37,3 +37,6 @@ yarn-debug.log*
 yarn-error.log*
 *.tsbuildinfo
 .gstack/
+
+# yerel kopya/çöp klasör (içinde .env.local var, asla commit edilmemeli)
+projepazar-sistem/
