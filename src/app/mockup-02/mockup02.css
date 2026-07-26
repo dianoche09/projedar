@@ -1,0 +1,298 @@
+/* =========================================================
+   Mockup 02 · Sales Control Room · ProjePazar Design Lab
+   Konsept: canlı satış kontrol merkezi; TİPOGRAFİ = GÖRSEL NESNE.
+   Zemin: çok koyu grafit + kırık beyaz bant (bölüm kontrastı).
+   Sinyal SABİT: yeşil #2fb36b · amber #e3a12c · kırmızı #d15a4e.
+   Aksan: teal. Bu dosya yalnız /mockup-02 altında kullanılır (m2- öneki).
+   ========================================================= */
+
+.m2 {
+  --m2-zemin: #121316;
+  --m2-zemin-2: #17181d;
+  --m2-cizgi: rgba(255, 255, 255, 0.09);
+  --m2-cizgi-soft: rgba(255, 255, 255, 0.05);
+  --m2-ink: #eceef1;
+  --m2-ink-soft: #99a1ab;
+  --m2-kagit: #f4f1ea;
+  --m2-kagit-ink: #191a1d;
+  --m2-kagit-soft: #5d6470;
+  --m2-kagit-cizgi: rgba(25, 26, 29, 0.13);
+  --m2-teal: #3cc7b2;
+  --m2-teal-koyu: #1e9b8a;
+  --m2-green: #2fb36b;
+  --m2-amber: #e3a12c;
+  --m2-red: #d15a4e;
+  background: var(--m2-zemin);
+  color: var(--m2-ink);
+}
+
+/* ---- dev tipografik nesne ---- */
+.m2-dev {
+  font-family: var(--font-display), "Outfit", sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.026em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+/* ---- mono eyebrow: kare işaret + geniş tracking ---- */
+.m2-etiket {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.m2-etiket::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  flex: none;
+}
+
+/* ---- kırık beyaz bant + defter çizgisi dokusu ---- */
+.m2-acik {
+  background: var(--m2-kagit);
+  color: var(--m2-kagit-ink);
+}
+.m2-defter {
+  background-image: linear-gradient(rgba(25, 26, 29, 0.05) 1px, transparent 1px);
+  background-size: 100% 34px;
+}
+
+/* ---- butonlar ---- */
+.m2-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-family: var(--font-display), "Outfit", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.m2-btn-dolu {
+  background: var(--m2-teal-koyu);
+  color: #071019;
+}
+.m2-btn-dolu:hover {
+  background: var(--m2-teal);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(30, 155, 138, 0.28);
+}
+.m2-btn-cizgi {
+  border-color: rgba(255, 255, 255, 0.24);
+  color: var(--m2-ink);
+}
+.m2-btn-cizgi:hover {
+  border-color: var(--m2-teal);
+  color: var(--m2-teal);
+}
+.m2-acik .m2-btn-cizgi {
+  border-color: rgba(25, 26, 29, 0.3);
+  color: var(--m2-kagit-ink);
+}
+.m2-acik .m2-btn-cizgi:hover {
+  border-color: var(--m2-teal-koyu);
+  color: var(--m2-teal-koyu);
+}
+.m2-btn-kucuk {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 13.5px;
+}
+
+/* =========================================================
+   HAREKET · durum kelimesi yeniden yazılır, çizgi çekilir,
+   satırlar düşer, canlı kayıt damgalanır. Reduced-motion:
+   globals.css kuralı animasyonları anında son kareye alır.
+   ========================================================= */
+
+/* dev kelime: dizgiden düşer gibi belirir */
+@keyframes m2KelimeGir {
+  from {
+    opacity: 0;
+    transform: translateY(0.22em);
+    clip-path: inset(0 0 92% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 -8% 0);
+  }
+}
+.m2-kelime {
+  display: inline-block;
+  position: relative;
+  animation: m2KelimeGir 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* MÜSAİT: yazının kendisi nabız atar */
+@keyframes m2YaziNabiz {
+  0%,
+  100% {
+    text-shadow: 0 0 0 rgba(47, 179, 107, 0);
+  }
+  50% {
+    text-shadow: 0 0 44px rgba(47, 179, 107, 0.4);
+  }
+}
+.m2-kelime-nabiz {
+  animation:
+    m2KelimeGir 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+    m2YaziNabiz 2.6s ease-in-out 0.6s infinite;
+}
+
+/* SATILDI: üstü çizilir (çizgi gözün önünde çekilir) */
+@keyframes m2CizgiCek {
+  to {
+    width: 102%;
+  }
+}
+.m2-ustucizgi::after {
+  content: "";
+  position: absolute;
+  left: -1%;
+  top: 53%;
+  height: 0.07em;
+  width: 0;
+  background: currentColor;
+  animation: m2CizgiCek 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+/* günlük satırı düşer */
+@keyframes m2SatirGir {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.m2-satir-gir {
+  animation: m2SatirGir 0.35s ease both;
+}
+
+/* canlı kayıt damgası */
+@keyframes m2Damga {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.m2-damga {
+  animation: m2Damga 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* =========================================================
+   GECE CEPHE · gerçek görsel katmanları (hero + final CTA)
+   Cephe = canlı veri duvarı: duotone teal tonu + grafit harman,
+   pencere ızgarası üzerinde nabızlı durum işaretleri.
+   ========================================================= */
+
+/* hafif duotone: doygunluk kısılır, kontrast toparlanır */
+.m2-cephe-img {
+  filter: saturate(0.52) contrast(1.06) brightness(0.92);
+}
+
+/* teal renk banyosu (duotone hissi) */
+.m2-cephe-teal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(30, 155, 138, 0.2);
+  mix-blend-mode: color;
+}
+
+/* üstten ve alttan grafit zemine harman */
+.m2-cephe-ton {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 19, 22, 0.72) 0%,
+    rgba(18, 19, 22, 0.08) 24%,
+    rgba(18, 19, 22, 0.08) 62%,
+    rgba(18, 19, 22, 0.9) 100%
+  );
+}
+
+/* pencere işareti nabız halkası (renk currentColor ile gelir) */
+@keyframes m2Halka {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.m2-halka {
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  border: 1.5px solid currentColor;
+  opacity: 0; /* reduced-motion: halka görünmez, nokta kalır */
+  animation: m2Halka 2.4s ease-out infinite;
+}
+
+/* final CTA: cephe reprise örtüsü. Kule solda ışıldar, metin sağdaki
+   karanlık göğe oturur; sağa doğru koyulaşan grafit kontrastı garantiler. */
+.m2-cta-ort {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(18, 19, 22, 0.55) 0%,
+    rgba(18, 19, 22, 0.72) 55%,
+    rgba(18, 19, 22, 0.9) 100%
+  );
+}
+@media (max-width: 1023px) {
+  .m2-cta-ort {
+    background: rgba(18, 19, 22, 0.82);
+  }
+}
+
+/* çelişki sahnesi: satır görünürlüğü + kanal soluklaşması */
+.m2-akis-satir {
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.m2-akis-satir.m2-gorunur {
+  opacity: 1;
+  transform: none;
+}
+.m2-kanal {
+  transition: opacity 0.6s ease;
+}
+.m2-kanal.m2-soluk {
+  opacity: 0.45;
+}
