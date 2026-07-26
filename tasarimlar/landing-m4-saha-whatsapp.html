@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjePazar: "Hâlâ müsait mi?" sorusu artık sorulmuyor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --krem:#f6f3ee;
+    --krem-koyu:#efe9de;
+    --kart:#fffdf9;
+    --murekkep:#14322e;
+    --murekkep-yumusak:#44625c;
+    --cizgi:#ddd4c6;
+    --teal:#0d7a6f;
+    --teal-koyu:#0a5f57;
+    --wa:#25d366;
+    --wa-koyu:#128c7e;
+    --wa-balon:#e7fbd8;
+    --musait:#2fb36b;
+    --opsiyon:#e3a12c;
+    --satildi:#d15a4e;
+    --govde:'Inter',sans-serif;
+    --baslik:'Sora',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--govde);
+    background:var(--krem);
+    color:var(--murekkep);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--teal);color:#fff}
+  h1,h2,h3{font-family:var(--baslik);line-height:1.18;letter-spacing:-0.02em}
+  .icerik{max-width:1080px;margin:0 auto;padding:0 20px}
+  .mono{font-family:var(--mono)}
+
+  /* dokulu zemin */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:radial-gradient(rgba(20,50,46,.05) 1px, transparent 1px);
+    background-size:26px 26px;
+  }
+  main,header,footer{position:relative;z-index:1}
+
+  /* parallax renk katmanlari */
+  .paralaks{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .sekil{position:absolute;border-radius:50%;will-change:transform}
+  .sekil-1{width:460px;height:460px;top:-140px;right:-160px;background:radial-gradient(circle,rgba(13,122,111,.17),transparent 68%)}
+  .sekil-2{width:420px;height:420px;top:42%;left:-190px;background:radial-gradient(circle,rgba(37,211,102,.14),transparent 68%)}
+  .sekil-3{width:340px;height:340px;bottom:-120px;right:6%;background:radial-gradient(circle,rgba(227,161,44,.12),transparent 68%)}
+
+  /* ---------- ust bar ---------- */
+  .ustbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(246,243,238,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--cizgi);
+  }
+  .ustbar-ic{
+    max-width:1080px;margin:0 auto;padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .logo{font-family:var(--baslik);font-weight:700;font-size:1.15rem;color:var(--murekkep);text-decoration:none;display:flex;align-items:center;gap:8px}
+  .logo-nokta{width:10px;height:10px;border-radius:50%;background:var(--musait);box-shadow:0 0 0 4px rgba(47,179,107,.18);display:inline-block}
+  @media(prefers-reduced-motion:no-preference){
+    body.canli .logo-nokta{animation:nabiz 2.4s infinite}
+  }
+  .ustbar nav{display:flex;gap:22px}
+  .ustbar nav a{color:var(--murekkep-yumusak);text-decoration:none;font-size:.9rem;font-weight:500;position:relative}
+  .ustbar nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:2px;background:var(--teal);transition:right .25s ease}
+  .ustbar nav a:hover{color:var(--teal)}
+  .ustbar nav a:hover::after{right:0}
+  @media(max-width:760px){.ustbar nav{display:none}}
+  .buton{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--baslik);font-weight:600;font-size:.95rem;
+    padding:12px 22px;border-radius:999px;text-decoration:none;
+    border:2px solid transparent;cursor:pointer;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    position:relative;overflow:hidden;
+  }
+  .buton .ok{display:inline-block;transition:transform .25s ease}
+  .buton:hover .ok{transform:translateX(5px)}
+  .buton-parla::after{
+    content:"";position:absolute;top:0;bottom:0;left:-70%;width:45%;
+    background:linear-gradient(105deg,transparent,rgba(255,255,255,.38),transparent);
+    transform:skewX(-18deg);transition:left .6s ease;pointer-events:none;
+  }
+  .buton-parla:hover::after{left:125%}
+  .buton-ana{background:var(--teal);color:#fff;box-shadow:0 6px 18px rgba(13,122,111,.25)}
+  .buton-ana:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(13,122,111,.32);background:var(--teal-koyu)}
+  .buton-ikincil{background:transparent;color:var(--murekkep);border-color:var(--murekkep)}
+  .buton-ikincil:hover{background:var(--murekkep);color:var(--krem)}
+  .buton-wa{background:var(--wa);color:#0b3d2e}
+  .buton-wa:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(37,211,102,.35)}
+  .buton-kucuk{padding:9px 18px;font-size:.85rem}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 30px;text-align:center;position:relative}
+  .hero-balonlar{
+    max-width:430px;margin:0 auto 30px;display:flex;flex-direction:column;gap:10px;
+  }
+  .balon{
+    max-width:78%;padding:10px 15px;border-radius:16px;font-size:.92rem;text-align:left;
+    position:relative;box-shadow:0 2px 6px rgba(20,50,46,.07);
+  }
+  .balon .saat{display:block;font-family:var(--mono);font-size:.62rem;color:var(--murekkep-yumusak);margin-top:4px;text-align:right}
+  .balon-gelen{align-self:flex-start;background:#fff;border:1px solid var(--cizgi);border-bottom-left-radius:4px}
+  .balon-gelen.soluk{opacity:.55;transform:scale(.96);transform-origin:left}
+  .balon-gelen.soluk2{opacity:.35;transform:scale(.92);transform-origin:left}
+  @media(prefers-reduced-motion:no-preference){
+    body.canli .hero-balonlar .balon{opacity:0;animation:balonDus .55s cubic-bezier(.2,.85,.3,1.05) forwards}
+    body.canli .hero-balonlar .balon.soluk2{animation-name:balonDusSoluk2}
+    body.canli .hero-balonlar .balon.soluk{animation-name:balonDusSoluk}
+    body.canli .hero-balonlar .balon:nth-child(1){animation-delay:.15s}
+    body.canli .hero-balonlar .balon:nth-child(2){animation-delay:.6s}
+    body.canli .hero-balonlar .balon:nth-child(3){animation-delay:1.05s}
+    body.canli .hero h1{opacity:0;animation:gorunGel .7s cubic-bezier(.22,.8,.3,1) 1.5s forwards}
+    body.canli .hero-alt,body.canli .hero .hero-cta,body.canli .hero .hero-not{opacity:0;animation:gorunGel .6s ease forwards}
+    body.canli .hero-alt{animation-delay:1.8s}
+    body.canli .hero .hero-cta{animation-delay:2s}
+    body.canli .hero .hero-not{animation-delay:2.2s}
+  }
+  @keyframes balonDus{
+    0%{opacity:0;transform:translateY(14px) scale(.94)}
+    70%{opacity:1;transform:translateY(-2px) scale(1.005)}
+    100%{opacity:1;transform:none}
+  }
+  @keyframes balonDusSoluk{
+    0%{opacity:0;transform:translateY(14px) scale(.92)}
+    100%{opacity:.55;transform:scale(.96)}
+  }
+  @keyframes balonDusSoluk2{
+    0%{opacity:0;transform:translateY(14px) scale(.9)}
+    100%{opacity:.35;transform:scale(.92)}
+  }
+  .hero h1{
+    font-size:clamp(2rem,5.4vw,3.3rem);font-weight:700;margin:6px auto 18px;max-width:760px;
+  }
+  .hero h1 .ustu-cizik{position:relative;white-space:nowrap}
+  .hero h1 .ustu-cizik::after{
+    content:"";position:absolute;left:-2%;right:-2%;top:54%;height:4px;border-radius:2px;
+    background:var(--satildi);transform:rotate(-1.5deg);
+  }
+  @media(prefers-reduced-motion:no-preference){
+    body.canli .hero h1 .ustu-cizik::after{
+      right:102%;animation:cizikCek .5s ease 2.3s forwards;
+    }
+  }
+  @keyframes cizikCek{to{right:-2%}}
+  .hero-alt{color:var(--murekkep-yumusak);font-size:1.08rem;max-width:600px;margin:0 auto 26px}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .hero-not{margin-top:14px;font-size:.85rem;color:var(--murekkep-yumusak)}
+  .hero-not b{color:var(--teal)}
+
+  /* ---------- telefon sahnesi ---------- */
+  .sahne{padding:34px 0 10px}
+  .sahne-ic{
+    display:flex;align-items:stretch;justify-content:center;gap:26px;flex-wrap:wrap;
+  }
+  .tel-kolon{display:flex;flex-direction:column;align-items:center;gap:14px;width:300px;max-width:88vw}
+  .tel-etiket{
+    font-family:var(--baslik);font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:6px 14px;border-radius:999px;border:1.5px solid var(--cizgi);color:var(--murekkep-yumusak);background:var(--kart);
+  }
+  .tel-etiket.canli{border-color:var(--musait);color:var(--teal-koyu);background:#eaf7ef}
+  .telefon{
+    width:100%;border:2.5px solid var(--murekkep);border-radius:36px;background:var(--kart);
+    overflow:hidden;box-shadow:10px 12px 0 rgba(20,50,46,.08);
+    display:flex;flex-direction:column;min-height:520px;
+  }
+  .telefon.eski{transform:rotate(-1.6deg);filter:saturate(.75)}
+  .telefon.yeni{transform:rotate(1.2deg);box-shadow:10px 12px 0 rgba(13,122,111,.16)}
+  @media(prefers-reduced-motion:no-preference){
+    .telefon{transition:transform .3s ease}
+    .telefon:hover{transform:rotate(0) translateY(-4px)}
+    body.canli .telefon.yeni{animation:telSuzul 7s ease-in-out infinite}
+    body.canli .telefon.yeni:hover{animation:none;transform:rotate(0) translateY(-4px)}
+  }
+  @keyframes telSuzul{
+    0%,100%{transform:rotate(1.2deg) translateY(0)}
+    50%{transform:rotate(1.2deg) translateY(-6px)}
+  }
+  .tel-centik{height:24px;display:flex;justify-content:center;align-items:center;flex:none}
+  .tel-centik span{width:84px;height:7px;border-radius:99px;background:var(--murekkep);opacity:.85}
+
+  /* eski telefon: whatsapp grubu */
+  .wa-baslik{
+    background:var(--wa-koyu);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:10px;flex:none;
+  }
+  .wa-avatar{width:30px;height:30px;border-radius:50%;background:#0b6b60;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex:none}
+  .wa-baslik .grup{font-weight:600;font-size:.82rem;line-height:1.25}
+  .wa-baslik .kisi{font-size:.66rem;opacity:.8}
+  .wa-govde{flex:1;background:#ece5dd;padding:12px 10px;display:flex;flex-direction:column;gap:8px;font-size:.78rem;overflow:hidden;transition:opacity .4s ease}
+  .wa-govde.sifirla{opacity:0}
+  .wa-mesaj{max-width:88%;background:#fff;border-radius:10px;border-bottom-left-radius:3px;padding:7px 10px;box-shadow:0 1px 1px rgba(0,0,0,.08);align-self:flex-start}
+  .wa-mesaj .kim{font-weight:600;font-size:.68rem;margin-bottom:2px}
+  .wa-mesaj .kim.k1{color:#c26a2d}.wa-mesaj .kim.k2{color:#7a5db8}.wa-mesaj .kim.k3{color:#2d7ac2}.wa-mesaj .kim.k4{color:#b83a5d}
+  .wa-mesaj .saat{font-family:var(--mono);font-size:.58rem;color:#9a938a;display:block;text-align:right;margin-top:2px}
+  .wa-dosya{display:flex;align-items:center;gap:8px;background:#f2ede6;border-radius:8px;padding:7px 9px;margin-bottom:3px}
+  .wa-dosya .ikon{width:26px;height:30px;border:1.5px solid #3f7d3a;border-radius:4px;position:relative;flex:none;background:#fff}
+  .wa-dosya .ikon::after{content:"XLS";position:absolute;bottom:2px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:.44rem;font-weight:600;color:#3f7d3a}
+  .wa-dosya .ad{font-family:var(--mono);font-size:.64rem;font-weight:600;word-break:break-all}
+  .wa-dosya .boyut{font-size:.58rem;color:#9a938a}
+  .wa-bayat{display:inline-block;background:#fdf0d8;color:#a1690e;border:1px solid #ecd9ae;border-radius:99px;font-size:.56rem;font-weight:600;padding:1px 7px;margin-top:3px}
+  .wa-cevapsiz{align-self:flex-start;background:#fff;border-radius:10px;padding:7px 10px;display:flex;align-items:center;gap:7px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+  .wa-cevapsiz .tel-ikon{width:20px;height:20px;border-radius:50%;background:#fbe4e0;color:var(--satildi);display:flex;align-items:center;justify-content:center;font-size:.7rem;flex:none}
+  .wa-cevapsiz .metin{font-size:.72rem;color:var(--satildi);font-weight:500}
+  /* siralanan balonlar: canli modda JS tek tek dusurur */
+  body.canli .wa-sirali{opacity:0;transform:translateY(12px) scale(.95)}
+  body.canli .wa-sirali.dustu{animation:balonDus .45s cubic-bezier(.2,.85,.3,1.05) forwards}
+  .wa-yaziyor{align-self:flex-start;background:#fff;border-radius:10px;padding:9px 13px;display:flex;gap:4px;box-shadow:0 1px 1px rgba(0,0,0,.08);transition:opacity .25s ease}
+  .wa-yaziyor.gizli{opacity:0}
+  .wa-yaziyor i{width:6px;height:6px;border-radius:50%;background:#b6afa5;display:block}
+  @media(prefers-reduced-motion:no-preference){
+    .wa-yaziyor i{animation:zipla 1.2s infinite}
+    .wa-yaziyor i:nth-child(2){animation-delay:.15s}
+    .wa-yaziyor i:nth-child(3){animation-delay:.3s}
+  }
+  @keyframes zipla{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+  .wa-alt{flex:none;background:#f4f1ea;border-top:1px solid var(--cizgi);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;font-size:.68rem;color:var(--murekkep-yumusak)}
+  .wa-okunmamis{background:var(--satildi);color:#fff;font-family:var(--mono);font-size:.62rem;font-weight:600;border-radius:99px;padding:2px 8px;display:inline-block}
+  .wa-okunmamis.titre{animation:titre .5s ease}
+  @keyframes titre{
+    0%,100%{transform:none}
+    20%{transform:translateX(-2px) rotate(-5deg) scale(1.12)}
+    45%{transform:translateX(2px) rotate(5deg) scale(1.12)}
+    70%{transform:translateX(-1px) scale(1.05)}
+  }
+
+  /* yeni telefon: projepazar havuz */
+  .pp-baslik{background:var(--murekkep);color:var(--krem);padding:11px 14px;flex:none}
+  .pp-baslik .proje{font-family:var(--baslik);font-weight:600;font-size:.82rem}
+  .pp-baslik .satir{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .rozet-taze{
+    display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:.6rem;font-weight:600;
+    padding:3px 9px;border-radius:99px;background:rgba(47,179,107,.16);color:#7ee2ac;border:1px solid rgba(47,179,107,.4);
+    transition:background .35s ease,color .35s ease;
+  }
+  .rozet-taze .nokta{width:6px;height:6px;border-radius:50%;background:var(--musait);flex:none}
+  .rozet-taze.simdi{background:rgba(47,179,107,.32);color:#b6f5d2}
+  .rozet-taze.parla{animation:rozetParla 1.1s ease}
+  @keyframes rozetParla{
+    0%{box-shadow:0 0 0 0 rgba(47,179,107,.55)}
+    100%{box-shadow:0 0 0 14px rgba(47,179,107,0)}
+  }
+  @media(prefers-reduced-motion:no-preference){
+    .rozet-taze .nokta{animation:nabiz 2s infinite}
+  }
+  @keyframes nabiz{0%,100%{box-shadow:0 0 0 0 rgba(47,179,107,.5)}55%{box-shadow:0 0 0 5px rgba(47,179,107,0)}}
+  .pp-govde{flex:1;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--kart)}
+  .birim{
+    border:1.5px solid var(--cizgi);border-radius:12px;padding:9px 11px;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;
+    transition:border-color .4s ease,background .4s ease,opacity .4s ease;
+  }
+  .birim .sol .kod{font-family:var(--mono);font-weight:600;font-size:.76rem}
+  .birim .sol .tip{font-size:.66rem;color:var(--murekkep-yumusak)}
+  .birim .sag{text-align:right}
+  .birim .fiyat{font-family:var(--mono);font-weight:600;font-size:.76rem}
+  .birim .fiyat .deger{display:inline-block}
+  .birim .fiyat .deger.cevrildi{animation:fiyatCevir .55s cubic-bezier(.2,.8,.3,1)}
+  @keyframes fiyatCevir{
+    0%{opacity:0;transform:translateY(-9px)}
+    100%{opacity:1;transform:none}
+  }
+  .birim.guncellendi{border-color:#bfe5cd;background:#f3fbf5}
+  .durum{display:inline-flex;align-items:center;gap:5px;font-size:.62rem;font-weight:600;margin-top:2px}
+  .durum i{width:7px;height:7px;border-radius:50%;flex:none}
+  .durum.musait{color:var(--musait)}.durum.musait i{background:var(--musait)}
+  .durum.opsiyon{color:var(--opsiyon)}.durum.opsiyon i{background:var(--opsiyon)}
+  .durum.satildi{color:var(--satildi)}.durum.satildi i{background:var(--satildi)}
+  .durum.degisti{animation:durumNabiz .8s cubic-bezier(.2,.8,.3,1.2)}
+  @keyframes durumNabiz{
+    0%{transform:scale(.85)}
+    45%{transform:scale(1.12)}
+    100%{transform:scale(1)}
+  }
+  .durum.opsiyon.degisti i{animation:durumHalka .9s ease}
+  @keyframes durumHalka{
+    0%{box-shadow:0 0 0 0 rgba(227,161,44,.55)}
+    100%{box-shadow:0 0 0 10px rgba(227,161,44,0)}
+  }
+  .birim.opsiyonlu{border-color:#f0ddb4;background:#fdf8ec}
+  .birim.satilmis{opacity:.55}
+  .birim.satilmis .fiyat{text-decoration:line-through;color:var(--murekkep-yumusak)}
+  .pp-alt{flex:none;padding:10px;background:var(--kart)}
+  .pp-paylas{
+    width:100%;border:none;border-radius:12px;background:var(--wa);color:#0b3d2e;
+    font-family:var(--baslik);font-weight:600;font-size:.82rem;padding:12px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    position:relative;overflow:hidden;
+  }
+  .pp-paylas:hover{filter:brightness(1.05)}
+  .pp-paylas .ok{display:inline-block;transition:transform .25s ease}
+  .pp-paylas:hover .ok{transform:translateX(4px)}
+  .pp-paylas-not{text-align:center;font-size:.6rem;color:var(--murekkep-yumusak);margin-top:6px}
+
+  .sahne-vs{
+    align-self:center;font-family:var(--baslik);font-weight:700;font-size:.9rem;color:var(--krem);
+    background:var(--murekkep);border-radius:50%;width:52px;height:52px;flex:none;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(20,50,46,.25);
+  }
+  @media(max-width:700px){.sahne-vs{margin:-6px 0}}
+  .sahne-alt-yazi{text-align:center;color:var(--murekkep-yumusak);font-size:.95rem;max-width:560px;margin:30px auto 0}
+  .sahne-alt-yazi b{color:var(--murekkep)}
+
+  /* ---------- bolum genel ---------- */
+  section{padding:72px 0;position:relative}
+  .bolum-ust{text-align:center;max-width:640px;margin:0 auto 44px}
+  .bolum-ust .mini{
+    display:inline-block;font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--teal);background:#e4f2ef;border:1px solid #c4e2db;border-radius:99px;padding:4px 12px;margin-bottom:14px;
+  }
+  .bolum-ust h2{font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:700;margin-bottom:12px}
+  .bolum-ust p{color:var(--murekkep-yumusak)}
+
+  /* ---------- tazelik demo ---------- */
+  .tazelik{background:var(--krem-koyu);border-top:1px solid var(--cizgi);border-bottom:1px solid var(--cizgi)}
+  .tazelik-kart{
+    max-width:520px;margin:0 auto;background:var(--kart);border:2px solid var(--murekkep);border-radius:20px;
+    padding:26px;box-shadow:8px 10px 0 rgba(20,50,46,.08);
+  }
+  .tazelik-birim{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1.5px solid var(--cizgi);border-radius:14px;padding:14px 16px}
+  .tazelik-birim .kod{font-family:var(--mono);font-weight:600;font-size:.95rem}
+  .tazelik-birim .tip{font-size:.78rem;color:var(--murekkep-yumusak)}
+  .rozet-demo{
+    display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;font-weight:600;
+    border-radius:99px;padding:5px 12px;border:1px solid;transition:background .35s,color .35s,border-color .35s;
+  }
+  .rozet-demo .nokta{width:7px;height:7px;border-radius:50%;transition:background .35s}
+  .rozet-demo.yesil{background:#eaf7ef;color:#1d7a49;border-color:#bfe5cd}
+  .rozet-demo.yesil .nokta{background:var(--musait)}
+  .rozet-demo.amber{background:#fdf3dd;color:#a1690e;border-color:#eed9a8}
+  .rozet-demo.amber .nokta{background:var(--opsiyon)}
+  .rozet-demo.parla-y{animation:parlaYesil 1.1s ease}
+  .rozet-demo.parla-a{animation:parlaAmber 1.1s ease}
+  @keyframes parlaYesil{0%{box-shadow:0 0 0 0 rgba(47,179,107,.5)}100%{box-shadow:0 0 0 16px rgba(47,179,107,0)}}
+  @keyframes parlaAmber{0%{box-shadow:0 0 0 0 rgba(227,161,44,.55)}100%{box-shadow:0 0 0 16px rgba(227,161,44,0)}}
+  .tazelik-kaydirak{margin-top:22px}
+  .tazelik-kaydirak label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--murekkep-yumusak);margin-bottom:8px}
+  .tazelik-kaydirak label output{font-family:var(--mono);font-weight:600;color:var(--murekkep)}
+  input[type=range]{width:100%;accent-color:var(--teal);cursor:pointer}
+  .tazelik-araclar{display:flex;align-items:center;justify-content:center;margin-top:16px}
+  .oto-buton{
+    font-family:var(--baslik);font-weight:600;font-size:.78rem;color:var(--teal);
+    background:#e4f2ef;border:1.5px solid #c4e2db;border-radius:99px;padding:7px 16px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:background .2s ease,transform .2s ease;
+  }
+  .oto-buton:hover{background:#d5ece5;transform:translateY(-1px)}
+  .oto-buton .oto-nokta{width:7px;height:7px;border-radius:50%;background:var(--teal);flex:none;transition:background .2s}
+  .oto-buton.calisiyor{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .oto-buton.calisiyor .oto-nokta{background:#7ee2ac}
+  @media(prefers-reduced-motion:no-preference){
+    .oto-buton.calisiyor .oto-nokta{animation:nabiz 1.4s infinite}
+  }
+  .tazelik-aciklama{margin-top:16px;font-size:.85rem;color:var(--murekkep-yumusak);text-align:center}
+  .tazelik-aciklama b.y{color:#1d7a49}
+  .tazelik-aciklama b.a{color:#a1690e}
+
+  /* ---------- uc kale ---------- */
+  .kaleler{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media(max-width:820px){.kaleler{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
+  .kale{
+    background:var(--kart);border:2px solid var(--murekkep);border-radius:20px;padding:28px 24px;
+    box-shadow:7px 8px 0 rgba(20,50,46,.08);transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .kale:hover{transform:translateY(-4px);box-shadow:7px 12px 0 rgba(13,122,111,.14)}
+  .kale .isaret{
+    width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+    font-family:var(--mono);font-weight:600;font-size:1rem;
+    transition:transform .25s ease;
+  }
+  .kale:hover .isaret{transform:rotate(-6deg) scale(1.08)}
+  .kale:nth-child(1) .isaret{background:#eaf7ef;color:#1d7a49}
+  .kale:nth-child(2) .isaret{background:#e4f2ef;color:var(--teal)}
+  .kale:nth-child(3) .isaret{background:#fbeae7;color:var(--satildi)}
+  .kale h3{font-size:1.15rem;margin-bottom:10px}
+  .kale p{font-size:.92rem;color:var(--murekkep-yumusak)}
+  .kale p b{color:var(--murekkep)}
+
+  /* ---------- ilan yok seridi ---------- */
+  .serit{
+    background:var(--murekkep);color:var(--krem);padding:56px 0;position:relative;overflow:hidden;
+  }
+  .serit::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(246,243,238,.06) 1px, transparent 1px);
+    background-size:22px 22px;
+  }
+  .serit-sekil{
+    position:absolute;width:420px;height:420px;border-radius:50%;top:-180px;right:-140px;pointer-events:none;
+    background:radial-gradient(circle,rgba(47,179,107,.14),transparent 68%);will-change:transform;
+  }
+  .serit-ic{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;position:relative}
+  .serit h2{font-size:clamp(1.5rem,3.4vw,2.1rem)}
+  .serit h2 .vurgu{color:#7ee2ac}
+  .serit p{color:#b8cdc7;max-width:460px;margin-top:10px;font-size:.95rem}
+  .serit .karsilastirma{display:flex;flex-direction:column;gap:10px;min-width:250px}
+  .serit .k-satir{display:flex;align-items:center;gap:10px;font-size:.9rem;background:rgba(246,243,238,.07);border:1px solid rgba(246,243,238,.14);border-radius:12px;padding:11px 15px;transition:transform .2s ease,background .2s ease}
+  .serit .k-satir:hover{transform:translateX(4px);background:rgba(246,243,238,.11)}
+  .serit .k-satir .im{font-family:var(--mono);font-weight:600;flex:none}
+  .serit .k-satir.hayir .im{color:var(--satildi)}
+  .serit .k-satir.evet .im{color:var(--musait)}
+
+  /* ---------- 3 adim ---------- */
+  .adimlar{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:adim}
+  @media(max-width:820px){.adimlar{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
+  .adim{position:relative;background:var(--kart);border:1.5px solid var(--cizgi);border-radius:20px;padding:30px 24px 26px;transition:transform .2s ease,border-color .2s ease}
+  .adim:hover{transform:translateY(-3px);border-color:var(--teal)}
+  .adim::before{
+    counter-increment:adim;content:"0" counter(adim);
+    font-family:var(--mono);font-weight:600;font-size:.8rem;color:var(--teal);
+    background:#e4f2ef;border:1px solid #c4e2db;border-radius:99px;padding:4px 12px;
+    position:absolute;top:-14px;left:22px;
+  }
+  .adim h3{font-size:1.1rem;margin-bottom:8px}
+  .adim p{font-size:.9rem;color:var(--murekkep-yumusak)}
+  .adim .mini-balon{
+    margin-top:16px;background:var(--wa-balon);border:1px solid #cdebb8;border-radius:12px;border-bottom-right-radius:3px;
+    padding:9px 12px;font-size:.78rem;max-width:100%;
+  }
+  .adim .mini-balon .saat{display:block;font-family:var(--mono);font-size:.58rem;color:#6d8a63;text-align:right;margin-top:3px}
+  .adim .mini-durum{margin-top:16px;display:inline-flex}
+  /* adim rozetlerinde solunum nabzi */
+  @media(prefers-reduced-motion:no-preference){
+    body.canli .adim .mini-durum i{animation:rozetSolunum 3.2s ease-in-out infinite}
+  }
+  @keyframes rozetSolunum{
+    0%,100%{opacity:1;transform:scale(1)}
+    50%{opacity:.55;transform:scale(.82)}
+  }
+
+  /* ---------- sss ---------- */
+  .sss{max-width:680px;margin:0 auto}
+  .sss details{
+    background:var(--kart);border:1.5px solid var(--cizgi);border-radius:16px;margin-bottom:12px;overflow:hidden;
+    transition:border-color .25s ease,box-shadow .25s ease;
+  }
+  .sss details[open]{border-color:var(--teal);box-shadow:0 6px 18px rgba(13,122,111,.08)}
+  .sss summary{
+    list-style:none;cursor:pointer;padding:18px 22px;font-family:var(--baslik);font-weight:600;font-size:.98rem;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  .sss summary::-webkit-details-marker{display:none}
+  .sss summary .arti{font-family:var(--mono);color:var(--teal);font-size:1.1rem;flex:none;transition:transform .25s ease}
+  .sss details[open] summary .arti{transform:rotate(45deg)}
+  .sss .cevap{padding:0 22px 20px;color:var(--murekkep-yumusak);font-size:.92rem}
+  .sss .cevap b{color:var(--murekkep)}
+  @media(prefers-reduced-motion:no-preference){
+    .sss details[open] .cevap{animation:cevapAc .35s ease}
+  }
+  @keyframes cevapAc{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+  /* ---------- kapanis ---------- */
+  .kapanis{text-align:center;padding:88px 0}
+  .kapanis .balon-kapanis{
+    display:inline-block;background:#fff;border:1px solid var(--cizgi);border-radius:16px;border-bottom-left-radius:4px;
+    padding:10px 18px;font-size:.95rem;box-shadow:0 2px 6px rgba(20,50,46,.07);margin-bottom:22px;opacity:.6;
+  }
+  .kapanis .balon-kapanis .saat{font-family:var(--mono);font-size:.62rem;color:var(--murekkep-yumusak);margin-left:10px}
+  .kapanis h2{font-size:clamp(1.7rem,4.4vw,2.6rem);max-width:640px;margin:0 auto 16px}
+  .kapanis p{color:var(--murekkep-yumusak);max-width:520px;margin:0 auto 30px}
+  .kapanis .hero-cta{margin-bottom:0}
+
+  /* ---------- alt bilgi ---------- */
+  footer{border-top:1px solid var(--cizgi);padding:28px 0;background:var(--krem)}
+  .alt-ic{
+    max-width:1080px;margin:0 auto;padding:0 20px;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    font-size:.82rem;color:var(--murekkep-yumusak);
+  }
+  .alt-ic .sinyaller{display:flex;gap:16px}
+  .alt-ic .sinyaller span{display:inline-flex;align-items:center;gap:6px}
+  .alt-ic .sinyaller i{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+  /* ---------- kademeli reveal ---------- */
+  .gorun{opacity:0;transform:translateY(18px)}
+  .gorun.geldi{
+    opacity:1;transform:none;
+    animation:gorunGel .65s cubic-bezier(.22,.8,.3,1) backwards;
+    animation-delay:var(--gd,0s);
+  }
+  @keyframes gorunGel{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){
+    .gorun{opacity:1;transform:none}
+    .gorun.geldi{animation:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="paralaks" aria-hidden="true">
+  <span class="sekil sekil-1" data-hiz="-0.06"></span>
+  <span class="sekil sekil-2" data-hiz="0.08"></span>
+  <span class="sekil sekil-3" data-hiz="-0.04"></span>
+</div>
+
+<header class="ustbar">
+  <div class="ustbar-ic">
+    <a class="logo" href="#"><span class="logo-nokta"></span>ProjePazar</a>
+    <nav>
+      <a href="#fark">Fark</a>
+      <a href="#guven">Güven</a>
+      <a href="#adimlar">Nasıl çalışır</a>
+      <a href="#sss">SSS</a>
+    </nav>
+    <a class="buton buton-ana buton-parla buton-kucuk" href="#kapanis">Ücretsiz başla</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="icerik">
+      <div class="hero-balonlar" aria-hidden="true">
+        <div class="balon balon-gelen soluk2">Bu daire hâlâ müsait mi?<span class="saat">Salı 09:12</span></div>
+        <div class="balon balon-gelen soluk">Hâlâ müsait mi acaba? 🤔<span class="saat">Perşembe 14:47</span></div>
+        <div class="balon balon-gelen">Abi kusura bakma yine soracağım, hâlâ müsait mi?<span class="saat">Bugün 08:03</span></div>
+      </div>
+      <h1>Bu soru artık <span class="ustu-cizik">sorulmuyor</span>.</h1>
+      <p class="hero-alt">
+        Müteahhidin sana tahsis ettiği daireleri tek canlı havuzdan görürsün.
+        Fiyat günceldir, durum bellidir, kimseye sormazsın: bakarsın, paylaşırsın, opsiyonlarsın.
+      </p>
+      <div class="hero-cta">
+        <a class="buton buton-ana buton-parla" href="#kapanis">Emlakçıyım, ücretsiz başla <span class="ok" aria-hidden="true">→</span></a>
+        <a class="buton buton-ikincil" href="#kapanis">Proje sahibiyim</a>
+      </div>
+      <p class="hero-not">Emlakçıya <b>tamamen ücretsiz</b>. Komisyonun <b>%100'ü senin</b>, biz aradan pay almayız.</p>
+    </div>
+  </section>
+
+  <!-- TELEFON SAHNESI -->
+  <section class="sahne" id="fark">
+    <div class="icerik">
+      <div class="sahne-ic" id="sahne-ic">
+
+        <!-- ESKI DUNYA -->
+        <div class="tel-kolon gorun">
+          <span class="tel-etiket">Şu anki grup</span>
+          <div class="telefon eski" role="img" aria-label="Kaotik WhatsApp grubu: bayat fiyat listesi, cevapsız sorular">
+            <div class="tel-centik"><span></span></div>
+            <div class="wa-baslik">
+              <div class="wa-avatar">🏗</div>
+              <div>
+                <div class="grup">Saray Konutları Satış Grubu</div>
+                <div class="kisi">47 kişi, 12 çevrimiçi</div>
+              </div>
+            </div>
+            <div class="wa-govde" id="wa-govde">
+              <div class="wa-mesaj wa-sirali">
+                <div class="kim k1">Murat Bey (Ofis)</div>
+                <div class="wa-dosya">
+                  <span class="ikon"></span>
+                  <span>
+                    <span class="ad">Fiyat_SON_v3.xlsx</span><br>
+                    <span class="boyut">142 KB · Excel</span>
+                  </span>
+                </div>
+                <span class="wa-bayat">19 gün önce gönderildi</span>
+                <span class="saat">12:31</span>
+              </div>
+              <div class="wa-mesaj wa-sirali">
+                <div class="kim k2">Seda Hanım</div>
+                B blok 3+1 orta kat hâlâ müsait mi?
+                <span class="saat">09:14</span>
+              </div>
+              <div class="wa-mesaj wa-sirali">
+                <div class="kim k3">Hakan E.</div>
+                Listedeki fiyat geçerli mi? Müşterim şu an yanımda 🙏
+                <span class="saat">09:26</span>
+              </div>
+              <div class="wa-cevapsiz wa-sirali">
+                <span class="tel-ikon">✆</span>
+                <span class="metin">Cevapsız arama · 09:41</span>
+              </div>
+              <div class="wa-mesaj wa-sirali">
+                <div class="kim k4">Ayşe K.</div>
+                Bilen var mı?? Acil 😩
+                <span class="saat">10:02</span>
+              </div>
+              <div class="wa-yaziyor" id="wa-yaziyor" aria-label="Biri yazıyor"><i></i><i></i><i></i></div>
+            </div>
+            <div class="wa-alt">
+              <span>Cevap bekleniyor...</span>
+              <span class="wa-okunmamis" id="wa-okunmamis">99+</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sahne-vs" aria-hidden="true">VS</div>
+
+        <!-- YENI DUNYA -->
+        <div class="tel-kolon gorun">
+          <span class="tel-etiket canli">ProjePazar havuzun</span>
+          <div class="telefon yeni" role="img" aria-label="ProjePazar canlı havuz ekranı: güncel fiyat ve durum, tek link paylaşımı">
+            <div class="tel-centik"><span></span></div>
+            <div class="pp-baslik">
+              <div class="satir">
+                <span class="proje">Saray Konutları · Sana tahsisli</span>
+                <span class="rozet-taze" id="pp-rozet"><span class="nokta"></span><span id="pp-rozet-metin">2 dk önce</span></span>
+              </div>
+            </div>
+            <div class="pp-govde">
+              <div class="birim" id="birim-b14">
+                <div class="sol">
+                  <div class="kod">B-14</div>
+                  <div class="tip">3+1 · 12. kat · 142 m²</div>
+                </div>
+                <div class="sag">
+                  <div class="fiyat"><span class="deger" id="fiyat-b14">₺8.450.000</span></div>
+                  <span class="durum musait"><i></i>Müsait</span>
+                </div>
+              </div>
+              <div class="birim" id="birim-b09">
+                <div class="sol">
+                  <div class="kod">B-09</div>
+                  <div class="tip">3+1 · 7. kat · 138 m²</div>
+                </div>
+                <div class="sag">
+                  <div class="fiyat">₺8.120.000</div>
+                  <span class="durum musait" id="durum-b09"><i></i>Müsait</span>
+                </div>
+              </div>
+              <div class="birim opsiyonlu">
+                <div class="sol">
+                  <div class="kod">A-07</div>
+                  <div class="tip">2+1 · 4. kat · 96 m²</div>
+                </div>
+                <div class="sag">
+                  <div class="fiyat">₺5.980.000</div>
+                  <span class="durum opsiyon"><i></i>Opsiyonlu · 21 sa</span>
+                </div>
+              </div>
+              <div class="birim satilmis">
+                <div class="sol">
+                  <div class="kod">C-02</div>
+                  <div class="tip">1+1 · 2. kat · 64 m²</div>
+                </div>
+                <div class="sag">
+                  <div class="fiyat">₺3.740.000</div>
+                  <span class="durum satildi"><i></i>Satıldı</span>
+                </div>
+              </div>
+            </div>
+            <div class="pp-alt">
+              <button class="pp-paylas" type="button">Tek link paylaş <span class="ok" aria-hidden="true">→</span></button>
+              <div class="pp-paylas-not">Müşterin her açtığında fiyat canlı değerden basılır</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <p class="sahne-alt-yazi gorun">
+        Solda 47 kişi aynı soruyu soruyor. Sağda kimse sormuyor, çünkü <b>fiyat ve durum tek doğru kaynaktan canlı akıyor</b>.
+        Bayat Excel yok, cevapsız arama yok.
+      </p>
+    </div>
+  </section>
+
+  <!-- TAZELIK DEMOSU -->
+  <section class="tazelik" id="tazelik">
+    <div class="icerik">
+      <div class="bolum-ust gorun">
+        <span class="mini">Tazelik rozeti</span>
+        <h2>Bilginin kaç dakikalık olduğunu her zaman görürsün</h2>
+        <p>Her birimde son güncelleme saati yazar. Bilgi eskidikçe rozet sararır, sen de kime güveneceğini bilirsin. Kaydırıp dene:</p>
+      </div>
+      <div class="tazelik-kart gorun">
+        <div class="tazelik-birim">
+          <div>
+            <div class="kod">B-14</div>
+            <div class="tip">3+1 · 12. kat · ₺8.450.000</div>
+          </div>
+          <span class="rozet-demo yesil" id="rozet"><span class="nokta"></span><span id="rozet-metin">2 dk önce</span></span>
+        </div>
+        <div class="tazelik-kaydirak">
+          <label for="tazelik-aralik">Son güncelleme <output id="tazelik-cikti">2 dakika önce</output></label>
+          <input type="range" id="tazelik-aralik" min="0" max="120" value="0" step="1" aria-label="Son güncellemeden bu yana geçen süre">
+        </div>
+        <div class="tazelik-araclar">
+          <button type="button" class="oto-buton" id="oto-buton"><span class="oto-nokta"></span><span id="oto-metin">Zamanı otomatik akıt</span></button>
+        </div>
+        <p class="tazelik-aciklama">
+          <b class="y">Yeşil</b> rozet: bilgi taze, gönül rahatlığıyla paylaş.
+          <b class="a">Sarı</b> rozet: 3 günü geçti, teyit et.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- UC KALE -->
+  <section id="guven">
+    <div class="icerik">
+      <div class="bolum-ust gorun">
+        <span class="mini">Güven protokolü</span>
+        <h2>Üç kale, üç garanti</h2>
+        <p>Bu ağın kuralları uygulamaya değil, sistemin kendisine gömülü. Kimsenin insafına kalmazsın.</p>
+      </div>
+      <div class="kaleler">
+        <article class="kale gorun">
+          <div class="isaret">%0</div>
+          <h3>Komisyonsuz</h3>
+          <p>ProjePazar satıştan pay almaz, alıcıyla muhatap olmaz. <b>Komisyonun %100'ü senin.</b> Müşterin senin müşterin olarak kalır, bypass yok.</p>
+        </article>
+        <article class="kale gorun">
+          <div class="isaret">◱</div>
+          <h3>Tahsis</h3>
+          <p>Herkes her şeyi göremez. Üretici stoğu <b>sana tahsis eder</b>, sen yalnız kendi tahsisini görürsün. Emeğin başkasının vitrinine düşmez.</p>
+        </article>
+        <article class="kale gorun">
+          <div class="isaret">⊘</div>
+          <h3>Çift satış imkânsız</h3>
+          <p>Bir daireye opsiyon açıldığında kilit <b>veritabanı seviyesinde</b> konur. Aynı birime ikinci opsiyon sistemsel olarak açılamaz, söz değil kural.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ILAN YOK SERIDI -->
+  <section class="serit">
+    <span class="serit-sekil" data-hiz="0.05" aria-hidden="true"></span>
+    <div class="icerik serit-ic">
+      <div class="gorun">
+        <h2>İlan yok, <span class="vurgu">tahsis</span> var.</h2>
+        <p>Burası bir ilan sitesi değil. Kimse ilan basmaz, kimse ilanını çalmaz. Üretici stoğunu ağa açar, ağ yalnız yetkili emlakçıya akar.</p>
+      </div>
+      <div class="karsilastirma gorun">
+        <div class="k-satir hayir"><span class="im">✕</span>Herkese açık ilan vitrini</div>
+        <div class="k-satir hayir"><span class="im">✕</span>Aynı dairenin 9 farklı fiyatı</div>
+        <div class="k-satir evet"><span class="im">✓</span>Sana özel tahsisli canlı stok</div>
+        <div class="k-satir evet"><span class="im">✓</span>Tek doğru fiyat, tek kaynaktan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 ADIM -->
+  <section id="adimlar">
+    <div class="icerik">
+      <div class="bolum-ust gorun">
+        <span class="mini">Nasıl çalışır</span>
+        <h2>Üç adım, hepsi bu</h2>
+        <p>Yeni bir alışkanlık öğrenmezsin. Zaten yaptığın işi, temiz veriyle yaparsın.</p>
+      </div>
+      <div class="adimlar">
+        <article class="adim gorun">
+          <h3>Gör</h3>
+          <p>Sana tahsis edilen projeler tek canlı havuzda. Fiyat, kat, durum: hepsi güncel, hepsi tek ekranda.</p>
+          <span class="durum musait mini-durum"><i></i>4 birim müsait</span>
+        </article>
+        <article class="adim gorun">
+          <h3>Paylaş</h3>
+          <p>Müşterine tek link atarsın. Link her açıldığında fiyat canlı değerden basılır, bayat PDF dolaşmaz.</p>
+          <div class="mini-balon">Saray Konutları B-14 için güncel sayfa: projepazar.app/p/b14<span class="saat">Bugün 11:26 ✓✓</span></div>
+        </article>
+        <article class="adim gorun">
+          <h3>Opsiyonla</h3>
+          <p>Müşterin ciddiyse daireyi tek dokunuşla opsiyonlarsın. O andan itibaren kimse üstüne satış yapamaz.</p>
+          <span class="durum opsiyon mini-durum"><i></i>Opsiyon sende · 48 sa</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SSS -->
+  <section id="sss">
+    <div class="icerik">
+      <div class="bolum-ust gorun">
+        <span class="mini">SSS</span>
+        <h2>Aklına takılanlar</h2>
+      </div>
+      <div class="sss gorun">
+        <details open>
+          <summary>Gerçekten tamamen ücretsiz mi?<span class="arti">+</span></summary>
+          <div class="cevap">Evet. Emlakçı için ProjePazar <b>ücretsizdir</b>: kayıt ücreti yok, aidat yok, satıştan kesinti yok. Gelirimizi ağın öbür ucundan, proje sahibiyle yaptığımız anlaşmalardan elde ederiz.</div>
+        </details>
+        <details>
+          <summary>Komisyonuma ortak olur musunuz, müşterimi kapar mısınız?<span class="arti">+</span></summary>
+          <div class="cevap">Hayır, ikisi de sistemde imkânsız. ProjePazar <b>alıcıyla hiç muhatap olmaz</b>, satış senin üzerinden yürür ve komisyonun %100'ü sende kalır. Müşterinin iletişim bilgisi kimseyle paylaşılmaz.</div>
+        </details>
+        <details>
+          <summary>İlan sitelerinden farkı ne?<span class="arti">+</span></summary>
+          <div class="cevap">İlan sitesinde herkes her ilanı görür ve aynı daire 9 farklı fiyatla dolaşır. Burada <b>ilan yok, tahsis var</b>: üretici stoğu sana açar, fiyat ve durum tek doğru kaynaktan canlı akar.</div>
+        </details>
+        <details>
+          <summary>Fiyatların güncel olduğuna nasıl güveneyim?<span class="arti">+</span></summary>
+          <div class="cevap">Fiyat yalnız üreticinin panelinden güncellenir ve her birimde <b>tazelik rozeti</b> vardır: son güncelleme kaç dakika önce yapıldı, açıkça yazar. Bilgi 3 günü geçerse rozet sararır, sistem seni uyarır.</div>
+        </details>
+        <details>
+          <summary>Aynı daireyi iki emlakçı satarsa ne olur?<span class="arti">+</span></summary>
+          <div class="cevap">Olamaz. Opsiyon açıldığı an daire <b>veritabanı seviyesinde kilitlenir</b>; ikinci bir opsiyon sistemsel olarak açılamaz. Çift satış riski uygulama vaadi değil, teknik imkânsızlıktır.</div>
+        </details>
+        <details>
+          <summary>Proje sahibiyim, ben ne kazanırım?<span class="arti">+</span></summary>
+          <div class="cevap">Stoğunu, fiyatını ve dağıtımını <b>tek noktadan</b> yönetirsin. Hangi emlakçının neyi gördüğünü sen belirlersin, sahadan gelen "müsait mi?" trafiği biter ve stok en hızlı satış yapılan ağda döner. "Proje sahibiyim" kapısından başvur, seninle biz ilgilenelim.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- KAPANIS -->
+  <section class="kapanis" id="kapanis">
+    <div class="icerik">
+      <div class="balon-kapanis gorun" aria-hidden="true">Hâlâ müsait mi?<span class="saat">Dün 23:58</span></div>
+      <h2 class="gorun">Yarın sabahki ilk mesajın bu olmasın.</h2>
+      <p class="gorun">Canlı havuzuna gir, tahsisli stoğunu gör, ilk linkini bugün paylaş. Kurulum yok, eğitim yok, ücret yok.</p>
+      <div class="hero-cta gorun">
+        <a class="buton buton-wa buton-parla" href="#">Emlakçıyım, ücretsiz başla <span class="ok" aria-hidden="true">→</span></a>
+        <a class="buton buton-ikincil" href="#">Proje sahibiyim</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="alt-ic">
+    <span><b>ProjePazar</b> · Canlı konut stoğu dağıtım ağı</span>
+    <span class="sinyaller" aria-hidden="true">
+      <span><i style="background:#2fb36b"></i>Müsait</span>
+      <span><i style="background:#e3a12c"></i>Opsiyon</span>
+      <span><i style="background:#d15a4e"></i>Satıldı</span>
+    </span>
+    <span>Tasarım mockup'ı · Yön 4</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var azHareket = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* hareket serbestse govdeye canli sinifi: tum dongusel animasyonlarin anahtari */
+  if(!azHareket){ document.body.classList.add('canli'); }
+
+  /* ---------- kademeli (stagger) scroll reveal ---------- */
+  (function(){
+    var ogeler = document.querySelectorAll('.gorun');
+    if(azHareket || !('IntersectionObserver' in window)){
+      ogeler.forEach(function(o){ o.classList.add('geldi'); });
+      return;
+    }
+    /* ayni bolumdeki ogelere artan gecikme ver */
+    var sayac = {};
+    ogeler.forEach(function(o, i){
+      var bolum = o.closest('section');
+      var ad = bolum ? (bolum.id || 'b' + i) : 'genel';
+      sayac[ad] = (sayac[ad] || 0);
+      o.style.setProperty('--gd', Math.min(sayac[ad] * 110, 440) + 'ms');
+      sayac[ad]++;
+    });
+    var gozcu = new IntersectionObserver(function(girdiler){
+      girdiler.forEach(function(g){
+        if(g.isIntersecting){
+          g.target.classList.add('geldi');
+          gozcu.unobserve(g.target);
+        }
+      });
+    }, {threshold:.15});
+    ogeler.forEach(function(o){ gozcu.observe(o); });
+  })();
+
+  /* ---------- ince parallax: renk katmanlari farkli hizda kayar ---------- */
+  (function(){
+    if(azHareket) return;
+    var katmanlar = document.querySelectorAll('[data-hiz]');
+    if(!katmanlar.length) return;
+    var bekliyor = false;
+    function uygula(){
+      var y = window.scrollY || 0;
+      katmanlar.forEach(function(k){
+        var hiz = parseFloat(k.getAttribute('data-hiz')) || 0;
+        k.style.transform = 'translate3d(0,' + (y * hiz).toFixed(1) + 'px,0)';
+      });
+      bekliyor = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!bekliyor){
+        bekliyor = true;
+        requestAnimationFrame(uygula);
+      }
+    }, {passive:true});
+    uygula();
+  })();
+
+  /* ---------- telefon sahnesi: yalniz gorunurken calisan dongular ---------- */
+  var sahneAktif = true;
+  (function(){
+    var sahne = document.getElementById('sahne-ic');
+    if(!sahne || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function(girdiler){
+      girdiler.forEach(function(g){ sahneAktif = g.isIntersecting; });
+    }, {threshold:.1}).observe(sahne);
+  })();
+
+  /* ---------- eski telefon: balonlar sirayla geliyor, rozet artip titriyor ---------- */
+  (function(){
+    if(azHareket) return;
+    var govde = document.getElementById('wa-govde');
+    var yaziyor = document.getElementById('wa-yaziyor');
+    var rozet = document.getElementById('wa-okunmamis');
+    if(!govde || !yaziyor || !rozet) return;
+    var balonlar = govde.querySelectorAll('.wa-sirali');
+    var okunmamis = 12;
+    var indeks = 0;
+
+    function rozetArtir(adet){
+      okunmamis += adet;
+      rozet.textContent = okunmamis > 99 ? '99+' : String(okunmamis);
+      rozet.classList.remove('titre');
+      void rozet.offsetWidth; /* animasyonu yeniden tetikle */
+      rozet.classList.add('titre');
+    }
+    function adim(){
+      if(!sahneAktif){ setTimeout(adim, 1200); return; }
+      if(indeks < balonlar.length){
+        yaziyor.classList.remove('gizli');
+        setTimeout(function(){
+          balonlar[indeks].classList.add('dustu');
+          rozetArtir(2 + (indeks % 3));
+          indeks++;
+          setTimeout(adim, 950);
+        }, 1050);
+      } else {
+        /* dongu sonu: kisa bekle, yumusak sifirla, bastan basla */
+        yaziyor.classList.add('gizli');
+        setTimeout(function(){
+          govde.classList.add('sifirla');
+          setTimeout(function(){
+            balonlar.forEach(function(b){ b.classList.remove('dustu'); });
+            okunmamis = 12;
+            rozet.textContent = '12';
+            indeks = 0;
+            govde.classList.remove('sifirla');
+            setTimeout(adim, 500);
+          }, 450);
+        }, 2600);
+      }
+    }
+    rozet.textContent = '12';
+    setTimeout(adim, 900);
+  })();
+
+  /* ---------- yeni telefon: fiyat canli guncellenir, durum yesil-amber doner ---------- */
+  (function(){
+    if(azHareket) return;
+    var fiyatB14 = document.getElementById('fiyat-b14');
+    var birimB14 = document.getElementById('birim-b14');
+    var ppRozet = document.getElementById('pp-rozet');
+    var ppRozetMetin = document.getElementById('pp-rozet-metin');
+    var durumB09 = document.getElementById('durum-b09');
+    var birimB09 = document.getElementById('birim-b09');
+    if(!fiyatB14 || !ppRozet || !durumB09) return;
+
+    var fiyatlar = ['₺8.450.000', '₺8.475.000'];
+    var fiyatIndeks = 0;
+    var sira = 0; /* 0: fiyat guncelle, 1: durum degistir */
+
+    function rozetSimdi(){
+      ppRozetMetin.textContent = 'şimdi';
+      ppRozet.classList.add('simdi');
+      ppRozet.classList.remove('parla');
+      void ppRozet.offsetWidth;
+      ppRozet.classList.add('parla');
+      setTimeout(function(){
+        ppRozetMetin.textContent = '2 dk önce';
+        ppRozet.classList.remove('simdi');
+      }, 2400);
+    }
+    function fiyatGuncelle(){
+      fiyatIndeks = 1 - fiyatIndeks;
+      fiyatB14.textContent = fiyatlar[fiyatIndeks];
+      fiyatB14.classList.remove('cevrildi');
+      void fiyatB14.offsetWidth;
+      fiyatB14.classList.add('cevrildi');
+      birimB14.classList.add('guncellendi');
+      setTimeout(function(){ birimB14.classList.remove('guncellendi'); }, 1800);
+      rozetSimdi();
+    }
+    function durumDegistir(){
+      /* musait -> opsiyonlu (amber nabiz), sonra geri */
+      durumB09.className = 'durum opsiyon degisti';
+      durumB09.innerHTML = '<i></i>Opsiyonlu · 48 sa';
+      birimB09.classList.add('opsiyonlu');
+      rozetSimdi();
+      setTimeout(function(){
+        durumB09.className = 'durum musait degisti';
+        durumB09.innerHTML = '<i></i>Müsait';
+        birimB09.classList.remove('opsiyonlu');
+      }, 3400);
+    }
+    setInterval(function(){
+      if(!sahneAktif) return;
+      if(sira === 0){ fiyatGuncelle(); } else { durumDegistir(); }
+      sira = 1 - sira;
+    }, 5200);
+  })();
+
+  /* ---------- tazelik demosu: kaydirak + otomatik akis + glow ---------- */
+  (function(){
+    var aralik = document.getElementById('tazelik-aralik');
+    var rozet = document.getElementById('rozet');
+    var rozetMetin = document.getElementById('rozet-metin');
+    var cikti = document.getElementById('tazelik-cikti');
+    var otoButon = document.getElementById('oto-buton');
+    var otoMetin = document.getElementById('oto-metin');
+    if(!aralik) return;
+    var oncekiBayat = false;
+    var otoSayac = null;
+
+    function biciml(saat){
+      if(saat === 0) return {kisa:'2 dk önce', uzun:'2 dakika önce'};
+      if(saat < 24) return {kisa: saat + ' sa önce', uzun: saat + ' saat önce'};
+      var gun = Math.floor(saat / 24);
+      return {kisa: gun + ' gün önce', uzun: gun + ' gün önce'};
+    }
+    function parlat(bayat){
+      if(azHareket) return;
+      rozet.classList.remove('parla-y','parla-a');
+      void rozet.offsetWidth;
+      rozet.classList.add(bayat ? 'parla-a' : 'parla-y');
+    }
+    function guncelle(){
+      var saat = parseInt(aralik.value, 10);
+      var b = biciml(saat);
+      rozetMetin.textContent = b.kisa;
+      cikti.textContent = b.uzun;
+      var bayat = saat >= 72; /* 3 gun esigi */
+      rozet.classList.toggle('yesil', !bayat);
+      rozet.classList.toggle('amber', bayat);
+      if(bayat !== oncekiBayat){ parlat(bayat); }
+      oncekiBayat = bayat;
+    }
+    function otoDurdur(){
+      if(otoSayac){ clearInterval(otoSayac); otoSayac = null; }
+      if(otoButon){
+        otoButon.classList.remove('calisiyor');
+        otoMetin.textContent = 'Zamanı otomatik akıt';
+      }
+    }
+    function otoBaslat(){
+      otoButon.classList.add('calisiyor');
+      otoMetin.textContent = 'Akıyor, durdur';
+      otoSayac = setInterval(function(){
+        var deger = parseInt(aralik.value, 10) + 1;
+        if(deger > 120){ deger = 0; }
+        aralik.value = deger;
+        guncelle();
+      }, 70);
+    }
+    if(otoButon){
+      if(azHareket){
+        otoButon.style.display = 'none'; /* sakin modda otomatik akis yok */
+      } else {
+        otoButon.addEventListener('click', function(){
+          if(otoSayac){ otoDurdur(); } else { otoBaslat(); }
+        });
+      }
+    }
+    aralik.addEventListener('input', function(){ otoDurdur(); guncelle(); });
+    guncelle();
+  })();
+})();
+</script>
+
+</body>
+</html>
