@@ -165,9 +165,9 @@ export function EmlakciStok({
         ))}
       </div>
 
-      {/* Blok sekmeleri (mobil: yatay kaydır) + canlı rozet */}
-      <div className="mt-5 flex items-center gap-2">
-        <div className="flex flex-1 gap-1.5 overflow-x-auto pb-1">
+      {/* Blok sekmeleri (mobilde alt satıra sarar, yatay kaydırma yok) + canlı rozet */}
+      <div className="mt-5 flex items-start gap-2">
+        <div className="flex min-w-0 flex-1 flex-wrap gap-1.5 pb-1">
           {bloklar.map((blok) => {
             const m = birimler.filter((b) => b.blok_id === blok.id && b.durum === "musait").length;
             return (

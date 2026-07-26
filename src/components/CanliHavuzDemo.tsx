@@ -109,8 +109,8 @@ export function CanliHavuzDemo() {
             <span className="rounded-[9px] border border-[var(--cizgi-2)] px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-soft">B Blok</span>
             <span className="rounded-[9px] border border-[var(--cizgi-2)] px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-soft">C Blok</span>
           </div>
-          <div className="overflow-x-auto">
-            <div className="min-w-[420px]">
+          <div>
+            <div className="min-w-0">
               {KATLAR.map((kat) => (
                 <div key={kat} className="mb-1.5 flex items-center gap-2">
                   <span className="w-8 flex-none font-mono text-[10px] text-[var(--ink-faint)]">K{kat}</span>
@@ -145,20 +145,20 @@ export function CanliHavuzDemo() {
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto p-5 sm:p-6">
-          <table className="tbl min-w-[640px]">
-            <thead><tr><th>Daire</th><th>Tip</th><th>Net</th><th>Cephe</th><th>Fiyat</th><th>Durum</th><th>Tazelik</th><th></th></tr></thead>
+        <div className="p-5 sm:p-6">
+          <table className="tbl w-full sm:min-w-[640px]">
+            <thead><tr><th>Daire</th><th className="max-sm:hidden">Tip</th><th className="max-sm:hidden">Net</th><th className="max-sm:hidden">Cephe</th><th>Fiyat</th><th>Durum</th><th>Tazelik</th><th className="max-sm:hidden"></th></tr></thead>
             <tbody>
               {TABLO.map((r) => (
                 <tr key={r.kod} onClick={() => ac(r)} className="cursor-pointer">
                   <td className="mono font-semibold">{r.kod}</td>
-                  <td className="mono">{r.tip}</td>
-                  <td className="mono">{r.net} m²</td>
-                  <td className="mono">{r.cephe}</td>
+                  <td className="mono max-sm:hidden">{r.tip}</td>
+                  <td className="mono max-sm:hidden">{r.net} m²</td>
+                  <td className="mono max-sm:hidden">{r.cephe}</td>
                   <td className="mono font-semibold">{r.fiyat}</td>
                   <td><span className={`durum ${DURUM_META[r.durum].durum}`}><span className="nokta" />{DURUM_META[r.durum].etiket}</span></td>
                   <td><span className="flex items-center gap-1.5 font-mono text-[11px] text-[#1f7d4c]"><span className="size-1.5 rounded-full bg-green" /> {r.taze} önce</span></td>
-                  <td><span className="font-mono text-[11px] font-semibold text-teal">Detay →</span></td>
+                  <td className="max-sm:hidden"><span className="font-mono text-[11px] font-semibold text-teal">Detay →</span></td>
                 </tr>
               ))}
             </tbody>
