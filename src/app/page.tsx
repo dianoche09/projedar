@@ -9,6 +9,7 @@ import { Sayaclar } from "@/components/Sayaclar";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
 import { CanliPortfoy } from "@/components/CanliPortfoy";
+import { BirebirPaylasim } from "@/components/BirebirPaylasim";
 import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck } from "lucide-react";
@@ -235,6 +236,9 @@ export default async function Home() {
           <CanliPortfoy items={PORTFOY} />
         </div>
       </section>
+
+      {/* ============ BİREBİR PAYLAŞIM (WhatsApp / 1:1 — EİDS yasal çerçeve) ============ */}
+      <BirebirPaylasim />
 
       {/* ============ İSTATİSTİK ŞERİDİ ============ */}
       <section className="relative px-5 py-10 sm:px-6"><Sayaclar /></section>
