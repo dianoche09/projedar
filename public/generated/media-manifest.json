@@ -1,0 +1,53 @@
+{
+  "olusturma": "2026-07-26",
+  "saglayici": "fal.ai",
+  "model": "fal-ai/flux-2/klein/9b",
+  "not": "Anahtar env'de (FAL_KEY); hicbir anahtar repo/log/bundle'a yazilmadi. HeyGen: atlandi (anahtar/entegrasyon yok; talking-head konsept dunyasina uymuyor). mockup-04 klasorunde ajanin urettigi ek gorseller icin mockup-04/manifest.json'a bakin.",
+  "varliklar": [
+    {
+      "mockup": "01",
+      "dosya": "mockup-01/hero-kesit-maket.jpg",
+      "kullanim": "hero / data-twin kesit sahnesi arka gorseli",
+      "prompt": "Architectural cross-section scale model of a modern residential apartment building, cut-away section revealing individual apartment units on each floor, museum-quality physical model on matte white base, warm directional studio light from upper left, soft shadows, ivory and pale wood materials with brass details, technical yet warm atmosphere, shallow depth of field, medium format camera look, generous empty negative space in upper left for interface overlay, no people, no text, no watermark",
+      "seed": 835395517,
+      "boyut": "1920x1088",
+      "format": "jpeg"
+    },
+    {
+      "mockup": "02",
+      "dosya": "mockup-02/hero-gece-cephe.jpg",
+      "kullanim": "control-room gece cephe: pencere izgarasi dogal veri-grid",
+      "prompt": "Dramatic night photograph of a modern residential tower facade, grid of dozens of apartment windows, some windows warmly lit others dark creating a natural data-grid pattern, deep graphite blue night sky, subtle city glow at bottom, editorial architecture magazine photography, sharp geometry, telephoto compression, moody premium atmosphere, dark negative space on the right third for interface overlay, no people, no text, no watermark",
+      "seed": 384416389,
+      "boyut": "1920x1088",
+      "format": "jpeg"
+    },
+    {
+      "mockup": "03",
+      "dosya": "mockup-03/hero-hava-mahalle.jpg",
+      "kullanim": "ag kartografisi: alacakaranlik hava cekimi mahalle dokusu",
+      "prompt": "Aerial drone photograph of a modern residential district at dusk, several distinct apartment building clusters separated by streets forming a natural map-like composition, warm street lights beginning to glow, soft haze, muted navy and amber palette, high altitude oblique angle, cartographic feeling, clean composition with calm sky negative space at top for interface overlay, no people, no text, no watermark",
+      "seed": 1193708400,
+      "boyut": "1920x1088",
+      "format": "jpeg"
+    },
+    {
+      "mockup": "04",
+      "dosya": "mockup-04/hero-mavi-saat.jpg",
+      "kullanim": "sinematik mavi-saat cephe (ajanin urettigi ek setle birlikte)",
+      "prompt": "Cinematic blue hour photograph of a contemporary Turkish residential building facade close-up, 35mm lens, warm interior lights glowing through large windows, balconies with clean concrete and wood texture, thin evening mist, deep teal-blue sky, film grain subtle, premium real estate cinematography but restrained and realistic, empty sky negative space in upper left for interface overlay, no people, no readable text, no watermark",
+      "seed": 519215469,
+      "boyut": "1920x1088",
+      "format": "jpeg"
+    },
+    {
+      "mockup": "05",
+      "dosya": "mockup-05/hero-maket-masa.jpg",
+      "kullanim": "tactile: mimar masasi, maket + plan kagitlari + etiketler",
+      "prompt": "Top-down photograph of an architect's desk: physical architectural scale model of an apartment block, rolled floor plan papers, transparent acetate sheets, small paper price tags attached with clips, warm cream paper textures, soft window daylight, tactile editorial still-life, ivory and navy ink palette with one teal tag accent, organized creative chaos, clear empty area at center-right for interface overlay, no people, no readable text, no watermark",
+      "seed": 388170013,
+      "boyut": "1920x1088",
+      "format": "jpeg"
+    }
+  ]
+}
