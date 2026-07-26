@@ -18,19 +18,45 @@ function Gonder() {
   return (
     <button
       disabled={pending}
-      className="mt-4 min-h-12 w-full rounded-xl bg-teal py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_6px_16px_rgba(30,155,138,0.3)]"
+      className="min-h-12 flex-1 rounded-xl bg-teal py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_6px_16px_rgba(30,155,138,0.3)]"
     >
-      {pending ? "Kaydediliyor…" : "Kayıt ol"}
+      {pending ? "Oluşturuluyor…" : "Hesabı oluştur"}
     </button>
   );
 }
 
 export function KayitForm() {
+  const [adim, setAdim] = useState<0 | 1>(0);
   const [rol, setRol] = useState<string>("uretici");
+
+  const emlakci = rol === "emlakci";
+  const adimlar = emlakci ? ["Hesap türü", "Bilgiler", "Belgeler"] : ["Hesap türü", "Bilgiler"];
 
   return (
     <form action={kayitOl} className="mt-6 flex flex-col gap-4 text-ink">
-      <div className="flex flex-col gap-2">
+      {/* Adım göstergesi */}
+      <ol className="flex items-center gap-2">
+        {adimlar.map((et, i) => {
+          const aktif = i === adim;
+          const gecti = i < adim;
+          return (
+            <li key={et} className="flex flex-1 items-center gap-2">
+              <span
+                className={`flex size-6 flex-none items-center justify-center rounded-full text-xs font-bold ${
+                  aktif ? "bg-teal text-white" : gecti ? "bg-teal-soft text-teal-d" : "bg-hair text-ink-soft"
+                }`}
+              >
+                {gecti ? "✓" : i + 1}
+              </span>
+              <span className={`whitespace-nowrap text-xs font-semibold ${aktif ? "text-ink" : "text-ink-soft"}`}>{et}</span>
+              {i < adimlar.length - 1 ? <span className="h-px flex-1 bg-hair" /> : null}
+            </li>
+          );
+        })}
+      </ol>
+
+      {/* ADIM 1 — Hesap türü. Radiolar her zaman DOM'da (adım 2'de gizli) ki değer submit olsun. */}
+      <div className={adim === 0 ? "flex flex-col gap-2" : "hidden"}>
         <span className="text-sm font-bold text-ink">Hesap türü</span>
         {ROLLER.map((r) => (
           <label
@@ -53,39 +79,65 @@ export function KayitForm() {
             </span>
           </label>
         ))}
+        <button
+          type="button"
+          onClick={() => setAdim(1)}
+          className="mt-2 min-h-12 w-full rounded-xl bg-teal py-3.5 text-base font-bold text-white transition-all duration-300 hover:bg-teal-d shadow-[0_6px_16px_rgba(30,155,138,0.3)]"
+        >
+          Devam →
+        </button>
       </div>
 
-      <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-        Ad soyad
-        <input name="ad" required minLength={2} placeholder="Ad Soyad" className={inp} />
-      </label>
-      <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-        E-posta
-        <input name="email" type="email" required autoComplete="email" placeholder="ornek@projepazar.com" className={inp} />
-      </label>
-      <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-        Telefon <span className="font-normal text-ink-soft/70">(opsiyonel)</span>
-        <input name="telefon" type="tel" autoComplete="tel" placeholder="+90…" className={inp} />
-      </label>
-      <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-        Parola
-        <input name="password" type="password" required minLength={6} autoComplete="new-password" placeholder="••••••••" className={inp} />
-      </label>
-
-      {rol === "uretici" ? (
+      {/* ADIM 2 — Bilgiler */}
+      <div className={adim === 1 ? "flex flex-col gap-4" : "hidden"}>
         <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-          Vergi no <span className="font-normal text-ink-soft/70">(firma doğrulaması için)</span>
-          <input name="vergi_no" inputMode="numeric" placeholder="VKN" className={inp} />
+          Ad soyad
+          <input name="ad" required={adim === 1} minLength={2} placeholder="Ad Soyad" className={inp} />
         </label>
-      ) : null}
-      {rol === "ofis_yetkili" ? (
         <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
-          Ofis / Franchise adı
-          <input name="ofis_adi" placeholder="ör. Demo Gayrimenkul" className={inp} />
+          E-posta
+          <input name="email" type="email" required={adim === 1} autoComplete="email" placeholder="ornek@projepazar.com" className={inp} />
         </label>
-      ) : null}
+        <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
+          Telefon <span className="font-normal text-ink-soft/70">(opsiyonel)</span>
+          <input name="telefon" type="tel" autoComplete="tel" placeholder="+90…" className={inp} />
+        </label>
+        <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
+          Parola
+          <input name="password" type="password" required={adim === 1} minLength={6} autoComplete="new-password" placeholder="••••••••" className={inp} />
+        </label>
 
-      <Gonder />
+        {rol === "uretici" ? (
+          <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
+            Vergi no <span className="font-normal text-ink-soft/70">(firma doğrulaması için)</span>
+            <input name="vergi_no" inputMode="numeric" placeholder="VKN" className={inp} />
+          </label>
+        ) : null}
+        {rol === "ofis_yetkili" ? (
+          <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
+            Ofis / Franchise adı
+            <input name="ofis_adi" placeholder="ör. Demo Gayrimenkul" className={inp} />
+          </label>
+        ) : null}
+
+        {emlakci ? (
+          <p className="rounded-xl border border-teal/20 bg-teal-soft/50 px-3.5 py-2.5 text-xs font-medium text-teal-d">
+            Sonraki adımda yetki belgelerini (barkodlu MYS + vergi levhası) yükleyeceksin. İstersen atlayabilirsin —
+            doğrulanana kadar yalnız demo projeyi görürsün.
+          </p>
+        ) : null}
+
+        <div className="mt-1 flex gap-3">
+          <button
+            type="button"
+            onClick={() => setAdim(0)}
+            className="min-h-12 rounded-xl border border-hair px-5 text-base font-bold text-ink-soft transition-colors hover:bg-soft"
+          >
+            ← Geri
+          </button>
+          <Gonder />
+        </div>
+      </div>
     </form>
   );
 }

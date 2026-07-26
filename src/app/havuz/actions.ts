@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
 import { bildirimYaz } from "@/lib/bildirim";
 import { zUuid } from "@/lib/uuid";
+import { belgeleriKaydet } from "@/lib/belge";
 
 const uuid = zUuid;
 
@@ -79,35 +80,14 @@ export async function opsiyonTalepGonder(
     : { ok: true, mesaj: "Opsiyon talebin gönderildi — müteahhit onayına düştü" };
 }
 
-// ── KYC belge yükleme (mesleki yeterlilik + vergi levhası) → kyc-belge bucket + beklemede ──
-const BELGE_TIPLERI = ["mesleki_yeterlilik", "vergi_levhasi"] as const;
-
+// ── KYC belge yükleme (mesleki yeterlilik + vergi levhası) → lib/belge (tek upload kaynağı) ──
 export async function belgeYukle(formData: FormData): Promise<void> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-
-  let yuklendi = 0;
-  for (const tip of BELGE_TIPLERI) {
-    const file = formData.get(tip);
-    if (!(file instanceof File) || file.size === 0) continue;
-    if (file.size > 8 * 1024 * 1024) redirect(`/havuz/dogrulama?hata=${encodeURIComponent("Dosya 8MB'tan büyük olamaz")}`);
-    const uzanti = (file.name.split(".").pop() || "bin").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const yol = `${user.id}/${tip}-${Date.now()}.${uzanti}`;
-    const { error: upErr } = await supabase.storage
-      .from("kyc-belge")
-      .upload(yol, file, { upsert: true, contentType: file.type || undefined });
-    if (upErr) redirect(`/havuz/dogrulama?hata=${encodeURIComponent(upErr.message)}`);
-    await supabase.from("kullanici_belge").insert({ profile_id: user.id, tip, url: yol, durum: "beklemede" });
-    yuklendi++;
-  }
-  // belge_durumu='beklemede' (trigger 'dogrulandi'yi engeller; bunu yalnız admin yapar)
-  if (yuklendi > 0) await supabase.from("profiles").update({ belge_durumu: "beklemede" }).eq("id", user.id);
+  const r = await belgeleriKaydet(formData);
+  if (!r.ok && r.hata === "AUTH") redirect("/login");
+  if (!r.ok) redirect(`/havuz/dogrulama?hata=${encodeURIComponent(r.hata)}`);
   revalidatePath("/havuz/dogrulama");
   revalidatePath("/havuz");
-  redirect(`/havuz/dogrulama?mesaj=${encodeURIComponent(yuklendi > 0 ? "Belgeler yüklendi — doğrulama bekleniyor" : "Dosya seçilmedi")}`);
+  redirect(`/havuz/dogrulama?mesaj=${encodeURIComponent(r.yuklendi > 0 ? "Belgeler yüklendi — doğrulama bekleniyor" : "Dosya seçilmedi")}`);
 }
 
 /** Emlakçı kendi BEKLEYEN talebini geri çeker. */

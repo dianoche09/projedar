@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { belgeleriKaydet } from "@/lib/belge";
 
 // Self-registration — rol seçimli. Kayıt 'onay_bekliyor' başlar (handle_new_user trigger).
 const kayitSemasi = z.object({
@@ -47,6 +48,18 @@ export async function kayitOl(formData: FormData) {
     redirect(`/kayit?hata=${encodeURIComponent(error.message)}`);
   }
 
-  // E-posta onayı kapalı (test) → oturum açık; hesap onay_bekliyor → bekleme ekranı
+  // E-posta onayı kapalı (test) → oturum açık. Emlakçı → belge adımı (opsiyonel, atlanabilir);
+  // diğerleri → bekleme ekranı. Hesap onay_bekliyor + belge_durumu ayrı gate'ler.
+  redirect(talep_rol === "emlakci" ? "/kayit/belge" : "/hesap-bekliyor");
+}
+
+/**
+ * Kayıt wizard'ının 3. adımı — emlakçı yetki belgesi (MYS + vergi levhası) yükler.
+ * Atlanabilir: yüklemezse belge_durumu='yok' kalır → doğrulanana kadar yalnız demo proje görür.
+ */
+export async function kayitBelgeYukle(formData: FormData): Promise<void> {
+  const r = await belgeleriKaydet(formData);
+  if (!r.ok && r.hata === "AUTH") redirect("/login");
+  if (!r.ok) redirect(`/kayit/belge?hata=${encodeURIComponent(r.hata)}`);
   redirect("/hesap-bekliyor");
 }
