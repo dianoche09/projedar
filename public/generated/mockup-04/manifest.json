@@ -1,0 +1,45 @@
+{
+  "rota": "/mockup-04",
+  "konsept": "Cinematic Property Infrastructure",
+  "tarih": "2026-07-26",
+  "heygen": "atlandı, anahtar yok",
+  "video": "üretilmedi (maliyet); sinematik hareket CSS/scroll parallax + ken-burns ile",
+  "varliklar": [
+    {
+      "dosya": "hero-kule.jpg",
+      "kullanim": "Hero arka planı (masaüstü). Sol-üst boş gökyüzü UI bindirmesi için negatif alan.",
+      "model": "fal-ai/flux-2/klein/9b",
+      "prompt": "Cinematic architectural photograph of a contemporary Turkish residential tower facade at dusk blue hour, upward three-quarter angle from street level, modern apartment block with clean concrete and glass balconies, scattered warm amber window lights glowing against deep blue evening sky, thin low mist around upper floors, 35mm lens, shallow atmospheric haze, moody filmic color grade with teal-blue shadows, large empty dark blue sky occupying the upper-left half of the frame as negative space, no signage, no billboards, no visible text anywhere, no people, muted desaturated tones, subtle film grain, photorealistic editorial architecture photography, not a 3D render",
+      "negative_prompt": "modelde ayrı negatif parametresi yok; negatifler prompt içine gömüldü (no text, no watermark, no people, muted tones)",
+      "seed": 41207,
+      "aspect_ratio": "1920x1088 (16:9)"
+    },
+    {
+      "dosya": "hero-kule-mobil.jpg",
+      "kullanim": "Hero arka planı (mobil dikey kompozisyon). Üst üçte bir boş gökyüzü.",
+      "model": "fal-ai/flux-2/klein/9b",
+      "prompt": "Vertical cinematic architectural photograph of a contemporary Turkish residential tower at dusk blue hour, seen from below looking up along the facade, modern concrete and glass apartment building with warm lit windows scattered across floors, deep blue evening sky filling the top third of the frame as empty negative space, faint mist near the top floors, 35mm lens feel, moody filmic teal-blue color grade, muted tones, subtle grain, no signage, no text, no people, photorealistic editorial photography, portrait orientation composition",
+      "negative_prompt": "prompt içine gömüldü",
+      "seed": 88311,
+      "aspect_ratio": "1024x1536 (2:3 dikey)"
+    },
+    {
+      "dosya": "cephe-frontal.jpg",
+      "kullanim": "Signature moment: scroll ile kamera yaklaşması + cephe pencerelerinin veri hücresine dönüşmesi (tıklanabilir katman).",
+      "model": "fal-ai/flux-2/klein/9b",
+      "prompt": "Straight-on frontal elevation photograph of a modern Turkish residential apartment building facade at dusk, perfectly flat perspective like an architectural survey photo, regular grid of identical balconies and large windows across eight floors, roughly half the windows glowing warm amber and the rest dark, deep blue-graphite evening light, thin mist, 35mm lens, flat frontal composition filling the frame edge to edge, moody cinematic teal-blue grade, muted desaturated palette, no signage, no text, no people, no cars, photorealistic editorial architecture photography, subtle film grain",
+      "negative_prompt": "prompt içine gömüldü",
+      "seed": 52644,
+      "aspect_ratio": "1600x1216 (~4:3)"
+    },
+    {
+      "dosya": "final-ag.jpg",
+      "kullanim": "Final CTA arka planı: birden çok kule, büyümüş ağ hissi; üzerine nabız noktaları bindirilir.",
+      "model": "fal-ai/flux-2/klein/9b",
+      "prompt": "Wide cinematic night photograph of a cluster of contemporary Turkish residential towers at late blue hour, elevated viewpoint across a quiet district, three or four modern apartment buildings at different distances with constellations of warm lit windows, deep navy sky with faint fog between the buildings, city lights softly diffused, 35mm lens, large dark sky as negative space across the top of the frame, moody filmic teal and amber grade, muted tones, subtle grain, no signage, no readable text, no people, photorealistic editorial night architecture photography",
+      "negative_prompt": "prompt içine gömüldü",
+      "seed": 17902,
+      "aspect_ratio": "1920x1088 (16:9)"
+    }
+  ]
+}
