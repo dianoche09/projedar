@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Share2, Clock } from "lucide-react";
+import { UyelikPopup } from "@/components/UyelikPopup";
 
 /**
  * Tam genişlik interaktif "Canlı Havuz" demosu.
@@ -64,6 +65,7 @@ const planSrc = (tip: string) => `/gorseller/kat-plani-${tip.replace("+", "-")}.
 export function CanliHavuzDemo() {
   const [gorunum, setGorunum] = useState<"kesit" | "tablo">("kesit");
   const [modal, setModal] = useState<Daire | null>(null);
+  const [uyelik, setUyelik] = useState(false);
 
   useEffect(() => {
     if (!modal) return;
@@ -166,12 +168,15 @@ export function CanliHavuzDemo() {
         </div>
       )}
 
-      {modal ? <DaireDetay daire={modal} onKapat={() => setModal(null)} /> : null}
+      {modal ? (
+        <DaireDetay daire={modal} onKapat={() => setModal(null)} onUyelik={() => { setModal(null); setUyelik(true); }} />
+      ) : null}
+      {uyelik ? <UyelikPopup onKapat={() => setUyelik(false)} /> : null}
     </div>
   );
 }
 
-function DaireDetay({ daire, onKapat }: { daire: Daire; onKapat: () => void }) {
+function DaireDetay({ daire, onKapat, onUyelik }: { daire: Daire; onKapat: () => void; onUyelik: () => void }) {
   const meta = DURUM_META[daire.durum];
   const musait = daire.durum === "musait";
   return (
@@ -216,8 +221,8 @@ function DaireDetay({ daire, onKapat }: { daire: Daire; onKapat: () => void }) {
             {musait ? (
               <>
                 <div className="mt-4 flex gap-2.5">
-                  <button type="button" className="btn-action h-11 flex-1 text-[14px]"><Share2 size={15} strokeWidth={2} /> Müşteriye paylaş</button>
-                  <button type="button" className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-[13px] border border-amber bg-white text-[14px] font-semibold text-[#9a6a12]"><Clock size={15} strokeWidth={2} /> Opsiyon al</button>
+                  <button type="button" onClick={onUyelik} className="btn-action h-11 flex-1 text-[14px]"><Share2 size={15} strokeWidth={2} /> Müşteriye paylaş</button>
+                  <button type="button" onClick={onUyelik} className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-[13px] border border-amber bg-white text-[14px] font-semibold text-[#9a6a12] transition-colors hover:bg-amber-soft"><Clock size={15} strokeWidth={2} /> Opsiyon al</button>
                 </div>
                 <p className="mt-3 font-mono text-[10px] text-[var(--ink-faint)]">Örnek görünüm · gerçek üründe fiyat paylaşımda canlı değerden basılır</p>
               </>
