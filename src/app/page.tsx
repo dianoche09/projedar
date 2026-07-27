@@ -176,6 +176,32 @@ export default async function Home() {
       {/* ============ HERO: Zaman Akışı (mockup-07'den; 3 fazlı video, kullanıcı seçimi) ============ */}
       <HeroZamanAkisi />
 
+      {/* ============ NEDİR KARTI: hero'nun hemen altında (kullanıcı seçimi) ============ */}
+      <section className="relative px-5 py-14 sm:px-6 sm:py-16">
+        <Reveal>
+          <div className="mx-auto w-full max-w-5xl rounded-[28px] border border-[var(--cizgi)] bg-white p-7 shadow-[var(--golge-2)] sm:p-10 lg:p-12">
+            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+              <div>
+                <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Nedir</p>
+                <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+                  <DegilRotasyonu /> değil,
+                  <br />
+                  <span className="inline-block border-b-[0.12em] border-green pb-0.5">dağıtım altyapısı</span>
+                </h2>
+              </div>
+              <div className="content-center">
+                <p className="text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
+                  İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve
+                  kimin göreceğini tek noktadan yönetir. Danışman yalnız kendisine tahsisli birimleri
+                  görür ve müşterisine her zaman canlı değerle paylaşır. Faz ilerledikçe değişen tek
+                  şey fiyattır; kaydın adresi hiç değişmez.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
       {/* ============ BOZUK SİSTEM: dört kanal çelişkisi (mockup-02'den) ============ */}
       <section className="border-b border-[var(--cizgi)]">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
@@ -215,32 +241,6 @@ export default async function Home() {
           {/* kontrolsüz dağılım vs kontrollü ağ (mockup-03'ten): eski fiyat sızar, canlı link kayıttan okur */}
           <Reveal delay={140} className="mt-14">
             <SizintiSahnesi />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============ NEDİR: değil-rotasyonu + üç ilke (mockup-07'den) ============ */}
-      <section className="border-b border-[var(--cizgi)]">
-        <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-6 sm:py-20">
-          <Reveal>
-            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
-              <div>
-                <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Nedir</p>
-                <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-                  <DegilRotasyonu /> değil,
-                  <br />
-                  <span className="inline-block border-b-[0.12em] border-green pb-0.5">dağıtım altyapısı</span>
-                </h2>
-              </div>
-              <div className="content-center">
-                <p className="text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
-                  İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve
-                  kimin göreceğini tek noktadan yönetir. Danışman yalnız kendisine tahsisli birimleri
-                  görür ve müşterisine her zaman canlı değerle paylaşır. Faz ilerledikçe değişen tek
-                  şey fiyattır; kaydın adresi hiç değişmez.
-                </p>
-              </div>
-            </div>
           </Reveal>
         </div>
       </section>
