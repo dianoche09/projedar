@@ -7,6 +7,7 @@ import { IkiTaraf } from "@/components/landing/IkiTaraf";
 import { AkisFeed } from "@/components/landing/AkisFeed";
 import { HeroFazSeridi } from "@/components/landing/HeroZamanAkisi";
 import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
+import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
 import { LuksStok } from "./LuksStok";
 
 /**
@@ -67,7 +68,9 @@ export default function Mockup07() {
               <div>
                 <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Nedir</p>
                 <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
-                  Satış ofisi yazılımı değil, dağıtım altyapısı
+                  <DegilRotasyonu /> değil,
+                  <br />
+                  dağıtım altyapısı
                 </h2>
                 <p className="mt-4 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
                   İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve

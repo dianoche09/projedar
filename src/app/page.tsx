@@ -8,6 +8,7 @@ import { Sayaclar } from "@/components/Sayaclar";
 import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
 import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
+import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
@@ -217,6 +218,42 @@ export default async function Home() {
                   <span key={t} className="rounded-full border border-[var(--cizgi-2)] bg-white px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-soft">
                     {t}
                   </span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============ NEDİR: değil-rotasyonu + üç ilke (mockup-07'den) ============ */}
+      <section className="border-b border-[var(--cizgi)]">
+        <div className="mx-auto w-full max-w-6xl px-5 py-16 sm:px-6 sm:py-20">
+          <Reveal>
+            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+              <div>
+                <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Nedir</p>
+                <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+                  <DegilRotasyonu /> değil,
+                  <br />
+                  dağıtım altyapısı
+                </h2>
+                <p className="mt-4 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
+                  İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve
+                  kimin göreceğini tek noktadan yönetir. Danışman yalnız kendisine tahsisli birimleri
+                  görür ve müşterisine her zaman canlı değerle paylaşır. Faz ilerledikçe değişen tek
+                  şey fiyattır; kaydın adresi hiç değişmez.
+                </p>
+              </div>
+              <div className="grid content-center gap-3 sm:grid-cols-3 lg:gap-4">
+                {[
+                  ["TEK KAYIT", "Fiyat ve durum yalnız birim kaydında yaşar; kopyası olmaz."],
+                  ["FAZ SENKRONU", "Temel, kaba yapı, teslim: her karede aynı canlı değer okunur."],
+                  ["YETKİ KAPISI", "Kim hangi kuleyi görür, üretici tahsisle tanımlar."],
+                ].map(([b, a]) => (
+                  <div key={b} className="rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
+                    <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.1em] text-[var(--color-teal-d)]">{b}</p>
+                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">{a}</p>
+                  </div>
                 ))}
               </div>
             </div>
