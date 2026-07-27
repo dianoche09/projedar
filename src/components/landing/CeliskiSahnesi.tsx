@@ -154,26 +154,14 @@ export function CeliskiSahnesi() {
         ))}
       </div>
 
-      {/* sonuç sahnesi: soru -> kontrol (yükseklik ayrılmış, sayfa zıplamaz) */}
-      <div className="mt-10 min-h-[220px] sm:min-h-[200px]">
-        {faz === "celiski" || kontrolde ? (
-          <p
-            className={`m2-dev m2-kelime text-[clamp(1.9rem,6.4vw,4.6rem)] transition-opacity duration-500 ${
-              kontrolde ? "opacity-45" : ""
-            }`}
-            style={{ color: "#d15a4e" }}
-          >
-            Hangisi güncel?
-          </p>
-        ) : null}
-
-        {kontrolde ? (
-          <div className="m2-damga mt-5">
-            <p className="m2-dev text-[clamp(2.1rem,7vw,5rem)] text-[var(--m2-kagit-ink)]">
-              Tek canlı <span className="text-[#1f7d4c]">gerçek.</span>
-            </p>
-          </div>
-        ) : null}
+      {/* sonuç: sabit iki satır (kullanıcı isteği: animasyonsuz) */}
+      <div className="mt-10">
+        <p className="m2-dev text-[clamp(1.9rem,6.4vw,4.6rem)]" style={{ color: "#d15a4e" }}>
+          Hangisi güncel?
+        </p>
+        <p className="m2-dev mt-4 text-[clamp(2.1rem,7vw,5rem)] text-[var(--m2-kagit-ink)]">
+          Tek canlı <span className="text-[#1f7d4c]">gerçek.</span>
+        </p>
       </div>
     </div>
   );
