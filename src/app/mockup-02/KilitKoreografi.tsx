@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useAzalt } from "./useAzalt";
+import { useAzalt } from "@/components/landing/useAzalt";
 
 /**
  * KilitKoreografi · Mockup 02 "çift satış kalkanı" bölümü.

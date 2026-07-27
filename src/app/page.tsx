@@ -6,6 +6,9 @@ import { panelYolu } from "@/lib/roller";
 import { Logo } from "@/components/Logo";
 import { Sayaclar } from "@/components/Sayaclar";
 import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
+import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
+import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
+import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
 import { CanliPortfoy } from "@/components/CanliPortfoy";
@@ -110,19 +113,6 @@ const PORTFOY = [
   { src: "/gorseller/render-meydan-park.jpg", ad: "Meydan Park", konum: "Ankara · Etimesgut", musait: 44, opsiyon: 9, satildi: 17, taze: "37 dk önce", sinyal: "Yeni açıldı", g: 62, a: 13, r: 25 },
 ];
 
-const VS_KOTU = [
-  "Fiyat 3 yerde 3 farklı, hangisi güncel belli değil",
-  "Aynı daire iki danışmana satılır, sonra çakışma",
-  "Eski PDF / ekran görüntüsü müşteriye gider, rezil olunur",
-  "Proje sahibi kime ne gittiğini bilmez, kontrol yok",
-];
-const VS_IYI = [
-  "Fiyat tek kaynakta; paylaşımda canlı değerden basılır",
-  "Çift-satış kalkanı veritabanı seviyesinde kilitler",
-  'Her veride "● X önce", bayatladıkça rozet renk değiştirir',
-  "Tahsis proje sahibinde, kim neyi görür, sen belirlersin",
-];
-
 const SSS: { s: string; c: string }[] = [
   { s: "ProjePazar bir ilan portalı mı?", c: "Hayır. ProjePazar, proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır." },
   { s: "Gayrimenkul danışmanı için ücretli mi?", c: "Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz. Danışman canlı havuzdaki projeleri görür ve müşterisine paylaşır." },
@@ -178,6 +168,61 @@ export default async function Home() {
 
       {/* ============ HERO: Zaman Akışı (mockup-07'den; 3 fazlı video, kullanıcı seçimi) ============ */}
       <HeroZamanAkisi />
+
+      {/* ============ BOZUK SİSTEM: dört kanal çelişkisi (mockup-02'den) ============ */}
+      <section className="border-b border-[var(--cizgi)]">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#a23f34]">Bozuk sistem</p>
+            <h2 className="mt-3 max-w-3xl font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+              Aynı daire. Dört kanal. Dört ayrı fiyat.
+            </h2>
+            <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+              Excel ekleri, PDF sürümleri, WhatsApp mesajları, telefon notları: her kopya kendi gerçeğini anlatır. Kaos aşağıda; izleyin.
+            </p>
+          </Reveal>
+          <Reveal delay={100} className="mt-10">
+            <CeliskiSahnesi />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============ ŞANTİYE İLERLER, PDF YAŞLANIR (mockup-07'den) ============ */}
+      <section className="border-b border-[var(--cizgi)] bg-white/55">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Zamanla yarış</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Şantiye ilerler, PDF yaşlanır</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                Temelde dağıtılan fiyat listesi kaba yapıda çoktan eskimiştir. Danışman Şubat sürümünü anlatırken şantiye iki faz ileridedir;
+                müşteriye söylenen rakam çağın gerisinde kalır. Fazı ilerlet, farkın nasıl açıldığını izle:
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100} className="mt-12">
+            <EskiyenPdf />
+          </Reveal>
+          <Reveal delay={140}>
+            <div className="mx-auto mt-10 max-w-2xl text-center">
+              <p className="text-pretty text-[15px] font-bold leading-relaxed text-ink sm:text-base">
+                Alıcı milyonluk daireye bakıyor; danışman 41 günlük dosyaya.
+              </p>
+              <p className="mx-auto mt-2 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft">
+                Lüks segmentte güven, kelimeden önce veriyle kurulur. Eski fiyat söyleyen danışman yalnız satışı değil, projenin itibarını da
+                riske atar. Sorun kişiler değil, mimari: stok tek kaynaktan akmıyor; kaynağından kopan fiyat her yere sızar ve yaşlanır.
+              </p>
+              <div className="mt-5 flex flex-wrap justify-center gap-2">
+                {["Liste yaşı: 41 gün", "Kopya sayısı: bilinmiyor", "Çift satış riski: açık"].map((t) => (
+                  <span key={t} className="rounded-full border border-[var(--cizgi-2)] bg-white px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-soft">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============ CANLI PORTFÖY ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
@@ -353,36 +398,6 @@ export default async function Home() {
 
       {/* ============ CANLI KOMUTA MERKEZİ (koyu) ============ */}
       <CanliKomutaMerkezi />
-
-      {/* ============ PORTAL VS PROJEPAZAR ============ */}
-      <section className="relative">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Neden farklı</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">İlan portalı değil.<br className="hidden sm:block" /> Güven protokolü.</h2>
-            </div>
-          </Reveal>
-          <div className="mx-auto mt-12 grid max-w-4xl gap-5 md:grid-cols-2">
-            <Reveal>
-              <div className="h-full rounded-[20px] border border-[var(--cizgi)] p-6" style={{ background: "linear-gradient(180deg,#fbf1ef,#f8e9e6)" }}>
-                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold tracking-tight text-[#a23f34]">⚠ Dağınık portal · Excel · WhatsApp</p>
-                <ul className="flex flex-col">
-                  {VS_KOTU.map((t) => (<li key={t} className="flex gap-2.5 border-t border-dashed border-[rgba(16,36,58,0.1)] py-2 text-[13.5px] text-ink first:border-t-0"><span className="font-bold text-red">✕</span> {t}</li>))}
-                </ul>
-              </div>
-            </Reveal>
-            <Reveal delay={120}>
-              <div className="kart h-full p-6">
-                <p className="mb-3.5 flex items-center gap-2 font-display text-base font-bold tracking-tight text-[var(--color-teal-d)]">◆ ProjePazar</p>
-                <ul className="flex flex-col">
-                  {VS_IYI.map((t) => (<li key={t} className="flex gap-2.5 border-t border-dashed border-[rgba(16,36,58,0.1)] py-2 text-[13.5px] text-ink first:border-t-0"><span className="font-bold text-green">✓</span> {t}</li>))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
 
       {/* ============ GÜVEN / TEMİNAT ============ */}
       <section className="relative isolate overflow-hidden border-t border-[var(--cizgi)] bg-white/55">

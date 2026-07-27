@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useAzalt } from "./useAzalt";
+import { useAzalt } from "@/components/landing/useAzalt";
 
 /* Hallmark · hero: Eriyen Sayı (H4 stat-led) · tone: control-room restraint
  * Sahnenin nesnesi DEV TABULAR SAYI: müsait daire adedi. TEK sakin dram:

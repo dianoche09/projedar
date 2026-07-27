@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AkisFeed } from "@/components/landing/AkisFeed";
 import { KuleDemo } from "@/components/landing/KuleDemo";
-import { CeliskiSahnesi } from "./CeliskiSahnesi";
+import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
 import { HeroDevKelime } from "./HeroDevKelime";
 import { KilitKoreografi } from "./KilitKoreografi";
 import "./mockup02.css";

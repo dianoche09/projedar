@@ -6,7 +6,7 @@ import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { IkiTaraf } from "@/components/landing/IkiTaraf";
 import { AkisFeed } from "@/components/landing/AkisFeed";
 import { HeroFazSeridi } from "@/components/landing/HeroZamanAkisi";
-import { EskiyenPdf } from "./EskiyenPdf";
+import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
 import { LuksStok } from "./LuksStok";
 
 /**
