@@ -207,6 +207,28 @@ export function HeroFazSeridi() {
         </div>
       </div>
 
+      {/* dev müsait sayısı: sağda, faz değiştikçe erir (m02 eriyen sayı dili) */}
+      <div
+        className="pointer-events-none absolute bottom-28 right-5 z-10 text-right sm:bottom-32 sm:right-10 lg:right-14"
+        aria-live="polite"
+      >
+        <style>{`@keyframes ppSayiGir { from { opacity: 0; transform: translateY(0.16em); } to { opacity: 1; transform: translateY(0); } }`}</style>
+        <p
+          key={tukendi ? "son" : faz}
+          className="font-mono font-semibold tabular-nums leading-[0.82] tracking-tight [text-shadow:0_2px_28px_rgba(8,16,28,0.6)]"
+          style={{
+            fontSize: "clamp(4.5rem, 15vw, 11.5rem)",
+            color: tukendi ? "#ff8a7a" : "#fff",
+            animation: azalt ? undefined : "ppSayiGir 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
+          }}
+        >
+          {tukendi ? 0 : aktif.musait}
+        </p>
+        <p className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
+          müsait daire · / 142 · canlı
+        </p>
+      </div>
+
       {/* TÜKENDİ anı */}
       <div
         className="pointer-events-none absolute left-1/2 top-[46%] z-10 -translate-x-1/2 transition-all duration-700"
@@ -242,12 +264,12 @@ export function HeroFazSeridi() {
             </p>
           </div>
           <div className="flex items-center gap-5">
-            <p className="font-mono text-[12.5px] tracking-wide text-white/85">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60">
               <span
                 className="mr-1.5 inline-block size-2 rounded-full align-middle"
                 style={{ background: tukendi ? "var(--color-red, #d15a4e)" : "var(--color-green, #2fb36b)" }}
               />
-              müsait: <b className="font-bold tabular-nums text-white">{tukendi ? 0 : aktif.musait}</b> / 142 · örnek akış
+              örnek akış
             </p>
             <button
               type="button"
