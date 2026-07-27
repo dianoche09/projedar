@@ -41,11 +41,15 @@ export function HeroBina({ mobil = false }: { mobil?: boolean }) {
     <div className={mobil ? "pointer-events-none absolute inset-0 z-0" : "pointer-events-none absolute inset-y-0 right-0 z-0 hidden lg:block lg:w-[66%]"}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/gorseller/hero-bina.jpg"
+        src="/generated/shared/buyuk-site-maketi.jpg"
         alt=""
         aria-hidden
         className="size-full object-cover"
-        style={mobil ? undefined : { WebkitMaskImage: maske, maskImage: maske }}
+        style={
+          mobil
+            ? { objectPosition: "70% 45%" }
+            : { WebkitMaskImage: maske, maskImage: maske, objectPosition: "84% 45%" }
+        }
       />
       {/* sol/zemin renk eritme — metin tarafı okunur kalsın (yalnız desktop arka plan modunda) */}
       {mobil ? null : (
