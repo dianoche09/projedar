@@ -11,7 +11,6 @@ import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
 import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
-import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
@@ -330,12 +329,6 @@ export default async function Home() {
           </Reveal>
           <Reveal delay={100} className="mt-12">
             <KapiHaritasi />
-          </Reveal>
-          <Reveal delay={100} className="mt-14">
-            <p className="mb-4 text-center font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--ink-faint)]">
-              Aynı kural, üretici panelinde böyle görünür
-            </p>
-            <TahsisPaneli />
           </Reveal>
         </div>
       </section>
