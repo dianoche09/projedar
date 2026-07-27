@@ -158,8 +158,9 @@ export function HeroFazSeridi() {
           <h1 className="mt-3 max-w-[14ch] font-display text-[11vw] font-extrabold leading-[1.0] tracking-tight sm:text-[64px] lg:text-[80px]">
             Bloklar yükselir. Stok erir.
           </h1>
-          <p className="mt-4 max-w-[44ch] text-pretty text-[15px] leading-relaxed text-white/85 sm:text-[16.5px]">
-            İnşaat ilerlerken satış ağınız çalışır: her opsiyon anında kilitlenir, her fiyat canlı basılır, teslim gününe stok kalmaz.
+          <p className="mt-4 max-w-[52ch] text-pretty text-[15px] leading-relaxed text-white/85 sm:text-[16.5px]">
+            ProjePazar, müteahhidin canlı stoğunu tek noktadan yönettiği, yalnız tahsis ettiği danışmanlara
+            açtığı dağıtım ağıdır. Fiyat ve durum tek kaynaktan dağıtılır; satış sürecinde herkes aynı doğruyu görür.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-5">
             <Link
