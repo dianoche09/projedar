@@ -341,40 +341,6 @@ export default async function Home() {
       {/* ============ İSTATİSTİK ŞERİDİ ============ */}
       <section className="relative px-5 py-10 sm:px-6"><Sayaclar /></section>
 
-      {/* ============ ÇOK-MÜTEAHHİT AĞ ETKİSİ ============ */}
-      <section className="relative">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Ağ etkisi</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Tek-müteahhit aracı değil. Ağ.</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Tek-proje satış yazılımları her firmayı kendi izole adasında tutar. ProjePazar hepsini tek canlı havuzda birleştirir: bir danışman onlarca müteahhidin kendisine tahsisli stoğunu tek ekrandan görür.</p>
-            </div>
-          </Reveal>
-          <Reveal delay={100}>
-            <div className="mx-auto mt-12 flex max-w-4xl flex-col items-stretch gap-4 sm:flex-row sm:items-center">
-              <div className="kart flex-1 p-6 text-center">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Çok müteahhit</p>
-                <p className="mt-2 font-display text-lg font-bold text-ink">Onlarca proje sahibi</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Her biri stoğunu, fiyatını ve tahsisini tek panelden yönetir.</p>
-              </div>
-              <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
-              <div className="kart signal-top flex-1 p-6 text-center" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Tek canlı havuz</p>
-                <p className="mt-2 font-display text-lg font-bold text-ink">Tek doğru kaynak</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Fiyat, durum ve tazelik tek yerde, kopya yok, sıfır çift-satış.</p>
-              </div>
-              <span className="mx-auto text-2xl text-teal max-sm:rotate-90" aria-hidden>→</span>
-              <div className="kart flex-1 p-6 text-center">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Yetkili danışman ağı</p>
-                <p className="mt-2 font-display text-lg font-bold text-ink">Doğru danışmana</p>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">Her danışman yalnız kendine tahsisli daireleri görür ve paylaşır.</p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ============ İKİ TARAFLI FAYDA ============ */}
       <section id="kimler-icin" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
@@ -563,24 +529,25 @@ export default async function Home() {
         </Reveal>
       </section>
 
-      {/* ============ AĞ BÜYÜYOR: gece silüeti final (mockup-04'ten) ============ */}
-      <AgBuyuyor />
-
-      {/* ============ FOOTER ============ */}
-      <footer className="mt-auto border-t border-[var(--cizgi)] bg-white/60 backdrop-blur-md">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-5 py-12 sm:px-6 md:flex-row md:justify-between">
-          <div className="flex flex-col items-center gap-3 md:items-start">
-            <Logo size={24} wordmark />
-            <p className="max-w-xs text-center text-xs leading-relaxed text-ink-soft md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
-          </div>
-          <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-ink-soft">
-            <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-ink hover:underline">Kullanım Koşulları</Link>
-            <Link href="/gizlilik" className="transition-colors duration-200 hover:text-ink hover:underline">Gizlilik</Link>
-            <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
-          </nav>
-        </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
-      </footer>
+      {/* ============ AĞ BÜYÜYOR + FOOTER: gece silüetiyle birleşik kapanış (mockup-04'ten) ============ */}
+      <AgBuyuyor
+        altKisim={
+          <footer className="relative mt-auto border-t border-white/10">
+            <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-5 py-10 sm:px-6 md:flex-row md:justify-between">
+              <div className="flex flex-col items-center gap-3 md:items-start">
+                <Logo size={24} wordmark acik />
+                <p className="max-w-xs text-center text-xs leading-relaxed text-white/60 md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
+              </div>
+              <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-white/70">
+                <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-white hover:underline">Kullanım Koşulları</Link>
+                <Link href="/gizlilik" className="transition-colors duration-200 hover:text-white hover:underline">Gizlilik</Link>
+                <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-white hover:underline">KVKK Aydınlatma</Link>
+              </nav>
+            </div>
+            <div className="border-t border-white/10 px-5 py-5 text-center text-[11px] text-white/45 sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
+          </footer>
+        }
+      />
     </main>
   );
 }
