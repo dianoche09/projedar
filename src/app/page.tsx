@@ -14,6 +14,7 @@ import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
+import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
@@ -179,13 +180,34 @@ export default async function Home() {
       <section className="border-b border-[var(--cizgi)]">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
-            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#a23f34]">Bozuk sistem</p>
-            <h2 className="mt-3 max-w-3xl font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-              Aynı daire. Dört kanal. Dört ayrı fiyat.
-            </h2>
-            <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-              Excel ekleri, PDF sürümleri, WhatsApp mesajları, telefon notları: her kopya kendi gerçeğini anlatır. Kaos aşağıda; izleyin.
-            </p>
+            <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+              <div>
+                <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#a23f34]">Bozuk sistem</p>
+                <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+                  Aynı daire. Dört kanal. Dört ayrı fiyat.
+                </h2>
+                <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                  Excel ekleri, PDF sürümleri, WhatsApp mesajları, telefon notları: her kopya kendi gerçeğini anlatır. Kaos aşağıda; izleyin.
+                </p>
+              </div>
+              <div className="content-center">
+                <p className="text-pretty font-display text-lg font-bold leading-snug tracking-tight text-ink sm:text-xl">
+                  Alıcı milyonluk daireye bakıyor; danışman 41 günlük dosyaya.
+                </p>
+                <p className="mt-3 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
+                  Lüks segmentte güven, kelimeden önce veriyle kurulur. Eski fiyat söyleyen danışman
+                  yalnız satışı değil, projenin itibarını da riske atar. Sorun kişiler değil, mimari:
+                  stok tek kaynaktan akmıyor.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2 font-mono text-[11px] font-semibold">
+                  {["Liste yaşı: 41 gün", "Kopya sayısı: bilinmiyor", "Çift satış riski: açık"].map((c) => (
+                    <span key={c} className="rounded-full border border-[#d8b5ae] bg-[#faf1ef] px-3 py-1.5 text-[#a23f34]">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </Reveal>
           <Reveal delay={100} className="mt-10">
             <CeliskiSahnesi />
@@ -209,27 +231,53 @@ export default async function Home() {
                   <br />
                   <span className="inline-block border-b-[0.12em] border-green pb-0.5">dağıtım altyapısı</span>
                 </h2>
-                <p className="mt-4 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
+              </div>
+              <div className="content-center">
+                <p className="text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
                   İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve
                   kimin göreceğini tek noktadan yönetir. Danışman yalnız kendisine tahsisli birimleri
                   görür ve müşterisine her zaman canlı değerle paylaşır. Faz ilerledikçe değişen tek
                   şey fiyattır; kaydın adresi hiç değişmez.
                 </p>
               </div>
-              <div className="grid content-center gap-3 sm:grid-cols-3 lg:gap-4">
-                {[
-                  ["TEK KAYIT", "Fiyat ve durum yalnız birim kaydında yaşar; kopyası olmaz."],
-                  ["FAZ SENKRONU", "Temel, kaba yapı, teslim: her karede aynı canlı değer okunur."],
-                  ["YETKİ KAPISI", "Kim hangi kuleyi görür, üretici tahsisle tanımlar."],
-                ].map(([b, a]) => (
-                  <div key={b} className="rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
-                    <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.1em] text-[var(--color-teal-d)]">{b}</p>
-                    <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">{a}</p>
-                  </div>
-                ))}
-              </div>
+            </div>
+            <div className="mt-10 grid gap-3 sm:grid-cols-3 lg:gap-4">
+              {[
+                ["TEK KAYIT", "Fiyat ve durum yalnız birim kaydında yaşar; kopyası olmaz."],
+                ["FAZ SENKRONU", "Temel, kaba yapı, teslim: her karede aynı canlı değer okunur."],
+                ["YETKİ KAPISI", "Kim hangi kuleyi görür, üretici tahsisle tanımlar."],
+              ].map(([b, a]) => (
+                <div key={b} className="rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
+                  <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.1em] text-[var(--color-teal-d)]">{b}</p>
+                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">{a}</p>
+                </div>
+              ))}
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* ============ AKIŞ: nasıl çalışır (NEDİR'in devamı) ============ */}
+      <section id="nasil-calisir" className="relative scroll-mt-20 border-b border-[var(--cizgi)] bg-white/55">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Akış</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Nasıl çalışır?</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Stoktan satışa dört adım, her adımda tek doğru kaynak korunur, her değişiklik anında herkese yansır.</p>
+            </div>
+          </Reveal>
+          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {ADIMLAR.map((a, i) => (
+              <Reveal key={a.no} delay={i * 90}>
+                <li className="kart kart-3d relative flex h-full flex-col p-6">
+                  <span className="font-mono text-3xl font-extrabold tracking-tight text-teal/30">{a.no}</span>
+                  <h3 className="mt-3 font-display text-base font-bold tracking-tight text-ink">{a.baslik}</h3>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-ink-soft">{a.metin}</p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -433,31 +481,11 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ NASIL ÇALIŞIR ============ */}
-      <section id="nasil-calisir" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
+      {/* ============ PROJE DETAYI: ne yüklenir / ne görülür ============ */}
+      <section className="relative border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Akış</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Nasıl çalışır?</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Stoktan satışa dört adım, her adımda tek doğru kaynak korunur, her değişiklik anında herkese yansır.</p>
-            </div>
-          </Reveal>
-          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {ADIMLAR.map((a, i) => (
-              <Reveal key={a.no} delay={i * 90}>
-                <li className="kart kart-3d relative flex h-full flex-col p-6">
-                  <span className="font-mono text-3xl font-extrabold tracking-tight text-teal/30">{a.no}</span>
-                  <h3 className="mt-3 font-display text-base font-bold tracking-tight text-ink">{a.baslik}</h3>
-                  <p className="mt-2.5 text-[13px] leading-relaxed text-ink-soft">{a.metin}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-
-          {/* proje anatomisi, akışın devamı: ne yüklenir / ne görülür */}
-          <Reveal>
-            <div className="mx-auto mt-20 max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Proje detayı</p>
               <h3 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bir projede ne var, kim neyi görür?</h3>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Proje sahibi her şeyi tek noktadan yükler; gayrimenkul danışmanı satışa lazım olanı canlı görür.</p>
@@ -578,6 +606,9 @@ export default async function Home() {
           </div>
         </Reveal>
       </section>
+
+      {/* ============ AĞ BÜYÜYOR: gece silüeti final (mockup-04'ten) ============ */}
+      <AgBuyuyor />
 
       {/* ============ FOOTER ============ */}
       <footer className="mt-auto border-t border-[var(--cizgi)] bg-white/60 backdrop-blur-md">
