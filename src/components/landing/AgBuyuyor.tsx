@@ -19,7 +19,7 @@ const NOKTALAR: { x: string; y: string; renk: string; gecikme: number }[] = [
   { x: "88%", y: "58%", renk: "#3fbfae", gecikme: 2.9 },
 ];
 
-export function AgBuyuyor() {
+export function AgBuyuyor({ altKisim }: { altKisim?: React.ReactNode } = {}) {
   const azHareket = useReducedMotion();
 
   return (
@@ -108,6 +108,9 @@ export function AgBuyuyor() {
             </p>
           </motion.div>
         </div>
+
+        {/* isteğe bağlı alt kısım: ana sayfada footer bu görselle birleşir */}
+        {altKisim}
       </div>
     </section>
   );
