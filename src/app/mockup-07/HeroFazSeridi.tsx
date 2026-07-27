@@ -34,7 +34,9 @@ export function HeroFazSeridi() {
   // adım 0-1-2 = fazlar · adım 3 = teslim karesinde "tükendi" tutuşu
   const [adim, setAdim] = useState(0);
   const [oynuyor, setOynuyor] = useState(true);
+  const [azalt, setAzalt] = useState(false);
   const azaltRef = useRef(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const faz = Math.min(adim, FAZLAR.length - 1);
   const tukendi = adim === 3;
@@ -45,14 +47,25 @@ export function HeroFazSeridi() {
     azaltRef.current = azalt;
     if (!azalt) return;
     const raf = requestAnimationFrame(() => {
+      setAzalt(true);
       setAdim(3);
       setOynuyor(false);
     });
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  /** Video zamanı → satış aşaması: 8sn'lik timelapse 4 adıma bölünür (son dilim = tükendi). */
+  const videoZamani = () => {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    const oran = v.currentTime / v.duration;
+    const yeni = oran < 0.3 ? 0 : oran < 0.62 ? 1 : oran < 0.86 ? 2 : 3;
+    setAdim((a) => (a === yeni ? a : yeni));
+  };
+
+  // reduced-motion fallback'inde (video yok) eski zamanlayıcı döngüsü çalışsın
   useEffect(() => {
-    if (!oynuyor) return;
+    if (!oynuyor || !azaltRef.current) return;
     const id = setInterval(() => setAdim((a) => (a + 1) % 4), ADIM_SURE);
     return () => clearInterval(id);
   }, [oynuyor]);
@@ -62,25 +75,24 @@ export function HeroFazSeridi() {
       className="relative h-svh min-h-[640px] overflow-hidden bg-ink text-white"
       aria-label="Proje zaman akışı: inşaattan teslime, satışlar faz faz tükenir"
     >
-      {/* 3 faz görseli üst üste; aktif görünür (video hissi: yavaş crossfade + hafif ölçek) */}
-      {FAZLAR.map((f, i) => (
-        <div
-          key={f.gorsel}
-          className="absolute inset-0 transition-opacity duration-[1400ms] ease-out"
-          style={{ opacity: i === faz ? 1 : 0 }}
-          aria-hidden={i !== faz}
-        >
-          <Image
-            src={f.gorsel}
-            alt=""
-            fill
-            priority={i === 0}
-            sizes="100vw"
-            className="object-cover object-[50%_38%] transition-transform duration-[6000ms] ease-linear"
-            style={{ transform: i === faz ? "scale(1.045)" : "scale(1.0)" }}
-          />
-        </div>
-      ))}
+      {/* GERÇEK VİDEO: inşaattan teslime tek çekim timelapse (Seedance i2v, başlangıç=kaba, bitiş=tamam).
+          reduced-motion / video oynatılamıyorsa: statik teslim karesi fallback. */}
+      {azalt ? (
+        <Image src={FAZLAR[2].gorsel} alt="" fill priority sizes="100vw" className="object-cover object-[50%_38%]" />
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 size-full object-cover object-[50%_38%]"
+          src="/generated/mockup-07/insaat-timelapse.mp4"
+          poster={FAZLAR[0].gorsel}
+          autoPlay
+          muted
+          loop
+          playsInline
+          onTimeUpdate={videoZamani}
+          aria-hidden
+        />
+      )}
       <div
         aria-hidden
         className="absolute inset-0"
@@ -151,7 +163,11 @@ export function HeroFazSeridi() {
                 <button
                   key={f.etiket}
                   type="button"
-                  onClick={() => setAdim(i)}
+                  onClick={() => {
+                    setAdim(i);
+                    const v = videoRef.current;
+                    if (v && v.duration) v.currentTime = (i === 0 ? 0.05 : i === 1 ? 0.4 : 0.7) * v.duration;
+                  }}
                   className={`h-1.5 rounded-full transition-all duration-300 ${i === faz && !tukendi ? "w-7 bg-white" : "w-3 bg-white/35 hover:bg-white/60"}`}
                   aria-label={`Faz ${i + 1}: ${f.etiket}`}
                 />
@@ -171,7 +187,14 @@ export function HeroFazSeridi() {
             </p>
             <button
               type="button"
-              onClick={() => setOynuyor((o) => (azaltRef.current ? false : !o))}
+              onClick={() => {
+                const v = videoRef.current;
+                if (v) {
+                  if (v.paused) void v.play();
+                  else v.pause();
+                }
+                setOynuyor((o) => (azaltRef.current ? false : !o));
+              }}
               className="min-h-9 rounded-full border border-white/30 px-4 font-mono text-[11.5px] font-semibold text-white/90 transition-colors hover:border-white/60 hover:bg-white/10"
             >
               {oynuyor ? "duraklat" : "oynat"}
