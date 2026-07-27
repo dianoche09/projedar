@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { panelYolu } from "@/lib/roller";
 import { Logo } from "@/components/Logo";
-import { HeroBina } from "@/components/HeroBina";
 import { Sayaclar } from "@/components/Sayaclar";
+import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
 import { CanliPortfoy } from "@/components/CanliPortfoy";
@@ -176,49 +176,8 @@ export default async function Home() {
         </nav>
       </header>
 
-      {/* ============ HERO ============ */}
-      <section className="relative isolate overflow-hidden">
-        <div className="hero-aurora" aria-hidden />
-        <HeroBina />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-8 sm:px-6 lg:pb-28 lg:pt-28">
-          {/* mobil: bina görseli en üstte, başlığın önünde (arka plana binmez) */}
-          <div className="relative mb-7 h-52 overflow-hidden rounded-[20px] border border-[var(--cizgi)] shadow-[var(--golge-2)] lg:hidden">
-            <HeroBina mobil />
-          </div>
-          <div className="max-w-xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(30,155,138,0.22)] bg-[var(--color-teal-soft)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[var(--color-teal-d)]">
-              <span className="size-2 rounded-full bg-green nabiz" /> GELİŞTİRİCİ FİRMALAR İÇİN CANLI PROJE SATIŞ AĞI
-            </span>
-            <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              “Bu daire hâlâ müsait mi?”
-              <br />
-              <span className="text-teal">Bu soru artık sorulmuyor.</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-<strong className="font-semibold text-ink">Stok, fiyat ve durum tek canlı havuzda.</strong> Paylaşılan her linkte fiyat canlı basılır; opsiyonlanan daire kilitlenir, <strong className="font-semibold text-ink">kimse üstüne satamaz</strong>. İlan portalı değil: <strong className="font-semibold text-ink">komisyonsuz</strong>, tahsisli, kapalı devre satış ağı.
-            </p>
-            <div className="mt-7 grid max-w-xl gap-3 sm:grid-cols-2">
-              <Link href="/muteahhit" className="group flex flex-col gap-0.5 rounded-[15px] bg-navy p-4 text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)]">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[#7fd9c8]">Proje sahibiyim</span>
-                <span className="font-display text-[15px] font-bold">Projemi ağa aç →</span>
-                <span className="text-[11px] leading-snug text-white/80">Stoğu, fiyatı ve kimin göreceğini tahsisle yönet.</span>
-              </Link>
-              <Link href="/emlakci" className="group flex flex-col gap-0.5 rounded-[15px] border border-[var(--cizgi-2)] bg-white p-4 text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-teal hover:shadow-[var(--golge-3)]">
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--color-teal-d)]">Gayrimenkul danışmanıyım</span>
-                <span className="font-display text-[15px] font-bold">Yetkili projelerimi gör →</span>
-                <span className="text-[11px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör, paylaş, opsiyon al. Ücretsiz.</span>
-              </Link>
-            </div>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {["Komisyonsuz", "Tahsisli görünürlük", "Sıfır çift-satış"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--cizgi-2)] bg-white/70 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur-sm">
-                  <span className="size-[5px] rounded-full bg-teal" /> {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ============ HERO: Zaman Akışı (mockup-07'den; 3 fazlı video, kullanıcı seçimi) ============ */}
+      <HeroZamanAkisi />
 
       {/* ============ CANLI PORTFÖY ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">

@@ -96,7 +96,13 @@ export function HeroFazSeridi() {
       <div
         aria-hidden
         className="absolute inset-0"
-        style={{ background: "linear-gradient(180deg, rgba(11,20,32,0.42) 0%, rgba(11,20,32,0.05) 30%, rgba(11,20,32,0.05) 55%, rgba(11,20,32,0.72) 100%)" }}
+        style={{ background: "linear-gradient(180deg, rgba(11,20,32,0.5) 0%, rgba(11,20,32,0.08) 32%, rgba(11,20,32,0.05) 55%, rgba(11,20,32,0.72) 100%)" }}
+      />
+      {/* yazı okunurluğu: başlık bölgesine lokal koyu ışıma (her fazda metin net okunur) */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(58% 64% at 20% 28%, rgba(11,20,32,0.68) 0%, rgba(11,20,32,0.34) 48%, transparent 72%)" }}
       />
 
       {/* satış noktaları: faz ilerledikçe yeşil → kırmızı */}

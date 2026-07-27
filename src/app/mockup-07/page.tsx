@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { IkiTaraf } from "@/components/landing/IkiTaraf";
 import { AkisFeed } from "@/components/landing/AkisFeed";
-import { HeroFazSeridi } from "./HeroFazSeridi";
+import { HeroFazSeridi } from "@/components/landing/HeroZamanAkisi";
 import { EskiyenPdf } from "./EskiyenPdf";
 import { LuksStok } from "./LuksStok";
 
