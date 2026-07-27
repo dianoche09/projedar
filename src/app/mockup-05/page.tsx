@@ -60,12 +60,8 @@ export default function Mockup05Sayfasi() {
         </div>
       </header>
 
-      {/* ============ HERO · MASADA İKİ KALEM ============ */}
-      <section className="relative">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12">
-          <HeroPlanMasasi />
-        </div>
-      </section>
+      {/* ============ HERO · VAZİYET PLANI ============ */}
+      <HeroPlanMasasi />
 
       {/* ============ 01 · MASADAKİ KAOS ============ */}
       <section className="border-t border-[rgba(23,41,61,0.14)] bg-[rgba(23,41,61,0.03)]">
