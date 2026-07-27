@@ -70,6 +70,32 @@ export function HeroFazSeridi() {
     return () => clearInterval(id);
   }, [oynuyor]);
 
+  // otomatik oynatma garantisi: bazı tarayıcılar autoplay'i geciktirir/engeller;
+  // mount'ta, sekme geri geldiğinde ve ilk dokunuşta oynatmayı dene
+  useEffect(() => {
+    if (azalt) return;
+    const dene = () => {
+      const v = videoRef.current;
+      if (v && v.paused) void v.play().catch(() => {});
+    };
+    dene();
+    const zaman = setTimeout(dene, 600);
+    const gorunur = () => {
+      if (!document.hidden) dene();
+    };
+    const dokunus = () => {
+      dene();
+      window.removeEventListener("pointerdown", dokunus);
+    };
+    document.addEventListener("visibilitychange", gorunur);
+    window.addEventListener("pointerdown", dokunus);
+    return () => {
+      clearTimeout(zaman);
+      document.removeEventListener("visibilitychange", gorunur);
+      window.removeEventListener("pointerdown", dokunus);
+    };
+  }, [azalt]);
+
   return (
     <section
       className="relative h-svh min-h-[640px] overflow-hidden bg-ink text-white"
@@ -89,6 +115,7 @@ export function HeroFazSeridi() {
           muted
           loop
           playsInline
+          preload="auto"
           onTimeUpdate={videoZamani}
           aria-hidden
         />
@@ -160,9 +187,9 @@ export function HeroFazSeridi() {
         </div>
       </div>
 
-      {/* alt künye: faz noktaları + eriyen stok + oynat/duraklat */}
-      <div className="absolute inset-x-0 bottom-0 z-10 border-t border-white/15 bg-[rgba(11,20,32,0.5)] backdrop-blur-sm">
-        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-4 sm:px-10">
+      {/* alt künye: yukarı çekilmiş yüzen bar (faz noktaları + eriyen stok + oynat/duraklat) */}
+      <div className="absolute inset-x-3 bottom-6 z-10 rounded-2xl border border-white/20 bg-[rgba(11,20,32,0.6)] backdrop-blur-md sm:inset-x-8 sm:bottom-9 lg:inset-x-12">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3.5 sm:px-7">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               {FAZLAR.map((f, i) => (
