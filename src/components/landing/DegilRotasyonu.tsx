@@ -1,44 +1,76 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
- * "X değil, dağıtım altyapısı" başlığındaki X: üstü çizili, dönüşümlü terim.
- * "Satış ofisi yazılımı" ↔ "İlan sitesi" 2,8 sn'de bir yumuşak crossfade ile değişir.
- * prefers-reduced-motion: ilk terim statik. Genişlik en uzun terime göre sabitlenir (layout zıplamaz).
+ * "X değil, dağıtım altyapısı" başlığındaki X: dönüşümlü terim.
+ * Akış: terim yazılır (fade) → kısa bekleme → üstü SOLDAN SAĞA çizilir → bekler → sonraki terim.
+ * Terim akış içinde render edilir; genişlik her kelimenin kendi genişliğidir (uzun terime göre boşluk kalmaz).
+ * prefers-reduced-motion: ilk terim, çizgisi çekili, statik.
  */
 
 const TERIMLER = ["Satış ofisi yazılımı", "İlan sitesi"];
+const YAZ_SURE = 750; // terim görünür, çizgi henüz yok
+const CIZILI_SURE = 2100; // çizili bekleme
 
 export function DegilRotasyonu() {
   const [aktif, setAktif] = useState(0);
+  const [cizili, setCizili] = useState(false);
   const [azalt, setAzalt] = useState(false);
+  const zamanlar = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
     const m = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     if (m) {
-      const raf = requestAnimationFrame(() => setAzalt(true));
+      const raf = requestAnimationFrame(() => {
+        setAzalt(true);
+        setCizili(true);
+      });
       return () => cancelAnimationFrame(raf);
     }
-    const id = setInterval(() => setAktif((v) => (v + 1) % TERIMLER.length), 2800);
-    return () => clearInterval(id);
+    let iptal = false;
+    const dongu = (i: number) => {
+      if (iptal) return;
+      setAktif(i);
+      setCizili(false);
+      zamanlar.current.push(
+        setTimeout(() => {
+          if (iptal) return;
+          setCizili(true);
+          zamanlar.current.push(setTimeout(() => dongu((i + 1) % TERIMLER.length), CIZILI_SURE));
+        }, YAZ_SURE),
+      );
+    };
+    const raf = requestAnimationFrame(() => dongu(0));
+    return () => {
+      iptal = true;
+      cancelAnimationFrame(raf);
+      zamanlar.current.forEach(clearTimeout);
+      zamanlar.current = [];
+    };
   }, []);
 
   return (
-    <span className="inline-grid align-baseline">
-      {TERIMLER.map((t, k) => {
-        const gorunur = azalt ? k === 0 : k === aktif;
-        return (
-          <span
-            key={t}
-            className="col-start-1 row-start-1 whitespace-nowrap text-ink-soft line-through decoration-[#c0564a] decoration-[0.12em] transition-opacity duration-500"
-            style={{ opacity: gorunur ? 1 : 0 }}
-            aria-hidden={!gorunur}
-          >
-            {t}
-          </span>
-        );
-      })}
+    <span className="relative inline-block whitespace-nowrap align-baseline">
+      <style>{`
+        @keyframes degil-yaz { from { opacity: 0; transform: translateY(0.12em); } to { opacity: 1; transform: translateY(0); } }
+      `}</style>
+      <span
+        key={TERIMLER[aktif]}
+        className="text-ink-soft"
+        style={azalt ? undefined : { animation: "degil-yaz 380ms ease-out both" }}
+      >
+        {TERIMLER[aktif]}
+      </span>
+      {/* üstü çizme: soldan sağa çekilen çizgi */}
+      <span
+        aria-hidden
+        className="absolute left-0 top-[52%] h-[0.09em] w-full origin-left rounded-full bg-[#c0564a]"
+        style={{
+          transform: cizili ? "scaleX(1)" : "scaleX(0)",
+          transition: azalt ? undefined : "transform 480ms cubic-bezier(0.4, 0, 0.2, 1) 60ms",
+        }}
+      />
     </span>
   );
 }

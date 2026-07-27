@@ -146,11 +146,11 @@ export function CeliskiSahnesi() {
       </div>
 
       {/* sonuç sahnesi: soru -> kontrol (yükseklik ayrılmış, sayfa zıplamaz) */}
-      <div className="mt-10 min-h-[330px] sm:min-h-[300px]">
+      <div className="mt-10 min-h-[220px] sm:min-h-[200px]">
         {faz === "celiski" || kontrolde ? (
           <p
             className={`m2-dev m2-kelime text-[clamp(1.9rem,6.4vw,4.6rem)] transition-opacity duration-500 ${
-              kontrolde ? "opacity-35 line-through decoration-[0.05em]" : ""
+              kontrolde ? "opacity-45" : ""
             }`}
             style={{ color: "#d15a4e" }}
           >
@@ -163,34 +163,6 @@ export function CeliskiSahnesi() {
             <p className="m2-dev text-[clamp(2.1rem,7vw,5rem)] text-[var(--m2-kagit-ink)]">
               Tek canlı <span className="text-[#1f7d4c]">gerçek.</span>
             </p>
-
-            {/* canlı kayıt damgası: koyu bar, kaosun üstüne oturur */}
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2.5 rounded-xl bg-[#121316] px-5 py-4 text-white shadow-[0_18px_44px_rgba(25,26,29,0.28)]">
-              <span className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.2em] text-[#3cc7b2]">
-                ProjePazar · canlı kayıt
-              </span>
-              <span className="mono text-[15px] font-semibold">B-4-2 · ₺9,4M</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[rgba(47,179,107,0.16)] px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-[#5ed492]">
-                <span className="size-1.5 rounded-full bg-green nabiz" aria-hidden />
-                müsait
-              </span>
-              <span className="font-mono text-[10.5px] text-white/50">şimdi güncellendi</span>
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-xl text-[14.5px] leading-relaxed text-[var(--m2-kagit-soft)]">
-                On kopya değil. Fiyat ve durum tek kayıtta yaşar; paylaşılan her bağlantı o anki canlı değerden basılır.
-              </p>
-              {azalt ? null : (
-                <button
-                  type="button"
-                  onClick={oynat}
-                  className="min-h-[44px] rounded-lg border border-[rgba(25,26,29,0.3)] px-4 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--m2-kagit-ink)] transition-colors hover:border-[var(--m2-teal-koyu)] hover:text-[var(--m2-teal-koyu)]"
-                >
-                  Yeniden oynat
-                </button>
-              )}
-            </div>
           </div>
         ) : null}
       </div>
