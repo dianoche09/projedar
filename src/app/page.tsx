@@ -9,7 +9,6 @@ import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanA
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
 import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
 import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
-import { KuleDemo } from "@/components/landing/KuleDemo";
 import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
@@ -261,25 +260,8 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ CANLI STOK + ÇİFT SATIŞ KALKANI (mockup-02'den, koyu kontrol odası) ============ */}
+      {/* ============ ÇİFT SATIŞ KALKANI (mockup-02'den, koyu kontrol odası) ============ */}
       <div className="m2 overflow-x-clip">
-        <section className="relative overflow-hidden border-b border-[var(--m2-cizgi)]">
-          <div className="komuta-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden />
-          <div className="relative mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-            <p className="m2-etiket text-[var(--m2-teal)]">Canlı stok</p>
-            <h2 className="m2-dev mt-5 max-w-3xl text-[clamp(1.9rem,5.2vw,4rem)]">
-              Stok bir dosya değil. Canlı bir yüzey.
-            </h2>
-            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-[var(--m2-ink-soft)]">
-              Bir daireye dokunun: fiyat, durum, tazelik ve kilit tek ekranda. Yeşil bir daireden
-              opsiyonu deneyin; diğer danışmanın ekranında anında kilitlendiğini görün.
-            </p>
-            <div className="mt-10">
-              <KuleDemo />
-            </div>
-          </div>
-        </section>
-
         <section className="border-b border-[var(--m2-cizgi)]">
           <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
             <p className="m2-etiket text-amber">Çift satış kalkanı</p>
@@ -431,7 +413,7 @@ export default async function Home() {
           <Reveal>
             <div className="mx-auto mb-12 max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Bir daireye dokun, gerisini gör</h2>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Üretici kontrolü tutar, danışman güncel satar.</h2>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat, hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
             </div>
           </Reveal>
