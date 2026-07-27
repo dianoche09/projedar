@@ -428,3 +428,458 @@
   .m5-kalkar,
   .m5-btn { transition: none; }
 }
+
+/* =========================================================
+   HERO · MASADA İKİ KALEM (m5h-)
+   Tek ekran, 4 kare koreografi. data-adim (0..3) sürer:
+   K1 plan + etiket, K2 kalemler süzülür, K3 damga + asetat,
+   K4 ağ yansıması. Kural: sonraki kare öncekini korur.
+   ========================================================= */
+
+/* ---------- kırpım + sabit oranlı sahne ---------- */
+.m5h-kirp {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+@media (min-width: 640px) {
+  .m5h-kirp { aspect-ratio: 16 / 10; }
+}
+@media (min-width: 1024px) {
+  .m5h-kirp { aspect-ratio: 1920 / 1080; }
+}
+/* sahne her zaman 1920x1080 oranında kalır; dar ekranda yatay kırpılır,
+   dram (B-4-2, x=%42,5) merkezde tutulur. Yatay taşma kirp içinde kalır. */
+.m5h-sahne {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  aspect-ratio: 1920 / 1080;
+  left: 50%;
+  transform: translateX(-42.5%);
+}
+@media (min-width: 1024px) {
+  .m5h-sahne {
+    left: 0;
+    width: 100%;
+    transform: none;
+  }
+}
+.m5h-icerik { position: absolute; inset: 0; }
+
+/* K3: damga inince kâğıt 1px sarsılır (damga sesi hissi) */
+[data-adim="2"] .m5h-icerik { animation: m5hSars 0.24s linear 0.78s; }
+@keyframes m5hSars {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(1px, -1px); }
+  65% { transform: translate(-1px, 1px); }
+}
+
+/* ---------- antet başlığı (yalnız lg+, fotoğrafın antet alanı) ---------- */
+.m5h-antet {
+  position: absolute;
+  left: 50%;
+  top: 3.6%;
+  width: 52%;
+  transform: translateX(-50%) rotate(-0.35deg);
+  z-index: 9;
+  display: none;
+}
+@media (min-width: 1024px) {
+  .m5h-antet { display: block; }
+}
+.m5h-antet-kutu {
+  position: relative;
+  background: rgba(253, 251, 244, 0.94);
+  border: 1.5px solid rgba(23, 41, 61, 0.55);
+  outline: 1px solid rgba(23, 41, 61, 0.22);
+  outline-offset: -6px;
+  box-shadow: 0 6px 18px rgba(96, 72, 32, 0.16);
+  padding: 14px 24px 16px;
+  text-align: center;
+}
+
+/* ---------- kod katmanı: daire konturları ---------- */
+.m5h-vurgu {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+[data-adim="1"] .m5h-vurgu,
+[data-adim="2"] .m5h-vurgu,
+[data-adim="3"] .m5h-vurgu {
+  opacity: 1;
+  transition-delay: 0.35s;
+}
+
+/* teal kalemin çiziği: K3'te çizilir */
+.m5h-cizik {
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+}
+[data-adim="2"] .m5h-cizik,
+[data-adim="3"] .m5h-cizik {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.55s ease-out 0.1s;
+}
+
+/* ---------- kalemler ---------- */
+.m5h-kalem {
+  position: absolute;
+  opacity: 0;
+  z-index: 6;
+  will-change: transform;
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.5s ease;
+  filter: drop-shadow(0 10px 8px rgba(23, 41, 61, 0.28));
+}
+.m5h-kalem-teal {
+  left: 16%;
+  top: 64.3%;
+  width: 23%;
+  transform: translate(-58%, -34%) rotate(-24deg);
+}
+.m5h-kalem-gri {
+  left: 52%;
+  top: 64.8%;
+  width: 23%;
+  z-index: 4;
+  transform: translate(58%, -34%) rotate(25deg);
+}
+[data-adim="1"] .m5h-kalem,
+[data-adim="2"] .m5h-kalem,
+[data-adim="3"] .m5h-kalem { opacity: 1; }
+[data-adim="1"] .m5h-kalem-teal,
+[data-adim="2"] .m5h-kalem-teal,
+[data-adim="3"] .m5h-kalem-teal { transform: translate(0, 0) rotate(-6deg); }
+[data-adim="1"] .m5h-kalem-gri,
+[data-adim="2"] .m5h-kalem-gri,
+[data-adim="3"] .m5h-kalem-gri { transform: translate(0, 0) rotate(7deg); }
+
+/* K3: teal kalem işaretlerken el hareketi yapar */
+[data-adim="2"] .m5h-kalem-teal { animation: m5hYaz 0.55s ease-in-out 0.05s; }
+@keyframes m5hYaz {
+  0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+  25% { transform: translate(6px, 4px) rotate(-5deg); }
+  55% { transform: translate(14px, -2px) rotate(-6.5deg); }
+  80% { transform: translate(7px, 3px) rotate(-5.5deg); }
+}
+/* K3: gri kalem asetata çarpıp geri sekiyor */
+[data-adim="2"] .m5h-kalem-gri { animation: m5hEngel 0.9s ease 1.25s; }
+@keyframes m5hEngel {
+  0%, 100% { transform: translate(0, 0) rotate(7deg); }
+  40% { transform: translate(-26px, -6px) rotate(6deg); }
+  70% { transform: translate(-9px, -2px) rotate(7.6deg); }
+}
+
+/* ---------- KİLİTLİ damgası ---------- */
+.m5h-damga {
+  position: absolute;
+  left: 42.5%;
+  top: 68.5%;
+  z-index: 7;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.8);
+  transition: opacity 0.22s ease, transform 0.4s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+[data-adim="2"] .m5h-damga,
+[data-adim="3"] .m5h-damga {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  transition-delay: 0.72s;
+}
+/* görsel "klik": damga basılınca kısa halka yayılır */
+.m5h-damga::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border: 2px solid rgba(154, 106, 18, 0.5);
+  border-radius: 10px;
+  opacity: 0;
+  transform: scale(0.7) rotate(-8deg);
+}
+[data-adim="2"] .m5h-damga::after { animation: m5hKlik 0.5s ease 0.8s; }
+@keyframes m5hKlik {
+  0% { opacity: 0.85; transform: scale(0.7) rotate(-8deg); }
+  100% { opacity: 0; transform: scale(1.28) rotate(-8deg); }
+}
+.m5h-damga-ic {
+  font-size: 19px;
+  padding: 9px 16px;
+  border-width: 3px;
+  border-radius: 8px;
+  transition: text-shadow 0.9s ease, box-shadow 0.9s ease;
+}
+/* K4: damga mürekkebi hafif yayılır */
+[data-adim="3"] .m5h-damga-ic {
+  text-shadow: 0 0 5px rgba(154, 106, 18, 0.6);
+  box-shadow: 0 0 0 3px rgba(154, 106, 18, 0.14);
+}
+
+/* ---------- şeffaf asetat (gri kalemin önüne kayar) ---------- */
+.m5h-asetat {
+  position: absolute;
+  left: 46.5%;
+  top: 51%;
+  width: 32.5%;
+  height: 39%;
+  z-index: 5;
+  opacity: 0;
+  transform: translateX(38%) rotate(1.5deg);
+  transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.45s ease;
+}
+[data-adim="2"] .m5h-asetat,
+[data-adim="3"] .m5h-asetat {
+  opacity: 1;
+  transform: translateX(0) rotate(1.5deg);
+  transition-delay: 0.95s;
+}
+/* gri kalemin izi: asetat ÜSTÜNDE kalır, kâğıda geçemez */
+.m5h-asetat-cizik {
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+}
+[data-adim="2"] .m5h-asetat-cizik,
+[data-adim="3"] .m5h-asetat-cizik {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.5s ease 1.6s;
+}
+.m5h-erisim {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d15a4e;
+  border: 1px solid rgba(209, 90, 78, 0.5);
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 3px;
+  padding: 2px 7px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+[data-adim="2"] .m5h-erisim,
+[data-adim="3"] .m5h-erisim {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.7s;
+}
+
+/* ---------- B-4-2 kâğıt etiketi: yeşil -> K3'te amber ---------- */
+.m5h-etiket {
+  position: absolute;
+  left: 42.6%;
+  top: 55.2%;
+  transform: translate(-50%, -100%) rotate(-2deg);
+  z-index: 6;
+  display: inline-flex;
+}
+.m5h-etiket-yuz {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 3px 8px rgba(23, 41, 61, 0.22);
+  transition: opacity 0.35s ease;
+}
+.m5h-etiket-yesil {
+  background: #eaf6ee;
+  border: 1px solid rgba(47, 179, 107, 0.55);
+  color: #1f7d4c;
+}
+.m5h-etiket-amber {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  background: #fdf3e0;
+  border: 1px solid rgba(227, 161, 44, 0.6);
+  color: #9a6a12;
+  opacity: 0;
+}
+[data-adim="2"] .m5h-etiket-yesil,
+[data-adim="3"] .m5h-etiket-yesil { opacity: 0; transition-delay: 0.85s; }
+[data-adim="2"] .m5h-etiket-amber,
+[data-adim="3"] .m5h-etiket-amber { opacity: 1; transition-delay: 0.85s; }
+/* tazelik mührü: etiket içindeki "şimdi" bölmesi */
+.m5h-simdi {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 8px;
+  border-left: 1px dashed rgba(31, 125, 76, 0.4);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- K4: ağ yansıması (yan kâğıtlar + fiş) ---------- */
+.m5h-yansima {
+  position: absolute;
+  z-index: 6;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: #fdf3e0;
+  border: 1px solid rgba(227, 161, 44, 0.6);
+  color: #9a6a12;
+  border-radius: 3px;
+  padding: 3px 8px;
+  box-shadow: 0 2px 6px rgba(96, 72, 32, 0.18);
+  opacity: 0;
+  transform: translateY(8px) rotate(var(--m5h-don, 0deg));
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+[data-adim="3"] .m5h-yansima {
+  opacity: 1;
+  transform: translateY(0) rotate(var(--m5h-don, 0deg));
+}
+[data-adim="3"] .m5h-yansima-2 { transition-delay: 0.25s; }
+[data-adim="3"] .m5h-yansima-3 { transition-delay: 0.5s; }
+
+/* ağ-dışı kâğıt köşesi: soluk kalır, hiç güncellenmez */
+.m5h-agdisi {
+  position: absolute;
+  z-index: 6;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  white-space: nowrap;
+  background: rgba(253, 251, 244, 0.85);
+  border: 1px dashed rgba(23, 41, 61, 0.3);
+  color: #8b97a8;
+  border-radius: 3px;
+  padding: 3px 8px;
+  opacity: 0.62;
+  transform: rotate(var(--m5h-don, 0deg));
+}
+
+/* kenardan çıkan mono fiş */
+.m5h-fis {
+  position: absolute;
+  right: 0;
+  top: 26%;
+  z-index: 8;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: #17293d;
+  color: #7fd4c6;
+  padding: 7px 12px 7px 14px;
+  border-radius: 6px 0 0 6px;
+  box-shadow: 0 6px 16px rgba(23, 41, 61, 0.3);
+  transform: translateX(105%);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-adim="3"] .m5h-fis {
+  transform: translateX(0);
+  transition-delay: 0.55s;
+}
+
+/* ---------- telefon mockup (CSS çizim, sağ alt köşe) ---------- */
+.m5h-telefon {
+  position: absolute;
+  right: 2.6%;
+  bottom: 6%;
+  width: 12.5%;
+  min-width: 116px;
+  z-index: 6;
+  transform: rotate(4deg);
+}
+.m5h-tel-govde {
+  background: #17293d;
+  border-radius: 18px;
+  padding: 5px;
+  box-shadow: 0 12px 26px rgba(23, 41, 61, 0.38);
+}
+.m5h-tel-ekran {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 8px 8px 9px;
+}
+.m5h-tel-satir {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 5px;
+  border-radius: 6px;
+}
+.m5h-tel-satir-hedef { transition: background-color 0.35s ease; }
+[data-adim="3"] .m5h-tel-satir-hedef {
+  background: #fdf3e0;
+  transition-delay: 0.3s;
+}
+.m5h-tel-durum { position: relative; display: inline-flex; }
+.m5h-tel-durum-m,
+.m5h-tel-durum-k {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.3s ease;
+}
+.m5h-tel-durum-k {
+  position: absolute;
+  inset: 0;
+  justify-content: flex-end;
+  opacity: 0;
+}
+[data-adim="3"] .m5h-tel-durum-m { opacity: 0; transition-delay: 0.3s; }
+[data-adim="3"] .m5h-tel-durum-k { opacity: 1; transition-delay: 0.3s; }
+
+/* ---------- etkileşim ---------- */
+.m5h-daire-btn {
+  position: absolute;
+  left: 36.4%;
+  top: 57.3%;
+  width: 12.1%;
+  height: 22.4%;
+  z-index: 10;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.m5h-daire-btn:focus-visible {
+  outline: 2px solid #177e6f;
+  outline-offset: 3px;
+}
+.m5h-tekrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #177e6f;
+  border: 1px solid rgba(23, 126, 111, 0.45);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.m5h-tekrar:hover {
+  background: rgba(23, 126, 111, 0.08);
+  border-color: #177e6f;
+}
+
+/* ---------- reduced motion: K4 statik, hareket yok ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .m5h-kok *,
+  .m5h-kok *::before,
+  .m5h-kok *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .m5h-kok .m5h-cizik,
+  .m5h-kok .m5h-asetat-cizik { stroke-dashoffset: 0; }
+}

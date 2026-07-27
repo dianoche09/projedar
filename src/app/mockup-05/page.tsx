@@ -12,7 +12,7 @@ import {
   YapiskanNot,
   Zimba,
 } from "./_components/KagitParcalari";
-import { MasaSahnesi } from "./_components/MasaSahnesi";
+import { HeroPlanMasasi } from "./_components/HeroPlanMasasi";
 import { Donusum } from "./_components/Donusum";
 import { CanliStok } from "./_components/CanliStok";
 import { OpsiyonKilidi } from "./_components/OpsiyonKilidi";
@@ -60,60 +60,10 @@ export default function Mockup05Sayfasi() {
         </div>
       </header>
 
-      {/* ============ HERO ============ */}
+      {/* ============ HERO · MASADA İKİ KALEM ============ */}
       <section className="relative">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-6 lg:pb-24 lg:pt-20">
-          <div className="max-w-2xl">
-            {/* sabit hero etiketi: bantla yapıştırılmış saha fişi */}
-            <span className="relative inline-flex items-center gap-2 border border-[rgba(23,41,61,0.16)] bg-[#fdfbf4] px-3.5 py-2 font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[#177e6f] shadow-[0_2px_8px_rgba(96,72,32,0.12)]">
-              <Bant style={{ top: -12, left: "50%", transform: "translateX(-50%) rotate(-1.5deg)", width: 56, height: 16 }} />
-              <span className="m5-nabiz h-2 w-2 rounded-full bg-[#2fb36b]" aria-hidden />
-              Geliştirici firmalar için canlı proje satış ağı
-            </span>
-
-            <h1 className="font-display mt-7 text-[38px] font-extrabold leading-[1.05] tracking-tight text-[#17293d] sm:text-[52px]">
-              Proje satışının dağınık dünyasını{" "}
-              <span className="relative inline-block text-[#177e6f]">
-                tek ekrana
-                <svg viewBox="0 0 200 10" className="absolute -bottom-1.5 left-0 w-full" aria-hidden preserveAspectRatio="none">
-                  <path d="M3 7c40-4 120-5 194-2" fill="none" stroke="#177e6f" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
-                </svg>
-              </span>{" "}
-              topladık.
-            </h1>
-
-            <p className="mt-6 max-w-xl text-pretty text-[15.5px] leading-relaxed text-[#5a6577]">
-              Basılı fiyat listeleri, ekran görüntüleri ve klasörler sahadan yavaş kalır.
-              ProjePazar, kâğıdın üstündeki her satırı{" "}
-              <strong className="font-semibold text-[#17293d]">yaşayan tek dijital kayda</strong> bağlar:
-              fiyat canlı, durum canlı, dağıtım kontrollü. İlan yok, tahsis var; komisyon yok, altyapı var.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/kayit?rol=uretici" className="m5-btn m5-btn-ink">Projemi canlı ağa aç</Link>
-              <Link href="/kayit?rol=emlakci" className="m5-btn m5-btn-kagit">Danışman olarak katıl</Link>
-            </div>
-
-            {/* sinyal lejantı: etiket/damga dili */}
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-[rgba(23,41,61,0.1)] pt-5">
-              {[
-                ["#2fb36b", "müsait"],
-                ["#e3a12c", "opsiyonda"],
-                ["#d15a4e", "satıldı"],
-              ].map(([renk, ad]) => (
-                <span key={ad} className="inline-flex items-center gap-2 font-mono text-[11.5px] text-[#5a6577]">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: renk }} aria-hidden />
-                  {ad}
-                </span>
-              ))}
-              <span className="font-mono text-[10.5px] text-[#8b97a8]">renkler mühürdür; herkes aynı anda görür</span>
-            </div>
-          </div>
-
-          {/* masa sahnesi: gerçek fotoğraf + canlı veri katmanı */}
-          <div className="mt-12 lg:mt-14">
-            <MasaSahnesi />
-          </div>
+        <div className="mx-auto max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12">
+          <HeroPlanMasasi />
         </div>
       </section>
 
