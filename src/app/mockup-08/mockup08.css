@@ -1,0 +1,1081 @@
+/* =========================================================
+   MOCKUP 08 · SATIŞ OFİSİ PANOSU (lüks segment)
+   Ceviz + pirinç + magnet kart. Sinyal renkleri SABİT:
+   yeşil #2fb36b müsait · amber #e3a12c opsiyon · kırmızı #d15a4e satıldı.
+   Tüm dokular CSS/SVG; prefix: m8-
+   ========================================================= */
+
+.m8-zemin {
+  background:
+    radial-gradient(1000px 520px at 82% -8%, rgba(176, 141, 87, 0.09), transparent 60%),
+    linear-gradient(180deg, #f7f2e9 0%, #f1eadc 100%);
+  color: #261c10;
+  position: relative;
+}
+
+/* çok ince sıcak gren (galeri duvarı hissi) */
+.m8-gren {
+  position: relative;
+}
+.m8-gren::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.45;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.05'/></svg>");
+  background-size: 180px 180px;
+}
+.m8-gren > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- bölüm anteti: pirinç şerit ---------- */
+.m8-madde {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #8a6a3a;
+}
+.m8-madde::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(176, 141, 87, 0.55), rgba(176, 141, 87, 0.08));
+}
+
+/* ---------- butonlar ---------- */
+.m8-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.m8-btn-ceviz {
+  background: linear-gradient(180deg, #3f2f1b 0%, #31240f 100%);
+  color: #f4ecdc;
+  border: 1px solid rgba(20, 14, 6, 0.6);
+  box-shadow: 0 1px 0 rgba(255, 245, 220, 0.16) inset, 0 10px 22px rgba(49, 36, 15, 0.28);
+}
+.m8-btn-ceviz:hover {
+  box-shadow: 0 1px 0 rgba(255, 245, 220, 0.2) inset, 0 12px 26px rgba(49, 36, 15, 0.36), 0 0 0 3px rgba(176, 141, 87, 0.28);
+}
+.m8-btn-pirinc {
+  background: linear-gradient(180deg, #d6b478 0%, #b08d57 100%);
+  color: #241b10;
+  border: 1px solid rgba(122, 91, 44, 0.65);
+  box-shadow: 0 1px 0 rgba(255, 248, 228, 0.55) inset, 0 8px 18px rgba(138, 106, 58, 0.32);
+}
+.m8-btn-pirinc:hover {
+  background: linear-gradient(180deg, #ddbf87 0%, #b9975f 100%);
+  box-shadow: 0 1px 0 rgba(255, 248, 228, 0.6) inset, 0 10px 22px rgba(138, 106, 58, 0.4);
+}
+.m8-btn-acik {
+  background: rgba(253, 250, 243, 0.92);
+  color: #31240f;
+  border: 1px solid rgba(58, 44, 26, 0.28);
+}
+.m8-btn-acik:hover {
+  border-color: rgba(138, 106, 58, 0.6);
+  box-shadow: 0 6px 16px rgba(60, 44, 20, 0.14);
+}
+
+/* ---------- panel / kart yüzeyi ---------- */
+.m8-panel {
+  position: relative;
+  background: linear-gradient(180deg, #fdfaf3 0%, #f7f1e4 100%);
+  border: 1px solid rgba(58, 44, 26, 0.15);
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgba(74, 54, 24, 0.07),
+    0 14px 32px rgba(74, 54, 24, 0.12);
+}
+/* pirinç üst kenar bandı (plaket hissi) */
+.m8-panel-pirinc::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14px;
+  right: 14px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, #8a6a3a, #d6b478 30%, #b08d57 55%, #d6b478 80%, #8a6a3a);
+  opacity: 0.9;
+}
+
+/* pirinç vida başı (köşe detayı) */
+.m8-vida {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 32%, #e6cb95, #b08d57 58%, #7a5b2c);
+  box-shadow: 0 1px 2px rgba(49, 36, 15, 0.45);
+}
+.m8-vida::after {
+  content: "";
+  position: absolute;
+  left: 1.5px;
+  right: 1.5px;
+  top: 50%;
+  height: 1px;
+  background: rgba(49, 36, 15, 0.55);
+  transform: rotate(38deg);
+}
+
+/* =========================================================
+   MAGNET KART · YUVA · MİNİ PANO · RAY
+   ========================================================= */
+
+.m8-kart {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #fefcf6 0%, #f5efe1 100%);
+  border-radius: 5px;
+  border: 1.5px solid rgba(58, 44, 26, 0.22);
+  box-shadow:
+    0 1px 1.5px rgba(60, 42, 18, 0.18),
+    0 5px 12px rgba(60, 42, 18, 0.16);
+  padding: 6px 7px 5px;
+  line-height: 1.15;
+  color: #2c2113;
+}
+/* magnet pulu: sağ üst köşede küçük pirinç nokta */
+.m8-kart::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 32%, #e6cb95, #a9854e 70%);
+  box-shadow: 0 0.5px 1px rgba(49, 36, 15, 0.5);
+}
+.m8-kart-kod {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.m8-kart-tip {
+  font-size: 9px;
+  font-weight: 500;
+  color: #6b5b44;
+  margin-top: 1px;
+}
+.m8-kart-fiyat {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.m8-kart-fiyat::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--m8-sinyal, #2fb36b);
+}
+/* durumlar: sinyal renkleri sabit */
+.m8-k-yesil {
+  border-color: #2fb36b;
+  --m8-sinyal: #2fb36b;
+}
+.m8-k-amber {
+  border-color: #e3a12c;
+  --m8-sinyal: #e3a12c;
+}
+.m8-k-amber .m8-kart-fiyat {
+  color: #9a6a12;
+}
+.m8-k-kirmizi {
+  border-color: #d15a4e;
+  --m8-sinyal: #d15a4e;
+}
+.m8-k-kirmizi .m8-kart-kod,
+.m8-k-kirmizi .m8-kart-fiyat {
+  color: #a23f34;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+/* boş yuva: panoda çukur */
+.m8-yuva-bos {
+  border-radius: 5px;
+  background: rgba(112, 102, 86, 0.14);
+  box-shadow:
+    inset 0 1.5px 3px rgba(60, 48, 26, 0.22),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(112, 102, 86, 0.16);
+}
+
+/* nabızlı müsait kart (hero odağı) */
+@keyframes m8Nabiz {
+  0% {
+    box-shadow: 0 1px 1.5px rgba(60, 42, 18, 0.18), 0 5px 12px rgba(60, 42, 18, 0.16), 0 0 0 0 rgba(47, 179, 107, 0.45);
+  }
+  70% {
+    box-shadow: 0 1px 1.5px rgba(60, 42, 18, 0.18), 0 5px 12px rgba(60, 42, 18, 0.16), 0 0 0 9px rgba(47, 179, 107, 0);
+  }
+  100% {
+    box-shadow: 0 1px 1.5px rgba(60, 42, 18, 0.18), 0 5px 12px rgba(60, 42, 18, 0.16), 0 0 0 0 rgba(47, 179, 107, 0);
+  }
+}
+.m8-kart-nabiz {
+  animation: m8Nabiz 2.2s ease-out infinite;
+}
+
+/* ---------- mini danışman panosu ---------- */
+.m8-mini {
+  position: relative;
+  background: linear-gradient(180deg, #dcd8ce 0%, #cfcabe 100%);
+  border: 1px solid rgba(90, 80, 62, 0.35);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 4px 10px rgba(60, 48, 26, 0.2);
+  padding: 4px 5px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.m8-mini-ad {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4d4232;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+.m8-mini-izgara {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  min-height: 0;
+}
+.m8-mini-izgara i {
+  border-radius: 1.5px;
+  background: rgba(60, 48, 26, 0.16);
+  min-height: 4px;
+}
+.m8-mini-izgara i.dolu {
+  background: rgba(60, 48, 26, 0.3);
+}
+/* hedef hücre: yeşilden ambere döner (adım 3'te, kademeli) */
+.m8-mini-hedef {
+  position: relative;
+}
+.m8-mini-hedef::before,
+.m8-mini-hedef::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5px;
+  transition: opacity 0.45s ease;
+}
+.m8-mini-hedef::before {
+  background: #2fb36b;
+  opacity: 1;
+}
+.m8-mini-hedef::after {
+  background: #e3a12c;
+  opacity: 0;
+}
+/* ağ dışı pano: soluk, eski bilgi */
+.m8-mini-agdisi {
+  filter: saturate(0.55) brightness(0.94);
+  opacity: 0.78;
+}
+
+/* ---------- opsiyon rayı ---------- */
+.m8-ray {
+  position: absolute;
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(210, 200, 182, 0.5), rgba(196, 186, 168, 0.4));
+  border: 1px solid rgba(138, 106, 58, 0.35);
+  box-shadow: inset 0 1px 2px rgba(60, 48, 26, 0.14);
+}
+.m8-ray::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 6px;
+  right: 6px;
+  height: 2.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #8a6a3a, #d6b478 35%, #b08d57 65%, #8a6a3a);
+}
+.m8-ray-etiket {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6d5327;
+  white-space: nowrap;
+}
+.m8-ray-yuva {
+  position: absolute;
+  top: 18%;
+  bottom: 14%;
+  border: 1.5px dashed rgba(138, 106, 58, 0.55);
+  border-radius: 4px;
+}
+
+/* =========================================================
+   HERO · PANO KOREOGRAFİSİ (m8h-)
+   data-adim (0..3): K1 sakin · K2 iki tutucu uzanır ·
+   K3 kart raya taşınır + çarpı · K4 ağ yansıması.
+   ========================================================= */
+
+/* kırpım: mobil dikey dram, lg+ tam sahne */
+.m8h-kirp {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px 14px 0 0;
+  background: #d8d2c6;
+}
+@media (min-width: 640px) {
+  .m8h-kirp {
+    aspect-ratio: 16 / 10;
+  }
+}
+@media (min-width: 1024px) {
+  .m8h-kirp {
+    aspect-ratio: 1920 / 1088;
+  }
+}
+/* sahne hep 1920x1088 oranında; dar ekranda yatay kırpılır,
+   dram (B-4-2 → ray hattı, x ≈ %33) merkezde kalır */
+.m8h-sahne {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  aspect-ratio: 1920 / 1088;
+  left: 50%;
+  transform: translateX(-33%);
+}
+@media (min-width: 1024px) {
+  .m8h-sahne {
+    left: 0;
+    width: 100%;
+    transform: none;
+  }
+}
+.m8h-icerik {
+  position: absolute;
+  inset: 0;
+}
+/* K3: kart raya oturunca pano 1px titrer (klik hissi) */
+[data-adim="2"] .m8h-icerik {
+  animation: m8hSars 0.22s linear 1.52s;
+}
+@keyframes m8hSars {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  35% {
+    transform: translate(0.8px, -0.8px);
+  }
+  70% {
+    transform: translate(-0.8px, 0.8px);
+  }
+}
+
+/* fotoğraf tonu: sıcak galeri ışığı */
+.m8h-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 55% at 50% 30%, rgba(255, 244, 220, 0.1), transparent 70%),
+    linear-gradient(180deg, rgba(58, 42, 20, 0.05), rgba(58, 42, 20, 0.12));
+  pointer-events: none;
+}
+
+/* ---------- pano alanı (fotoğraftaki gri pano yüzeyi) ---------- */
+.m8h-alan {
+  position: absolute;
+  left: 16.2%;
+  top: 18.6%;
+  width: 67.8%;
+  height: 61.6%;
+}
+
+/* ---------- duvar plaketi: başlık (yalnız lg+) ---------- */
+.m8h-plaka {
+  position: absolute;
+  left: 50%;
+  top: 2.6%;
+  transform: translateX(-50%);
+  width: 46%;
+  min-width: 500px;
+  z-index: 7;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(253, 250, 243, 0.96), rgba(247, 241, 228, 0.94));
+  border: 1px solid rgba(58, 44, 26, 0.18);
+  border-radius: 10px;
+  box-shadow:
+    0 2px 4px rgba(49, 36, 15, 0.12),
+    0 18px 40px rgba(49, 36, 15, 0.22);
+  padding: 16px 26px 18px;
+  display: none;
+}
+.m8h-plaka::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, #8a6a3a, #d6b478 30%, #b08d57 55%, #d6b478 80%, #8a6a3a);
+}
+@media (min-width: 1024px) {
+  .m8h-plaka {
+    display: block;
+  }
+}
+
+/* ---------- pano çerçevesindeki canlı lambası ---------- */
+.m8h-lamba {
+  position: absolute;
+  right: 16.4%;
+  top: 14.2%;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #4d4232;
+  background: linear-gradient(180deg, #e9e4d8, #d8d2c4);
+  border: 1px solid rgba(90, 80, 62, 0.4);
+  border-radius: 999px;
+  padding: 3px 9px;
+  box-shadow: 0 2px 5px rgba(60, 48, 26, 0.2);
+}
+.m8h-lamba i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2fb36b;
+  animation: m8Nabiz 2.2s ease-out infinite;
+}
+
+/* ---------- boşalan yuvanın izi + kilit rozeti ---------- */
+.m8h-iz {
+  position: absolute;
+  border-radius: 5px;
+  border: 1.5px dashed rgba(138, 106, 58, 0.7);
+  background: rgba(112, 102, 86, 0.12);
+  box-shadow: inset 0 1.5px 3px rgba(60, 48, 26, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.m8h-iz-rozet {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #9a6a12;
+  background: rgba(251, 240, 218, 0.92);
+  border: 1px solid rgba(227, 161, 44, 0.6);
+  border-radius: 999px;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+[data-adim="2"] .m8h-iz {
+  opacity: 1;
+  transition-delay: 1.35s;
+}
+[data-adim="3"] .m8h-iz {
+  opacity: 1;
+}
+
+/* hero yuvasındaki asıl kart: K3 başında kaybolur (taşınan devralır) */
+.m8h-yuva-kart {
+  transition: opacity 0.2s ease;
+}
+[data-adim="2"] .m8h-yuva-kart,
+[data-adim="3"] .m8h-yuva-kart {
+  opacity: 0;
+  transition-delay: 0.3s;
+}
+[data-adim="0"] .m8h-yuva-kart .m8-kart,
+[data-adim="1"] .m8h-yuva-kart .m8-kart {
+  animation: m8Nabiz 2.2s ease-out infinite;
+}
+
+/* ---------- taşınan kart: yuvadan raya fiziksel yolculuk ---------- */
+.m8h-tasinan {
+  position: absolute;
+  left: 12.5%;
+  top: 48.5%;
+  width: 11.4%;
+  height: 18%;
+  z-index: 9;
+  opacity: 0;
+  transition:
+    left 1.15s cubic-bezier(0.34, 0.06, 0.26, 1),
+    top 1.15s cubic-bezier(0.34, 0.06, 0.26, 1),
+    height 1.15s cubic-bezier(0.34, 0.06, 0.26, 1),
+    opacity 0.15s ease;
+}
+.m8h-tasinan .m8-kart {
+  position: absolute;
+  inset: 0;
+}
+/* iki yüz: yeşil müsait / amber kilitli */
+.m8h-yuz {
+  transition: opacity 0.35s ease;
+}
+.m8h-yuz-amber {
+  opacity: 0;
+}
+[data-adim="2"] .m8h-tasinan,
+[data-adim="3"] .m8h-tasinan {
+  opacity: 1;
+  left: 30%;
+  top: 90%;
+  height: 9%;
+}
+[data-adim="2"] .m8h-tasinan {
+  /* sıra taban tanımla aynı: left, top, height, opacity */
+  transition-delay: 0.35s, 0.35s, 0.35s, 0s;
+}
+[data-adim="2"] .m8h-tasinan .m8-kart {
+  animation: m8hKlik 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) 1.5s;
+}
+[data-adim="2"] .m8h-yuz-yesil,
+[data-adim="3"] .m8h-yuz-yesil {
+  opacity: 0;
+  transition-delay: 1.6s;
+}
+[data-adim="2"] .m8h-yuz-amber,
+[data-adim="3"] .m8h-yuz-amber {
+  opacity: 1;
+  transition-delay: 1.6s;
+}
+[data-adim="3"] .m8h-yuz-yesil,
+[data-adim="3"] .m8h-yuz-amber {
+  transition-delay: 0s;
+}
+/* raya oturma: klik */
+@keyframes m8hKlik {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.07) rotate(-1deg);
+  }
+  72% {
+    transform: scale(0.97);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* taşıma sırasında havada süzülme gölgesi */
+@keyframes m8hHavada {
+  0%, 100% {
+    filter: drop-shadow(0 3px 5px rgba(60, 42, 18, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 14px 20px rgba(60, 42, 18, 0.35));
+  }
+}
+[data-adim="2"] .m8h-tasinan {
+  animation: m8hHavada 1.2s ease-in-out 0.35s;
+}
+
+/* ---------- el imleçleri: pirinç tutucular ---------- */
+.m8h-tutucu {
+  position: absolute;
+  width: 19%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  opacity: 0;
+  transition:
+    left 1.05s cubic-bezier(0.3, 0.08, 0.24, 1),
+    top 1.05s cubic-bezier(0.3, 0.08, 0.24, 1),
+    opacity 0.4s ease;
+  filter: drop-shadow(0 6px 10px rgba(49, 36, 15, 0.3));
+}
+.m8h-tutucu svg {
+  flex: 1;
+  min-width: 0;
+}
+.m8h-tutucu-tag {
+  flex: none;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fdfaf3;
+  border-radius: 4px;
+  padding: 3px 6px;
+  box-shadow: 0 2px 4px rgba(49, 36, 15, 0.3);
+}
+.m8h-tag-teal {
+  background: #1e6b5e;
+}
+.m8h-tag-gri {
+  background: #5e6b78;
+}
+
+/* D1: soldan gelir, kartı alır, raya taşır */
+.m8h-d1 {
+  left: -27%;
+  top: 49.5%;
+}
+[data-adim="1"] .m8h-d1 {
+  left: -6.6%;
+  opacity: 1;
+}
+[data-adim="2"] .m8h-d1 {
+  left: 10.9%;
+  top: 91%;
+  opacity: 1;
+  transition-delay: 0.35s, 0.35s, 0s;
+  transition-property: left, top, opacity;
+}
+[data-adim="3"] .m8h-d1 {
+  left: -27%;
+  top: 91%;
+  opacity: 0;
+}
+
+/* D2: sağdan gelir, boş yuvaya ulaşır, çarpı yer, geri çekilir */
+.m8h-d2 {
+  left: 108%;
+  top: 55.5%;
+}
+[data-adim="1"] .m8h-d2 {
+  left: 23.9%;
+  opacity: 1;
+  transition-delay: 0.3s, 0.3s, 0.3s;
+  transition-property: left, top, opacity;
+}
+[data-adim="2"] .m8h-d2 {
+  left: 23.9%;
+  opacity: 1;
+}
+[data-adim="3"] .m8h-d2 {
+  left: 108%;
+  opacity: 0;
+}
+
+/* kırmızı çarpı: boş yuvada erişim reddi */
+.m8h-carpi {
+  position: absolute;
+  left: 14%;
+  top: 51.5%;
+  width: 8.5%;
+  z-index: 11;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-adim="2"] .m8h-carpi {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 1.75s;
+}
+[data-adim="3"] .m8h-carpi {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+/* ---------- K4: mini panolar amber yansıması ---------- */
+[data-adim="3"] .m8h-mini-1 .m8-mini-hedef::before {
+  opacity: 0;
+}
+[data-adim="3"] .m8h-mini-1 .m8-mini-hedef::after {
+  opacity: 1;
+  transition-delay: 0.25s;
+}
+[data-adim="3"] .m8h-mini-2 .m8-mini-hedef::before {
+  opacity: 0;
+}
+[data-adim="3"] .m8h-mini-2 .m8-mini-hedef::after {
+  opacity: 1;
+  transition-delay: 0.55s;
+}
+[data-adim="3"] .m8h-mini-3 .m8-mini-hedef::before {
+  opacity: 0;
+}
+[data-adim="3"] .m8h-mini-3 .m8-mini-hedef::after {
+  opacity: 1;
+  transition-delay: 0.85s;
+}
+/* ağ dışı pano: hedef yeşil KALIR; K4'te tehlike çerçevesi yanar */
+.m8h-mini-4 {
+  transition: box-shadow 0.4s ease;
+}
+[data-adim="3"] .m8h-mini-4 {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55) inset,
+    0 4px 10px rgba(60, 48, 26, 0.2),
+    0 0 0 1.5px rgba(209, 90, 78, 0.75);
+  transition-delay: 1.15s;
+}
+.m8h-mini-uyari {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a23f34;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+[data-adim="3"] .m8h-mini-uyari {
+  opacity: 1;
+  transition-delay: 1.3s;
+}
+
+/* ---------- kenardan çıkan mono fiş ---------- */
+.m8h-fis {
+  position: absolute;
+  right: 0;
+  top: 24%;
+  z-index: 12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: #2c2113;
+  color: #d6b478;
+  padding: 7px 12px 7px 14px;
+  border-radius: 6px 0 0 6px;
+  box-shadow: 0 6px 16px rgba(44, 33, 19, 0.4);
+  transform: translateX(105%);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-adim="3"] .m8h-fis {
+  transform: translateX(0);
+  transition-delay: 0.5s;
+}
+
+/* ---------- mobil K4 yankı çipleri (mini panolar kadraj dışında) ---------- */
+.m8h-yanki {
+  position: absolute;
+  left: 10px;
+  z-index: 12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #4d4232;
+  background: rgba(253, 250, 243, 0.94);
+  border: 1px solid rgba(138, 106, 58, 0.4);
+  border-radius: 999px;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(60, 48, 26, 0.18);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.m8h-yanki i {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: #e3a12c;
+  flex: none;
+}
+.m8h-yanki-kirmizi i {
+  background: #2fb36b;
+  outline: 1.5px solid rgba(209, 90, 78, 0.8);
+  outline-offset: 1px;
+}
+[data-adim="3"] .m8h-yanki-1 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.35s;
+}
+[data-adim="3"] .m8h-yanki-2 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.75s;
+}
+
+/* ---------- koreografi tekrar butonu + hero yuva butonu ---------- */
+.m8h-tekrar {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a6a3a;
+  border: 1px solid rgba(138, 106, 58, 0.45);
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: rgba(253, 250, 243, 0.7);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.m8h-tekrar:hover {
+  background: #fdfaf3;
+  border-color: rgba(138, 106, 58, 0.8);
+}
+.m8h-yuva-btn {
+  /* konum sahne yüzdesiyle inline verilir (alan → sahne dönüşümü TSX'te) */
+  position: absolute;
+  z-index: 13;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.m8h-yuva-btn:focus-visible {
+  outline: 2px solid #8a6a3a;
+  outline-offset: 2px;
+}
+
+/* mobilde küçülen kart tipografisi (sahne daralınca) */
+@media (max-width: 1023px) {
+  .m8h-alan .m8-kart-kod {
+    font-size: 9.5px;
+  }
+  .m8h-alan .m8-kart-tip {
+    font-size: 7.5px;
+  }
+  .m8h-alan .m8-kart-fiyat {
+    font-size: 8px;
+  }
+  .m8h-alan .m8-kart {
+    padding: 4px 5px 4px;
+  }
+  .m8h-tutucu-tag {
+    font-size: 8px;
+    padding: 2px 5px;
+  }
+}
+
+/* =========================================================
+   BÖLÜM SAHNELERİ
+   ========================================================= */
+
+/* ---- 02 · bozuk sistem: ofis panosu vs saha listesi ---- */
+.m8-ofis-pano {
+  background: linear-gradient(180deg, #dcd8ce 0%, #cfcabe 100%);
+  border: 6px solid;
+  border-image: linear-gradient(150deg, #6b4f2e, #8a6844 45%, #543c20) 1;
+  box-shadow:
+    0 2px 4px rgba(49, 36, 15, 0.18),
+    0 18px 36px rgba(49, 36, 15, 0.22);
+  padding: 14px;
+}
+.m8-saha-kagit {
+  background: linear-gradient(180deg, #fdfaf1 0%, #f6efdd 100%);
+  border: 1px solid rgba(58, 44, 26, 0.18);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 2px rgba(74, 54, 24, 0.1),
+    0 12px 26px rgba(74, 54, 24, 0.16);
+  transform: rotate(1.2deg);
+}
+.m8-saha-satir {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 2px;
+  border-bottom: 1px dashed rgba(58, 44, 26, 0.18);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+}
+.m8-celiski {
+  outline: 2px solid rgba(209, 90, 78, 0.85);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+@keyframes m8CeliskiYan {
+  0%, 100% {
+    outline-color: rgba(209, 90, 78, 0.85);
+  }
+  50% {
+    outline-color: rgba(209, 90, 78, 0.3);
+  }
+}
+.m8-celiski {
+  animation: m8CeliskiYan 2.4s ease-in-out infinite;
+}
+.m8-celiski-muhur {
+  display: inline-block;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a23f34;
+  border: 2px solid rgba(162, 63, 52, 0.75);
+  border-radius: 4px;
+  padding: 6px 12px;
+  transform: rotate(-3deg);
+  background: rgba(248, 231, 228, 0.6);
+}
+
+/* ---- 03 · tazelik rozetleri ---- */
+.m8-taze {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.m8-taze i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+.m8-taze-simdi {
+  color: #1f7d4c;
+  background: rgba(47, 179, 107, 0.12);
+}
+.m8-taze-simdi i {
+  background: #2fb36b;
+}
+.m8-taze-eski {
+  color: #9a6a12;
+  background: rgba(227, 161, 44, 0.14);
+}
+.m8-taze-eski i {
+  background: #e3a12c;
+}
+
+/* ---- 04 · tahsis anahtarlığı ---- */
+.m8-anahtar-halka {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6d5327;
+}
+
+/* ---- 06 · akış: pirinç numara ---- */
+.m8-adim-no {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: #241b10;
+  background: radial-gradient(circle at 35% 30%, #e6cb95, #b08d57 70%, #8a6a3a);
+  box-shadow:
+    0 1px 0 rgba(255, 248, 228, 0.6) inset,
+    0 4px 10px rgba(138, 106, 58, 0.35);
+}
+
+/* ---- 07 · koyu ceviz bölüm ---- */
+.m8-ceviz-koyu {
+  position: relative;
+  background:
+    repeating-linear-gradient(94deg, rgba(255, 226, 172, 0.02) 0 3px, transparent 3px 9px),
+    linear-gradient(170deg, #33261371 0%, transparent 40%),
+    linear-gradient(180deg, #2e2314 0%, #241b0f 100%);
+  color: #f1e8d6;
+}
+.m8-ustu-cizik {
+  position: relative;
+  color: rgba(241, 232, 214, 0.55);
+}
+.m8-ustu-cizik::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 52%;
+  height: 1.5px;
+  background: rgba(209, 90, 78, 0.85);
+  transform: rotate(-1.2deg);
+}
+.m8-cetvel-satir {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(214, 180, 120, 0.16);
+}
+.m8-cetvel-satir:last-child {
+  border-bottom: none;
+}
+
+/* scroll-reveal yerine hafif giriş (globals .belir kullanılabilir) */
+
+/* =========================================================
+   ERİŞİLEBİLİRLİK: hareket azaltma (globals genel kuralına ek emniyet)
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .m8h-kok *,
+  .m8h-kok *::before,
+  .m8h-kok *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .m8-kart-nabiz,
+  .m8h-lamba i,
+  .m8-celiski {
+    animation: none !important;
+  }
+}

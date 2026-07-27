@@ -1,0 +1,786 @@
+/* =========================================================
+   MOCKUP 10 · DAVETİYE BASKISI (letterpress lüks matbaa)
+   Fildişi kâğıt + mürekkep laciverti + pirinç. Sinyal renkleri
+   sabittir: yeşil müsait, amber opsiyon, kırmızı satıldı.
+   Tüm dokular CSS/SVG. Prefix: m10-
+   ========================================================= */
+
+.m10-zemin {
+  background:
+    radial-gradient(880px 460px at 82% -6%, rgba(164, 130, 63, 0.07), transparent 60%),
+    radial-gradient(760px 420px at -4% 14%, rgba(27, 42, 65, 0.05), transparent 55%),
+    linear-gradient(180deg, #f8f4e9 0%, #f2ecdb 100%);
+  color: #1b2a41;
+  position: relative;
+}
+
+/* kâğıt greni: SVG turbulence, çok düşük opaklık */
+.m10-gren {
+  position: relative;
+}
+.m10-gren::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.04'/></svg>");
+  background-size: 180px 180px;
+}
+.m10-gren > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* zarif serif dizgi (Playfair, latin-ext) */
+.m10-serif {
+  font-family: var(--font-m10-serif), Georgia, "Times New Roman", serif;
+  letter-spacing: 0.01em;
+}
+
+/* letterpress gofre hissi: açık zeminde bastırılmış mürekkep */
+.m10-gofre {
+  color: #1b2a41;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* bölüm madde şeridi (basılı forma numarası) */
+.m10-madde {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #7d6027;
+}
+.m10-madde::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(164, 130, 63, 0.55), rgba(27, 42, 65, 0.12));
+}
+
+/* pirinç süsleme ayracı: çizgi + baklava */
+.m10-susleme {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.m10-susleme::before,
+.m10-susleme::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(164, 130, 63, 0.5);
+}
+.m10-susleme > i {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  background: #a4823f;
+  transform: rotate(45deg);
+}
+
+/* ---------- fildişi kâğıt kart (pirinç iç çerçeveli) ---------- */
+.m10-kagit {
+  position: relative;
+  background: linear-gradient(180deg, #fbf7ec 0%, #f6f0dd 100%);
+  border: 1px solid rgba(27, 42, 65, 0.16);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 2px rgba(96, 72, 32, 0.08),
+    0 12px 30px rgba(96, 72, 32, 0.14);
+}
+.m10-kagit::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(164, 130, 63, 0.4);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* davetiye kartı: çift pirinç çerçeve + fildişi doku */
+.m10-davetiye {
+  position: relative;
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255, 255, 255, 0.5), transparent 55%),
+    linear-gradient(180deg, #fdfaf1 0%, #f7f1e0 100%);
+  border: 1.5px solid rgba(27, 42, 65, 0.34);
+  border-radius: 3px;
+  box-shadow:
+    0 2px 4px rgba(96, 72, 32, 0.12),
+    0 18px 44px rgba(96, 72, 32, 0.22);
+}
+.m10-davetiye::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(164, 130, 63, 0.55);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.m10-davetiye::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(164, 130, 63, 0.25);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* ---------- mühür / damga (mürekkep düzensizliği: noise mask) ---------- */
+.m10-muhur {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+  transform: rotate(-7deg);
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.72 0.34'/></filter><rect width='120' height='120' filter='url(%23m)'/></svg>"), linear-gradient(#000, #000);
+  mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.72 0.34'/></filter><rect width='120' height='120' filter='url(%23m)'/></svg>"), linear-gradient(#000, #000);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.m10-muhur-gecersiz { color: #a23f34; }
+.m10-muhur-bayat { color: #6d7683; }
+.m10-muhur-canli { color: #1f7d4c; }
+.m10-muhur-rezerve { color: #9a6a12; }
+.m10-muhur-pirinc { color: #7d6027; }
+.m10-muhur-ink { color: #1b2a41; }
+
+/* gofre (kabartma) damga: amber mürekkep, bastırılmış kâğıt gölgesi */
+.m10-muhur-gofre {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  border: 2.5px solid rgba(154, 106, 18, 0.85);
+  border-radius: 6px;
+  background: rgba(227, 161, 44, 0.1);
+  color: #9a6a12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.65),
+    inset 0 -1px 2px rgba(96, 72, 32, 0.28),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* eski / geçersiz baskı kartı: soluk fildişi, düşük doygunluk */
+.m10-eski-baski {
+  background: linear-gradient(180deg, #f3ecd8 0%, #ece3c9 100%);
+  border: 1px solid rgba(27, 42, 65, 0.18);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(96, 72, 32, 0.14), 0 10px 22px rgba(96, 72, 32, 0.12);
+  filter: saturate(0.55);
+  position: relative;
+}
+.m10-eski-baski::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(109, 118, 131, 0.4);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* üstü çizili eski fiyat */
+.m10-cizik-fiyat {
+  position: relative;
+  color: #6d7683;
+}
+.m10-cizik-fiyat::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: 50%;
+  height: 2px;
+  background: #a23f34;
+  transform: rotate(-2deg);
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+/* ---------- mürekkep butonlar ---------- */
+.m10-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14.5px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+.m10-btn-ink {
+  background: #1b2a41;
+  color: #f8f4e9;
+  box-shadow: 0 8px 20px rgba(27, 42, 65, 0.24);
+}
+.m10-btn-ink:hover {
+  background: #121e30;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(27, 42, 65, 0.3);
+}
+.m10-btn-pirinc {
+  background: #fbf7ec;
+  color: #1b2a41;
+  border: 1.5px solid rgba(164, 130, 63, 0.7);
+  box-shadow: 0 2px 8px rgba(96, 72, 32, 0.1);
+}
+.m10-btn-pirinc:hover {
+  border-color: #7d6027;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(96, 72, 32, 0.16);
+}
+
+/* ---------- durum satırı (sinyal renkleri SABİT) ---------- */
+.m10-durum {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.m10-durum i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+.m10-d-musait { color: #1f7d4c; }
+.m10-d-musait i { background: #2fb36b; }
+.m10-d-rezerve { color: #9a6a12; }
+.m10-d-rezerve i { background: #e3a12c; }
+.m10-d-satildi { color: #a23f34; }
+.m10-d-satildi i { background: #d15a4e; }
+.m10-d-bayat { color: #9a6a12; }
+.m10-d-bayat i { background: #e3a12c; }
+
+/* tazelik nabzı */
+@keyframes m10nabiz {
+  0% { box-shadow: 0 0 0 0 rgba(47, 179, 107, 0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(47, 179, 107, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(47, 179, 107, 0); }
+}
+.m10-nabiz { animation: m10nabiz 2.2s infinite; }
+
+/* prova tablosu (baskı provası) */
+.m10-prova-satir {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 4px;
+  border-bottom: 1px dashed rgba(27, 42, 65, 0.16);
+}
+.m10-prova-satir:last-child { border-bottom: none; }
+
+/* davet listesi satırı */
+.m10-davet-satir {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 4px;
+  border-bottom: 1px dotted rgba(164, 130, 63, 0.45);
+}
+.m10-davet-satir:last-child { border-bottom: none; }
+.m10-davet-onay {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border: 1.5px solid rgba(164, 130, 63, 0.8);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #7d6027;
+}
+.m10-davet-onay svg { width: 10px; height: 10px; }
+
+/* karşılaştırma cetveli (koyu bölümdeki kâğıt) */
+.m10-cetvel-satir {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 11px 2px;
+  border-bottom: 1px dashed rgba(27, 42, 65, 0.16);
+  font-size: 14px;
+}
+.m10-ustu-cizik {
+  position: relative;
+  color: #5c6474;
+}
+.m10-ustu-cizik::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 52%;
+  height: 2px;
+  background: #d15a4e;
+  transform: rotate(-1.2deg);
+  border-radius: 2px;
+}
+
+/* hover: kâğıt hafif kalkar */
+@media (hover: hover) {
+  .m10-kalkar {
+    transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.25s ease;
+  }
+  .m10-kalkar:hover {
+    transform: translateY(-3px) rotate(0deg) !important;
+    box-shadow: 0 2px 4px rgba(96, 72, 32, 0.1), 0 18px 38px rgba(96, 72, 32, 0.2);
+    z-index: 6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m10-nabiz { animation: none; }
+  .m10-kalkar,
+  .m10-btn { transition: none; }
+}
+
+/* =========================================================
+   HERO · DAVETİYE BASKISI (m10h-)
+   Tek ekran, 4 kare koreografi. data-adim (0..3) sürer:
+   K1 masada tek canlı davetiye + soluk eski baskılar,
+   K2 iki ıstampa iki yandan yaklaşır,
+   K3 D1 gofre damga basar; D2 şeffaf koruma tabakasına takılır,
+   K4 danışman nüshaları aynı anda mühürlenir, ağ dışı BAYAT düşer.
+   Kural: sonraki kare öncekini korur.
+   ========================================================= */
+
+/* çerçeve: matbaa pres tezgâhı hissi */
+.m10h-cerceve {
+  border: 1px solid rgba(27, 42, 65, 0.2);
+  border-radius: 10px;
+  background: #fbf7ec;
+  box-shadow:
+    0 0 0 6px #fbf7ec,
+    0 0 0 7px rgba(164, 130, 63, 0.45),
+    0 4px 10px rgba(96, 72, 32, 0.12),
+    0 26px 60px rgba(96, 72, 32, 0.24);
+}
+
+/* fotoğrafı fildişi/mürekkep dünyasına bağlayan sıcak tint */
+.m10h-tint {
+  pointer-events: none;
+  background:
+    linear-gradient(115deg, rgba(248, 244, 233, 0.14) 0%, transparent 40%),
+    radial-gradient(120% 90% at 50% 42%, transparent 60%, rgba(50, 36, 14, 0.2) 100%),
+    linear-gradient(0deg, rgba(27, 42, 65, 0.05), rgba(27, 42, 65, 0.05));
+}
+
+/* ---------- kırpım + sabit oranlı sahne ---------- */
+.m10h-kirp {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+@media (min-width: 640px) {
+  .m10h-kirp { aspect-ratio: 16 / 10; }
+}
+@media (min-width: 1024px) {
+  .m10h-kirp { aspect-ratio: 1920 / 1088; }
+}
+/* sahne 1920x1088 oranında kalır; dar ekranda yatay kırpılır,
+   dram (davetiye, x=%53) merkezde tutulur. Taşma kirp içinde kalır. */
+.m10h-sahne {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  aspect-ratio: 1920 / 1088;
+  left: 50%;
+  transform: translateX(-53%);
+}
+@media (min-width: 1024px) {
+  .m10h-sahne {
+    left: 0;
+    width: 100%;
+    transform: none;
+  }
+}
+.m10h-icerik { position: absolute; inset: 0; }
+
+/* K3: gofre damga inince kâğıt 1px sarsılır */
+[data-adim="2"] .m10h-icerik { animation: m10hSars 0.24s linear 0.62s; }
+@keyframes m10hSars {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(1px, -1px); }
+  65% { transform: translate(-1px, 1px); }
+}
+
+/* ---------- başlık: kâğıdın üst boş şeridi (yalnız lg+) ---------- */
+.m10h-baslik {
+  position: absolute;
+  left: 53%;
+  top: 7%;
+  width: 44%;
+  transform: translateX(-50%) rotate(-0.4deg);
+  z-index: 9;
+  display: none;
+  text-align: center;
+}
+@media (min-width: 1024px) {
+  .m10h-baslik { display: block; }
+}
+.m10h-baslik-ic {
+  position: relative;
+  padding: 6px 10px 10px;
+}
+
+/* ---------- davetiye (kod ile dizilmiş) ---------- */
+.m10h-davetiye {
+  position: absolute;
+  left: 53%;
+  top: 54%;
+  width: 25%;
+  min-width: 236px;
+  transform: translate(-50%, -50%) rotate(-1.2deg);
+  z-index: 3;
+}
+.m10h-dav-ic {
+  padding: 8.5% 7% 7.5%;
+  text-align: center;
+}
+
+/* ---------- eski baskılar (K1: soluk, kenarda) ---------- */
+.m10h-eski {
+  position: absolute;
+  z-index: 2;
+  width: 13.5%;
+  min-width: 132px;
+  padding: 12px 12px 14px;
+  text-align: center;
+  transform: rotate(var(--m10h-don, -6deg));
+  opacity: 0.86;
+}
+
+/* BAYAT filigranı: K4'te ağ dışı nüshanın üstüne düşer */
+.m10h-bayat {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%) rotate(-14deg) scale(1.5);
+  opacity: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #6d7683;
+  border: 2.5px solid rgba(109, 118, 131, 0.75);
+  border-radius: 4px;
+  padding: 5px 10px 5px 13px;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+[data-adim="3"] .m10h-bayat {
+  opacity: 0.9;
+  transform: translate(-50%, -50%) rotate(-14deg) scale(1);
+  transition-delay: 0.35s;
+}
+
+/* ---------- ıstampalar (baskı kolları) ---------- */
+.m10h-istampa {
+  position: absolute;
+  width: 9.5%;
+  min-width: 84px;
+  z-index: 6;
+  opacity: 0;
+  will-change: transform;
+  filter: drop-shadow(0 12px 10px rgba(27, 42, 65, 0.3));
+  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.5s ease;
+}
+.m10h-istampa-teal {
+  left: 40%;
+  top: 26%;
+  transform: translate(-260%, -90%) rotate(-26deg);
+}
+.m10h-istampa-gri {
+  left: 59%;
+  top: 25.5%;
+  transform: translate(260%, -90%) rotate(26deg);
+}
+[data-adim="1"] .m10h-istampa,
+[data-adim="2"] .m10h-istampa,
+[data-adim="3"] .m10h-istampa { opacity: 1; }
+[data-adim="1"] .m10h-istampa-teal,
+[data-adim="2"] .m10h-istampa-teal,
+[data-adim="3"] .m10h-istampa-teal { transform: translate(0, 0) rotate(-9deg); }
+[data-adim="1"] .m10h-istampa-gri,
+[data-adim="2"] .m10h-istampa-gri,
+[data-adim="3"] .m10h-istampa-gri { transform: translate(0, 0) rotate(9deg); }
+
+/* K3: D1 ıstampası davetiyeye iner, basar, kalkar */
+[data-adim="2"] .m10h-istampa-teal { animation: m10hBas1 0.85s ease-in-out 0.1s; }
+@keyframes m10hBas1 {
+  0%, 100% { transform: translate(0, 0) rotate(-9deg); }
+  38% { transform: translate(58%, 92%) rotate(-2deg) scale(0.98); }
+  56% { transform: translate(58%, 92%) rotate(-2deg) scale(0.94); }
+  82% { transform: translate(16%, 22%) rotate(-7deg); }
+}
+/* K3: D2 ıstampası inmeye kalkar, koruma tabakasına çarpar */
+[data-adim="2"] .m10h-istampa-gri { animation: m10hBas2 0.95s ease-in-out 2.05s; }
+@keyframes m10hBas2 {
+  0%, 100% { transform: translate(0, 0) rotate(9deg); }
+  40% { transform: translate(-46%, 88%) rotate(3deg) scale(0.98); }
+  58% { transform: translate(-46%, 84%) rotate(4deg); }
+  80% { transform: translate(-12%, 18%) rotate(8deg); }
+}
+
+/* ---------- REZERVE gofre damgası (davetiye üstünde) ---------- */
+.m10h-rezerve {
+  position: absolute;
+  left: 50%;
+  bottom: 17%;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) rotate(-6deg) scale(1.7);
+  transition: opacity 0.2s ease, transform 0.38s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+[data-adim="2"] .m10h-rezerve,
+[data-adim="3"] .m10h-rezerve {
+  opacity: 1;
+  transform: translateX(-50%) rotate(-6deg) scale(1);
+  transition-delay: 0.52s;
+}
+/* damga basılınca kısa mürekkep halkası */
+.m10h-rezerve::after {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border: 2px solid rgba(154, 106, 18, 0.5);
+  border-radius: 10px;
+  opacity: 0;
+  transform: scale(0.72);
+}
+[data-adim="2"] .m10h-rezerve::after { animation: m10hHalka 0.5s ease 0.6s; }
+@keyframes m10hHalka {
+  0% { opacity: 0.85; transform: scale(0.72); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+/* K1 durum satırı damga ile el değiştirir */
+.m10h-dav-durum-musait { transition: opacity 0.3s ease; }
+[data-adim="2"] .m10h-dav-durum-musait,
+[data-adim="3"] .m10h-dav-durum-musait { opacity: 0.28; transition-delay: 0.6s; }
+
+/* ---------- şeffaf koruma tabakası (blur YOK) ---------- */
+.m10h-tabaka {
+  position: absolute;
+  left: 39%;
+  top: 29.5%;
+  width: 28%;
+  height: 49%;
+  z-index: 5;
+  opacity: 0;
+  transform: translateX(46%) rotate(-1.2deg);
+  transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1), opacity 0.4s ease;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.12) 45%, rgba(255, 255, 255, 0.4) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  outline: 1px solid rgba(27, 42, 65, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 8px 22px rgba(96, 72, 32, 0.16);
+  overflow: hidden;
+}
+.m10h-tabaka::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: 16%;
+  width: 24%;
+  height: 160%;
+  transform: rotate(16deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  pointer-events: none;
+}
+[data-adim="2"] .m10h-tabaka,
+[data-adim="3"] .m10h-tabaka {
+  opacity: 1;
+  transform: translateX(0) rotate(-1.2deg);
+  transition-delay: 1.35s;
+}
+/* D2'nin izi: tabaka ÜSTÜNDE kalır, kâğıda geçmez */
+.m10h-tabaka-iz {
+  position: absolute;
+  right: 12%;
+  top: 30%;
+  padding: 6px 11px;
+  border: 2px solid rgba(109, 118, 131, 0.6);
+  border-radius: 5px;
+  transform: rotate(7deg);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(109, 118, 131, 0.72);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+[data-adim="2"] .m10h-tabaka-iz,
+[data-adim="3"] .m10h-tabaka-iz {
+  opacity: 1;
+  transition-delay: 2.55s;
+}
+/* kırmızı erişim mikro etiketi */
+.m10h-erisim {
+  position: absolute;
+  left: 10px;
+  top: 9px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #a23f34;
+  border: 1px solid rgba(209, 90, 78, 0.55);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 3px;
+  padding: 2px 7px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+[data-adim="2"] .m10h-erisim,
+[data-adim="3"] .m10h-erisim {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 2.8s;
+}
+
+/* ---------- K4: danışman nüshaları aynı anda mühürlenir ---------- */
+.m10h-nusha {
+  position: absolute;
+  z-index: 2;
+  width: 12%;
+  min-width: 118px;
+  padding: 9px 10px 11px;
+  text-align: center;
+  transform: rotate(var(--m10h-don, 0deg));
+}
+.m10h-nusha-muhur {
+  display: inline-flex;
+  margin-top: 6px;
+  padding: 3px 8px;
+  border: 1.5px solid rgba(154, 106, 18, 0.8);
+  border-radius: 4px;
+  background: rgba(227, 161, 44, 0.12);
+  color: #9a6a12;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    inset 0 -1px 1px rgba(96, 72, 32, 0.24);
+  opacity: 0;
+  transform: scale(1.5) rotate(-4deg);
+  transition: opacity 0.3s ease, transform 0.32s cubic-bezier(0.2, 1.3, 0.4, 1);
+}
+[data-adim="3"] .m10h-nusha-muhur {
+  opacity: 1;
+  transform: scale(1) rotate(-4deg);
+}
+[data-adim="3"] .m10h-nusha-1 .m10h-nusha-muhur { transition-delay: 0.05s; }
+[data-adim="3"] .m10h-nusha-2 .m10h-nusha-muhur { transition-delay: 0.28s; }
+[data-adim="3"] .m10h-nusha-3 .m10h-nusha-muhur { transition-delay: 0.5s; }
+
+/* kenardan çıkan mono fiş */
+.m10h-fis {
+  position: absolute;
+  right: 0;
+  top: 24%;
+  z-index: 8;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  background: #1b2a41;
+  color: #d9c08a;
+  padding: 7px 12px 7px 14px;
+  border-radius: 6px 0 0 6px;
+  box-shadow: 0 6px 16px rgba(27, 42, 65, 0.3);
+  transform: translateX(105%);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+[data-adim="3"] .m10h-fis {
+  transform: translateX(0);
+  transition-delay: 0.7s;
+}
+
+/* ---------- etkileşim ---------- */
+.m10h-davetiye-btn {
+  position: absolute;
+  left: 40.5%;
+  top: 31%;
+  width: 25%;
+  height: 46%;
+  z-index: 10;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.m10h-davetiye-btn:focus-visible {
+  outline: 2px solid #7d6027;
+  outline-offset: 3px;
+}
+.m10h-tekrar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7d6027;
+  border: 1px solid rgba(164, 130, 63, 0.6);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.m10h-tekrar:hover {
+  background: rgba(164, 130, 63, 0.1);
+  border-color: #7d6027;
+}
+
+/* ---------- reduced motion: K4 statik, hareket yok ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .m10h-kok *,
+  .m10h-kok *::before,
+  .m10h-kok *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
