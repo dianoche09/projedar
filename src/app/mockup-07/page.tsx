@@ -56,44 +56,8 @@ export default function Mockup07() {
         </nav>
       </header>
 
-      {/* ============ HERO: inşaat zamanla yarış / faz şeridi ============ */}
-      <section
-        className="relative isolate overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(1100px 560px at 82% -12%, rgba(201, 163, 95, 0.15), transparent 60%), radial-gradient(820px 480px at -6% 34%, rgba(30, 155, 138, 0.1), transparent 55%), linear-gradient(170deg, #081420 0%, #0b1c2e 55%, #0d2334 100%)",
-        }}
-      >
-        <div className="komuta-grid pointer-events-none absolute inset-0" aria-hidden="true" />
-        <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center px-5 pt-12 text-center sm:px-6 lg:pt-16">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#dcc08c]">
-            Lüks konut · temelden teslime tek kayıt
-          </p>
-          <h1 className="mt-4 font-display text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[54px]">
-            Projenizin stoğu
-            <br />
-            <span className="text-[#dcc08c]">artık yaşayan bir ağ.</span>
-          </h1>
-          <p className="mt-4 max-w-md text-pretty text-[13.5px] leading-relaxed text-white/80 sm:text-sm">
-            İnşaat zamanla yarışır; fiyat, durum ve yetki şerit boyunca senkron ilerler. Fazlar
-            ilerledikçe stok erir: erken alan kazanır.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2.5">
-            <Link href="/kayit" className="btn-action">
-              Projemi canlı ağa aç
-            </Link>
-            <Link
-              href="/kayit"
-              className="inline-flex min-h-11 items-center justify-center rounded-[13px] border border-white/30 bg-white/10 px-4 text-[13.5px] font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
-            >
-              Danışman olarak katıl
-            </Link>
-          </div>
-        </div>
-        <div className="relative pb-10 pt-9 sm:pb-14">
-          <HeroFazSeridi />
-        </div>
-      </section>
+      {/* ============ HERO: Zaman Akışı (tam ekran, 3 fazlı crossfade) ============ */}
+      <HeroFazSeridi />
 
       {/* ============ NEDİR ============ */}
       <section className="border-y border-[var(--cizgi)] bg-white/55">
