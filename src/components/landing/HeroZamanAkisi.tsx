@@ -111,7 +111,7 @@ export function HeroFazSeridi() {
 
   return (
     <section
-      className="relative h-svh min-h-[640px] overflow-hidden bg-ink text-white"
+      className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-ink text-white"
       aria-label="Proje zaman akışı: inşaattan teslime, satışlar faz faz tükenir"
     >
       {/* GERÇEK VİDEO: inşaattan teslime tek çekim timelapse (Seedance i2v, başlangıç=kaba, bitiş=tamam).
@@ -181,27 +181,43 @@ export function HeroFazSeridi() {
         })}
       </div>
 
-      {/* başlık: sabit tek hiyerarşi */}
-      <div className="absolute inset-x-0 top-0 z-10">
-        <div className="mx-auto w-full max-w-7xl px-6 pt-24 sm:px-10 sm:pt-28">
+      {/* başlık: sabit tek hiyerarşi (akış içinde; alt künye mt-auto ile hep görünür) */}
+      <div className="relative z-10">
+        <div className="mx-auto w-full max-w-7xl px-6 pb-10 pt-16 sm:px-10 sm:pt-24">
           <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">Canlı konut stoğu dağıtım ağı</p>
-          <h1 className="mt-3 max-w-[14ch] font-display text-[11vw] font-extrabold leading-[1.0] tracking-tight sm:text-[64px] lg:text-[80px]">
+          <h1 className="mt-3 max-w-[14ch] font-display text-[11vw] font-extrabold leading-[1.0] tracking-tight sm:text-[60px] lg:text-[76px]">
             Bloklar yükselir. Stok erir.
           </h1>
-          <p className="mt-4 max-w-[52ch] text-pretty text-[15px] leading-relaxed text-white/85 sm:text-[16.5px]">
+          <p className="mt-4 max-w-[52ch] text-pretty text-[14.5px] leading-relaxed text-white/85 sm:text-[16px]">
             ProjePazar, müteahhidin canlı stoğunu tek noktadan yönettiği, yalnız tahsis ettiği danışmanlara
             açtığı dağıtım ağıdır. Fiyat ve durum tek kaynaktan dağıtılır; satış sürecinde herkes aynı doğruyu görür.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-5">
+          {/* rol kartları (kullanıcı tasarımı): koyu = proje sahibi, beyaz = danışman */}
+          <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-2">
             <Link
               href="/kayit?rol=uretici"
-              className="inline-flex min-h-12 items-center rounded-full bg-white px-7 text-[15px] font-bold text-ink transition-transform duration-200 hover:-translate-y-0.5"
+              className="group rounded-2xl bg-[#0d2438]/90 p-4 ring-1 ring-white/15 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
             >
-              Projenizi ağa açın
+              <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/60">Müteahhit · Proje sahibi</p>
+              <p className="mt-1.5 font-display text-lg font-extrabold text-white">Proje sahibiyim</p>
+              <p className="mt-1 text-[12px] leading-snug text-white/70">Stoğunu tek noktadan yönet; kim neyi görür, sen belirle. Satışı canlı izle.</p>
+              <p className="mt-2.5 text-[13px] font-semibold text-[#7fd4c4]">
+                Panelini gör <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </p>
             </Link>
-            <Link href="/kayit?rol=emlakci" className="group inline-flex min-h-12 items-center gap-2 text-[15px] font-semibold text-white/90 hover:text-white">
-              Danışman olarak katılın
-              <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            <Link
+              href="/kayit?rol=emlakci"
+              className="group rounded-2xl bg-white/95 p-4 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-ink-soft">Gayrimenkul danışmanı</p>
+              <p className="mt-1.5 flex items-center gap-2 font-display text-lg font-extrabold text-ink">
+                Danışmanım
+                <span className="rounded-full bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--color-teal-d)]">Ücretsiz</span>
+              </p>
+              <p className="mt-1 text-[12px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör; müşterine tek dokunuşla doğru fiyatı paylaş.</p>
+              <p className="mt-2.5 text-[13px] font-semibold text-[var(--color-teal-d)]">
+                Havuza katıl <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+              </p>
             </Link>
           </div>
         </div>
@@ -209,7 +225,7 @@ export function HeroFazSeridi() {
 
       {/* dev müsait sayısı: sağda, faz değiştikçe erir (m02 eriyen sayı dili) */}
       <div
-        className="pointer-events-none absolute bottom-28 right-5 z-10 text-right sm:bottom-32 sm:right-10 lg:right-14"
+        className="pointer-events-none absolute bottom-24 right-5 z-[5] text-right sm:bottom-28 sm:right-10 lg:right-14"
         aria-live="polite"
       >
         <style>{`@keyframes ppSayiGir { from { opacity: 0; transform: translateY(0.16em); } to { opacity: 1; transform: translateY(0); } }`}</style>
@@ -240,8 +256,8 @@ export function HeroFazSeridi() {
         </div>
       </div>
 
-      {/* alt künye: yukarı çekilmiş yüzen bar (faz noktaları + eriyen stok + oynat/duraklat) */}
-      <div className="absolute inset-x-3 bottom-6 z-10 rounded-2xl border border-white/20 bg-[rgba(11,20,32,0.6)] backdrop-blur-md sm:inset-x-8 sm:bottom-9 lg:inset-x-12">
+      {/* alt künye: akış içinde yüzen bar; mt-auto ile her ekranda tam görünür */}
+      <div className="relative z-10 mx-3 mb-5 mt-auto rounded-2xl border border-white/20 bg-[rgba(11,20,32,0.6)] pt-0 backdrop-blur-md sm:mx-8 sm:mb-7 lg:mx-12">
         <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-3.5 sm:px-7">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
