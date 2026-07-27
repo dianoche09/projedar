@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AkisFeed } from "@/components/landing/AkisFeed";
 import { GaleriTahsis } from "./GaleriTahsis";
-import { HeroGaleriVitrini } from "./HeroGaleriVitrini";
+import { HeroGeceSilueti } from "./HeroGeceSilueti";
 import "./mockup09.css";
 
 /**
@@ -90,8 +90,8 @@ export default function Mockup09Sayfasi() {
         </div>
       </header>
 
-      {/* ============ hero: galeri duvarı + 4 karelik koreografi ============ */}
-      <HeroGaleriVitrini />
+      {/* ============ hero: gece silüeti (tam ekran) ============ */}
+      <HeroGeceSilueti />
 
       {/* ============ nedir: tanım şeridi ============ */}
       <section className="border-y border-[var(--m9-cizgi)] bg-[var(--m9-zemin-2)]">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./mockup08.css";
-import { HeroSatisPanosu } from "./_components/HeroSatisPanosu";
+import { HeroSatisOfisiCami } from "./_components/HeroSatisOfisiCami";
 import { MagnetKart, MiniPano } from "./_components/PanoParcalari";
 
 export const metadata: Metadata = {
@@ -45,12 +45,8 @@ export default function Mockup08Sayfasi() {
         </div>
       </header>
 
-      {/* ============ HERO · PANO KOREOGRAFİSİ ============ */}
-      <section className="relative">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12">
-          <HeroSatisPanosu />
-        </div>
-      </section>
+      {/* ============ HERO · SATIŞ OFİSİ CAMI (tam ekran) ============ */}
+      <HeroSatisOfisiCami />
 
       {/* ============ 01 · NEDİR ============ */}
       <section className="border-t border-[rgba(58,44,26,0.16)] bg-[rgba(58,44,26,0.035)]">

@@ -13,10 +13,10 @@ import { OpsiyonKilidi } from "./OpsiyonKilidi";
 
 /**
  * Mockup 03 · Living Distribution Network
- * Konsept: kontrollü satış ağı kartografisi. Hero = "Yetki Kapılı Şantiye
- * Haritası": fazlı şantiye hava çekimi üzerinde 4 karelik otomatik koreografi;
- * veri kapıdan geçerken süzülür, geçemeyen akış kapıda görünür şekilde durur.
- * Ana mesaj: herkes her şeyi görmek zorunda değil.
+ * Konsept: kontrollü satış ağı kartografisi. Hero = "Tek Akış": üç kuleli
+ * şantiye hava çekimi üzerinde yalnız üç öğe; tek yeşil nokta, yetkili
+ * danışmana akan tek kesikli çizgi ve kapıda durmuş yetkisiz çip.
+ * Ana mesaj: herkes her şeyi görmez.
  */
 
 export const metadata: Metadata = {
@@ -58,32 +58,8 @@ export default function Mockup03() {
         </nav>
       </header>
 
-      {/* ============ HERO: yetki kapılı şantiye haritası ============ */}
-      <section className="relative isolate overflow-hidden bg-navy">
-        <HeroYetkiKapisi />
-        {/* başlık üst gökte; sahnenin kendisi alttaki boşlukta oynar */}
-        <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-5 pb-[320px] pt-12 text-center sm:px-6 sm:pb-[380px] lg:pb-[440px] lg:pt-16">
-          <h1 className="font-display text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[54px]">
-            Her proje. Her danışman.
-            <br />
-            <span className="text-[#5ecfba]">Tek canlı gerçek.</span>
-          </h1>
-          <p className="mt-4 max-w-md text-pretty text-[13.5px] leading-relaxed text-white/80 sm:text-sm">
-            Veri tek kayıtta doğar; yetki kapısından geçemeyen akış kapıda durur.
-          </p>
-          <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-2.5">
-            <Link href="/kayit" className="btn-action">
-              Projemi canlı ağa aç
-            </Link>
-            <Link
-              href="/kayit"
-              className="inline-flex min-h-11 items-center justify-center rounded-[13px] border border-white/30 bg-white/10 px-4 text-[13.5px] font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
-            >
-              Danışman olarak katıl
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* ============ HERO: tek akış (sadeleşmiş kartografi) ============ */}
+      <HeroYetkiKapisi />
 
       {/* ============ NEDİR ============ */}
       <section className="border-y border-[var(--cizgi)] bg-white/55">

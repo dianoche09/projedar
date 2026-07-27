@@ -81,13 +81,8 @@ export default function Mockup02Sayfasi() {
         </div>
       </header>
 
-      {/* ============ hero: dev kelime sahnesi (tamamı kod/SVG) ============ */}
-      <section className="relative overflow-hidden">
-        <div className="komuta-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-14">
-          <HeroDevKelime />
-        </div>
-      </section>
+      {/* ============ hero: eriyen sayı (stat-led, tek ekran) ============ */}
+      <HeroDevKelime />
 
       {/* ============ nedir: tanım şeridi ============ */}
       <section className="border-t border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">

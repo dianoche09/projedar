@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Playfair_Display } from "next/font/google";
 import "./mockup10.css";
 import { EskiBaskiKarti, Susleme } from "./_components/BaskiParcalari";
-import { HeroDavetiyeBaskisi } from "./_components/HeroDavetiyeBaskisi";
+import { HeroSozlesmeGunu } from "./_components/HeroSozlesmeGunu";
 
 /* zarif serif dizgi: davetiye tipografisi (latin-ext: Türkçe karakterler) */
 const playfair = Playfair_Display({
@@ -53,12 +53,8 @@ export default function Mockup10Sayfasi() {
         </div>
       </header>
 
-      {/* ============ HERO · CANLI MATBAA MASASI ============ */}
-      <section className="relative">
-        <div className="mx-auto max-w-6xl px-5 pb-16 pt-10 sm:px-6 lg:pb-24 lg:pt-12">
-          <HeroDavetiyeBaskisi />
-        </div>
-      </section>
+      {/* ============ HERO · SÖZLEŞME GÜNÜ (tam ekran) ============ */}
+      <HeroSozlesmeGunu />
 
       {/* ============ 01 · NEDİR: MATBAA CANLIDIR ============ */}
       <section className="border-t border-[rgba(27,42,65,0.16)] bg-[rgba(27,42,65,0.03)]">
