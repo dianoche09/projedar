@@ -35,6 +35,9 @@ export function HeroFazSeridi() {
   const [adim, setAdim] = useState(0);
   const [oynuyor, setOynuyor] = useState(true);
   const [azalt, setAzalt] = useState(false);
+  // video oynatılamıyorsa (düşük pil modu, autoplay engeli, yükleme hatası):
+  // 3 fazlı görsel crossfade yedeğine düşer, video sonradan oynarsa geri döner
+  const [yedek, setYedek] = useState(false);
   const azaltRef = useRef(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -63,12 +66,22 @@ export function HeroFazSeridi() {
     setAdim((a) => (a === yeni ? a : yeni));
   };
 
-  // reduced-motion fallback'inde (video yok) eski zamanlayıcı döngüsü çalışsın
+  // reduced-motion ve görsel-yedek modlarında zamanlayıcı döngüsü fazları çevirir
   useEffect(() => {
-    if (!oynuyor || !azaltRef.current) return;
+    if (!oynuyor || (!azaltRef.current && !yedek)) return;
     const id = setInterval(() => setAdim((a) => (a + 1) % 4), ADIM_SURE);
     return () => clearInterval(id);
-  }, [oynuyor]);
+  }, [oynuyor, yedek]);
+
+  // video izleyicisi: kısa süre içinde ilerlemiyorsa görsel yedeğine geç
+  useEffect(() => {
+    if (azalt) return;
+    const kontrol = setTimeout(() => {
+      const v = videoRef.current;
+      if (!v || v.paused || v.currentTime < 0.15) setYedek(true);
+    }, 2500);
+    return () => clearTimeout(kontrol);
+  }, [azalt]);
 
   // otomatik oynatma garantisi: bazı tarayıcılar autoplay'i geciktirir/engeller;
   // mount'ta, sekme geri geldiğinde ve ilk dokunuşta oynatmayı dene
@@ -106,19 +119,36 @@ export function HeroFazSeridi() {
       {azalt ? (
         <Image src={FAZLAR[2].gorsel} alt="" fill priority sizes="100vw" className="object-cover object-[50%_38%]" />
       ) : (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 size-full object-cover object-[50%_38%]"
-          src="/generated/mockup-07/insaat-timelapse.mp4"
-          poster={FAZLAR[0].gorsel}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onTimeUpdate={videoZamani}
-          aria-hidden
-        />
+        <>
+          <video
+            ref={videoRef}
+            className={`absolute inset-0 size-full object-cover object-[50%_38%] ${yedek ? "opacity-0" : ""}`}
+            src="/generated/mockup-07/insaat-timelapse.mp4"
+            poster={FAZLAR[0].gorsel}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onTimeUpdate={videoZamani}
+            onPlaying={() => setYedek(false)}
+            onError={() => setYedek(true)}
+            aria-hidden
+          />
+          {yedek
+            ? FAZLAR.map((f, i) => (
+                <Image
+                  key={f.gorsel}
+                  src={f.gorsel}
+                  alt=""
+                  fill
+                  priority={i === 0}
+                  sizes="100vw"
+                  className={`object-cover object-[50%_38%] transition-opacity duration-1000 ${i === faz ? "opacity-100" : "opacity-0"}`}
+                />
+              ))
+            : null}
+        </>
       )}
       <div
         aria-hidden
