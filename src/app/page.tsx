@@ -260,6 +260,20 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ============ CANLI HAVUZ (tam genişlik interaktif) ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto mb-12 max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Üretici kontrolü tutar, danışman güncel satar.</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat, hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}><CanliHavuzDemo /></Reveal>
+        </div>
+      </section>
+
       {/* ============ ÇİFT SATIŞ KALKANI (mockup-02'den, koyu kontrol odası) ============ */}
       <div className="m2 overflow-x-clip">
         <section className="border-b border-[var(--m2-cizgi)]">
@@ -373,20 +387,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ CANLI HAVUZ (tam genişlik interaktif) ============ */}
-      <section className="relative">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto mb-12 max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Üretici kontrolü tutar, danışman güncel satar.</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat, hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
-            </div>
-          </Reveal>
-          <Reveal delay={100}><CanliHavuzDemo /></Reveal>
-        </div>
-      </section>
-
       {/* ============ KAPALI DEVRE ŞERİDİ ============ */}
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6">
@@ -468,31 +468,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ SSS ============ */}
-      <section id="sss" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-3xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Sık sorulanlar</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Aklındakiler</h2>
-            </div>
-          </Reveal>
-          <div className="mt-12 flex flex-col gap-3">
-            {SSS.map((q, i) => (
-              <Reveal key={q.s} delay={i * 50}>
-                <details className="sss-item kart p-0 hover:-translate-y-0.5">
-                  <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">
-                    {q.s}
-                    <span className="ok flex-none text-teal" aria-hidden>▾</span>
-                  </summary>
-                  <p className="px-5 pb-5 text-sm leading-relaxed text-ink-soft">{q.c}</p>
-                </details>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ============ KAPANIŞ CTA ============ */}
       <section className="relative px-5 pb-24 pt-20 sm:px-6">
         <Reveal>
@@ -527,6 +502,31 @@ export default async function Home() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      {/* ============ SSS ============ */}
+      <section id="sss" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
+        <div className="mx-auto w-full max-w-3xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Sık sorulanlar</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Aklındakiler</h2>
+            </div>
+          </Reveal>
+          <div className="mt-12 flex flex-col gap-3">
+            {SSS.map((q, i) => (
+              <Reveal key={q.s} delay={i * 50}>
+                <details className="sss-item kart p-0 hover:-translate-y-0.5">
+                  <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">
+                    {q.s}
+                    <span className="ok flex-none text-teal" aria-hidden>▾</span>
+                  </summary>
+                  <p className="px-5 pb-5 text-sm leading-relaxed text-ink-soft">{q.c}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ============ AĞ BÜYÜYOR + FOOTER: gece silüetiyle birleşik kapanış (mockup-04'ten) ============ */}
