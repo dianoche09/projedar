@@ -13,7 +13,7 @@ const RENK: Record<Durum, string> = { musait: "#2fb36b", opsiyon: "#e3a12c", sat
 const FIIL: Record<Durum, string> = { musait: "satılığa çıktı", opsiyon: "opsiyonlandı", satildi: "satıldı" };
 
 const KATLAR = [26, 40, 54, 68]; // top %
-const SUTUN = [54, 64, 74, 84, 94]; // left % (görsel sağ ağırlıklı)
+const SUTUN = [40, 47, 54, 60, 66]; // left % (maket kulelerine hizalı; sağdaki boş göğe taşmaz)
 const NOKTALAR = KATLAR.flatMap((top, ki) => SUTUN.map((left, si) => ({ top, left, kod: `A-${8 - ki}-${si + 1}` })));
 const BASLANGIC: Durum[] = NOKTALAR.map((_, i) => { const h = (i * 7) % 10; return h < 5 ? "musait" : h < 7 ? "opsiyon" : "satildi"; });
 
