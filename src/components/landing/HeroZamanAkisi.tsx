@@ -154,7 +154,7 @@ export function HeroFazSeridi() {
       {/* başlık: sabit tek hiyerarşi */}
       <div className="absolute inset-x-0 top-0 z-10">
         <div className="mx-auto w-full max-w-7xl px-6 pt-24 sm:px-10 sm:pt-28">
-          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">Büyük konut projeleri için</p>
+          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">Canlı konut stoğu dağıtım ağı</p>
           <h1 className="mt-3 max-w-[14ch] font-display text-[11vw] font-extrabold leading-[1.0] tracking-tight sm:text-[64px] lg:text-[80px]">
             Bloklar yükselir. Stok erir.
           </h1>
