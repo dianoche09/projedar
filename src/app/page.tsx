@@ -7,7 +7,6 @@ import { Logo } from "@/components/Logo";
 import { Sayaclar } from "@/components/Sayaclar";
 import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
-import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
 import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
 import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
 import "@/app/mockup-02/mockup02.css";
@@ -189,43 +188,6 @@ export default async function Home() {
           {/* kontrolsüz dağılım vs kontrollü ağ (mockup-03'ten): eski fiyat sızar, canlı link kayıttan okur */}
           <Reveal delay={140} className="mt-14">
             <SizintiSahnesi />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============ ŞANTİYE İLERLER, PDF YAŞLANIR (mockup-07'den) ============ */}
-      <section className="border-b border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Zamanla yarış</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Şantiye ilerler, PDF yaşlanır</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-                Temelde dağıtılan fiyat listesi kaba yapıda çoktan eskimiştir. Danışman Şubat sürümünü anlatırken şantiye iki faz ileridedir;
-                müşteriye söylenen rakam çağın gerisinde kalır. Fazı ilerlet, farkın nasıl açıldığını izle:
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={100} className="mt-12">
-            <EskiyenPdf />
-          </Reveal>
-          <Reveal delay={140}>
-            <div className="mx-auto mt-10 max-w-2xl text-center">
-              <p className="text-pretty text-[15px] font-bold leading-relaxed text-ink sm:text-base">
-                Alıcı milyonluk daireye bakıyor; danışman 41 günlük dosyaya.
-              </p>
-              <p className="mx-auto mt-2 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft">
-                Lüks segmentte güven, kelimeden önce veriyle kurulur. Eski fiyat söyleyen danışman yalnız satışı değil, projenin itibarını da
-                riske atar. Sorun kişiler değil, mimari: stok tek kaynaktan akmıyor; kaynağından kopan fiyat her yere sızar ve yaşlanır.
-              </p>
-              <div className="mt-5 flex flex-wrap justify-center gap-2">
-                {["Liste yaşı: 41 gün", "Kopya sayısı: bilinmiyor", "Çift satış riski: açık"].map((t) => (
-                  <span key={t} className="rounded-full border border-[var(--cizgi-2)] bg-white px-3 py-1.5 font-mono text-[11px] font-semibold text-ink-soft">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
           </Reveal>
         </div>
       </section>
