@@ -6,16 +6,17 @@ import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { IkiTaraf } from "@/components/landing/IkiTaraf";
 import { KapiHaritasi } from "./KapiHaritasi";
-import { HeroHarita } from "./HeroHarita";
+import { HeroYetkiKapisi } from "./HeroYetkiKapisi";
 import { SizintiSahnesi } from "./SizintiSahnesi";
 import { CanliStok } from "./CanliStok";
 import { OpsiyonKilidi } from "./OpsiyonKilidi";
 
 /**
  * Mockup 03 · Living Distribution Network
- * Konsept: kontrollü satış ağı kartografisi. Projeler mimari kütleler, danışmanlar
- * erişim alanları, yetki fiziksel kapı: veri kapıdan geçerken süzülür, geçemeyen
- * akış kapıda görünür şekilde durur. Ana mesaj: herkes her şeyi görmek zorunda değil.
+ * Konsept: kontrollü satış ağı kartografisi. Hero = "Yetki Kapılı Şantiye
+ * Haritası": fazlı şantiye hava çekimi üzerinde 4 karelik otomatik koreografi;
+ * veri kapıdan geçerken süzülür, geçemeyen akış kapıda görünür şekilde durur.
+ * Ana mesaj: herkes her şeyi görmek zorunda değil.
  */
 
 export const metadata: Metadata = {
@@ -24,17 +25,6 @@ export const metadata: Metadata = {
     "ProjePazar tasarım laboratuvarı: kontrollü satış ağı kartografisi konsepti. Veri tek kayıtta doğar, yetki kapılarından geçer, yalnız izinli danışmanlara ulaşır.",
   robots: { index: false },
 };
-
-/** Hero künye kartı: ağ haritası canlı özet satırları. */
-const KUNYE = [
-  { k: "PROJE", d: "12 aktif kütle" },
-  { k: "DANIŞMAN", d: "340 yetkili nokta" },
-  { k: "KAPI", d: "96 açık · 41 kapalı" },
-  { k: "OPSİYON", d: "7 birim kilitli" },
-];
-
-const SEKTORLER = ["K1", "K2", "M1", "M2", "M3", "B1", "B2", "D3", "D4"];
-const AKTIF_SEKTOR = new Set(["K1", "M2", "B2"]);
 
 /** Konum karşıtlığı: portal mantığı ve dağıtım ağı mantığı. */
 const PORTAL = [
@@ -68,86 +58,29 @@ export default function Mockup03() {
         </nav>
       </header>
 
-      {/* ============ HERO: gerçek hava çekimi + tahsis kartografisi ============ */}
+      {/* ============ HERO: yetki kapılı şantiye haritası ============ */}
       <section className="relative isolate overflow-hidden bg-navy">
-        <HeroHarita />
-        <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-10 px-5 pb-16 pt-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr] lg:pb-28 lg:pt-24">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(127,217,200,0.35)] bg-[rgba(10,27,44,0.55)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[#7fd9c8]">
-              <span className="size-2 rounded-full bg-green nabiz" /> GELİŞTİRİCİ FİRMALAR İÇİN CANLI PROJE SATIŞ AĞI
-            </span>
-            <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.04] tracking-tight text-white sm:text-[54px]">
-              Her proje. Her danışman.
-              <br />
-              <span className="text-[#5ecfba]">Tek canlı gerçek.</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-white/80 sm:text-base">
-              ProjePazar, üretici kontrollü canlı konut stoğu dağıtım ağıdır. Veri
-              <strong className="font-semibold text-white"> tek kayıtta doğar</strong>, yetki kapılarından geçer ve
-              <strong className="font-semibold text-white"> yalnız izinli ofislerle danışmanlara</strong> ulaşır.
-              Herkes her şeyi görmek zorunda değil: haritadaki taralı sektörler canlı akış alır, kilitli sektör
-              projenin varlığını bile görmez.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/kayit" className="btn-action">
-                Projemi canlı ağa aç
-              </Link>
-              <Link
-                href="/kayit"
-                className="inline-flex min-h-11 items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-4 text-[13.5px] font-semibold text-white transition-all duration-200 hover:bg-white/20"
-              >
-                Danışman olarak katıl
-              </Link>
-            </div>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {["Komisyonsuz", "Tahsisli görünürlük", "Sıfır çift-satış"].map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium text-white/85"
-                >
-                  <span className="size-[5px] rounded-full bg-[#5ecfba]" /> {t}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* ağ haritası künyesi */}
-          <div className="kart relative p-5">
-            <span className="absolute right-4 top-4 rounded-md border border-[var(--cizgi-2)] bg-white/90 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">
-              örnek
-            </span>
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-ink-soft">
-              Ağ haritası · canlı künye
-            </p>
-            <div className="mt-4 grid grid-cols-3 gap-1.5" aria-hidden>
-              {SEKTORLER.map((s) => {
-                const aktif = AKTIF_SEKTOR.has(s);
-                return (
-                  <span
-                    key={s}
-                    className={`flex aspect-[2.1] items-center justify-center rounded-[8px] border font-mono text-[9.5px] font-semibold ${
-                      aktif
-                        ? "border-[rgba(30,155,138,0.4)] bg-[var(--color-teal-soft)] text-[var(--color-teal-d)]"
-                        : "border-[var(--cizgi)] bg-[var(--color-soft)] text-[var(--ink-faint)]"
-                    }`}
-                  >
-                    {s}
-                  </span>
-                );
-              })}
-            </div>
-            <dl className="mt-4 space-y-2">
-              {KUNYE.map((r) => (
-                <div key={r.k} className="flex items-center justify-between gap-3 border-b border-dashed border-[rgba(16,36,58,0.1)] pb-2 last:border-0 last:pb-0">
-                  <dt className="font-mono text-[9.5px] font-bold uppercase tracking-[0.08em] text-[var(--ink-faint)]">{r.k}</dt>
-                  <dd className="font-mono text-[11.5px] font-semibold text-ink">{r.d}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="mt-4 flex items-center gap-2 rounded-[10px] bg-[var(--color-green-soft)] px-3 py-2 font-mono text-[10px] font-semibold text-[#1f7d4c]">
-              <span className="size-1.5 rounded-full bg-green nabiz" aria-hidden />
-              B-4-2 opsiyonlandı · şimdi
-            </p>
+        <HeroYetkiKapisi />
+        {/* başlık üst gökte; sahnenin kendisi alttaki boşlukta oynar */}
+        <div className="pointer-events-none relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-5 pb-[320px] pt-12 text-center sm:px-6 sm:pb-[380px] lg:pb-[440px] lg:pt-16">
+          <h1 className="font-display text-[38px] font-extrabold leading-[1.05] tracking-tight text-white sm:text-[54px]">
+            Her proje. Her danışman.
+            <br />
+            <span className="text-[#5ecfba]">Tek canlı gerçek.</span>
+          </h1>
+          <p className="mt-4 max-w-md text-pretty text-[13.5px] leading-relaxed text-white/80 sm:text-sm">
+            Veri tek kayıtta doğar; yetki kapısından geçemeyen akış kapıda durur.
+          </p>
+          <div className="pointer-events-auto mt-6 flex flex-wrap justify-center gap-2.5">
+            <Link href="/kayit" className="btn-action">
+              Projemi canlı ağa aç
+            </Link>
+            <Link
+              href="/kayit"
+              className="inline-flex min-h-11 items-center justify-center rounded-[13px] border border-white/30 bg-white/10 px-4 text-[13.5px] font-semibold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
+            >
+              Danışman olarak katıl
+            </Link>
           </div>
         </div>
       </section>
