@@ -19,7 +19,7 @@ const NOKTALAR: { x: string; y: string; renk: string; gecikme: number }[] = [
   { x: "88%", y: "58%", renk: "#3fbfae", gecikme: 2.9 },
 ];
 
-export function FinalCta() {
+export function AgBuyuyor() {
   const azHareket = useReducedMotion();
 
   return (

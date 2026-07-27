@@ -11,7 +11,7 @@ import {
   IkiTarafBolumu,
   PortalDegil,
 } from "./Bolumler";
-import { FinalCta } from "./FinalCta";
+import { AgBuyuyor as FinalCta } from "@/components/landing/AgBuyuyor";
 
 /**
  * /mockup-04 · KONSEPT: CINEMATIC PROPERTY INFRASTRUCTURE
