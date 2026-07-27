@@ -27,10 +27,12 @@ const ADIMLAR: Adim[] = [
 
 const SON = ADIMLAR.length - 1;
 const ADIM_ARALIK = 1500;
+const DONGU_BEKLE = 4200; // son adım bu kadar durur, sonra koreografi baştan döner
 
 export function KilitKoreografi() {
   const kok = useRef<HTMLDivElement>(null);
   const zamanlayicilar = useRef<number[]>([]);
+  const oynatRef = useRef<() => void>(() => {});
   const azalt = useAzalt();
   const [adim, setAdim] = useState(0);
 
@@ -39,7 +41,7 @@ export function KilitKoreografi() {
     zamanlayicilar.current = [];
   }, []);
 
-  /* koreografiyi baştan oynatır; yalnız olay callback'lerinden çağrılır */
+  /* koreografiyi baştan oynatır ve bitince kendini yeniden kurar (sürekli döngü) */
   const oynat = useCallback(() => {
     temizle();
     if (azalt) {
@@ -50,7 +52,14 @@ export function KilitKoreografi() {
     for (let n = 1; n <= SON; n++) {
       zamanlayicilar.current.push(window.setTimeout(() => setAdim(n), n * ADIM_ARALIK));
     }
+    zamanlayicilar.current.push(
+      window.setTimeout(() => oynatRef.current(), SON * ADIM_ARALIK + DONGU_BEKLE),
+    );
   }, [azalt, temizle]);
+
+  useEffect(() => {
+    oynatRef.current = oynat;
+  }, [oynat]);
 
   /* raya dokununca otomatik akış durur, adım ele alınır */
   const sec = (k: number) => {

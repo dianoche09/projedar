@@ -10,7 +10,7 @@ import { useAzalt } from "./useAzalt";
  * Ardından dev soru düşer: HANGİSİ GÜNCEL? Son fazda tek canlı kayıt
  * hepsini kontrol altına alır: kanallar soluklaşır, fiyatların üstü çizilir,
  * koyu "canlı kayıt" barı damgalanır. Mesaj: on kopya değil, tek canlı gerçek.
- * Görünüme girince başlar; "Yeniden oynat" ile tekrar izlenir.
+ * Görünüme girince başlar ve kısa bir bekleme ile sürekli döner.
  * Reduced-motion: doğrudan son kare. TÜM VERİLER ÖRNEKTİR.
  */
 
@@ -59,10 +59,12 @@ const KANALLAR: Kanal[] = [
 
 const TOPLAM = KANALLAR.length * 3; // 12 satır, kanallar arası sırayla düşer
 const SATIR_ARALIK = 420;
+const DONGU_BEKLE = 5200; // son kare bu kadar durur, sonra sahne baştan döner
 
 export function CeliskiSahnesi() {
   const kok = useRef<HTMLDivElement>(null);
   const zamanlayicilar = useRef<number[]>([]);
+  const oynatRef = useRef<() => void>(() => {});
   const azalt = useAzalt();
   const [gorunen, setGorunen] = useState(0);
   const [faz, setFaz] = useState<Faz>("bos");
@@ -72,7 +74,7 @@ export function CeliskiSahnesi() {
     zamanlayicilar.current = [];
   }, []);
 
-  /* sahneyi baştan oynatır; yalnız olay callback'lerinden çağrılır */
+  /* sahneyi baştan oynatır ve bitince kendini yeniden kurar (sürekli döngü) */
   const oynat = useCallback(() => {
     temizle();
     if (azalt) {
@@ -87,9 +89,16 @@ export function CeliskiSahnesi() {
     }
     zamanlayicilar.current.push(window.setTimeout(() => setFaz("celiski"), TOPLAM * SATIR_ARALIK + 700));
     zamanlayicilar.current.push(window.setTimeout(() => setFaz("kontrol"), TOPLAM * SATIR_ARALIK + 2500));
+    zamanlayicilar.current.push(
+      window.setTimeout(() => oynatRef.current(), TOPLAM * SATIR_ARALIK + 2500 + DONGU_BEKLE),
+    );
   }, [azalt, temizle]);
 
-  /* görünüme girince sahne bir kez başlar */
+  useEffect(() => {
+    oynatRef.current = oynat;
+  }, [oynat]);
+
+  /* görünüme girince sahne başlar; sonrası kendi döngüsüdür */
   useEffect(() => {
     const el = kok.current;
     if (!el) return;
