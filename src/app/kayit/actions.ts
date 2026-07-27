@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { belgeleriKaydet } from "@/lib/belge";
+import { davetGecerli } from "@/lib/davet";
 
 // Self-registration — rol seçimli. Kayıt 'onay_bekliyor' başlar (handle_new_user trigger).
 const kayitSemasi = z.object({
@@ -31,6 +32,13 @@ export async function kayitOl(formData: FormData) {
   }
   const { email, password, ad, telefon, talep_rol, vergi_no, ofis_adi } = sonuc.data;
 
+  // Müteahhit daveti (imzalı) — yalnız emlakçı rolünde ve imza geçerliyse attribution.
+  // NOT: davet KYC'yi ATLAMAZ; emlakçı yine belge_durumu='yok' başlar (DB guard zorlar).
+  const d = (formData.get("d") as string) || undefined;
+  const n = (formData.get("n") as string) || undefined;
+  const t = (formData.get("t") as string) || undefined;
+  const davetEden = talep_rol === "emlakci" && davetGecerli(d, n, t) ? d : null;
+
   const supabase = await createClient();
   const { error } = await supabase.auth.signUp({
     email,
@@ -40,7 +48,7 @@ export async function kayitOl(formData: FormData) {
         ad,
         telefon: telefon ?? null,
         talep_rol,
-        kayit_meta: { vergi_no: vergi_no ?? null, ofis_adi: ofis_adi ?? null },
+        kayit_meta: { vergi_no: vergi_no ?? null, ofis_adi: ofis_adi ?? null, davet_eden: davetEden },
       },
     },
   });

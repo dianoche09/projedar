@@ -25,15 +25,27 @@ function Gonder() {
   );
 }
 
-export function KayitForm() {
+export function KayitForm({ davet }: { davet?: { ad: string; d: string; n: string; t: string } | null }) {
   const [adim, setAdim] = useState<0 | 1>(0);
-  const [rol, setRol] = useState<string>("uretici");
+  const [rol, setRol] = useState<string>(davet ? "emlakci" : "uretici");
 
   const emlakci = rol === "emlakci";
   const adimlar = emlakci ? ["Hesap türü", "Bilgiler", "Belgeler"] : ["Hesap türü", "Bilgiler"];
 
   return (
     <form action={kayitOl} className="mt-6 flex flex-col gap-4 text-ink">
+      {davet ? (
+        <>
+          <input type="hidden" name="d" value={davet.d} />
+          <input type="hidden" name="n" value={davet.n} />
+          <input type="hidden" name="t" value={davet.t} />
+          <p className="rounded-xl border border-teal/25 bg-teal-soft px-3.5 py-2.5 text-[13px] font-medium text-teal-d">
+            <strong className="font-bold text-ink">{davet.ad}</strong> seni ağına davet ediyor. Danışman olarak kaydol;
+            belgeni doğrulayınca sana tahsisli projeleri canlı görürsün.
+          </p>
+        </>
+      ) : null}
+
       {/* Adım göstergesi */}
       <ol className="flex items-center gap-2">
         {adimlar.map((et, i) => {

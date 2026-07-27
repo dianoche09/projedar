@@ -3,19 +3,23 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { KayitForm } from "./KayitForm";
 import { AuthKabuk } from "@/components/ui/AuthKabuk";
+import { davetGecerli } from "@/lib/davet";
 
 export default async function KayitPage({
   searchParams,
 }: {
-  searchParams: Promise<{ hata?: string }>;
+  searchParams: Promise<{ hata?: string; rol?: string; d?: string; n?: string; t?: string }>;
 }) {
-  const { hata } = await searchParams;
+  const { hata, d, n, t } = await searchParams;
 
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (user) redirect("/");
+
+  // Müteahhit daveti: imza geçerliyse emlakçı rolü ön-seçilir + davet eden gösterilir.
+  const davet = davetGecerli(d, n, t) ? { ad: n as string, d: d as string, n: n as string, t: t as string } : null;
 
   return (
     <AuthKabuk>
@@ -31,7 +35,7 @@ export default async function KayitPage({
           </p>
         ) : null}
 
-        <KayitForm />
+        <KayitForm davet={davet} />
 
         <p className="mt-6 border-t border-hair pt-4 text-center text-sm font-medium text-ink-soft">
           Zaten hesabın var mı?{" "}
