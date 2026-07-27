@@ -4,8 +4,7 @@ import Link from "next/link";
 import { AkisFeed } from "@/components/landing/AkisFeed";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 import { CeliskiSahnesi } from "./CeliskiSahnesi";
-import { CepheVeriDuvari } from "./CepheVeriDuvari";
-import { DurumMakinesi } from "./DurumMakinesi";
+import { HeroDevKelime } from "./HeroDevKelime";
 import { KilitKoreografi } from "./KilitKoreografi";
 import "./mockup02.css";
 
@@ -82,39 +81,11 @@ export default function Mockup02Sayfasi() {
         </div>
       </header>
 
-      {/* ============ hero: manifesto + durum makinesi ============ */}
+      {/* ============ hero: dev kelime sahnesi (tamamı kod/SVG) ============ */}
       <section className="relative overflow-hidden">
         <div className="komuta-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-        <div className="relative mx-auto max-w-6xl px-4 pb-12 pt-14 sm:px-6 sm:pb-16 sm:pt-20">
-          <p className="m2-etiket text-[var(--m2-teal)]">Gayrimenkul projelerinin canlı satış ağı</p>
-          <h1 className="m2-dev mt-6 text-[clamp(2.4rem,7vw,5.6rem)]">
-            <span className="block">Stok değişir.</span>
-            <span className="block">Fiyat değişir.</span>
-            <span className="block text-[var(--m2-teal)]">Link değişmez.</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-[15.5px] leading-relaxed text-[var(--m2-ink-soft)]">
-            Üretici stoğu, fiyatı ve dağıtımı tek noktadan yönetir. Danışman yalnız kendine açılan
-            projeleri tek canlı havuzdan görür ve paylaşır. Paylaştığınız bağlantı hep aynı kalır;
-            içindeki veri hep en günceldir.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/kayit?rol=uretici" className="m2-btn m2-btn-dolu">
-              Projemi canlı ağa aç
-            </Link>
-            <Link href="/kayit?rol=emlakci" className="m2-btn m2-btn-cizgi">
-              Danışman olarak katıl
-            </Link>
-          </div>
-        </div>
-
-        {/* gece cephe: gerçek görsel, canlı veri duvarı olarak (tam genişlik) */}
-        <div className="relative mt-2">
-          <CepheVeriDuvari />
-        </div>
-
-        {/* veri duvarından tek birime yakınlaşma: durum makinesi */}
         <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-14">
-          <DurumMakinesi />
+          <HeroDevKelime />
         </div>
       </section>
 

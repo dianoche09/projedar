@@ -278,6 +278,117 @@
   }
 }
 
+/* =========================================================
+   HERO · DEV KELİME SAHNESİ (m2h- öneki)
+   Tek SVG, ~700 rect hücre; kelime hücre AKIŞIYLA yeniden dizilir
+   (transform taşınması, kaybolup belirme yok).
+   ========================================================= */
+
+.m2h-sahne {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* hücre: konum + renk akışı (K3 taşınması) */
+.m2h-hucre {
+  transition:
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    fill 0.95s ease;
+}
+
+/* doku canlı: hücrelerin küçük bölümü soluk alıp verir */
+@keyframes m2hTitre {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.m2h-titre {
+  animation: m2hTitre 3s ease-in-out infinite;
+}
+
+/* nabızlı hücre (K1) */
+@keyframes m2hNabiz {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(94, 227, 154, 0));
+  }
+  50% {
+    filter: drop-shadow(0 0 9px rgba(94, 227, 154, 0.95));
+  }
+}
+.m2h-nabiz {
+  animation: m2hNabiz 1.8s ease-in-out infinite;
+}
+
+/* yayılan halka (yeşil nabız + kırmızı kilit) */
+@keyframes m2hHalka {
+  from {
+    transform: scale(0.45);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.m2h-halka {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0; /* reduced-motion: halka görünmez, statik işaret kalır */
+  animation: m2hHalka 1.7s ease-out infinite;
+}
+
+/* imleç-kartlar: kenardan süzülme */
+.m2h-imlec {
+  transition:
+    transform 1.05s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s ease;
+}
+/* K3: kilide çarpan imleç sert geri itilir (taşmalı eğri) */
+.m2h-itilmis {
+  transition:
+    transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.6s ease;
+}
+
+/* K4: kelimeden uç şeritlerine ışık akışı */
+@keyframes m2hAkis {
+  to {
+    stroke-dashoffset: -132;
+  }
+}
+.m2h-akis {
+  stroke-dasharray: 3 9;
+  animation: m2hAkis 1.5s linear infinite;
+  transition: opacity 0.7s ease;
+}
+
+/* genel yumuşak görünme (etiket, halka, şerit) */
+.m2h-gecis {
+  transition: opacity 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m2h-hucre,
+  .m2h-imlec,
+  .m2h-itilmis,
+  .m2h-gecis,
+  .m2h-akis {
+    transition: none;
+  }
+  .m2h-titre,
+  .m2h-nabiz,
+  .m2h-halka,
+  .m2h-akis {
+    animation: none;
+  }
+}
+
 /* çelişki sahnesi: satır görünürlüğü + kanal soluklaşması */
 .m2-akis-satir {
   opacity: 0;
