@@ -240,18 +240,6 @@ export default async function Home() {
                 </p>
               </div>
             </div>
-            <div className="mt-10 grid gap-3 sm:grid-cols-3 lg:gap-4">
-              {[
-                ["TEK KAYIT", "Fiyat ve durum yalnız birim kaydında yaşar; kopyası olmaz."],
-                ["FAZ SENKRONU", "Temel, kaba yapı, teslim: her karede aynı canlı değer okunur."],
-                ["YETKİ KAPISI", "Kim hangi kuleyi görür, üretici tahsisle tanımlar."],
-              ].map(([b, a]) => (
-                <div key={b} className="rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
-                  <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.1em] text-[var(--color-teal-d)]">{b}</p>
-                  <p className="mt-1.5 text-[12.5px] leading-relaxed text-ink-soft">{a}</p>
-                </div>
-              ))}
-            </div>
           </Reveal>
         </div>
       </section>
@@ -259,14 +247,7 @@ export default async function Home() {
       {/* ============ AKIŞ: nasıl çalışır (NEDİR'in devamı) ============ */}
       <section id="nasil-calisir" className="relative scroll-mt-20 border-b border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Akış</p>
-              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Nasıl çalışır?</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Stoktan satışa dört adım, her adımda tek doğru kaynak korunur, her değişiklik anında herkese yansır.</p>
-            </div>
-          </Reveal>
-          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {ADIMLAR.map((a, i) => (
               <Reveal key={a.no} delay={i * 90}>
                 <li className="kart kart-3d relative flex h-full flex-col p-6">
