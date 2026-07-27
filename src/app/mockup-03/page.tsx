@@ -7,7 +7,7 @@ import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { IkiTaraf } from "@/components/landing/IkiTaraf";
 import { KapiHaritasi } from "./KapiHaritasi";
 import { HeroYetkiKapisi } from "./HeroYetkiKapisi";
-import { SizintiSahnesi } from "./SizintiSahnesi";
+import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
 import { CanliStok } from "./CanliStok";
 import { OpsiyonKilidi } from "./OpsiyonKilidi";
 

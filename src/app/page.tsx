@@ -9,6 +9,7 @@ import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanA
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
 import { EskiyenPdf } from "@/components/landing/EskiyenPdf";
 import { DegilRotasyonu } from "@/components/landing/DegilRotasyonu";
+import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
@@ -184,6 +185,10 @@ export default async function Home() {
           </Reveal>
           <Reveal delay={100} className="mt-10">
             <CeliskiSahnesi />
+          </Reveal>
+          {/* kontrolsüz dağılım vs kontrollü ağ (mockup-03'ten): eski fiyat sızar, canlı link kayıttan okur */}
+          <Reveal delay={140} className="mt-14">
+            <SizintiSahnesi />
           </Reveal>
         </div>
       </section>
