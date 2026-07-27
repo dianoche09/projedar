@@ -13,6 +13,8 @@ import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
+import { SoruSahnesi } from "@/components/landing/SoruSahnesi";
+import { SonMesajCta } from "@/components/landing/SonMesajCta";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
@@ -260,6 +262,13 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ============ BU SORU ARTIK SORULMUYOR (m4 saha-whatsapp dilinden) ============ */}
+      <section className="relative border-b border-[var(--cizgi)] bg-white/55">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <SoruSahnesi />
+        </div>
+      </section>
+
       {/* ============ CANLI HAVUZ (tam genişlik interaktif) ============ */}
       <section className="relative">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
@@ -284,6 +293,70 @@ export default async function Home() {
             </h2>
             <div className="mt-12">
               <KilitKoreografi />
+            </div>
+          </div>
+        </section>
+
+        {/* Hangi taraftasınız? (m2 koyu terminal dilinden, kullanıcı seçimi) */}
+        <section className="border-b border-[var(--m2-cizgi)]">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <p className="m2-etiket text-[var(--m2-teal)]">İki taraf, tek havuz</p>
+            <h2 className="m2-dev mt-5 text-[clamp(1.9rem,5.2vw,4rem)]">Hangi taraftasınız?</h2>
+            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-[var(--m2-ink-soft)]">
+              Üretici stoğu yönetir, danışman tahsisli birimleri satar. İkisi de aynı canlı veriye bakar.
+            </p>
+            <div className="mt-10 grid gap-5 lg:grid-cols-2">
+              <div className="overflow-hidden rounded-2xl border border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">
+                <div className="h-[3px] bg-gradient-to-r from-[var(--m2-teal)] to-[#2fb36b]" aria-hidden />
+                <div className="p-6 sm:p-7">
+                  <h3 className="font-display text-xl font-extrabold tracking-tight text-[var(--m2-ink)]">Proje Sahibiyim</h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-[var(--m2-ink-soft)]">
+                    Bloklarınızı, katlarınızı, birimlerinizi tek panelden yönetin. Fiyatı siz güncellersiniz,
+                    hangi danışman neyi görecek siz seçersiniz. Her paylaşım canlı fiyattan basılır, her hareket iz bırakır.
+                  </p>
+                  <p className="mt-4 font-mono text-[11.5px] tracking-wide text-[var(--m2-teal)]">stok · fiyat · tahsis · opsiyon · rapor</p>
+                  <Link href="/kayit?rol=uretici" className="m2-btn m2-btn-dolu mt-6">Projemi Yükle →</Link>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-2xl border border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">
+                <div className="h-[3px] bg-gradient-to-r from-[var(--m2-teal)] to-[#2fb36b]" aria-hidden />
+                <div className="p-6 sm:p-7">
+                  <h3 className="flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight text-[var(--m2-ink)]">
+                    Danışmanım
+                    <span className="rounded-full border border-[#2fb36b]/50 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#2fb36b]">Ücretsiz</span>
+                  </h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-[var(--m2-ink-soft)]">
+                    Size tahsisli projeleri tek canlı havuzda görün. &quot;Müsait mi?&quot; diye kimseyi aramayın:
+                    durum ekranda, fiyat günceldir. Tek dokunuşla paylaşın, opsiyonu anında kilitleyin.
+                  </p>
+                  <p className="mt-4 font-mono text-[11.5px] tracking-wide text-[var(--m2-teal)]">havuz · paylaş · opsiyon · lead</p>
+                  <Link href="/kayit?rol=emlakci" className="m2-btn m2-btn-cizgi mt-6">Havuza Katıl →</Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* üç renk şeridi */}
+        <section className="border-b border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]/60">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-4 py-8 sm:px-6">
+            <div className="min-w-0">
+              <p className="text-[15px] font-bold text-[var(--m2-ink)]">Tüm ağ üç renkle konuşur.</p>
+              <p className="mt-1 text-[13px] text-[var(--m2-ink-soft)]">Her birimin durumu her ekranda aynı sinyaldir, yorum farkı yoktur.</p>
+            </div>
+            <div className="flex flex-wrap gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.12em]">
+              {(
+                [
+                  ["Müsait", "#2fb36b"],
+                  ["Opsiyon", "#e3a12c"],
+                  ["Satıldı", "#d15a4e"],
+                ] as const
+              ).map(([ad, renk]) => (
+                <span key={ad} className="inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5" style={{ borderColor: `${renk}66`, color: renk }}>
+                  <span className="size-2 rounded-full" style={{ background: renk }} aria-hidden />
+                  {ad}
+                </span>
+              ))}
             </div>
           </div>
         </section>
@@ -352,9 +425,6 @@ export default async function Home() {
       {/* ============ BİREBİR PAYLAŞIM (WhatsApp / 1:1 — EİDS yasal çerçeve) ============ */}
       <BirebirPaylasim />
 
-      {/* ============ İSTATİSTİK ŞERİDİ ============ */}
-      <section className="relative px-5 py-10 sm:px-6"><Sayaclar /></section>
-
       {/* ============ İKİ TARAFLI FAYDA ============ */}
       <section id="kimler-icin" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
@@ -387,20 +457,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ KAPALI DEVRE ŞERİDİ ============ */}
-      <section className="relative border-y border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6">
-          <Reveal>
-            <div className="flex flex-col items-center justify-center gap-2.5 text-center sm:flex-row sm:gap-3.5">
-              <span className="inline-grid size-9 flex-none place-items-center rounded-xl bg-[var(--color-teal-soft)]" aria-hidden>
-                <Lock size={17} strokeWidth={1.75} color="var(--color-teal-d)" />
-              </span>
-              <p className="text-pretty text-sm font-medium text-ink sm:text-[15px]">
-                <strong className="font-semibold">İlan yok, tahsis var</strong>, paylaşım birebir ve kapalı devre. Fiyat her zaman canlı basılır.
-              </p>
-            </div>
-          </Reveal>
-        </div>
+      {/* ============ İSTATİSTİK ŞERİDİ (kullanıcı seçimi: kapalı devre şeridinin yerinde) ============ */}
+      <section className="relative border-y border-[var(--cizgi)] bg-white/55 px-5 py-10 sm:px-6">
+        <Sayaclar />
       </section>
 
       {/* ============ PROJE DETAYI: ne yüklenir / ne görülür ============ */}
@@ -468,36 +527,32 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ============ KAPANIŞ CTA ============ */}
+      {/* ============ KAPANIŞ CTA: Stok sende, fiyat sende, kontrol sende (m1 dilinden) ============ */}
       <section className="relative px-5 pb-24 pt-20 sm:px-6">
         <Reveal>
           <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px]">
-            <div className="relative overflow-hidden rounded-[26px]" style={{ background: "linear-gradient(140deg, #0d2438 0%, #16465a 50%, #1a8676 100%)" }}>
-              <div className="izgara-doku absolute inset-0 opacity-[0.1]" aria-hidden />
-              <div className="relative grid items-center gap-8 px-6 py-14 sm:px-10 lg:grid-cols-[0.8fr_1.2fr] lg:py-12">
-                {/* memnun danışman */}
-                <div className="relative mx-auto hidden w-full max-w-[260px] lg:block">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/gorseller/danisman-1.jpg" alt="ProjePazar ağındaki bir gayrimenkul danışmanı" className="aspect-[4/5] w-full rounded-2xl border-4 border-white/15 object-cover shadow-[var(--golge-3)]" />
-                  <div className="absolute -right-3 bottom-6 flex items-center gap-2 rounded-full border border-[var(--cizgi)] bg-white px-3 py-2 shadow-[var(--golge-2)]">
-                    <span className="size-2 rounded-full bg-green nabiz" />
-                    <span className="font-mono text-[11px] font-semibold text-ink">canlı fiyatla paylaştı</span>
-                  </div>
+            <div className="relative overflow-hidden rounded-[26px]" style={{ background: "linear-gradient(140deg, #0a1c2e 0%, #0d2b3d 55%, #10493f 100%)" }}>
+              <div className="izgara-doku absolute inset-0 opacity-[0.08]" aria-hidden />
+              <div className="relative px-6 py-16 text-center sm:px-10 sm:py-20">
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7fd4c4]">
+                  <span aria-hidden className="mr-2 inline-block h-px w-8 translate-y-[-3px] bg-[#7fd4c4] align-middle" />
+                  Ağ, davetle büyüyor
+                </p>
+                <h2 className="mx-auto mt-5 max-w-3xl font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl">
+                  Stok sende, fiyat sende, <span className="text-[#7fd4c4]">kontrol sende.</span>
+                </h2>
+                <p className="mx-auto mt-5 max-w-xl text-pretty text-[15.5px] leading-relaxed text-white/70">
+                  Projenin künyesini bize ilet; stoğunu ekiple birlikte yükleyelim, kesitin aynı hafta canlıya dönsün.
+                </p>
+                <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <Link href="/kayit?rol=uretici" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-7 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 sm:w-auto">
+                    Proje sahibiyim, görüşelim →
+                  </Link>
+                  <Link href="/kayit?rol=emlakci" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-[#1e9b8a] px-7 text-[15px] font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#1a8676] sm:w-auto">
+                    Danışmanım, ücretsiz katıl →
+                  </Link>
                 </div>
-                {/* mesaj + CTA */}
-                <div className="text-center lg:text-left">
-                  <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs lg:justify-start">
-                    {["Komisyon yok", "Danışmana ücretsiz", "Kapalı B2B ağ"].map((t) => (
-                      <span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>
-                    ))}
-                  </div>
-                  <h2 className="font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Tüm projeler tek canlı havuzda. Sen de katıl.</h2>
-                  <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-white/75">Proje sahibiysen stoğunu tek noktadan yönet; gayrimenkul danışmanıysan canlı projeleri doğru fiyatla paylaş. Kapalı, davetli bir B2B ağa katıl.</p>
-                  <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
-                    <Link href="/kayit?rol=uretici" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:w-auto">Proje sahibiyim</Link>
-                    <Link href="/kayit?rol=emlakci" className="inline-flex h-12 w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:w-auto">Gayrimenkul danışmanıyım</Link>
-                  </div>
-                </div>
+                <p className="mt-7 font-mono text-[12px] tracking-wide text-white/50">Komisyon yok · Açık ilan yok · Çift satış yok</p>
               </div>
             </div>
           </div>
@@ -526,6 +581,15 @@ export default async function Home() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ============ SON MESAJ CTA: yarın sabahki ilk mesajın bu olmasın (m4 dilinden) ============ */}
+      <section className="relative border-t border-[var(--cizgi)]">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <SonMesajCta />
+          </Reveal>
         </div>
       </section>
 
