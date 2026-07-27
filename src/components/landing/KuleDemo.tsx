@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Clock, Lock, X } from "lucide-react";
+import { useState } from "react";
+import { Clock, Lock } from "lucide-react";
 
 /**
  * KuleDemo · landing Bölüm 3: "Bir daireye dokun. Bütün satış akışını gör."
  * CanliHavuzDemo'nun büyütülmüş, tam interaktif sürümü (tek bileşen):
- * 3 blok sekmesi (farklı örnek stok dağılımı), kesit/tablo görünümü, detay paneli,
+ * 3 blok sekmesi (farklı örnek stok dağılımı), kesit/tablo görünümü, kesitin yanında
+ * HER ZAMAN görünen detay paneli (fiyat, ödeme planı, tazelik: kullanıcı isteği),
  * deneme opsiyon kilidi (yeşil -> amber + kilit animasyonu), "başka danışmanın ekranı"
  * aynası ve bileşen içi mini akış. TÜM VERİLER ÖRNEKTİR; state bileşen içindedir,
  * sayfa yenilenince sıfırlanır. Sadece CSS + React state, ağır kütüphane yok.
@@ -127,21 +128,28 @@ export function KuleDemo() {
     { id: 2, renk: "red", metin: "C-6-1 satıldı", zaman: "22 dk" },
   ]);
 
-  useEffect(() => {
-    if (!secili) return;
-    const tusla = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSecili(null);
-    };
-    window.addEventListener("keydown", tusla);
-    return () => window.removeEventListener("keydown", tusla);
-  }, [secili]);
-
   const durumBul = (b: BlokAd, kat: number, no: number): Durum =>
     benimOpsiyonlar.includes(`${b}-${kat}-${no}`) ? "opsiyon" : temelDurum(b, kat, no);
 
   const cfg = BLOKLAR[blok];
   const katlar = Array.from({ length: cfg.katSayisi }, (_, i) => cfg.katSayisi - i);
   const nolar = Array.from({ length: cfg.daireSayisi }, (_, i) => i + 1);
+
+  /* detay panelinde her zaman bir daire görünür: seçili yoksa bloğun ilk müsaiti */
+  const ilkMusait = (): Daire => {
+    for (const kat of katlar)
+      for (const no of nolar) {
+        const d = durumBul(blok, kat, no);
+        if (d === "musait") return daireYap(blok, kat, no, d);
+      }
+    for (const kat of katlar)
+      for (const no of nolar) {
+        const d = durumBul(blok, kat, no);
+        if (d !== "tahsisli") return daireYap(blok, kat, no, d);
+      }
+    return daireYap(blok, cfg.katSayisi, 1, durumBul(blok, cfg.katSayisi, 1));
+  };
+  const panelDaire = secili && secili.blok === blok ? secili : ilkMusait();
 
   const blokMusait = (b: BlokAd): number => {
     const c = BLOKLAR[b];
@@ -277,7 +285,7 @@ export function KuleDemo() {
                               tahsis
                                 ? "h-kilit cursor-not-allowed"
                                 : "cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_6px_14px_rgba(16,36,58,0.2)]"
-                            } ${sonKilit === kod ? "pp-kilit-halka" : ""}`}
+                            } ${sonKilit === kod ? "pp-kilit-halka" : ""} ${panelDaire.kod === kod ? "ring-2 ring-navy ring-offset-2" : ""}`}
                             aria-label={tahsis ? `${kod}, özel tahsis, size kapalı` : `${kod}, ${DURUM_ETIKET[durum].ad}, detay için dokun`}
                             title={tahsis ? `${kod} · Özel tahsis (size kapalı)` : `${kod} · ${DURUM_ETIKET[durum].ad} · detay için dokun`}
                           >
@@ -301,7 +309,7 @@ export function KuleDemo() {
                 <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded bg-amber" /> opsiyon</span>
                 <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded bg-red" /> satıldı</span>
                 <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded border border-dashed border-[rgba(16,36,58,0.35)] bg-[rgba(16,36,58,0.06)]" /> özel tahsis (size kapalı)</span>
-                <span className="font-semibold text-teal">yeşil bir daireye dokun, opsiyonu dene</span>
+                <span className="font-semibold text-teal">bir daireye dokun: fiyat ve ödeme planı yanda, yeşilse opsiyonu dene</span>
               </p>
             </>
           ) : (
@@ -336,8 +344,13 @@ export function KuleDemo() {
           )}
         </div>
 
-        {/* yan panel: danışman aynası + mini akış */}
-        <div className="flex min-w-0 flex-col gap-4 border-t border-[var(--cizgi)] p-4 sm:flex-row sm:p-5 lg:flex-col lg:border-l lg:border-t-0">
+        {/* yan panel: seçili daire detayı + danışman aynası + mini akış */}
+        <div className="flex min-w-0 flex-col gap-4 border-t border-[var(--cizgi)] p-4 sm:p-5 lg:border-l lg:border-t-0">
+          <DetayKart
+            daire={panelDaire}
+            benim={benimOpsiyonlar.includes(panelDaire.kod)}
+            onOpsiyon={() => opsiyonAl(panelDaire)}
+          />
           {/* başka danışmanın ekranı: aynı havuz, sizin kilidiniz ona kapalı */}
           <div className="min-w-0 flex-1 rounded-2xl border border-[var(--cizgi)] bg-[var(--color-soft)] p-4">
             <div className="flex items-center justify-between gap-2">
@@ -398,129 +411,85 @@ export function KuleDemo() {
         </div>
       </div>
 
-      {secili ? (
-        <DetayPanel
-          daire={secili}
-          benim={benimOpsiyonlar.includes(secili.kod)}
-          onOpsiyon={() => opsiyonAl(secili)}
-          onKapat={() => setSecili(null)}
-        />
-      ) : null}
     </div>
   );
 }
 
-function DetayPanel({
+/** Kesitin yanında her zaman görünen seçili daire detayı: fiyat, ödeme planı, tazelik. */
+function DetayKart({
   daire,
   benim,
   onOpsiyon,
-  onKapat,
 }: {
   daire: Daire;
   benim: boolean;
   onOpsiyon: () => void;
-  onKapat: () => void;
 }) {
   const durum: Durum = benim ? "opsiyon" : daire.durum;
   const meta = DURUM_ETIKET[durum];
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center sm:p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onKapat} aria-hidden />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={`Daire ${daire.kod} detayı`}
-        className="sheet-in relative z-10 max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-2xl border border-[var(--cizgi)] bg-white p-5 shadow-[var(--golge-3)] sm:rounded-2xl sm:p-6"
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h3 className="font-display text-xl font-extrabold tracking-tight text-ink">Daire {daire.kod}</h3>
-            <p className="mt-0.5 font-mono text-xs text-ink-soft">{daire.tip} · {daire.kat}. kat · {daire.cephe} cephe</p>
-          </div>
-          <div className="flex flex-none items-center gap-2">
-            <span className="rounded-md border border-[var(--cizgi-2)] bg-white px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">örnek</span>
-            <button
-              type="button"
-              onClick={onKapat}
-              aria-label="Kapat"
-              className="flex size-11 items-center justify-center rounded-xl text-ink-soft transition-colors hover:bg-[rgba(16,36,58,0.06)] hover:text-ink"
-            >
-              <X size={17} strokeWidth={2.5} />
-            </button>
-          </div>
+    <div className="min-w-0 rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <h3 className="font-display text-lg font-extrabold tracking-tight text-ink">{daire.kod}</h3>
+          <p className="mt-0.5 font-mono text-[11px] text-ink-soft">{daire.tip} · {daire.kat}. kat · {daire.cephe} cephe</p>
         </div>
-
-        <div className="mt-4 grid grid-cols-2 gap-x-5">
-          {(
-            [
-              ["Net alan", `${daire.net} m²`],
-              ["Brüt alan", `${daire.brut} m²`],
-              ["Cephe", daire.cephe],
-              ["Kat", `${daire.kat}. kat`],
-            ] as const
-          ).map(([k, v]) => (
-            <div key={k} className="flex justify-between border-b border-dashed border-[rgba(16,36,58,0.1)] py-2 font-mono text-[12px]">
-              <span className="text-[var(--ink-faint)]">{k}</span>
-              <span className="font-medium text-ink">{v}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 flex items-end justify-between gap-3">
-          <div>
-            <div className="font-mono text-[28px] font-semibold leading-none tracking-tight text-ink">{daire.fiyat}</div>
-            <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10.5px] text-[#1f7d4c]">
-              <span className="size-1.5 rounded-full bg-green nabiz" /> canlı · {tazeYaz(daire.taze)}
-            </div>
-          </div>
-          <span className={`durum ${meta.rozet}`}><span className="nokta" />{meta.ad}</span>
-        </div>
-
-        <div className="mt-3 rounded-xl border border-[var(--cizgi)] bg-[var(--color-soft)] px-3.5 py-2.5">
-          <div className="mb-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Ödeme planı</div>
-          <div className="flex items-center justify-between font-mono text-[12px] text-ink">
-            <span>%{daire.pesinat} peşinat</span>
-            <span className="text-[var(--ink-faint)]">·</span>
-            <span>{daire.taksit} taksit</span>
-            <span className="text-[var(--ink-faint)]">·</span>
-            <span>vade farksız</span>
-          </div>
-        </div>
-
-        {benim ? (
-          <div className="mt-4 rounded-xl border border-amber bg-[var(--color-amber-soft)] p-4">
-            <div className="flex items-start gap-3">
-              <span className="pp-kilit-dus flex size-9 flex-none items-center justify-center rounded-full bg-amber text-white">
-                <Lock size={16} strokeWidth={2.5} />
-              </span>
-              <div className="min-w-0">
-                <div className="text-[13.5px] font-bold leading-snug text-[#9a6a12]">Bu daire 48 saat size kilitlendi (örnek)</div>
-                <div className="mt-1 text-[11.5px] leading-relaxed text-[#9a6a12]/80">Diğer danışmanların ekranında bu daire artık kilitli görünür. Çift satış DB seviyesinde imkansız.</div>
-              </div>
-            </div>
-            <button type="button" onClick={onKapat} className="mt-3.5 flex h-11 w-full items-center justify-center rounded-[13px] bg-navy text-[13.5px] font-semibold text-white transition-colors hover:bg-[#0d2438]">
-              Tamam, havuza dön
-            </button>
-          </div>
-        ) : durum === "musait" ? (
-          <>
-            <button
-              type="button"
-              onClick={onOpsiyon}
-              className="mt-4 flex h-11 w-full items-center justify-center gap-1.5 rounded-[13px] border border-amber bg-white text-[14px] font-semibold text-[#9a6a12] transition-colors hover:bg-[var(--color-amber-soft)]"
-            >
-              <Clock size={15} strokeWidth={2} /> Opsiyon al (dene)
-            </button>
-            <p className="mt-3 font-mono text-[10px] leading-relaxed text-[var(--ink-faint)]">Deneme kilidi: sayfa yenilenince sıfırlanır. Gerçek üründe opsiyon 48 saat DB kilidiyle korunur.</p>
-          </>
-        ) : (
-          <div className="mt-4 flex items-center gap-2.5 rounded-xl border border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3.5 text-[12.5px] text-ink-soft">
-            <span className={`durum ${meta.rozet}`}><span className="nokta" />{meta.ad}</span>
-            {durum === "opsiyon" ? "Bu daire başka bir danışman tarafından opsiyonlanmış. Şu anda işlem yapılamaz." : "Bu daire satıldı. İşlem yapılamaz."}
-          </div>
-        )}
+        <span className={`durum ${meta.rozet} flex-none`}><span className="nokta" />{meta.ad}</span>
       </div>
+
+      <div className="mt-3">
+        {(
+          [
+            ["Net alan", `${daire.net} m²`],
+            ["Brüt alan", `${daire.brut} m²`],
+            ["Ödeme planı", `%${daire.pesinat} peşin + ${daire.taksit} ay`],
+            ["Son güncelleme", tazeYaz(daire.taze)],
+          ] as const
+        ).map(([k, v]) => (
+          <div key={k} className="flex items-center justify-between gap-3 border-b border-dashed border-[rgba(16,36,58,0.1)] py-1.5 font-mono text-[11.5px]">
+            <span className="text-[var(--ink-faint)]">{k}</span>
+            <span className="flex items-center gap-1.5 font-medium text-ink">
+              {k === "Son güncelleme" ? <span className="size-1.5 rounded-full bg-green nabiz" aria-hidden /> : null}
+              {v}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-3">
+        <p className="font-mono text-[9.5px] font-semibold uppercase tracking-[0.14em] text-[var(--ink-faint)]">Liste fiyatı · canlı</p>
+        <p className="mt-1 font-mono text-[26px] font-semibold leading-none tracking-tight text-ink">{daire.fiyat}</p>
+        <p className="mt-1.5 font-mono text-[10.5px] text-[#1f7d4c]">Paylaşılan linkte bu değerden basılır</p>
+      </div>
+
+      {benim ? (
+        <div className="mt-3 rounded-xl border border-amber bg-[var(--color-amber-soft)] p-3">
+          <div className="flex items-start gap-2.5">
+            <span className="pp-kilit-dus flex size-7 flex-none items-center justify-center rounded-full bg-amber text-white">
+              <Lock size={13} strokeWidth={2.5} />
+            </span>
+            <p className="min-w-0 text-[11.5px] font-semibold leading-snug text-[#9a6a12]">
+              48 saat size kilitlendi (örnek). Diğer danışmanlarda kilitli görünür; çift satış DB seviyesinde imkansız.
+            </p>
+          </div>
+        </div>
+      ) : durum === "musait" ? (
+        <>
+          <button
+            type="button"
+            onClick={onOpsiyon}
+            className="mt-3 flex h-11 w-full items-center justify-center gap-1.5 rounded-[13px] border border-amber bg-white text-[13px] font-semibold text-[#9a6a12] transition-colors hover:bg-[var(--color-amber-soft)]"
+          >
+            <Clock size={14} strokeWidth={2} /> Opsiyon al (dene)
+          </button>
+          <p className="mt-2 font-mono text-[9.5px] leading-relaxed text-[var(--ink-faint)]">Deneme kilidi; sayfa yenilenince sıfırlanır.</p>
+        </>
+      ) : (
+        <p className="mt-3 rounded-xl border border-[var(--cizgi)] bg-[var(--color-soft)] px-3 py-2.5 text-[11.5px] leading-snug text-ink-soft">
+          {durum === "opsiyon" ? "Bu daire başka bir danışman tarafından opsiyonlanmış; işlem yapılamaz." : "Bu daire satıldı; işlem yapılamaz."}
+        </p>
+      )}
     </div>
   );
 }
