@@ -5,7 +5,7 @@ import { AkisFeed } from "@/components/landing/AkisFeed";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
 import { HeroDevKelime } from "./HeroDevKelime";
-import { KilitKoreografi } from "./KilitKoreografi";
+import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import "./mockup02.css";
 
 /**

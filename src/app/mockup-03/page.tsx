@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { IkiTaraf } from "@/components/landing/IkiTaraf";
-import { KapiHaritasi } from "./KapiHaritasi";
+import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { HeroYetkiKapisi } from "./HeroYetkiKapisi";
 import { SizintiSahnesi } from "@/components/landing/SizintiSahnesi";
 import { CanliStok } from "./CanliStok";
