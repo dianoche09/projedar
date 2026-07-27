@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Bricolage_Grotesque } from "next/font/google";
-import { IkizKesit } from "./IkizKesit";
+import { HeroKesitMasasi } from "./HeroKesitMasasi";
 import { CanliStok } from "./CanliStok";
 import { OpsiyonKilidi } from "./OpsiyonKilidi";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
@@ -130,15 +130,6 @@ export default function MockupBirSayfa() {
           to { opacity: 1; transform: none; }
         }
         .dt-belir { animation: dtBelir 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        @keyframes dtPing {
-          0% { opacity: 0.95; transform: scale(0.9); }
-          100% { opacity: 0; transform: scale(1.24); }
-        }
-        .dt-ping {
-          transform-box: fill-box;
-          transform-origin: center;
-          animation: dtPing 1.4s ease-out both;
-        }
         @keyframes dtTarama {
           from { top: -10%; }
           to { top: 104%; }
@@ -168,12 +159,8 @@ export default function MockupBirSayfa() {
           100% { box-shadow: 0 0 0 10px rgba(30, 155, 138, 0); }
         }
         .dt-ag-nabiz { animation: dtAgNabiz 1s ease-out both; }
-        @media (min-width: 1024px) {
-          .dt-perspektif { transform: perspective(1200px) rotateX(1.6deg) rotateY(-3deg); }
-        }
         @media (prefers-reduced-motion: reduce) {
-          .dt-belir, .dt-ping, .dt-tarama, .dt-kilit-dus, .dt-halka, .dt-ag-nabiz { animation: none; }
-          .dt-ping { opacity: 0; }
+          .dt-belir, .dt-tarama, .dt-kilit-dus, .dt-halka, .dt-ag-nabiz { animation: none; }
           .dt-tarama { display: none; }
           .dt-tus:hover { transform: none; }
         }
@@ -202,48 +189,8 @@ export default function MockupBirSayfa() {
         </div>
       </header>
 
-      {/* ============ HERO: NEDİR ============ */}
-      <section className="mx-auto w-full max-w-6xl px-4 pb-14 pt-10 sm:px-6 sm:pb-20 sm:pt-16">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,1fr)] lg:gap-14">
-          <div>
-            <div className="dt-damga mb-6 flex flex-wrap gap-x-5 gap-y-1.5">
-              <span>Pafta No: PP-DT-01</span>
-              <span>Rev: Sürekli</span>
-              <span className="flex items-center gap-1.5 text-[#1f7d4c]">
-                <span className="size-1.5 rounded-full bg-green nabiz" aria-hidden />
-                senkron: canlı
-              </span>
-            </div>
-            <p className="mb-4 border-l-[3px] border-teal pl-3 font-mono text-[11.5px] font-bold uppercase tracking-[0.16em] text-[var(--color-teal-d)]">
-              Gayrimenkul projelerinin canlı satış ağı
-            </p>
-            <h1 className="dt-display text-[clamp(33px,5.4vw,58px)] font-extrabold leading-[1.05] text-ink">
-              Bir daire satıldığında, bütün ağ aynı anda görür.
-            </h1>
-            <p className="mt-5 max-w-[52ch] text-[16.5px] leading-relaxed text-ink-soft">
-              ProjePazar, projenizin <strong className="font-semibold text-ink">dijital ikizini</strong> kurar.
-              Her daire canlı bir veri hücresidir: fiyat, durum ve opsiyon tek kayıttan yönetilir,
-              yalnız tahsis ettiğiniz danışman ağına yayılır. Kopya liste yok, eski fiyat yok.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link href="/kayit?rol=uretici" className="dt-tus dt-tus-dolu">
-                Projemi canlı ağa aç
-              </Link>
-              <Link href="/kayit?rol=emlakci" className="dt-tus dt-tus-cizgi">
-                Danışman olarak katıl
-              </Link>
-            </div>
-            <a
-              href="#sistem"
-              className="mt-5 inline-flex min-h-[44px] items-center gap-2 font-mono text-[12.5px] font-semibold text-ink-soft underline decoration-[var(--cizgi-2)] underline-offset-4 transition-colors hover:text-ink"
-            >
-              Sistemin nasıl çalıştığını gör
-              <span aria-hidden>↓</span>
-            </a>
-          </div>
-          <IkizKesit />
-        </div>
-      </section>
+      {/* ============ HERO: KESİT MASASI ============ */}
+      <HeroKesitMasasi />
 
       {/* ============ 01 · BUGÜNKÜ SİSTEM NEDEN BOZUK ============ */}
       <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
