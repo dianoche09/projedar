@@ -1,5 +1,5 @@
 /** ProjePazar sinyal logosu — 3×3 ızgara (Marka Panosu). Köşelerde yeşil/amber/kırmızı sinyal. */
-export function Logo({ size = 28, wordmark = false }: { size?: number; wordmark?: boolean }) {
+export function Logo({ size = 28, wordmark = false, acik = false }: { size?: number; wordmark?: boolean; acik?: boolean }) {
   // o=outline navy, g=yeşil, a=amber, r=kırmızı (Ekranlar.html birebir)
   const cells = ["o", "o", "g", "o", "a", "o", "r", "o", "o"] as const;
   const renk: Record<string, string> = { g: "bg-green", a: "bg-amber", r: "bg-red" };
@@ -12,12 +12,12 @@ export function Logo({ size = 28, wordmark = false }: { size?: number; wordmark?
           <span
             key={i}
             style={{ width: birim, height: birim }}
-            className={`rounded-[3px] ${c === "o" ? "ring-2 ring-inset ring-navy/85" : renk[c]}`}
+            className={`rounded-[3px] ${c === "o" ? (acik ? "ring-2 ring-inset ring-white/85" : "ring-2 ring-inset ring-navy/85") : renk[c]}`}
           />
         ))}
       </span>
       {wordmark ? (
-        <span className="font-display text-xl font-extrabold tracking-tight text-navy">
+        <span className={`font-display text-xl font-extrabold tracking-tight ${acik ? "text-white" : "text-navy"}`}>
           proje<span className="text-teal">pazar</span>
         </span>
       ) : null}
