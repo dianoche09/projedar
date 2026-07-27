@@ -62,12 +62,12 @@ export function DegilRotasyonu() {
       >
         {TERIMLER[aktif]}
       </span>
-      {/* üstü çizme: soldan sağa çekilen çizgi */}
+      {/* üstü çizme: soldan sağa çekilen ÇAPRAZ çizgi (referans: İLAN YOK stili) */}
       <span
         aria-hidden
-        className="absolute left-0 top-[52%] h-[0.09em] w-full origin-left rounded-full bg-[#c0564a]"
+        className="absolute -left-[1%] top-[54%] h-[0.11em] w-[103%] origin-left rounded-full bg-[#c0564a]"
         style={{
-          transform: cizili ? "scaleX(1)" : "scaleX(0)",
+          transform: cizili ? "rotate(-4deg) scaleX(1)" : "rotate(-4deg) scaleX(0)",
           transition: azalt ? undefined : "transform 480ms cubic-bezier(0.4, 0, 0.2, 1) 60ms",
         }}
       />

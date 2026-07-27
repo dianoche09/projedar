@@ -70,7 +70,7 @@ export default function Mockup07() {
                 <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
                   <DegilRotasyonu /> değil,
                   <br />
-                  dağıtım altyapısı
+                  <span className="inline-block border-b-[0.12em] border-green pb-0.5">dağıtım altyapısı</span>
                 </h2>
                 <p className="mt-4 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
                   İnşaat halindeki lüks projenin verisi tek kayıtta tutulur: üretici fiyatı, durumu ve
