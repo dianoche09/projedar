@@ -216,7 +216,7 @@ export default async function UreticiTalepRadari() {
                   href={`/uretici/proje/${enHizli.id}`} hrefMetin="Projeyi aç →" />
               ) : null}
               {eskiBirimSay > 0 ? (
-                <Insight sig="var(--color-red)" ust="Bayat stok" deger={String(eskiBirimSay)}
+                <Insight sig="var(--color-red)" ust="Eskiyen stok" deger={String(eskiBirimSay)}
                   renk="text-red" metin="birim 15 günden eski — fiyat/durum tazele (stale rozeti)." href="/uretici/stok" hrefMetin="Stoğu tazele →" />
               ) : null}
             </div>

@@ -12,7 +12,7 @@ export type CronSonuc = {
 
 /**
  * Freshness (DEĞİŞMEZ #5): 15 günden uzun süredir güncellenmeyen birimleri
- * 'stale' (bayat) işaretler.
+ * 'stale' (eskimiş) işaretler.
  */
 export async function freshnessCalistir(): Promise<CronSonuc> {
   const supabase = createAdminClient();
@@ -36,7 +36,7 @@ export async function freshnessCalistir(): Promise<CronSonuc> {
     status: 200,
     govde: {
       basarili: true,
-      mesaj: "15 günden uzun süredir güncellenmeyen birimler 'stale' (bayat) olarak işaretlendi.",
+      mesaj: "15 günden uzun süredir güncellenmeyen birimler 'stale' (eskimiş) olarak işaretlendi.",
     },
   };
 }

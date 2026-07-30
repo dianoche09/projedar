@@ -21,7 +21,7 @@ function tazeMesaj(gun: number): { rozet: string; baslik: string; metin: string 
   if (gun <= 7)
     return { rozet: "d-musait", baslik: "Taze, paylaş", metin: "Veri güncel; gönül rahatlığıyla müşterine gönder." };
   if (gun <= 15)
-    return { rozet: "d-opsiyon", baslik: "Bayatlıyor, teyit et", metin: "Rozet sarıya döndü; paylaşmadan önce havuzdaki canlı değere bak." };
+    return { rozet: "d-opsiyon", baslik: "Eskiyor, teyit et", metin: "Rozet sarıya döndü; paylaşmadan önce havuzdaki canlı değere bak." };
   return { rozet: "d-satildi", baslik: "Eski, paylaşma", metin: "Bu ekran görüntüsüne güvenme; canlı havuz zaten doğrusunu gösteriyor." };
 }
 

@@ -82,8 +82,8 @@ const KIYAS_SATIRLARI: { etiket: string; portal: string; crm: string; biz: strin
   {
     etiket: "Tazelik",
     portal: "İlan girildiği günde kalır",
-    crm: "Elle güncelleme, bayatlama görünmez",
-    biz: "Her kayıtta “● X önce”; bayatlayan veri görünür",
+    crm: "Elle güncelleme, eskime görünmez",
+    biz: "Her kayıtta “● X önce”; eskiyen veri görünür",
   },
   {
     etiket: "Kapalı devre",

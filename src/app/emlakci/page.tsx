@@ -112,7 +112,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "Fiyatlar gerçekten güncel mi?",
-    c: "Evet. Fiyat yalnız birim kaydında tutulur, hiçbir yerde kopyalanmaz. Paylaştığın link fiyatı o anki canlı değerden basar; her veride “● X önce” tazelik damgası görünür, bayatlayan veri rozet rengiyle uyarır.",
+    c: "Evet. Fiyat yalnız birim kaydında tutulur, hiçbir yerde kopyalanmaz. Paylaştığın link fiyatı o anki canlı değerden basar; her veride “● X önce” tazelik damgası görünür, eskiyen veri rozet rengiyle uyarır.",
   },
   {
     s: "KYC / belge doğrulaması neden var?",
@@ -187,7 +187,7 @@ export default function EmlakciLanding() {
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Dert → çözüm</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Grup mesajı değil.<br className="hidden sm:block" /> Canlı havuz.</h2>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-                WhatsApp gruplarında dolaşan bayat fiyat listeleri, Drive linkleri, &ldquo;bu daire hâlâ müsait mi?&rdquo; telefonları, hepsi tek canlı ekrana iner.
+                WhatsApp gruplarında dolaşan eski fiyat listeleri, Drive linkleri, &ldquo;bu daire hâlâ müsait mi?&rdquo; telefonları, hepsi tek canlı ekrana iner.
               </p>
             </div>
           </Reveal>
@@ -340,14 +340,14 @@ export default function EmlakciLanding() {
             <Reveal>
               <div className="max-w-xl">
                 <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Tazelik görünür</p>
-                <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Bayat fiyatla müşteri karşısında rezil olma</h2>
+                <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Eski fiyatla müşteri karşısında rezil olma</h2>
                 <p className="mt-4 text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-                  Her verinin üstünde &ldquo;● X önce&rdquo; canlılık damgası var. Veri bayatladıkça rozet renk değiştirir: yeşilse gönül rahatlığıyla paylaş, sarıysa teyit et. Fiyat zaten paylaşımda canlı değerden basıldığı için müşterine eski rakam gitmez.
+                  Her verinin üstünde &ldquo;● X önce&rdquo; canlılık damgası var. Veri eskidikçe rozet renk değiştirir: yeşilse gönül rahatlığıyla paylaş, sarıysa teyit et. Fiyat zaten paylaşımda canlı değerden basıldığı için müşterine eski rakam gitmez.
                 </p>
                 <ul className="mt-6 flex flex-col gap-2.5">
                   {[
                     ["Yeşil", "veri taze, paylaşıma hazır"],
-                    ["Sarı", "bayatlıyor, havuzdan canlı değeri teyit et"],
+                    ["Sarı", "eskiyor, havuzdan canlı değeri teyit et"],
                     ["Kırmızı", "eski, canlı havuz zaten doğrusunu gösteriyor"],
                   ].map(([r, t]) => (
                     <li key={r} className="flex gap-2.5 text-[13.5px] leading-snug text-ink">
