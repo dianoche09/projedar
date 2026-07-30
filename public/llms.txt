@@ -6,7 +6,7 @@
 
 ProjePazar, Türkiye'de konut projelerinin satış ve dağıtımındaki en büyük sorunu çözer: dağınık, eski ve kontrolsüz bilgi. Bir konut projesinin fiyatı, hangi dairenin satılık, hangisinin opsiyonda olduğu bilgisi genelde Excel dosyaları, eski PDF'ler ve WhatsApp mesajları arasında kaybolur. Sonuç: yanlış fiyat, eksik bilgi, çift satış ve güven kaybı.
 
-ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek bir birim kaydında tutulur; hiçbir yerde kopyalanmaz. Bir gayrimenkul danışmanı bir daireyi müşterisine paylaştığında, fiyat o anki canlı değerden basılır. Bir daire opsiyona alındığında, çift-satış kalkanı veritabanı seviyesinde kilitler. Her veride "● X önce" tazelik damgası bulunur; bilgi bayatladıkça rozet renk değiştirir.
+ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek bir birim kaydında tutulur; hiçbir yerde kopyalanmaz. Bir gayrimenkul danışmanı bir daireyi müşterisine paylaştığında, fiyat o anki canlı değerden basılır. Bir daire opsiyona alındığında, çift-satış kalkanı veritabanı seviyesinde kilitler. Her veride "● X önce" tazelik damgası bulunur; bilgi eskidikçe rozet renk değiştirir.
 
 - Website: https://projepazar.vercel.app
 - Platform: Web + PWA (mobil-önce, telefona kurulabilir, çevrimdışına dayanıklı)
@@ -16,7 +16,10 @@ ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız te
 
 ## Ana Sayfalar
 
-- [Ana sayfa](https://projepazar.vercel.app/) — ürünün tanıtımı, canlı havuz demosu, iki taraflı fayda, nasıl çalışır, SSS
+- [Ana sayfa](https://projepazar.vercel.app/) — 3 fazlı inşaat video hero'su, canlı havuz demosu, çift satış kalkanı, tahsis, ağ etkisi, SSS
+- [Müteahhitler için](https://projepazar.vercel.app/muteahhit) — envanter kontrolü, tahsis paneli, çift satış kalkanı, kurucu müteahhit kontenjanı, model karşılaştırması
+- [Danışmanlar için](https://projepazar.vercel.app/emlakci) — tahsisli canlı havuz, WhatsApp birebir paylaşım, opsiyon kilidi, komisyon güvencesi; tamamen ücretsiz
+- [Güven Protokolü](https://projepazar.vercel.app/guven) — 6 teminatın teknik dayanağı, EİDS konumlandırması (ilan değil tahsis), KVKK çizgisi
 - [Kullanım Koşulları](https://projepazar.vercel.app/kullanim-kosullari)
 - [Gizlilik](https://projepazar.vercel.app/gizlilik)
 - [KVKK Aydınlatma](https://projepazar.vercel.app/kvkk-aydinlatma)
@@ -39,7 +42,7 @@ ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız te
 - Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki danışmana aynı anda satılamaz.
 
 ### Görünür tazelik
-- Her güncelleme zaman damgalıdır; "● X önce" rozeti bilgi bayatladıkça renk değiştirir.
+- Her güncelleme zaman damgalıdır; "● X önce" rozeti bilgi eskidikçe renk değiştirir.
 
 ### Canlı komuta merkezi
 - Bir daire opsiyonlandığında, fiyat değiştiğinde veya satış kapandığında herkes aynı anda görür.
