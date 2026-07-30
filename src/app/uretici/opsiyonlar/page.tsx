@@ -46,13 +46,18 @@ type TalepRaw = {
   } | null;
 };
 
-function kalanMetin(iso: string | null): { metin: string; gecti: boolean } {
-  if (!iso) return { metin: "süresiz", gecti: false };
+function kalanMetin(iso: string | null): { metin: string; gecti: boolean; kritik: boolean } {
+  if (!iso) return { metin: "süresiz", gecti: false, kritik: false };
   const fark = new Date(iso).getTime() - Date.now();
-  if (fark <= 0) return { metin: "süresi doldu", gecti: true };
+  if (fark <= 0) return { metin: "süresi doldu", gecti: true, kritik: false };
   const saat = Math.floor(fark / 3_600_000);
-  if (saat < 24) return { metin: `${saat} saat kaldı`, gecti: false };
-  return { metin: `${Math.floor(saat / 24)} gün kaldı`, gecti: false };
+  if (saat < 24) return { metin: `${saat} saat kaldı`, gecti: false, kritik: saat < 6 };
+  return { metin: `${Math.floor(saat / 24)} gün kaldı`, gecti: false, kritik: false };
+}
+
+/** Talep 24 saatten uzun süredir yanıtsızsa kuyrukta gecikme rozeti gösterilir. */
+function gecikmisMi(iso: string): boolean {
+  return Date.now() - new Date(iso).getTime() > 86_400_000;
 }
 
 export default async function UreticiOpsiyonlar() {
@@ -99,7 +104,7 @@ export default async function UreticiOpsiyonlar() {
   const sahip = (id: string) => {
     const p = profMap.get(id);
     if (!p) return null;
-    return { ad: p.ad ?? "Emlakçı", ofis: p.ofis_id ? ofisMap.get(p.ofis_id) ?? null : null, tel: p.telefon ?? null };
+    return { ad: p.ad ?? "Danışman", ofis: p.ofis_id ? ofisMap.get(p.ofis_id) ?? null : null, tel: p.telefon ?? null };
   };
 
   const blokAd = new Map((bloklar ?? []).map((b) => [b.id, b.ad as string | null]));
@@ -124,7 +129,8 @@ export default async function UreticiOpsiyonlar() {
           ) : null}
         </div>
         <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
-          Emlakçı talep açar, sen onaylarsan opsiyon kilidi doğar. Çift-satış kalkanı DB seviyesinde — onayda devreye girer.
+          Danışman talep açar, sen onaylayınca opsiyon kilidi doğar. Çift satış kalkanı veritabanı
+          seviyesindedir; onayla birlikte devreye girer.
         </p>
       </header>
 
@@ -148,15 +154,22 @@ export default async function UreticiOpsiyonlar() {
                     <p className="text-[13.5px] font-semibold text-ink">
                       {b?.proje?.ad ?? "—"} · <span className="mono">{daire}</span>
                     </p>
-                    <p className="mt-0.5 text-[11.5px] text-[var(--ink-faint)]">
-                      {b?.tip?.oda ?? b?.tip?.ad ?? "—"}
-                      {b?.liste_fiyati ? ` · ${paraKisa(b.liste_fiyati, b.para_birimi)}` : ""}
-                      {` · talep ${zamanOnce(t.created_at)}`}
+                    <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[11.5px] text-[var(--ink-faint)]">
+                      <span>
+                        {b?.tip?.oda ?? b?.tip?.ad ?? "—"}
+                        {b?.liste_fiyati ? ` · ${paraKisa(b.liste_fiyati, b.para_birimi)}` : ""}
+                        {` · talep ${zamanOnce(t.created_at)}`}
+                      </span>
+                      {gecikmisMi(t.created_at) ? (
+                        <span className="rounded-full bg-amber-soft px-2 py-[2px] text-[10px] font-bold text-[#9a6a12]">
+                          24 saattir yanıtsız
+                        </span>
+                      ) : null}
                     </p>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Emlakçı"}</div>
+                      <div className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</div>
                       {s?.ofis ? <div className="text-[11px] text-[var(--ink-faint)]">{s.ofis}</div> : null}
                       {s?.tel ? (
                         <a href={`tel:${s.tel}`} className="text-[11px] font-medium text-teal hover:underline">
@@ -179,7 +192,7 @@ export default async function UreticiOpsiyonlar() {
           <Kpi etiket="Bekleyen Talep" deger={String(talepler.length)} renk="text-teal" alt="onay kuyruğu" />
           <Kpi etiket="Toplam Kilit" deger={String(satirlar.length)} alt="aktif opsiyon + satış" />
           <Kpi etiket="Opsiyon" deger={String(opsiyonlu)} renk="text-amber" alt="karar bekliyor" />
-          <Kpi etiket="Satış Bekleyen" deger={String(satisBekleyen)} renk="text-red" alt="teyit aşaması" />
+          <Kpi etiket="Satış Bekleyen" deger={String(satisBekleyen)} renk="text-teal" alt="teyit aşaması" />
         </div>
       </section>
 
@@ -209,7 +222,7 @@ export default async function UreticiOpsiyonlar() {
                   <th className="text-right">Fiyat</th>
                   <th>Durum</th>
                   <th>Kilit</th>
-                  <th>Tutan (emlakçı)</th>
+                  <th>Tutan danışman</th>
                   <th>Son Güncelleme</th>
                   <th />
                 </tr>
@@ -223,7 +236,13 @@ export default async function UreticiOpsiyonlar() {
                   const s = ops ? sahip(ops.satici_id) : null;
                   const daire = [blokAd.get(b.blok_id ?? ""), b.daire_no].filter(Boolean).join(" · ") || b.daire_no || "—";
                   return (
-                    <tr key={b.id} style={{ background: "rgba(227,161,44,.045)" }}>
+                    <tr
+                      key={b.id}
+                      style={{
+                        background: kalan.gecti ? "rgba(209,90,78,.06)" : "rgba(227,161,44,.045)",
+                        boxShadow: kalan.gecti ? "inset 3px 0 0 var(--color-red)" : undefined,
+                      }}
+                    >
                       <td>
                         <span className="text-[12px] text-ink-soft">{projeAd.get(b.proje_id) ?? "—"}</span>
                       </td>
@@ -237,7 +256,17 @@ export default async function UreticiOpsiyonlar() {
                         </span>
                       </td>
                       <td>
-                        <span className={kalan.gecti ? "text-[12px] font-semibold text-red" : "text-[12px] text-ink-soft"}>{kalan.metin}</span>
+                        <span
+                          className={
+                            kalan.gecti
+                              ? "text-[12px] font-semibold text-red"
+                              : kalan.kritik
+                                ? "text-[12px] font-semibold text-amber"
+                                : "text-[12px] text-ink-soft"
+                          }
+                        >
+                          {kalan.metin}
+                        </span>
                       </td>
                       <td>
                         {s ? (
