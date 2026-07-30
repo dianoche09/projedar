@@ -77,7 +77,7 @@ export function AgBuyuyor({ altKisim }: { altKisim?: React.ReactNode } = {}) {
             whileInView={azHareket ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-            className="flex max-w-2xl flex-col items-center"
+            className="flex w-full max-w-4xl flex-col items-center"
           >
             <p className="mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#3fbfae]">
               Ağ büyüyor
@@ -89,23 +89,46 @@ export function AgBuyuyor({ altKisim }: { altKisim?: React.ReactNode } = {}) {
               Stoğunuz yaşayan bir ağda dolaşsın: doğru danışmanda, doğru
               fiyatla, her zaman taze. Projeniz de bu ışıklardan biri olsun.
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/kayit"
-                className="inline-flex h-12 items-center justify-center rounded-[13px] bg-[#1e9b8a] px-7 text-[14px] font-semibold text-white transition-colors hover:bg-[#1a8676]"
-              >
-                Projemi canlı ağa aç
-              </Link>
-              <Link
-                href="/kayit"
-                className="inline-flex h-12 items-center justify-center rounded-[13px] border border-white/30 px-7 text-[14px] font-semibold text-[#ece9e2] transition-colors hover:border-white/60"
-              >
-                Danışman olarak katıl
-              </Link>
+            {/* rol kartları (m2 "Hangi taraftasınız?" içeriği, kullanıcı isteğiyle butonların yerinde) */}
+            <div className="mt-10 grid w-full gap-5 text-left lg:grid-cols-2">
+              <div className="overflow-hidden rounded-2xl border border-white/12 bg-[rgba(10,22,36,0.82)] backdrop-blur-sm">
+                <div className="h-[3px] bg-gradient-to-r from-[#1e9b8a] to-[#2fb36b]" aria-hidden />
+                <div className="p-6 sm:p-7">
+                  <h3 className="font-display text-xl font-extrabold tracking-tight text-[#ece9e2]">Proje Sahibiyim</h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-white/65">
+                    Bloklarınızı, katlarınızı, birimlerinizi tek panelden yönetin. Fiyatı siz güncellersiniz,
+                    hangi danışman neyi görecek siz seçersiniz. Her paylaşım canlı fiyattan basılır, her hareket iz bırakır.
+                  </p>
+                  <p className="mono mt-4 text-[11.5px] tracking-wide text-[#3fbfae]">stok · fiyat · tahsis · opsiyon · rapor</p>
+                  <Link
+                    href="/kayit?rol=uretici"
+                    className="mt-6 inline-flex h-11 items-center justify-center rounded-[13px] bg-[#1e9b8a] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#1a8676]"
+                  >
+                    Projemi Yükle →
+                  </Link>
+                </div>
+              </div>
+              <div className="overflow-hidden rounded-2xl border border-white/12 bg-[rgba(10,22,36,0.82)] backdrop-blur-sm">
+                <div className="h-[3px] bg-gradient-to-r from-[#1e9b8a] to-[#2fb36b]" aria-hidden />
+                <div className="p-6 sm:p-7">
+                  <h3 className="flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight text-[#ece9e2]">
+                    Danışmanım
+                    <span className="rounded-full border border-[#2fb36b]/50 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#2fb36b]">Ücretsiz</span>
+                  </h3>
+                  <p className="mt-3 text-[14px] leading-relaxed text-white/65">
+                    Size tahsisli projeleri tek canlı havuzda görün. &quot;Müsait mi?&quot; diye kimseyi aramayın:
+                    durum ekranda, fiyat günceldir. Tek dokunuşla paylaşın, opsiyonu anında kilitleyin.
+                  </p>
+                  <p className="mono mt-4 text-[11.5px] tracking-wide text-[#3fbfae]">havuz · paylaş · opsiyon · lead</p>
+                  <Link
+                    href="/kayit?rol=emlakci"
+                    className="mt-6 inline-flex h-11 items-center justify-center rounded-[13px] border border-white/30 px-6 text-[14px] font-semibold text-[#ece9e2] transition-colors hover:border-white/60"
+                  >
+                    Havuza Katıl →
+                  </Link>
+                </div>
+              </div>
             </div>
-            <p className="mono mt-7 text-[10.5px] uppercase tracking-[0.16em] text-white/35">
-              kurulum concierge ile · komisyon yok · erken dönem danışman hesabı ücretsiz
-            </p>
           </motion.div>
         </div>
 
