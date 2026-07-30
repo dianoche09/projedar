@@ -25,7 +25,6 @@ const LINKLER: NavLink[] = [
   { yol: "/uretici/bildirimler", etiket: "Bildirimler", ikon: "bildirim", tam: false },
   { yol: "/uretici/lead-sorgu", etiket: "Müşteri Sorgula", ikon: "ara", tam: false },
   { yol: "/uretici/raporlar", etiket: "Raporlar", ikon: "rapor", tam: false },
-  { yol: "/uretici/proje/yeni", etiket: "Yeni Proje", ikon: "arti", tam: false },
   { yol: "/uretici/ayarlar", etiket: "Ayarlar", ikon: "ayar", tam: false },
 ];
 
