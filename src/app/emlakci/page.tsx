@@ -5,6 +5,9 @@ import { Reveal } from "@/components/Reveal";
 import { MagneticButton } from "@/components/MagneticButton";
 import { HavuzKarti } from "./HavuzKarti";
 import { TazelikDemo } from "./TazelikDemo";
+import { SoruSahnesi } from "@/components/landing/SoruSahnesi";
+import { SonMesajCta } from "@/components/landing/SonMesajCta";
+import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
 import {
   LayoutGrid,
   Share2,
@@ -163,37 +166,16 @@ export default function EmlakciLanding() {
         </nav>
       </header>
 
-      {/* ============ HERO ============ */}
+      {/* ============ HERO: bu soru artık sorulmuyor (m4 saha-whatsapp dilinden) ============ */}
       <section className="relative isolate overflow-hidden">
         <div className="hero-aurora" aria-hidden />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-16 sm:px-6 lg:pb-24 lg:pt-24">
-          <div className="max-w-2xl">
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-14 sm:px-6 lg:pb-20 lg:pt-20">
+          <p className="mb-10 text-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(30,155,138,0.22)] bg-[var(--color-teal-soft)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[var(--color-teal-d)]">
               <span className="size-2 rounded-full bg-green nabiz" /> GAYRİMENKUL DANIŞMANI İÇİN
             </span>
-            <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              Tamamen ücretsiz.
-              <br />
-              <span className="text-teal">Komisyonun %100&rsquo;ü senin.</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Sana tahsisli müteahhit stoğunu <strong className="font-semibold text-ink">tek canlı havuzda</strong> gör, WhatsApp&rsquo;tan{" "}
-              <strong className="font-semibold text-ink">birebir paylaş</strong>, <strong className="font-semibold text-ink">opsiyonla kilitle</strong>, fiyat her zaman güncel.
-            </p>
-            <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-              <MagneticButton href="/kayit?rol=emlakci" className="btn-action h-[52px] px-8 text-[15px] font-bold">
-                Ücretsiz Başla
-              </MagneticButton>
-              <a href="#canli-havuz" className="btn-ghost h-[52px] px-7 text-[15px] hover:-translate-y-0.5">Canlı havuzu gör ↓</a>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {["Komisyon paylaşımı yok", "Sadece sana tahsisli stok", "Fiyat her zaman canlı"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--cizgi-2)] bg-white/70 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur-sm">
-                  <span className="size-[5px] rounded-full bg-teal" /> {t}
-                </span>
-              ))}
-            </div>
-          </div>
+          </p>
+          <SoruSahnesi />
         </div>
       </section>
 
@@ -260,6 +242,23 @@ export default function EmlakciLanding() {
               </div>
             </Reveal>
           </div>
+        </div>
+      </section>
+
+      {/* ============ CANLI HAVUZ · DENE (interaktif, WhatsApp paylaşım animasyonlu) ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto mb-12 max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Havuzun böyle görünür</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                Bir daireye tıkla: kat planı, net/brüt, ödeme planı ve canlı fiyat açılır. Opsiyonu dene,
+                müşteriye paylaşımın WhatsApp&rsquo;ta nasıl göründüğünü izle.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100}><CanliHavuzDemo /></Reveal>
         </div>
       </section>
 
@@ -389,38 +388,10 @@ export default function EmlakciLanding() {
         </div>
       </section>
 
-      {/* ============ KAPANIŞ CTA ============ */}
+      {/* ============ KAPANIŞ: yarın sabahki ilk mesajın bu olmasın (m4 dilinden) ============ */}
       <section className="relative px-5 pb-24 pt-20 sm:px-6">
         <Reveal>
-          <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-[28px]">
-            <div
-              className="relative overflow-hidden rounded-[26px]"
-              style={{ background: "linear-gradient(140deg, var(--color-navy) 0%, var(--color-teal-d) 100%)" }}
-            >
-              <div className="izgara-doku absolute inset-0 opacity-[0.1]" aria-hidden />
-              <div className="relative px-6 py-14 text-center sm:px-10 lg:py-16">
-                <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs">
-                  {["Ücret yok", "Komisyon paylaşımı yok", "Sadece sana tahsisli stok"].map((t) => (
-                    <span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>
-                  ))}
-                </div>
-                <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
-                  Komisyonun %100&rsquo;ü sende kalsın
-                </h2>
-                <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-white/75">
-                  Sana tahsisli canlı havuz seni bekliyor: doğru fiyat, tek link, opsiyon kilidi. Kayıt ücretsiz, belgen doğrulanınca rozetinle ağa katılırsın.
-                </p>
-                <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                  <Link href="/kayit?rol=emlakci" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-9 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:w-auto">
-                    Ücretsiz Başla
-                  </Link>
-                  <Link href="/login" className="inline-flex h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:w-auto">
-                    Zaten üyeyim, giriş yap
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SonMesajCta />
         </Reveal>
       </section>
 
