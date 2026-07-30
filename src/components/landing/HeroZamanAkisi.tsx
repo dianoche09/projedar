@@ -229,31 +229,31 @@ export function HeroFazSeridi() {
         aria-live="polite"
       >
         <style>{`@keyframes ppSayiGir { from { opacity: 0; transform: translateY(0.16em); } to { opacity: 1; transform: translateY(0); } }`}</style>
-        <p
-          key={tukendi ? "son" : faz}
-          className="font-mono font-semibold tabular-nums leading-[0.82] tracking-tight [text-shadow:0_2px_28px_rgba(8,16,28,0.6)]"
-          style={{
-            fontSize: "clamp(4.5rem, 15vw, 11.5rem)",
-            color: tukendi ? "#ff8a7a" : "#fff",
-            animation: azalt ? undefined : "ppSayiGir 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
-          }}
-        >
-          {tukendi ? 0 : aktif.musait}
-        </p>
-        <p className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
-          müsait daire · / 142 · canlı
-        </p>
-      </div>
-
-      {/* TÜKENDİ anı */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-[46%] z-10 -translate-x-1/2 transition-all duration-700"
-        style={{ opacity: tukendi ? 1 : 0, transform: `translateX(-50%) scale(${tukendi ? 1 : 0.92})` }}
-        aria-hidden={!tukendi}
-      >
-        <div className="rounded-full border border-white/40 bg-[rgba(11,20,32,0.68)] px-7 py-3 backdrop-blur-sm">
-          <p className="font-mono text-[13px] font-bold uppercase tracking-[0.18em] text-white">Proje tükendi · teslim tamam</p>
-        </div>
+        {tukendi ? (
+          <p
+            key="son"
+            className="ml-auto max-w-[18ch] text-right font-display text-2xl font-bold leading-snug text-white [text-shadow:0_2px_28px_rgba(8,16,28,0.6)] sm:text-3xl"
+            style={{ animation: azalt ? undefined : "ppSayiGir 700ms cubic-bezier(0.16, 1, 0.3, 1) both" }}
+          >
+            Projemizde daireler tükenmiştir. İlginize teşekkür ederiz.
+          </p>
+        ) : (
+          <>
+            <p
+              key={faz}
+              className="font-mono font-semibold tabular-nums leading-[0.82] tracking-tight text-white [text-shadow:0_2px_28px_rgba(8,16,28,0.6)]"
+              style={{
+                fontSize: "clamp(4.5rem, 15vw, 11.5rem)",
+                animation: azalt ? undefined : "ppSayiGir 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
+              }}
+            >
+              {aktif.musait}
+            </p>
+            <p className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
+              müsait daire · 142 içinden · canlı
+            </p>
+          </>
+        )}
       </div>
 
       {/* alt künye: akış içinde yüzen bar; mt-auto ile her ekranda tam görünür */}
