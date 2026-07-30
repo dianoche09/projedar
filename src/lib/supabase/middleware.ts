@@ -7,6 +7,7 @@ function herkeseAcik(pathname: string): boolean {
     pathname === "/" ||
     pathname.startsWith("/muteahhit") || // public rol landing (üretici)
     pathname.startsWith("/emlakci") || // public rol landing (emlakçı)
+    pathname.startsWith("/guven") || // güven protokolü sayfası (public)
     pathname.startsWith("/mockup-") || // deneysel landing konseptleri (design lab)
     pathname.startsWith("/design-lab") || // konsept karşılaştırma sayfası
     pathname.startsWith("/recommended") || // final öneri konsepti
