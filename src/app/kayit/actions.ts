@@ -45,17 +45,19 @@ export async function kayitOl(formData: FormData) {
     email,
     password,
     options: {
-      data: { ad, telefon: telefon ?? null, talep_rol, kayit_meta: { davet_eden: davetEden } },
+      // profil_detay METADATA'ya da yazılır: e-posta onayı AÇIKSA signUp oturum döndürmez →
+      // aşağıdaki profil update RLS'e takılır; metadata'daki kopya veriyi kaybolmaktan korur.
+      data: { ad, telefon: telefon ?? null, talep_rol, kayit_meta: { davet_eden: davetEden, profil_detay: detay } },
     },
   });
   if (error) {
     redirect(`/kayit?hata=${encodeURIComponent(error.message)}`);
   }
 
-  // signUp sonrası oturum açık → kendi profiline kapsamlı veriyi yaz.
-  // Segmentasyon alanları (il/ilce/uzmanlik/marka) kendi kolonuna DA yazılır → segment tahsis çalışır.
-  // profil_detay kolonu migration ile gelir; yoksa update hata döner → en az segment kolonları yazılır (graceful).
-  if (data?.user) {
+  // Oturum yalnız e-posta onayı KAPALIYKEN açılır. Varsa: kapsamlı veriyi profile yaz
+  // (segmentasyon alanları il/ilce/uzmanlik/marka kendi kolonuna DA → segment tahsis çalışır).
+  const oturumVar = !!data?.session;
+  if (data?.user && oturumVar) {
     const kolon: Record<string, string> = {};
     for (const k of KOLON_ALANLARI) if (detay[k]) kolon[k] = detay[k];
     const { error: upErr } = await supabase.from("profiles").update({ profil_detay: detay, ...kolon }).eq("id", data.user.id);
@@ -64,9 +66,9 @@ export async function kayitOl(formData: FormData) {
     }
   }
 
-  // Emlakçı → belge adımı (opsiyonel, atlanabilir); diğerleri → bekleme ekranı.
-  // Hesap onay_bekliyor + belge_durumu ayrı gate'ler.
-  redirect(talep_rol === "emlakci" ? "/kayit/belge" : "/hesap-bekliyor");
+  // Emlakçı belge adımı OTURUM ister → yalnız oturum varsa oraya. Onay açıksa (oturum yok)
+  // herkes bekleme ekranına; belge/profil sonra (onay + giriş) tamamlanır. Veri metadata'da güvende.
+  redirect(oturumVar && talep_rol === "emlakci" ? "/kayit/belge" : "/hesap-bekliyor");
 }
 
 /**
