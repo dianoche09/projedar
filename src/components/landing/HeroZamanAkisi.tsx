@@ -195,7 +195,7 @@ export function HeroFazSeridi() {
           {/* rol kartları (kullanıcı tasarımı): koyu = proje sahibi, beyaz = danışman */}
           <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-2">
             <Link
-              href="/kayit?rol=uretici"
+              href="/muteahhit"
               className="group rounded-2xl bg-[#0d2438]/90 p-4 ring-1 ring-white/15 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
             >
               <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/60">Müteahhit · Proje sahibi</p>
@@ -206,7 +206,7 @@ export function HeroFazSeridi() {
               </p>
             </Link>
             <Link
-              href="/kayit?rol=emlakci"
+              href="/emlakci"
               className="group rounded-2xl bg-white/95 p-4 backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
             >
               <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-ink-soft">Gayrimenkul danışmanı</p>
