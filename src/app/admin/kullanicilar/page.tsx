@@ -73,7 +73,7 @@ export default async function KullanicilarSayfasi({
               ))}
             </select>
             <select name="ofis_id" defaultValue="" className={inp}>
-              <option value="">— ofis yok —</option>
+              <option value="">(ofis yok)</option>
               {(ofisler ?? []).map((o) => (
                 <option key={o.id} value={o.id}>{o.ad}</option>
               ))}

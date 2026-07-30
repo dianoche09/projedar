@@ -65,7 +65,7 @@ export default async function Denetim({
       <div className="mx-auto max-w-[1100px] space-y-4 px-4 py-6 sm:px-6">
         <GeriLink href="/admin" etiket="Genel Bakış" />
         <SayfaBaslik baslik="Denetim" altEtiket={<span className="text-gray">İz zinciri</span>} />
-        <div className="kart p-8 text-center text-sm text-gray">Denetim günlüğü şu an okunamıyor — servis anahtarı tanımlı değil.</div>
+        <div className="kart p-8 text-center text-sm text-gray">Denetim günlüğü şu an okunamıyor; servis anahtarı tanımlı değil.</div>
       </div>
     );
   }

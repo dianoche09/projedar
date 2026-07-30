@@ -83,7 +83,7 @@ export function KullanicilarTablo({
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Ara — ad / telefon"
+            placeholder="Ara: ad / telefon"
             className="w-full rounded-xl border border-hair bg-card py-2 pl-9 pr-3 text-sm text-ink shadow-card outline-none transition-colors focus:border-teal"
           />
         </div>
@@ -170,7 +170,7 @@ export function KullanicilarTablo({
                           <label className="flex flex-col gap-1 text-[11px] font-medium text-gray">
                             Ofis
                             <select name="ofis_id" defaultValue={k.ofis_id ?? ""} className={sel}>
-                              <option value="">— yok —</option>
+                              <option value="">(yok)</option>
                               {ofisler.map((o) => (
                                 <option key={o.id} value={o.id}>{o.ad}</option>
                               ))}

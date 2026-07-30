@@ -90,7 +90,7 @@ export default async function OnaySayfasi() {
                 <label className="flex flex-col gap-1 text-[11px] font-medium text-gray">
                   Ofis
                   <select name="ofis_id" defaultValue="" className={sel}>
-                    <option value="">— yok —</option>
+                    <option value="">(yok)</option>
                     {(ofisler ?? []).map((o) => (
                       <option key={o.id} value={o.id}>{o.ad}</option>
                     ))}

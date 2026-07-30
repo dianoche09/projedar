@@ -134,7 +134,7 @@ export default async function OfislerSayfasi({
                       <form action={ofiseAbonelikAta} className="flex items-center justify-end gap-2">
                         <input type="hidden" name="ofis_id" value={o.id} />
                         <select name="paket_id" defaultValue={ab?.paket_id ?? ""} className={sel}>
-                          <option value="">— Abonelik yok —</option>
+                          <option value="">(abonelik yok)</option>
                           {(paketler ?? []).map((p) => (
                             <option key={p.id} value={p.id}>{p.ad} · {fmtPara(p.fiyat_aylik)}/ay</option>
                           ))}
@@ -151,7 +151,7 @@ export default async function OfislerSayfasi({
           </table>
         </div>
         {liste.length === 0 ? (
-          <p className="px-5 py-12 text-center text-sm text-gray">Henüz ofis yok — yukarıdan ekle.</p>
+          <p className="px-5 py-12 text-center text-sm text-gray">Henüz ofis yok; yukarıdan ekle.</p>
         ) : null}
       </div>
     </div>
