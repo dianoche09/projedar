@@ -195,7 +195,7 @@ export default async function ProjeDetay({
 
       {/* ===== TAHSİS (MOAT) ===== */}
       <section className="mt-12 border-t border-hair pt-8">
-        <h2 className="font-display text-lg font-semibold text-ink">Tahsis — dağıtım (MOAT)</h2>
+        <h2 className="font-display text-lg font-semibold text-ink">Tahsis: kim neyi görür</h2>
         <p className="mt-1 text-sm text-gray">
           Hangi kapsam kime açık, komisyon ne. Emlakçı yalnız tahsisli + satılabilir birimi görür/satar.
         </p>

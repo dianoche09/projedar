@@ -141,7 +141,7 @@ export default async function UreticiTalepRadari() {
           </span>
         </div>
         <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
-          Emlakçı ağındaki gerçek davranış — paylaşım → görüntüleme → lead → talep. Şişirilmiş veri yok; geçmişe doldurulamaz (= moat).
+          Danışman ağındaki gerçek davranış: paylaşım, görüntüleme, lead, talep. Şişirilmiş veri yok; her sinyal canlı akıştan gelir.
         </p>
       </header>
 
