@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { Reveal } from "@/components/Reveal";
 import { NasilCalisirAdimlar } from "./NasilCalisirAdimlar";
+import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
+import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
+import "@/app/mockup-02/mockup02.css";
 import { CircleSlash, SlidersHorizontal, Database } from "lucide-react";
 
 /** Müteahhit (üretici) rol landing'i, güven-önce, veri-öne, komuta merkezi dili. */
@@ -167,36 +171,88 @@ export default function MuteahhitSayfasi() {
         </nav>
       </header>
 
-      {/* ============ HERO, güven önce, görsel yok, veri öne ============ */}
-      <section className="relative isolate overflow-hidden">
-        <div className="hero-aurora" aria-hidden />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-16 sm:px-6 lg:pb-24 lg:pt-24">
+      {/* ============ HERO, güven önce, fazlı şantiye hava çekimi üzerinde ============ */}
+      <section className="relative isolate overflow-hidden bg-ink text-white">
+        <Image
+          src="/generated/mockup-03/hero-hava-mahalle.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[50%_45%]"
+          aria-hidden
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(11,20,32,0.62) 0%, rgba(11,20,32,0.3) 45%, rgba(11,20,32,0.78) 100%)" }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{ background: "radial-gradient(60% 70% at 24% 40%, rgba(11,20,32,0.66) 0%, rgba(11,20,32,0.3) 52%, transparent 74%)" }}
+        />
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-20 pt-20 sm:px-6 lg:pb-28 lg:pt-28">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(30,155,138,0.22)] bg-[var(--color-teal-soft)] px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-[var(--color-teal-d)]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 font-mono text-[11.5px] font-semibold text-white backdrop-blur-sm">
               <span className="size-2 rounded-full bg-green nabiz" /> MÜTEAHHİTLER İÇİN
             </span>
-            <h1 className="mt-5 font-display text-[40px] font-extrabold leading-[1.02] tracking-tight text-ink sm:text-[56px]">
-              “Bu daire hâlâ müsait mi?”
+            <h1 className="mt-5 font-display text-[38px] font-extrabold leading-[1.04] tracking-tight sm:text-[54px]">
+              Envanter kontrolü sende.
               <br />
-              <span className="text-teal">Ağınızda bu soru sorulmaz.</span>
+              <span className="text-[#7fd4c4]">Çift satış yapısal olarak imkânsız.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">
-              Geliştirici firmalar için <strong className="font-semibold text-ink">tahsisli canlı proje satış ağı</strong>: stok, fiyat ve kimin göreceği tek noktada, <strong className="font-semibold text-ink">sizde</strong>. Çift satış veritabanı seviyesinde imkânsız.
+            <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-white/85 sm:text-base">
+              Geliştirici firmalar için <strong className="font-semibold text-white">tahsisli canlı proje satış ağı</strong>: stok, fiyat ve kimin göreceği tek noktada, sende. Aktif opsiyon veritabanı seviyesinde kilitlenir.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/kayit?rol=uretici" className="btn-action px-7 text-[15px] max-sm:min-h-[52px] hover:-translate-y-0.5">Projenizi konuşalım</Link>
-              <a href="#nasil-calisir" className="btn-ghost px-7 text-[15px] max-sm:min-h-[52px] hover:-translate-y-0.5">Nasıl çalışır</a>
+              <Link href="/kayit?rol=uretici" className="inline-flex min-h-[52px] items-center justify-center rounded-full bg-white px-7 text-[15px] font-bold text-ink transition-transform duration-200 hover:-translate-y-0.5 sm:min-h-12">Projenizi konuşalım</Link>
+              <a href="#nasil-calisir" className="inline-flex min-h-[52px] items-center justify-center rounded-full border border-white/30 px-7 text-[15px] font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/10 sm:min-h-12">Nasıl çalışır</a>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Komisyonsuz", "Tahsisli görünürlük", "DB seviyesinde opsiyon kilidi", "Kapalı devre"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--cizgi-2)] bg-white/70 px-3 py-1.5 text-xs font-medium text-ink-soft backdrop-blur-sm">
-                  <span className="size-[5px] rounded-full bg-teal" /> {t}
+                <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-[rgba(11,20,32,0.45)] px-3 py-1.5 text-xs font-medium text-white/85 backdrop-blur-sm">
+                  <span className="size-[5px] rounded-full bg-[#7fd4c4]" /> {t}
                 </span>
               ))}
             </div>
           </div>
         </div>
       </section>
+
+      {/* ============ TAHSİS YILDIZI: yetki kapısı, üretici panelinden ============ */}
+      <section className="izgara-doku border-b border-[var(--cizgi)] bg-white/55">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Tahsis</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Kim neyi görür, sen belirlersin</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                Tahsis bir ayar değil, yetki kapısıdır: tüm ağ, seçili ofisler, seçili danışmanlar, tek daireye kadar özel
+                ya da süreli erişim. Aşağıdaki panel ürünün gerçek mekaniğinin örnek görünümüdür.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100} className="mt-12">
+            <TahsisPaneli />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ============ ÇİFT SATIŞ KALKANI (koyu kontrol odası) ============ */}
+      <div className="m2 overflow-x-clip">
+        <section className="border-b border-[var(--m2-cizgi)]">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <p className="m2-etiket text-amber">Çift satış kalkanı</p>
+            <h2 className="m2-dev mt-5 max-w-3xl text-[clamp(1.9rem,5.2vw,4rem)]">
+              Opsiyon bir söz değil. Kilittir.
+            </h2>
+            <div className="mt-12">
+              <KilitKoreografi />
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* ============ NASIL ÇALIŞIR, 4 adım, canlı mini-simülasyonlar ============ */}
       <section id="nasil-calisir" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
