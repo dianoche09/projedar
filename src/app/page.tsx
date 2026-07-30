@@ -13,7 +13,6 @@ import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
-import { SoruSahnesi } from "@/components/landing/SoruSahnesi";
 import { SonMesajCta } from "@/components/landing/SonMesajCta";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
@@ -259,13 +258,6 @@ export default async function Home() {
               </Reveal>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* ============ BU SORU ARTIK SORULMUYOR (m4 saha-whatsapp dilinden) ============ */}
-      <section className="relative border-b border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <SoruSahnesi />
         </div>
       </section>
 
