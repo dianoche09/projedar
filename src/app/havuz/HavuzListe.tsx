@@ -47,10 +47,15 @@ function paraSimge(p: string): string {
   return PARA_SIMGE[p] ?? "₺";
 }
 
-/** Bayatlık eşiği: 7 günden eski stok = stale (yeşil rozet → amber). DEĞİŞMEZ #5. */
+/** Tazelik kademeleri (tasarım dili imzası): 0-24sa yeşil · 1-7g teal · 7-15g amber · 15g+ gri. DEĞİŞMEZ #5. */
 const STALE_GUN = 7;
-function bayatMi(iso: string): boolean {
-  return Date.now() - new Date(iso).getTime() > STALE_GUN * 86_400_000;
+function tazelikKademe(iso: string): { renk: string; zemin: string; eski: boolean; ipucu: string } {
+  const gun = (Date.now() - new Date(iso).getTime()) / 86_400_000;
+  if (gun < 1) return { renk: "var(--color-green)", zemin: "rgba(47,179,107,.12)", eski: false, ipucu: "Taze stok" };
+  if (gun <= 7) return { renk: "var(--color-teal)", zemin: "rgba(30,155,138,.12)", eski: false, ipucu: "Güncel stok" };
+  if (gun <= 15)
+    return { renk: "var(--color-amber)", zemin: "rgba(227,161,44,.14)", eski: true, ipucu: `Stok ${STALE_GUN}+ gündür güncellenmedi` };
+  return { renk: "#98a2b3", zemin: "rgba(152,162,179,.16)", eski: true, ipucu: "Stok 15+ gündür güncellenmedi" };
 }
 
 /** Emlakçı Havuzu — v2-emlakci "Yetkili Projeler" görünümü. Veri: tahsisli RLS sorgusu. */
@@ -134,7 +139,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
               Canlı
             </span>
             {sonSenkron ? (
-              <span className="text-[12.5px] font-medium text-slate-400">
+              <span className="text-[12.5px] font-medium text-[var(--ink-faint)]">
                 son senkron <span className="mono text-ink-soft">{sonSenkron}</span>
               </span>
             ) : null}
@@ -143,14 +148,14 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             Havuz · Yetkili Projeler
           </h1>
           <p className="mt-2 max-w-[560px] text-[13.5px] text-ink-soft">
-            Sana tahsisli canlı stok. Fiyat ve durum üreticinin tek doğru kaynağından akar — sen görür, paylaşır, opsiyon
-            alırsın.
+            Sana tahsisli canlı stok. Fiyat ve durum üreticinin tek doğru kaynağından akar: sen görür,
+            paylaşır, opsiyon alırsın.
           </p>
         </div>
         <select
           value={sirala}
           onChange={(e) => setSirala(e.target.value as typeof sirala)}
-          className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-800 shadow-sm outline-none focus:border-teal/50"
+          className="rounded-xl border border-[var(--cizgi-2)] bg-white px-4 py-2.5 text-xs font-bold text-ink shadow-sm outline-none focus:border-teal/50"
           aria-label="Sıralama"
         >
           <option value="taze">En taze ▾</option>
@@ -163,20 +168,20 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
       <div className="belir belir-1 mb-5">
         <details className="kart group overflow-hidden" style={{ borderRadius: 16 }}>
           <summary className="filterbar flex cursor-pointer list-none flex-nowrap items-center gap-2.5 overflow-x-auto p-2.5">
-            <span className="flex items-center gap-1.5 pl-1 pr-1.5 text-slate-400">
+            <span className="flex items-center gap-1.5 pl-1 pr-1.5 text-[var(--ink-faint)]">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z" />
               </svg>
               <span className="hidden text-[12px] font-semibold uppercase tracking-wide md:inline">Filtre</span>
             </span>
             <span className="chip">
-              <span className="text-slate-400">İl</span> {il || "Tümü"} {okChevron}
+              <span className="text-[var(--ink-faint)]">İl</span> {il || "Tümü"} {okChevron}
             </span>
             <span className="chip">
-              <span className="text-slate-400">İlçe</span> {ilce || "Tümü"} {okChevron}
+              <span className="text-[var(--ink-faint)]">İlçe</span> {ilce || "Tümü"} {okChevron}
             </span>
             <span className="chip">
-              <span className="text-slate-400">Tip</span> {tip.length ? tip.join(" · ") : "Tümü"} {okChevron}
+              <span className="text-[var(--ink-faint)]">Tip</span> {tip.length ? tip.join(" · ") : "Tümü"} {okChevron}
             </span>
             <span className="chip">
               {durum ? (
@@ -188,9 +193,9 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
               {durum === "musait" ? "Müsait" : durum === "opsiyon" ? "Opsiyonlu" : "Durum"} {okChevron}
             </span>
             <span className="chip" style={{ cursor: "default", gap: 8 }}>
-              <span className="text-slate-400">Fiyat</span>
+              <span className="text-[var(--ink-faint)]">Fiyat</span>
               <span className="mono text-[12.5px] text-ink">{fiyatMin ? `₺${fiyat(Number(fiyatMin))}` : "Min"}</span>
-              <span className="text-slate-400">–</span>
+              <span className="text-[var(--ink-faint)]">–</span>
               <span className="mono text-[12.5px] text-ink">{fiyatMax ? `₺${fiyat(Number(fiyatMax))}` : "Max"}</span>
             </span>
             <span className="ml-auto flex items-center gap-2 pr-1">
@@ -199,15 +204,15 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                   {aktifSayi}
                 </span>
               ) : null}
-              <span className="text-[12.5px] font-bold text-slate-400">{liste.length} proje</span>
+              <span className="text-[12.5px] font-bold text-[var(--ink-faint)]">{liste.length} proje</span>
             </span>
           </summary>
-          <div className="border-t border-slate-100 bg-slate-50/50 px-5 py-5">
+          <div className="border-t border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-5">
             <HavuzFiltreler {...filtreProps} />
             {aktifSayi > 0 ? (
               <button
                 onClick={temizle}
-                className="mt-5 text-[12.5px] font-medium text-slate-400 transition hover:text-red"
+                className="mt-5 text-[12.5px] font-medium text-[var(--ink-faint)] transition hover:text-red"
               >
                 Filtreleri temizle
               </button>
@@ -226,7 +231,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             </svg>
           </div>
           <div className="mono mt-3 text-[30px] font-semibold leading-none text-navy">{projeler.length}</div>
-          <div className="mt-1.5 text-[11.5px] text-slate-400">{uretSayi} bölge · canlı stok</div>
+          <div className="mt-1.5 text-[11.5px] text-[var(--ink-faint)]">{uretSayi} bölge · canlı stok</div>
         </div>
 
         <div className="kart kart-3d p-4">
@@ -254,7 +259,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             </svg>
           </div>
           <div className="mono mt-3 text-[30px] font-semibold leading-none text-amber">{toplamOpsiyon}</div>
-          <div className="mt-1.5 text-[11.5px] text-slate-400">opsiyonlu birim sayın</div>
+          <div className="mt-1.5 text-[11.5px] text-[var(--ink-faint)]">opsiyonlu birim sayın</div>
         </div>
 
         <div className="kart kart-3d p-4">
@@ -273,11 +278,11 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
       <div className="belir belir-3 mb-3.5 flex items-center justify-between">
         <h2 className="font-display flex items-center gap-2 text-[18px] font-semibold text-ink">
           {il ? `${ilce || il} · Yetkili Projelerin` : "Yetkili Projelerin"}
-          <span className="mono rounded-full bg-[rgba(16,36,58,.06)] px-2 py-0.5 text-[12px] font-semibold text-slate-400">
+          <span className="mono rounded-full bg-[rgba(16,36,58,.06)] px-2 py-0.5 text-[12px] font-semibold text-[var(--ink-faint)]">
             {liste.length}
           </span>
         </h2>
-        <span className="hidden text-[12px] text-slate-400 sm:inline">Yalnız sana tahsisli stok gösteriliyor</span>
+        <span className="hidden text-[12px] text-[var(--ink-faint)] sm:inline">Yalnız sana tahsisli stok gösteriliyor</span>
       </div>
 
       {/* ============ PROJE KARTLARI ============ */}
@@ -289,14 +294,14 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             p.musait > 0
               ? `${p.musait} müsait daire${p.tipler.length ? ` · ${p.tipler.slice(0, 4).join(", ")}` : ""}`
               : null,
-            p.min ? `${fiyat(p.min)} ${paraSimge(p.para_birimi)}'den başlayan fiyatlarla` : null,
+            p.min ? `${paraSimge(p.para_birimi)}${fiyat(p.min)}'den başlayan fiyatlarla` : null,
             "Detaylı bilgi ve randevu için bana ulaşabilirsiniz.",
           ]
             .filter(Boolean)
             .join("\n");
           const kapak = projeKapak(p.kapak, p.id);
           const sig = p.musait > 0 ? "var(--color-green)" : p.opsiyon > 0 ? "var(--color-amber)" : "var(--color-red)";
-          const bayat = bayatMi(p.son_guncelleme);
+          const taze = tazelikKademe(p.son_guncelleme);
           const musaitPct = p.toplam ? Math.round((p.musait / p.toplam) * 100) : 0;
           const opsiyonPct = p.toplam ? Math.round((p.opsiyon / p.toplam) * 100) : 0;
           const satilanPct = Math.max(0, 100 - musaitPct - opsiyonPct);
@@ -345,17 +350,13 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                         {yil(p.teslim_tarihi) ? ` · ${yil(p.teslim_tarihi)}` : ""}
                       </div>
                     </div>
-                    {/* tazelik rozeti (bayat → amber) */}
+                    {/* tazelik rozeti: 4 kademe (yeşil/teal/amber/gri) */}
                     <span
                       className="rozet flex-none"
-                      title={bayat ? `Stok ${STALE_GUN}+ gündür güncellenmedi` : "Taze stok"}
-                      style={
-                        bayat
-                          ? { background: "rgba(227,161,44,.14)", color: "var(--color-amber)" }
-                          : { background: "rgba(47,179,107,.12)", color: "var(--color-green)" }
-                      }
+                      title={taze.ipucu}
+                      style={{ background: taze.zemin, color: taze.renk }}
                     >
-                      <span className="freshdot" style={{ background: bayat ? "var(--color-amber)" : "var(--color-green)" }} />
+                      <span className="freshdot" style={{ background: taze.renk }} />
                       {zamanOnce(p.son_guncelleme)}
                     </span>
                   </div>
@@ -366,7 +367,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                       <span className="font-medium text-ink-soft">
                         Sana tahsisli <span className="mono font-semibold text-ink">{p.toplam}</span> birim
                       </span>
-                      <span className="mono text-slate-400">%{musaitPct} müsait</span>
+                      <span className="mono text-[var(--ink-faint)]">%{musaitPct} müsait</span>
                     </div>
                     <div className="stokbar">
                       <div style={{ width: `${musaitPct}%`, background: "linear-gradient(90deg,#37c178,#2fb36b)" }} />
@@ -377,17 +378,17 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                       <span className="flex items-center gap-1.5">
                         <span className="freshdot" style={{ background: "var(--color-green)" }} />
                         <span className="mono font-semibold text-ink">{p.musait}</span>{" "}
-                        <span className="text-slate-400">müsait</span>
+                        <span className="text-[var(--ink-faint)]">müsait</span>
                       </span>
                       <span className="flex items-center gap-1.5">
                         <span className="freshdot" style={{ background: "var(--color-amber)" }} />
                         <span className="mono font-semibold text-ink">{p.opsiyon}</span>{" "}
-                        <span className="text-slate-400">opsiyon</span>
+                        <span className="text-[var(--ink-faint)]">opsiyon</span>
                       </span>
                       <span className="flex items-center gap-1.5">
                         <span className="freshdot" style={{ background: "var(--color-red)" }} />
                         <span className="mono font-semibold text-ink">{p.satildi}</span>{" "}
-                        <span className="text-slate-400">satıldı</span>
+                        <span className="text-[var(--ink-faint)]">satıldı</span>
                       </span>
                     </div>
                   </div>
@@ -395,22 +396,22 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                   {/* fiyat aralığı + tip */}
                   <div className="mt-3.5 flex items-end justify-between border-t pt-3.5" style={{ borderColor: "var(--cizgi)" }}>
                     <div>
-                      <div className="text-[11px] font-medium text-slate-400">Fiyat aralığı</div>
+                      <div className="text-[11px] font-medium text-[var(--ink-faint)]">Fiyat aralığı</div>
                       <div className="mono mt-0.5 text-[16px] font-semibold text-navy">
                         {p.min != null ? (
                           <>
                             {ps}
-                            {fiyat(p.min)} <span className="font-normal text-slate-400">–</span> {ps}
+                            {fiyat(p.min)} <span className="font-normal text-[var(--ink-faint)]">–</span> {ps}
                             {p.max != null ? fiyat(p.max) : ""}
                           </>
                         ) : (
-                          <span className="text-[13px] font-medium text-slate-400">Fiyat belirtilmedi</span>
+                          <span className="text-[13px] font-medium text-[var(--ink-faint)]">Fiyat belirtilmedi</span>
                         )}
                       </div>
                     </div>
                     {p.tipler.length > 0 ? (
                       <div className="text-right">
-                        <div className="text-[11px] font-medium text-slate-400">Tip</div>
+                        <div className="text-[11px] font-medium text-[var(--ink-faint)]">Tip</div>
                         <div className="mt-0.5 text-[12.5px] font-medium text-ink-soft">
                           {p.tipler.slice(0, 3).map((t) => t.split(" · ")[0]).join(" · ")}
                         </div>
@@ -450,8 +451,8 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
         })}
 
         {liste.length === 0 && (
-          <div className="col-span-full rounded-2xl border border-dashed border-slate-200 bg-white/70 p-16 text-center">
-            <p className="text-sm font-bold leading-relaxed text-slate-400">
+          <div className="col-span-full rounded-2xl border border-dashed border-[var(--cizgi-2)] bg-white/70 p-16 text-center">
+            <p className="text-sm font-bold leading-relaxed text-[var(--ink-faint)]">
               {projeler.length === 0
                 ? "Sana tahsisli proje bulunmuyor. Üretici tahsis tanımladığında burada canlı olarak listelenecektir."
                 : "Filtreleme kriterlerinize uygun proje bulunamadı."}
@@ -461,8 +462,8 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
       </div>
 
       {/* footer mini */}
-      <div className="mt-7 pb-2 text-center text-[11.5px] text-slate-400">
-        ProjePazar · Canlı Konut Stoğu Dağıtım Ağı — Tahsisli stok, gerçek zamanlı. Tahsis &amp; gelir görünmez.
+      <div className="mt-7 pb-2 text-center text-[11.5px] text-[var(--ink-faint)]">
+        ProjePazar · Canlı konut stoğu dağıtım ağı. Yalnız sana tahsisli stok, gerçek zamanlı.
       </div>
     </div>
   );
