@@ -35,7 +35,7 @@ export function SonMesajCta() {
           Emlakçıyım, ücretsiz başla →
         </Link>
         <Link
-          href="/kayit?rol=uretici"
+          href="/muteahhit"
           className="inline-flex h-12 items-center justify-center rounded-full border-2 border-ink px-7 text-[15px] font-bold text-ink transition-colors hover:bg-ink hover:text-white"
         >
           Proje sahibiyim
