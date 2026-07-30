@@ -13,7 +13,6 @@ import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import { KapiHaritasi } from "@/components/landing/KapiHaritasi";
 import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
-import { SonMesajCta } from "@/components/landing/SonMesajCta";
 import "@/app/mockup-02/mockup02.css";
 import { CanliKomutaMerkezi } from "@/components/CanliKomutaMerkezi";
 import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
@@ -289,46 +288,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Hangi taraftasınız? (m2 koyu terminal dilinden, kullanıcı seçimi) */}
-        <section className="border-b border-[var(--m2-cizgi)]">
-          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
-            <p className="m2-etiket text-[var(--m2-teal)]">İki taraf, tek havuz</p>
-            <h2 className="m2-dev mt-5 text-[clamp(1.9rem,5.2vw,4rem)]">Hangi taraftasınız?</h2>
-            <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-[var(--m2-ink-soft)]">
-              Üretici stoğu yönetir, danışman tahsisli birimleri satar. İkisi de aynı canlı veriye bakar.
-            </p>
-            <div className="mt-10 grid gap-5 lg:grid-cols-2">
-              <div className="overflow-hidden rounded-2xl border border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">
-                <div className="h-[3px] bg-gradient-to-r from-[var(--m2-teal)] to-[#2fb36b]" aria-hidden />
-                <div className="p-6 sm:p-7">
-                  <h3 className="font-display text-xl font-extrabold tracking-tight text-[var(--m2-ink)]">Proje Sahibiyim</h3>
-                  <p className="mt-3 text-[14px] leading-relaxed text-[var(--m2-ink-soft)]">
-                    Bloklarınızı, katlarınızı, birimlerinizi tek panelden yönetin. Fiyatı siz güncellersiniz,
-                    hangi danışman neyi görecek siz seçersiniz. Her paylaşım canlı fiyattan basılır, her hareket iz bırakır.
-                  </p>
-                  <p className="mt-4 font-mono text-[11.5px] tracking-wide text-[var(--m2-teal)]">stok · fiyat · tahsis · opsiyon · rapor</p>
-                  <Link href="/kayit?rol=uretici" className="m2-btn m2-btn-dolu mt-6">Projemi Yükle →</Link>
-                </div>
-              </div>
-              <div className="overflow-hidden rounded-2xl border border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">
-                <div className="h-[3px] bg-gradient-to-r from-[var(--m2-teal)] to-[#2fb36b]" aria-hidden />
-                <div className="p-6 sm:p-7">
-                  <h3 className="flex items-center gap-2.5 font-display text-xl font-extrabold tracking-tight text-[var(--m2-ink)]">
-                    Danışmanım
-                    <span className="rounded-full border border-[#2fb36b]/50 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#2fb36b]">Ücretsiz</span>
-                  </h3>
-                  <p className="mt-3 text-[14px] leading-relaxed text-[var(--m2-ink-soft)]">
-                    Size tahsisli projeleri tek canlı havuzda görün. &quot;Müsait mi?&quot; diye kimseyi aramayın:
-                    durum ekranda, fiyat günceldir. Tek dokunuşla paylaşın, opsiyonu anında kilitleyin.
-                  </p>
-                  <p className="mt-4 font-mono text-[11.5px] tracking-wide text-[var(--m2-teal)]">havuz · paylaş · opsiyon · lead</p>
-                  <Link href="/kayit?rol=emlakci" className="m2-btn m2-btn-cizgi mt-6">Havuza Katıl →</Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* üç renk şeridi */}
         <section className="border-b border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]/60">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-4 px-4 py-8 sm:px-6">
@@ -573,15 +532,6 @@ export default async function Home() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ============ SON MESAJ CTA: yarın sabahki ilk mesajın bu olmasın (m4 dilinden) ============ */}
-      <section className="relative border-t border-[var(--cizgi)]">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
-          <Reveal>
-            <SonMesajCta />
-          </Reveal>
         </div>
       </section>
 
