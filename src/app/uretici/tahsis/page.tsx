@@ -64,16 +64,31 @@ export default async function UreticiTahsis() {
   };
 
   const kapsamMetin = (t: TahsisRaw): string => {
+    const parcalar: string[] = [];
     const bloklarAd = (t.kapsam?.bloklar ?? []).map((bid) => blokAd.get(bid) ?? "?").filter(Boolean);
-    if (bloklarAd.length) return `${bloklarAd.join(", ")} blok`;
+    if (bloklarAd.length) parcalar.push(`${bloklarAd.join(", ")} blok`);
     const katlar = t.kapsam?.katlar ?? [];
-    if (katlar.length) return `Kat ${katlar.join(", ")}`;
-    return "Tüm proje";
+    if (katlar.length) parcalar.push(`Kat ${katlar.join(", ")}`);
+    const tipler = t.kapsam?.tipler ?? [];
+    if (tipler.length) parcalar.push(`${tipler.join(", ")} tip`);
+    return parcalar.length ? parcalar.join(" · ") : "Tüm proje";
+  };
+
+  /** Proje başına erişim özeti: kim görüyor? */
+  const erisimOzet = (liste: TahsisRaw[]): string => {
+    if (liste.some((t) => t.hedef_tip === "herkes")) return "Tüm ağa açık";
+    const ofisSay = new Set(liste.filter((t) => t.hedef_tip === "ofis").map((t) => t.hedef_id)).size;
+    const danSay = new Set(liste.filter((t) => t.hedef_tip === "danisman").map((t) => t.hedef_id)).size;
+    const p: string[] = [];
+    if (ofisSay) p.push(`${ofisSay} ofis`);
+    if (danSay) p.push(`${danSay} danışman`);
+    return p.length ? `${p.join(" · ")} görüyor` : "Kimse görmüyor";
   };
 
   const toplamTahsis = tahsisler.length;
   const tahsisliProje = projeTahsis.size;
   const munhasirSay = tahsisler.filter((t) => t.munhasir).length;
+  const kapsamDisi = (projeler?.length ?? 0) - tahsisliProje;
 
   return (
     <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
@@ -86,16 +101,23 @@ export default async function UreticiTahsis() {
           </span>
         </div>
         <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
-          Dağıtım ağı (MOAT) — kapsam kime açık, komisyon ne. Emlakçı yalnız tahsisli birimi görür.
+          Kim neyi görür, burada belirlenir. Danışman yalnız kendisine tahsisli birimleri görür;
+          tahsissiz proje ağda kimseye görünmez.
         </p>
       </header>
 
       {/* KPI ŞERİDİ */}
       <section className="kart belir belir-1 mb-5 p-1">
-        <div className="grid grid-cols-3 divide-x divide-[var(--cizgi)]">
+        <div className="grid grid-cols-2 divide-x divide-y divide-[var(--cizgi)] sm:grid-cols-4 sm:divide-y-0">
           <Kpi etiket="Toplam Tahsis" deger={String(toplamTahsis)} alt="dağıtım kuralı" />
           <Kpi etiket="Dağıtımda" deger={String(tahsisliProje)} alt="proje paylaşımda" />
           <Kpi etiket="Münhasır" deger={String(munhasirSay)} renk="text-teal" alt="tek-kanal tahsis" />
+          <Kpi
+            etiket="Kapsam Dışı"
+            deger={String(Math.max(0, kapsamDisi))}
+            renk={kapsamDisi > 0 ? "text-amber" : "text-ink"}
+            alt={kapsamDisi > 0 ? "proje kimseye görünmüyor" : "tüm projeler dağıtımda"}
+          />
         </div>
       </section>
 
@@ -113,6 +135,11 @@ export default async function UreticiTahsis() {
                   <span className="mono rounded-md bg-navy-soft px-2 py-[2px] text-[11px] text-ink-soft">
                     {liste.length} tahsis
                   </span>
+                  <span
+                    className={`rozet ${liste.length ? "bg-teal-soft text-teal" : "bg-amber-soft text-[#9a6a12]"}`}
+                  >
+                    {erisimOzet(liste)}
+                  </span>
                 </div>
                 <Link
                   href={`/uretici/proje/${p.id}`}
@@ -123,12 +150,21 @@ export default async function UreticiTahsis() {
               </div>
 
               {liste.length === 0 ? (
-                <p className="px-5 py-6 text-[13px] text-[var(--ink-faint)]">
-                  Bu proje henüz kimseye tahsisli değil — kimse göremez.{" "}
-                  <Link href={`/uretici/proje/${p.id}`} className="font-semibold text-teal hover:underline">
+                <div className="flex flex-wrap items-center gap-3 bg-[var(--color-amber-soft)]/50 px-5 py-5">
+                  <span className="inline-grid size-8 flex-none place-items-center rounded-lg bg-amber-soft text-[#9a6a12]" aria-hidden>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                      <path d="M12 9v4M12 17h.01" />
+                    </svg>
+                  </span>
+                  <p className="min-w-0 flex-1 text-[13px] leading-snug text-ink">
+                    <b className="font-semibold">Bu proje henüz kimseye tahsisli değil.</b>{" "}
+                    <span className="text-ink-soft">Ağda hiçbir danışman göremiyor; stok satışa kapalı bekliyor.</span>
+                  </p>
+                  <Link href={`/uretici/proje/${p.id}`} className="btn-action h-9 flex-none px-3.5 text-[12px]">
                     Tahsis ekle →
                   </Link>
-                </p>
+                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="tbl">
