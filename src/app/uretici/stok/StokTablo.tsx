@@ -97,8 +97,21 @@ export function StokTablo({
   const router = useRouter();
   const [projeId, setProjeId] = useState<string>("tumu");
   const [durum, setDurum] = useState<DurumKova | "tumu">(baslangicDurum);
+  // görünüm: tablo (pro liste) | kesit (bina kesiti — imza görünüm, tek proje)
+  const [gorunum, setGorunum] = useState<"tablo" | "kesit">("tablo");
   // "Yönet" → açık daire modalı (satır + projesi). null = kapalı.
   const [acikSatir, setAcikSatir] = useState<StokSatir | null>(null);
+
+  /** Kesit tek proje ister: geçişte proje seçili değilse ilk proje seçilir. */
+  const kesiteGec = () => {
+    if (projeId === "tumu" && projeler[0]) setProjeId(projeler[0].id);
+    setGorunum("kesit");
+  };
+  const kesitProjeId = projeId !== "tumu" ? projeId : projeler[0]?.id ?? null;
+  const kesitSatirlar = useMemo(
+    () => satirlar.filter((s) => s.ana_birim_id == null && s.proje_id === kesitProjeId),
+    [satirlar, kesitProjeId],
+  );
 
   const gosterilen = useMemo(() => {
     return satirlar.filter((s) => {
@@ -164,10 +177,31 @@ export function StokTablo({
         ))}
 
         <span className="ml-auto mono text-[12px] text-[var(--ink-faint)]">
-          {gosterilen.length} / {satirlar.length} birim
+          {gorunum === "kesit" ? `${kesitSatirlar.length} birim` : `${gosterilen.length} / ${satirlar.length} birim`}
         </span>
+
+        <div className="flex rounded-[11px] border border-[var(--cizgi-2)] bg-white p-0.5">
+          <button
+            type="button"
+            onClick={kesiteGec}
+            className={`rounded-[9px] px-3 py-1.5 font-mono text-[11px] font-semibold transition-colors ${gorunum === "kesit" ? "bg-navy text-white" : "text-ink-soft hover:text-ink"}`}
+          >
+            Bina kesiti
+          </button>
+          <button
+            type="button"
+            onClick={() => setGorunum("tablo")}
+            className={`rounded-[9px] px-3 py-1.5 font-mono text-[11px] font-semibold transition-colors ${gorunum === "tablo" ? "bg-navy text-white" : "text-ink-soft hover:text-ink"}`}
+          >
+            Tablo
+          </button>
+        </div>
       </div>
 
+      {gorunum === "kesit" ? (
+        <BinaKesiti satirlar={kesitSatirlar} onSec={(s) => setAcikSatir(s)} />
+      ) : (
+      <>
       {/* tablo */}
       <div className="kart belir belir-2 overflow-hidden">
         <div className="overflow-x-auto" style={{ maxHeight: 680, overflowY: "auto" }}>
@@ -275,6 +309,8 @@ export function StokTablo({
           </button>
         </div>
       ) : null}
+      </>
+      )}
 
       {/* "Yönet" → ilgili dairenin DaireModal'ı (üretici modu): durum/not + bilgi düzenle.
           Tüm bloklara/proje sayfasına gitmeden, doğrudan bu daire yönetilir. */}
@@ -301,5 +337,114 @@ export function StokTablo({
         />
       ) : null}
     </>
+  );
+}
+
+/* ---------- BİNA KESİTİ (imza görünüm): blok/kat/daire, durum renkli, tıkla → Yönet ---------- */
+
+const KESIT_RENK: Record<DurumKova, string> = {
+  musait: "var(--color-green)",
+  opsiyon: "var(--color-amber)",
+  satildi: "var(--color-red)",
+  diger: "rgba(16,36,58,0.35)",
+};
+
+function daireNoSirala(a: StokSatir, b: StokSatir): number {
+  return (a.daire_no ?? "").localeCompare(b.daire_no ?? "", "tr", { numeric: true });
+}
+
+function BinaKesiti({ satirlar, onSec }: { satirlar: StokSatir[]; onSec: (s: StokSatir) => void }) {
+  // blok → kat (yukarıdan aşağı) → daireler
+  const bloklar = useMemo(() => {
+    const m = new Map<string, Map<number, StokSatir[]>>();
+    for (const s of satirlar) {
+      const bAd = s.blok_ad ?? "Blok";
+      const kat = s.kat ?? 0;
+      const katlar = m.get(bAd) ?? new Map<number, StokSatir[]>();
+      const arr = katlar.get(kat) ?? [];
+      arr.push(s);
+      katlar.set(kat, arr);
+      m.set(bAd, katlar);
+    }
+    return [...m.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0], "tr"))
+      .map(([ad, katlar]) => ({
+        ad,
+        katlar: [...katlar.entries()]
+          .sort((a, b) => b[0] - a[0])
+          .map(([kat, dsRaw]) => ({ kat, daireler: [...dsRaw].sort(daireNoSirala) })),
+      }));
+  }, [satirlar]);
+
+  if (satirlar.length === 0) {
+    return (
+      <div className="kart belir belir-2 p-10 text-center text-sm text-[var(--ink-faint)]">
+        Bu projede birim yok, proje kurulumundan üret.
+      </div>
+    );
+  }
+
+  return (
+    <div className="kart belir belir-2 p-4 sm:p-5">
+      <div className="flex gap-8 overflow-x-auto pb-2">
+        {bloklar.map((blok) => {
+          const toplamMusait = blok.katlar.reduce(
+            (n, k) => n + k.daireler.filter((d) => kova(d.durum) === "musait").length,
+            0,
+          );
+          return (
+            <div key={blok.ad} className="min-w-[280px] flex-1">
+              <div className="mb-3 flex items-baseline justify-between gap-3">
+                <span className="font-display text-[14px] font-bold text-ink">{blok.ad}</span>
+                <span className="mono text-[11px] text-[var(--ink-faint)]">
+                  <b className="text-green">{toplamMusait}</b> müsait
+                </span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {blok.katlar.map(({ kat, daireler }) => (
+                  <div key={kat} className="flex items-center gap-2">
+                    <span className="w-7 flex-none text-right font-mono text-[10px] text-[var(--ink-faint)]">
+                      K{kat}
+                    </span>
+                    <div className="flex min-w-0 flex-1 gap-1.5">
+                      {daireler.map((s) => {
+                        const k = kova(s.durum);
+                        const kapali = !s.satilabilir || k === "diger";
+                        return (
+                          <button
+                            key={s.id}
+                            type="button"
+                            onClick={() => onSec(s)}
+                            style={kapali ? undefined : { background: KESIT_RENK[k] }}
+                            className={`flex h-12 min-w-[64px] flex-1 flex-col items-center justify-center rounded-lg font-mono leading-tight transition-transform duration-150 ${
+                              kapali
+                                ? "border border-dashed border-[rgba(16,36,58,0.3)] bg-[rgba(16,36,58,0.05)] text-ink-soft"
+                                : "text-white hover:-translate-y-0.5 hover:shadow-[0_5px_12px_rgba(16,36,58,0.22)]"
+                            }`}
+                            title={`${s.daire_no ?? "—"} · ${DURUM_AD[k]}${s.liste_fiyati ? ` · ${paraKisa(s.liste_fiyati, s.para_birimi)}` : ""} · yönetmek için tıkla`}
+                          >
+                            <span className="text-[10.5px] font-bold">{s.daire_no ?? "—"}</span>
+                            <span className={`text-[9px] ${kapali ? "" : "opacity-85"}`}>
+                              {kapali ? "kapalı" : s.liste_fiyati ? paraKisa(s.liste_fiyati, s.para_birimi) : s.tip_ad ?? ""}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[10.5px] text-ink-soft">
+        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded bg-green" /> müsait</span>
+        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded bg-amber" /> opsiyon</span>
+        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded bg-red" /> satıldı</span>
+        <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded border border-dashed border-[rgba(16,36,58,0.35)] bg-[rgba(16,36,58,0.06)]" /> satışa kapalı</span>
+        <span className="font-semibold text-teal">daireye tıkla → yönet</span>
+      </p>
+    </div>
   );
 }
