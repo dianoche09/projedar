@@ -36,7 +36,7 @@ const GORUR = [
   "Canlı stok + durum sinyalleri (yeşil/amber/kırmızı)",
   "Kat planı + net/brüt + cephe + kat",
   "Canlı fiyat + ödeme planı",
-  '"● X önce" tazelik damgası',
+  'Bilginin ne kadar güncel olduğu her kayıtta yazar (ör. "2 dk önce")',
   "Tek tıkla paylaş + opsiyon al",
   "Birebir canlı mikrosite linki",
   "Yalnız kendine açık daireler (gerisi gizli)",
@@ -44,12 +44,12 @@ const GORUR = [
 
 /** Güven / teminat unsurları (sahte logo yerine dürüst güven). */
 const GUVEN = [
-  { Icon: ShieldCheck, b: "Sıfır çift-satış", a: "Aktif opsiyon veritabanı seviyesinde kilitlenir; aynı daire iki kez satılamaz, kapora/ödeme şartı olmadan." },
-  { Icon: Database, b: "RLS veri güvenliği", a: "Görünürlük veritabanı katmanında zorunlu; danışman yalnız kendine açılanı görür." },
-  { Icon: BadgeCheck, b: "Doğrulanmış projeler", a: "Her proje doğrulama rozetiyle yayınlanır; kaynağı belirsiz ilan yok." },
-  { Icon: CircleSlash, b: "Komisyon yok", a: "Satıştan pay almıyoruz; danışman için başlangıçta tamamen ücretsiz." },
-  { Icon: Lock, b: "Kapalı, davetli ağ", a: "Son kullanıcıya açık ilan yok; paylaşım birebir, ağ davetli." },
-  { Icon: FileCheck, b: "KVKK uyumlu", a: "Kişisel veri çizgisi nettir; piyasa zekâsı evet, müşteri profili hayır." },
+  { Icon: ShieldCheck, b: "Sıfır çift satış", a: "Bir daire opsiyonlandığı anda sistem onu herkes için kilitler. Aynı daire iki kişiye birden satılamaz; bu bir söz değil, sistemin çalışma şeklidir." },
+  { Icon: Database, b: "Herkes yalnız kendine açılanı görür", a: "Kim hangi projeyi, hangi daireyi görecek; bunu proje sahibi belirler. Danışmana açılmayan daire ekranında hiç görünmez." },
+  { Icon: BadgeCheck, b: "Doğrulanmış projeler", a: "Her proje, belgeleri kontrol edildikten sonra doğrulama rozetiyle yayınlanır; kaynağı belirsiz ilan yoktur." },
+  { Icon: CircleSlash, b: "Komisyon yok", a: "Satıştan pay almayız; danışman için başlangıçta tamamen ücretsizdir." },
+  { Icon: Lock, b: "Kapalı, davetli ağ", a: "Herkese açık ilan yoktur; projeler yalnız davetli ve yetkili danışmanlara açılır, müşteriye birebir paylaşılır." },
+  { Icon: FileCheck, b: "Müşterin sende kalır", a: "Müşterinin kişisel verisi toplanıp profillenmez; alıcı bilgisi danışmanda kalır, kimseyle paylaşılmaz." },
 ];
 
 const SITE = "https://projedar.com";
@@ -231,7 +231,7 @@ export default async function Home() {
                 </p>
               </div>
               <div className="content-center">
-                <p className="text-pretty font-display text-lg font-bold leading-snug tracking-tight text-ink sm:text-xl">
+                <p className="font-display text-[15px] font-bold leading-snug tracking-tight text-ink sm:text-[16px] lg:whitespace-nowrap">
                   Alıcı milyonluk daireye bakıyor; danışman 41 günlük dosyaya.
                 </p>
                 <p className="mt-3 text-pretty text-sm leading-relaxed text-ink-soft sm:text-[15px]">
@@ -456,7 +456,7 @@ export default async function Home() {
             <div className="mx-auto max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Güven protokolü</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Neden güvenli?</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Güven sözle değil, mimariyle. Her teminat veritabanı seviyesinde ya da kuralla garanti altında.</p>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Güven sözle değil, sistemin kendisiyle sağlanır: bu teminatların hiçbiri iyi niyete bağlı değildir.</p>
             </div>
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -99,7 +99,7 @@ export function BirebirPaylasim() {
             </ul>
             <div className="mt-7">
               <MagneticButton href="/kayit?rol=emlakci" className="btn-action">
-                Ücretsiz danışman ol → paylaşmaya başla
+                Ücretsiz danışman ol
               </MagneticButton>
             </div>
           </div>

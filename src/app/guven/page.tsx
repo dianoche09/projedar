@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 /** Altı teminat; her birinin dayanağı teknik ya da yapısal. */
 const TEMINATLAR = [
   { Icon: ShieldCheck, b: "Sıfır çift satış", a: "Aktif opsiyon, veritabanında tekil kayıt kuralıyla korunur. Aynı daireye ikinci opsiyon açmak uygulama hatasıyla bile mümkün değildir; kural uygulamada değil, veritabanının kendisindedir." },
-  { Icon: Database, b: "Satır seviyesinde görünürlük", a: "Kim neyi görür, veritabanı satırı seviyesinde tanımlıdır (RLS). Danışman yalnız kendisine tahsisli birimleri görebilir; gerisi sorgu seviyesinde bile erişilemezdir." },
+  { Icon: Database, b: "Herkes yalnız kendine açılanı görür", a: "Kim hangi daireyi görecek, proje sahibi belirler ve bu kural sistemin en derin katmanında uygulanır. Danışmana açılmayan daire ekranında hiç var olmaz; gizlemek değil, hiç göstermemek." },
   { Icon: BadgeCheck, b: "Doğrulanmış ağ", a: "Her üretici doğrulama rozetiyle yayınlanır; danışman yetki belgesi doğrulanmadan stok detayına erişemez. Ağdaki herkesin kim olduğu bellidir." },
   { Icon: CircleSlash, b: "Komisyon yok", a: "Hiçbir satıştan pay alınmaz. Gelir müteahhit tarafındaki sabit anlaşmadan gelir; platformun satışın tarafı olmaması güvenin ön şartıdır." },
   { Icon: Lock, b: "Kapalı, davetli devre", a: "Son kullanıcıya açık ilan yoktur. Stok yalnız tahsisli danışmanların kapalı havuzunda görünür; paylaşım birebir linkle yapılır." },
