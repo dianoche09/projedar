@@ -1,4 +1,4 @@
-/** ProjePazar sinyal logosu — 3×3 ızgara (Marka Panosu). Köşelerde yeşil/amber/kırmızı sinyal. */
+/** Projedar sinyal logosu — 3×3 ızgara (Marka Panosu). Köşelerde yeşil/amber/kırmızı sinyal. */
 export function Logo({ size = 28, wordmark = false, acik = false }: { size?: number; wordmark?: boolean; acik?: boolean }) {
   // o=outline navy, g=yeşil, a=amber, r=kırmızı (Ekranlar.html birebir)
   const cells = ["o", "o", "g", "o", "a", "o", "r", "o", "o"] as const;
@@ -18,7 +18,7 @@ export function Logo({ size = 28, wordmark = false, acik = false }: { size?: num
       </span>
       {wordmark ? (
         <span className={`font-display text-xl font-extrabold tracking-tight ${acik ? "text-white" : "text-navy"}`}>
-          proje<span className="text-teal">pazar</span>
+          proje<span className="text-teal">dar</span>
         </span>
       ) : null}
     </span>

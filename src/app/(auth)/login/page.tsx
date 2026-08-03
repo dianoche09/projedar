@@ -43,7 +43,7 @@ export default async function LoginPage({
               type="email"
               required
               autoComplete="email"
-              placeholder="ornek@projepazar.com"
+              placeholder="ornek@projedar.com"
               className={inpCls}
             />
           </label>

@@ -19,9 +19,9 @@ import { LuksStok } from "./LuksStok";
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 07 · Faz Şeridi | ProjePazar Design Lab",
+  title: "Mockup 07 · Faz Şeridi | Projedar Design Lab",
   description:
-    "ProjePazar tasarım laboratuvarı: inşaat zaman aksı konsepti. Lüks konut projesinin stoğu temelden teslime tek canlı kayıtta yaşar; fazlar ilerledikçe erken alan kazanır.",
+    "Projedar tasarım laboratuvarı: inşaat zaman aksı konsepti. Lüks konut projesinin stoğu temelden teslime tek canlı kayıtta yaşar; fazlar ilerledikçe erken alan kazanır.",
   robots: { index: false },
 };
 
@@ -45,7 +45,7 @@ export default function Mockup07() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0">
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0">
             <Logo size={26} wordmark />
           </Link>
           <span className="hidden font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[var(--ink-faint)] sm:block">

@@ -2,7 +2,7 @@
 import type { CSSProperties } from "react";
 import { YONLER, SINYAL, KATLAR, RENK, FONT_LINK, type Yon } from "./yonler";
 
-export const metadata = { title: "Tasarım Yönleri — ProjePazar" };
+export const metadata = { title: "Tasarım Yönleri — Projedar" };
 
 const ONIZLEME = KATLAR.slice(0, 4);
 
@@ -86,7 +86,7 @@ export default function TasarimSayfasi() {
     <main style={{ background: "#0f1115", minHeight: "100vh", color: "#e7e9ee" }}>
       <link rel="stylesheet" href={FONT_LINK} />
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "40px 20px 80px" }}>
-        <p style={{ fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "#7b8294", fontFamily: "Inter, sans-serif" }}>ProjePazar — sistem ruhu</p>
+        <p style={{ fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "#7b8294", fontFamily: "Inter, sans-serif" }}>Projedar — sistem ruhu</p>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 34, fontWeight: 700, margin: "8px 0 6px", letterSpacing: "-0.02em" }}>Dört yön — birini seç</h1>
         <p style={{ color: "#9aa0b0", fontSize: 15, fontFamily: "Inter, sans-serif", maxWidth: 640 }}>
           Aynı proje (Çankaya Vadi · 42 / 11 / 27 · %68) dört farklı ruhta. Her birinin <b style={{ color: "#cfd3dd" }}>Tam ekran gör →</b> linkiyle gerçek bir proje-detay ekranını full-screen incele.

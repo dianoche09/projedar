@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 /** Yalnız herkese açık (indexlenebilir) sayfalar — kapalı-devre ağ; panel route'ları yok. */
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -94,7 +94,7 @@ export function SizintiSahnesi() {
       <div className="kart signal-top overflow-hidden p-0" style={{ "--_sig": "var(--color-teal)" } as React.CSSProperties}>
         <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-teal-soft)]/60 px-5 py-3.5">
           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-[var(--color-teal-d)]">
-            ProjePazar: kontrollü ağ
+            Projedar: kontrollü ağ
           </p>
           <span className="rounded-md border border-[var(--cizgi-2)] bg-white/90 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">
             örnek

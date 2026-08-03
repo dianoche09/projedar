@@ -31,7 +31,7 @@ export function UyelikPopup({ onKapat }: { onKapat: () => void }) {
         <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Kapalı devre ağ</p>
         <h3 className="mt-2 font-display text-2xl font-extrabold tracking-tight text-ink">Canlı stoğu görmek için üye ol</h3>
         <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-          ProjePazar açık ilan yayınlamaz. Canlı fiyat, durum ve tahsisli stok yalnız üyelere görünür. Ücretsiz başla,
+          Projedar açık ilan yayınlamaz. Canlı fiyat, durum ve tahsisli stok yalnız üyelere görünür. Ücretsiz başla,
           saniyede içeride ol.
         </p>
 

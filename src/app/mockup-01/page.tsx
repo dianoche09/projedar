@@ -22,9 +22,9 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Mockup 01 · Architectural Data Twin | ProjePazar Design Lab",
+  title: "Mockup 01 · Architectural Data Twin | Projedar Design Lab",
   description:
-    "ProjePazar tasarım laboratuvarı: mimari veri ikizi konsepti, yaşayan dijital bina.",
+    "Projedar tasarım laboratuvarı: mimari veri ikizi konsepti, yaşayan dijital bina.",
   robots: { index: false },
 };
 
@@ -43,7 +43,7 @@ const KARSILASTIRMA: readonly (readonly [string, string, string])[] = [
 ];
 
 const ANTET: readonly (readonly [string, string])[] = [
-  ["Proje", "ProjePazar"],
+  ["Proje", "Projedar"],
   ["Pafta", "Mockup 01"],
   ["Konsept", "Mimari Veri İkizi"],
   ["Ölçek", "1:Canlı"],
@@ -169,7 +169,7 @@ export default function MockupBirSayfa() {
       {/* ============ ÜST BAR ============ */}
       <header className="sticky top-0 z-30 border-b-[1.5px] border-ink bg-[#f7f5ef]">
         <div className="mx-auto flex h-[62px] w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="ProjePazar ana sayfa">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Projedar ana sayfa">
             <svg viewBox="0 0 22 22" className="size-[22px] flex-none" aria-hidden>
               <rect x="1" y="1" width="20" height="20" fill="none" stroke="var(--color-ink)" strokeWidth="1.5" />
               <rect x="4.5" y="11" width="5" height="6.5" fill="var(--color-green)" />
@@ -177,7 +177,7 @@ export default function MockupBirSayfa() {
               <line x1="1" y1="17.5" x2="21" y2="17.5" stroke="var(--color-ink)" strokeWidth="1.5" />
             </svg>
             <span className="dt-display text-[16px] font-extrabold uppercase tracking-[0.1em] text-ink">
-              ProjePazar
+              Projedar
             </span>
           </Link>
           <span className="dt-damga hidden md:inline">
@@ -342,7 +342,7 @@ export default function MockupBirSayfa() {
                 ; binanızın ikizi.
               </h2>
               <p className="mt-4 max-w-[46ch] text-[15px] leading-relaxed text-white/70">
-                Vitrin yok, ilan yok, komisyon yok. ProjePazar üreticinin kontrolündeki kapalı bir
+                Vitrin yok, ilan yok, komisyon yok. Projedar üreticinin kontrolündeki kapalı bir
                 dağıtım altyapısıdır: stok yalnız yetkili ağda dolaşır, satış bedeline hiçbir zaman
                 dokunulmaz.
               </p>
@@ -406,7 +406,7 @@ export default function MockupBirSayfa() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3.5 font-mono text-[10.5px] text-[var(--ink-faint)]">
             <span>Bu sayfa tasarım laboratuvarı çalışmasıdır; tüm veriler örnektir.</span>
-            <span>© 2026 ProjePazar</span>
+            <span>© 2026 Projedar</span>
           </div>
         </div>
       </footer>

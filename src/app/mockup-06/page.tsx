@@ -22,9 +22,9 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Mockup 06 · Senkron İki Telefon | ProjePazar Design Lab",
+  title: "Mockup 06 · Senkron İki Telefon | Projedar Design Lab",
   description:
-    "ProjePazar tasarım laboratuvarı: lüks segment konsepti, iki telefonda aynı kayıt, aynı saniye, tek gerçek.",
+    "Projedar tasarım laboratuvarı: lüks segment konsepti, iki telefonda aynı kayıt, aynı saniye, tek gerçek.",
   robots: { index: false },
 };
 
@@ -61,7 +61,7 @@ const KARSILASTIRMA: readonly (readonly [string, string, string])[] = [
 ];
 
 const ANTET: readonly (readonly [string, string])[] = [
-  ["Proje", "ProjePazar"],
+  ["Proje", "Projedar"],
   ["Pafta", "Mockup 06"],
   ["Konsept", "Senkron İki Telefon"],
   ["Segment", "Lüks konut"],
@@ -172,14 +172,14 @@ export default function MockupAltiSayfa() {
       {/* ============ ÜST BAR ============ */}
       <header className="sticky top-0 z-30 border-b border-[rgba(168,130,63,0.25)] bg-[rgba(248,245,238,0.92)] backdrop-blur-sm">
         <div className="mx-auto flex h-[66px] w-full max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="ProjePazar ana sayfa">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Projedar ana sayfa">
             <svg viewBox="0 0 22 22" className="size-[22px] flex-none" aria-hidden>
               <rect x="1" y="1" width="20" height="20" rx="4" fill="none" stroke="#b08d4a" strokeWidth="1.5" />
               <rect x="5" y="10.5" width="4.5" height="7" rx="1" fill="var(--color-green)" />
               <rect x="12.5" y="6.5" width="4.5" height="11" rx="1" fill="var(--color-amber)" />
             </svg>
             <span className="m6-display text-[17px] font-bold tracking-[0.02em] text-ink">
-              ProjePazar
+              Projedar
             </span>
           </Link>
           <span className="m6-damga hidden !tracking-[0.16em] md:inline">
@@ -202,7 +202,7 @@ export default function MockupAltiSayfa() {
           baslik="Vitrin değil, protokol: lüks konut stoğu için kapalı devre satış ağı."
         />
         <p className="-mt-4 mb-10 max-w-[62ch] text-[15.5px] leading-relaxed text-ink-soft">
-          ProjePazar, inşaat halindeki seçkin projelerin stoğunu üreticinin kontrolünde tutar ve
+          Projedar, inşaat halindeki seçkin projelerin stoğunu üreticinin kontrolünde tutar ve
           yalnız davet edilen danışman ağına dağıtır. İlan yok, vitrin yok, komisyon yok: yalnız
           canlı kayıt ve tanımlı yetki.
         </p>
@@ -411,7 +411,7 @@ export default function MockupAltiSayfa() {
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-4 font-mono text-[10.5px] text-[var(--ink-faint)]">
             <span>Bu sayfa tasarım laboratuvarı çalışmasıdır; tüm veriler örnektir.</span>
-            <span>© 2026 ProjePazar</span>
+            <span>© 2026 Projedar</span>
           </div>
         </div>
       </footer>

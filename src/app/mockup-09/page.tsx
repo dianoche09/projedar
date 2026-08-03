@@ -7,16 +7,16 @@ import { HeroGeceSilueti } from "./HeroGeceSilueti";
 import "./mockup09.css";
 
 /**
- * Mockup 09 · GALERİ VİTRİNİ · ProjePazar Design Lab (noindex).
+ * Mockup 09 · GALERİ VİTRİNİ · Projedar Design Lab (noindex).
  * Konsept: karanlık lüks showroom; inşaat halindeki lüks konut projeleri
  * bir sanat galerisindeki eserler gibi sergilenir. Tahsis = özel davetli
  * sergi, opsiyon = eserin rezerve camekanı. Sinyal renkleri sabittir.
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 09 · Galeri Vitrini | ProjePazar Design Lab",
+  title: "Mockup 09 · Galeri Vitrini | Projedar Design Lab",
   description:
-    "ProjePazar landing konsept çalışması: karanlık lüks showroom, davetli sergi ve rezerve camekanı metaforu.",
+    "Projedar landing konsept çalışması: karanlık lüks showroom, davetli sergi ve rezerve camekanı metaforu.",
   robots: { index: false, follow: false },
 };
 
@@ -79,7 +79,7 @@ export default function Mockup09Sayfasi() {
       <header className="border-b border-[var(--m9-cizgi)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
           <div className="flex min-w-0 items-baseline gap-3">
-            <span className="font-display text-lg font-bold tracking-tight">ProjePazar</span>
+            <span className="font-display text-lg font-bold tracking-tight">Projedar</span>
             <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--m9-ink-soft)] md:inline">
               Mockup 09 · Galeri Vitrini
             </span>
@@ -97,7 +97,7 @@ export default function Mockup09Sayfasi() {
       <section className="border-y border-[var(--m9-cizgi)] bg-[var(--m9-zemin-2)]">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 sm:py-12 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <p className="max-w-2xl text-[16px] leading-relaxed text-[var(--m9-ink)]">
-            ProjePazar bir ilan sitesi değildir: çok müteahhitli, üretici kontrollü canlı konut
+            Projedar bir ilan sitesi değildir: çok müteahhitli, üretici kontrollü canlı konut
             stoğu dağıtım ağıdır. Her daire tek plakette yaşar, sergi davetle açılır, rezerve
             veritabanı seviyesinde kilitlenir, tazelik her ekranda görünür.
           </p>
@@ -362,7 +362,7 @@ export default function Mockup09Sayfasi() {
       {/* ============ alt bilgi ============ */}
       <footer className="border-t border-[var(--m9-cizgi)]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--m9-ink-soft)] sm:px-6">
-          <span>ProjePazar · Design Lab · Mockup 09 · Galeri Vitrini</span>
+          <span>Projedar · Design Lab · Mockup 09 · Galeri Vitrini</span>
           <Link href="/" className="transition-colors hover:text-[var(--m9-pirinc)]">
             canlı anasayfaya dön
           </Link>

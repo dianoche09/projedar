@@ -1,6 +1,6 @@
 {
-  "name": "ProjePazar — Canlı Konut Stoğu Dağıtım Ağı",
-  "short_name": "ProjePazar",
+  "name": "Projedar — Canlı Konut Stoğu Dağıtım Ağı",
+  "short_name": "Projedar",
   "description": "Çok-müteahhitli, üretici-kontrollü canlı konut stoğu dağıtım ağı.",
   "start_url": "/",
   "display": "standalone",

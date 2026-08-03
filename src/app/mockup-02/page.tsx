@@ -9,16 +9,16 @@ import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
 import "./mockup02.css";
 
 /**
- * Mockup 02 · SALES CONTROL ROOM · ProjePazar Design Lab (noindex).
+ * Mockup 02 · SALES CONTROL ROOM · Projedar Design Lab (noindex).
  * Konsept: canlı satış kontrol merkezi; editoryal DEV tipografi görsel nesnedir.
  * Zemin anlatısı: eski dünya (dosya kaosu) = kırık beyaz kağıt bantları,
  * canlı ağ = çok koyu grafit kontrol odası. Sinyal renkleri sabittir.
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 02 · Sales Control Room | ProjePazar Design Lab",
+  title: "Mockup 02 · Sales Control Room | Projedar Design Lab",
   description:
-    "ProjePazar landing konsept çalışması: canlı satış kontrol merkezi, tipografi görsel nesne olarak.",
+    "Projedar landing konsept çalışması: canlı satış kontrol merkezi, tipografi görsel nesne olarak.",
   robots: { index: false, follow: false },
 };
 
@@ -70,7 +70,7 @@ export default function Mockup02Sayfasi() {
       <header className="border-b border-[var(--m2-cizgi)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
           <div className="flex min-w-0 items-baseline gap-3">
-            <span className="font-display text-lg font-extrabold tracking-tight">ProjePazar</span>
+            <span className="font-display text-lg font-extrabold tracking-tight">Projedar</span>
             <span className="hidden font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--m2-ink-soft)] md:inline">
               Mockup 02 · Sales Control Room
             </span>
@@ -88,7 +88,7 @@ export default function Mockup02Sayfasi() {
       <section className="border-t border-[var(--m2-cizgi)] bg-[var(--m2-zemin-2)]">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 sm:py-12 lg:grid-cols-[1.15fr_1fr] lg:items-center">
           <p className="max-w-2xl text-[16.5px] leading-relaxed">
-            ProjePazar bir ilan sitesi değildir: çok müteahhitli, üretici kontrollü canlı konut
+            Projedar bir ilan sitesi değildir: çok müteahhitli, üretici kontrollü canlı konut
             stoğu dağıtım ağıdır. Fiyat ve durum tek kayıtta yaşar, havuz tahsisle açılır, opsiyon
             veritabanı seviyesinde kilitlenir, tazelik her ekranda görünür.
           </p>
@@ -331,7 +331,7 @@ export default function Mockup02Sayfasi() {
       {/* ============ alt bilgi ============ */}
       <footer className="border-t border-[var(--m2-cizgi)]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[var(--m2-ink-soft)] sm:px-6">
-          <span>ProjePazar · Design Lab · Mockup 02 · Sales Control Room</span>
+          <span>Projedar · Design Lab · Mockup 02 · Sales Control Room</span>
           <Link href="/" className="transition-colors hover:text-[var(--m2-teal)]">
             canlı anasayfaya dön
           </Link>

@@ -1,4 +1,4 @@
-// ProjePazar 3×3 logo loader — sinyal renkleri dalga hâlinde parlar.
+// Projedar 3×3 logo loader — sinyal renkleri dalga hâlinde parlar.
 const HUCRELER = [
   { renk: "#1E9B8A", g: 0.0 },
   { renk: "#13314B", g: 0.08 },

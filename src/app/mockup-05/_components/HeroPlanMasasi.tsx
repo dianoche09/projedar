@@ -182,7 +182,7 @@ export function HeroPlanMasasi() {
       <div className="absolute inset-x-0 bottom-0 z-20 border-t border-[rgba(23,41,61,0.16)] bg-[rgba(246,242,231,0.9)] backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-5 py-3.5 sm:px-8">
           <p className="font-mono text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#8b97a8]">
-            ProjePazar · Fiziksel veri sistemi
+            Projedar · Fiziksel veri sistemi
           </p>
           <p className="font-mono text-[11.5px] tracking-wide text-[#17293d]">
             <span

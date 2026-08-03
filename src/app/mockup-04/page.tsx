@@ -21,9 +21,9 @@ import { AgBuyuyor as FinalCta } from "@/components/landing/AgBuyuyor";
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 04 · Cinematic Property Infrastructure | ProjePazar Design Lab",
+  title: "Mockup 04 · Cinematic Property Infrastructure | Projedar Design Lab",
   description:
-    "Sinematik mimari görüntü üzerine canlı veri katmanı: ProjePazar landing konsept çalışması. Tüm veriler örnektir.",
+    "Sinematik mimari görüntü üzerine canlı veri katmanı: Projedar landing konsept çalışması. Tüm veriler örnektir.",
   robots: { index: false, follow: false },
 };
 
@@ -43,7 +43,7 @@ export default function Mockup04Sayfa() {
       <footer className="border-t border-white/[0.06] bg-[#060e1a]">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start justify-between gap-3 px-5 py-8 sm:flex-row sm:items-center">
           <p className="mono text-[11px] text-white/40">
-            ProjePazar Design Lab · Mockup 04 · Cinematic Property Infrastructure · tüm veriler örnektir
+            Projedar Design Lab · Mockup 04 · Cinematic Property Infrastructure · tüm veriler örnektir
           </p>
           <Link
             href="/"

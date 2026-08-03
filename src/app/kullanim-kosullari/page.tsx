@@ -1,8 +1,8 @@
-// Kullanım Koşulları — ProjePazar kapalı-devre B2B platformu.
+// Kullanım Koşulları — Projedar kapalı-devre B2B platformu.
 // ⚠️ TASLAK: yayın öncesi hukuki inceleme gerekir.
 
 export const metadata = {
-  title: "Kullanım Koşulları — ProjePazar",
+  title: "Kullanım Koşulları — Projedar",
   robots: { index: false, follow: false },
 };
 
@@ -14,7 +14,7 @@ export default function KullanimKosullari() {
       <section className="space-y-2">
         <h2 className="font-display text-base font-semibold">1. Hizmetin Niteliği</h2>
         <p>
-          ProjePazar; konut müteahhitleri ile yetki belgeli emlak danışmanları/ofisleri arasında çalışan
+          Projedar; konut müteahhitleri ile yetki belgeli emlak danışmanları/ofisleri arasında çalışan
           <b> kapalı-devre</b> bir stok dağıtım altyapısıdır. İlan portalı, pazaryeri veya emlak aracılık
           hizmeti DEĞİLDİR; son kullanıcıya açık ilan yayınlamaz.
         </p>

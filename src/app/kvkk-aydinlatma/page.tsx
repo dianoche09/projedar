@@ -20,7 +20,7 @@ export default function KvkkAydinlatma() {
         <h2 className="font-display text-base font-semibold">Veri Sorumlusu ve Veri İşleyen</h2>
         <p>
           Bilgilerinizi paylaştığınız bağlantıyı size ileten <b>emlak danışmanı / ofisi</b>, sizinle
-          iletişime geçecek taraf olarak <b>veri sorumlusu</b> sıfatıyla hareket eder. ProjePazar
+          iletişime geçecek taraf olarak <b>veri sorumlusu</b> sıfatıyla hareket eder. Projedar
           platformu, yalnızca bu verinin iletilmesi ve saklanmasına yönelik teknik altyapıyı sağlayan
           <b> veri işleyen</b> konumundadır.
         </p>

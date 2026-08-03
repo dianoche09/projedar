@@ -54,7 +54,7 @@ export function BirebirPaylasim() {
                       </span>
                     </div>
                     <div className="mt-2 rounded-md bg-[var(--color-soft)] px-2 py-1 text-center font-mono text-[10px] text-ink-soft">
-                      projepazar.com/p/cankaya-vadi/a-7-2
+                      projedar.com/p/cankaya-vadi/a-7-2
                     </div>
                   </div>
                   <div className="mt-3 flex items-center justify-around">
@@ -81,7 +81,7 @@ export function BirebirPaylasim() {
               Beğendiğin daireyi, müşterine birebir gönder
             </h2>
             <p className="mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-              ProjePazar açık ilan yayınlamaz. Beğendiğin daireyi tek tıkla WhatsApp&apos;tan müşterine birebir
+              Projedar açık ilan yayınlamaz. Beğendiğin daireyi tek tıkla WhatsApp&apos;tan müşterine birebir
               gönderirsin; fiyat o anki <strong className="font-semibold text-ink">canlı değerden</strong> basılır, link
               birebir mikrosite. Açık ilan havuzu değil — <strong className="font-semibold text-ink">kişisel, birebir paylaşım</strong>.
             </p>

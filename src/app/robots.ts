@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 /**
  * Kapalı-devre B2B ağ: yalnız landing + yasal sayfalar indexlenir.

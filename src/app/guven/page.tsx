@@ -10,23 +10,23 @@ import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck, Scale,
  * ya gelir modelinin kendisi ya da yasal konumlandırmadır; pazarlama cümlesi yok.
  */
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Güven Protokolü: Çift satış imkânsız, veri tahsisli, komisyon yok | ProjePazar",
+  title: "Güven Protokolü: Çift satış imkânsız, veri tahsisli, komisyon yok | Projedar",
   description:
-    "ProjePazar güven protokolü: aktif opsiyon veritabanı seviyesinde kilitlenir, görünürlük satır seviyesinde tahsisle sınırlıdır, komisyon alınmaz. EİDS ilan rejimi ve KVKK çizgisi dahil tüm teminatların dayanağı.",
+    "Projedar güven protokolü: aktif opsiyon veritabanı seviyesinde kilitlenir, görünürlük satır seviyesinde tahsisle sınırlıdır, komisyon alınmaz. EİDS ilan rejimi ve KVKK çizgisi dahil tüm teminatların dayanağı.",
   alternates: { canonical: "/guven" },
   openGraph: {
-    title: "ProjePazar Güven Protokolü",
+    title: "Projedar Güven Protokolü",
     description:
       "Güven sözle değil, mimariyle: DB seviyesinde opsiyon kilidi, satır seviyesinde görünürlük, doğrulanmış ağ, komisyonsuz model, kapalı devre paylaşım.",
     type: "website",
-    siteName: "ProjePazar",
+    siteName: "Projedar",
     url: `${SITE}/guven`,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "ProjePazar Güven Protokolü" },
+  twitter: { card: "summary_large_image", title: "Projedar Güven Protokolü" },
 };
 
 /** Altı teminat; her birinin dayanağı teknik ya da yapısal. */
@@ -45,7 +45,7 @@ const SSS: { s: string; c: string }[] = [
     c: "Aktif opsiyon veritabanı seviyesinde tekil kayıt kuralıyla (unique kilit) korunur. İkinci bir opsiyon talebi uygulamaya değil, doğrudan veritabanı kuralına çarpar ve reddedilir. Bu bir operasyon sözü değil, teknik imkânsızlıktır.",
   },
   {
-    s: "ProjePazar bir ilan sitesi mi? EİDS'e tabi mi?",
+    s: "Projedar bir ilan sitesi mi? EİDS'e tabi mi?",
     c: "Değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız müteahhidin tahsis ettiği doğrulanmış danışmanların kapalı havuzunda görünür ve paylaşım birebir linkle yapılır. Model ilan değil, tahsistir.",
   },
   {
@@ -70,11 +70,11 @@ function jsonLd() {
         "@type": "WebPage",
         "@id": `${SITE}/guven#sayfa`,
         url: `${SITE}/guven`,
-        name: "ProjePazar Güven Protokolü",
+        name: "Projedar Güven Protokolü",
         inLanguage: "tr-TR",
         isPartOf: { "@id": `${SITE}/#website` },
         description:
-          "Çift satış veritabanı seviyesinde imkânsız, görünürlük satır seviyesinde tahsisli, komisyon yok, kapalı devre paylaşım. ProjePazar güven protokolünün teknik ve yapısal dayanakları.",
+          "Çift satış veritabanı seviyesinde imkânsız, görünürlük satır seviyesinde tahsisli, komisyon yok, kapalı devre paylaşım. Projedar güven protokolünün teknik ve yapısal dayanakları.",
       },
       {
         "@type": "FAQPage",
@@ -97,7 +97,7 @@ export default function GuvenSayfasi() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             <Link href="/muteahhit" className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">Müteahhitler için</Link>
             <Link href="/emlakci" className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">Danışmanlar için</Link>
@@ -157,7 +157,7 @@ export default function GuvenSayfasi() {
                 <h2 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-ink">İlan değil, tahsis</h2>
                 <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
                   Türkiye&apos;de satılık konut ilanları EİDS ilan rejimine tabidir ve kurallara aykırı
-                  paylaşımın yaptırımı ağırdır. ProjePazar bu rejimin kapsadığı işi hiç yapmaz: son
+                  paylaşımın yaptırımı ağırdır. Projedar bu rejimin kapsadığı işi hiç yapmaz: son
                   kullanıcıya açık ilan yayını yoktur. Stok yalnız müteahhidin tahsis ettiği doğrulanmış
                   danışmanların kapalı havuzunda görünür; müşteriye ulaşan tek şey danışmanın birebir
                   paylaştığı canlı linktir.
@@ -251,7 +251,7 @@ export default function GuvenSayfasi() {
             <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );

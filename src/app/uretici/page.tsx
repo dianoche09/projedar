@@ -550,7 +550,7 @@ export default async function UreticiKokpit() {
 
       <footer className="mt-6 flex items-center gap-2 text-[11px] text-[var(--ink-faint)]">
         <span className="nabiz inline-block size-[6px] rounded-full bg-green" aria-hidden />
-        ProjePazar · canlı konut stoğu dağıtım ağı · veriler gerçek zamanlı senkronlanır
+        Projedar · canlı konut stoğu dağıtım ağı · veriler gerçek zamanlı senkronlanır
       </footer>
     </div>
   );

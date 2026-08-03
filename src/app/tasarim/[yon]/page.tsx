@@ -61,7 +61,7 @@ function MockEkran({ y }: { y: Yon }) {
               ))}
             </span>
             <span style={{ fontFamily: y.fontDisplay, fontWeight: y.displayWeight, fontSize: 18, color: koyu ? "#fff" : y.ink, textTransform: y.upper ? "uppercase" : "none" }}>
-              ProjePazar
+              Projedar
             </span>
           </div>
           <p style={{ margin: "8px 0 0", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: koyu ? "rgba(255,255,255,.4)" : y.sub }}>Üretici Paneli</p>

@@ -1,4 +1,4 @@
-// ProjePazar — paylaşılan DB tipleri (MVP). Supabase şemasıyla hizalı.
+// Projedar — paylaşılan DB tipleri (MVP). Supabase şemasıyla hizalı.
 
 export type BirimDurum =
   | "musait"

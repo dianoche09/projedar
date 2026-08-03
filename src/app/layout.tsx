@@ -22,11 +22,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ProjePazar — Canlı Konut Stoğu Dağıtım Ağı",
+  title: "Projedar — Canlı Konut Stoğu Dağıtım Ağı",
   description:
     "Çok-müteahhitli, üretici-kontrollü canlı konut stoğu dağıtım ağı. Tek doğru kaynak, granüler tahsis, çift-satış kalkanı, görünür tazelik.",
   manifest: "/manifest.json",
-  appleWebApp: { capable: true, statusBarStyle: "default", title: "ProjePazar" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Projedar" },
   icons: {
     icon: [
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },

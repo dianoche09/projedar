@@ -463,7 +463,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
 
       {/* footer mini */}
       <div className="mt-7 pb-2 text-center text-[11.5px] text-[var(--ink-faint)]">
-        ProjePazar · Canlı konut stoğu dağıtım ağı. Yalnız sana tahsisli stok, gerçek zamanlı.
+        Projedar · Canlı konut stoğu dağıtım ağı. Yalnız sana tahsisli stok, gerçek zamanlı.
       </div>
     </div>
   );

@@ -20,9 +20,9 @@ import { OpsiyonKilidi } from "./OpsiyonKilidi";
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 03 · Living Distribution Network | ProjePazar Design Lab",
+  title: "Mockup 03 · Living Distribution Network | Projedar Design Lab",
   description:
-    "ProjePazar tasarım laboratuvarı: kontrollü satış ağı kartografisi konsepti. Veri tek kayıtta doğar, yetki kapılarından geçer, yalnız izinli danışmanlara ulaşır.",
+    "Projedar tasarım laboratuvarı: kontrollü satış ağı kartografisi konsepti. Veri tek kayıtta doğar, yetki kapılarından geçer, yalnız izinli danışmanlara ulaşır.",
   robots: { index: false },
 };
 
@@ -46,7 +46,7 @@ export default function Mockup03() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0">
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0">
             <Logo size={26} wordmark />
           </Link>
           <span className="hidden font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[var(--ink-faint)] sm:block">

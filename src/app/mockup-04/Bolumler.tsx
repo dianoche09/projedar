@@ -66,7 +66,7 @@ export function NedirSeridi() {
         <Gorun>
           <p className="mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#3fbfae]">Nedir</p>
           <p className="mt-4 font-display text-xl font-bold leading-relaxed tracking-tight text-[#ece9e2] sm:text-2xl">
-            ProjePazar, çok müteahhitli ve üretici kontrollü bir canlı konut
+            Projedar, çok müteahhitli ve üretici kontrollü bir canlı konut
             stoğu dağıtım ağıdır. Üretici stoğu, fiyatı ve dağıtımı tek noktadan
             yönetir; danışman yalnız kendisine tahsisli projeleri tek canlı
             havuzdan görür ve paylaşır.
@@ -388,7 +388,7 @@ export function PortalDegil() {
         <BolumBaslik
           etiket="Konum"
           baslik="İlan portalı değil. Altyapı."
-          aciklama="Vitrin yarışı satmaz; doğru ve taze stok satar. ProjePazar görünmeyen katmandır: boru hattı, reklam panosu değil."
+          aciklama="Vitrin yarışı satmaz; doğru ve taze stok satar. Projedar görünmeyen katmandır: boru hattı, reklam panosu değil."
         />
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           <Gorun>

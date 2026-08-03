@@ -1,14 +1,14 @@
-# ProjePazar
+# Projedar
 
 > Proje sahipleri ile gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı bir B2B konut stoğu dağıtım ağı. İlan portalı değildir. Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla müşterisine paylaşır. Komisyon yok; danışmana ücretsiz.
 
 ## Hakkında
 
-ProjePazar, Türkiye'de konut projelerinin satış ve dağıtımındaki en büyük sorunu çözer: dağınık, eski ve kontrolsüz bilgi. Bir konut projesinin fiyatı, hangi dairenin satılık, hangisinin opsiyonda olduğu bilgisi genelde Excel dosyaları, eski PDF'ler ve WhatsApp mesajları arasında kaybolur. Sonuç: yanlış fiyat, eksik bilgi, çift satış ve güven kaybı.
+Projedar, Türkiye'de konut projelerinin satış ve dağıtımındaki en büyük sorunu çözer: dağınık, eski ve kontrolsüz bilgi. Bir konut projesinin fiyatı, hangi dairenin satılık, hangisinin opsiyonda olduğu bilgisi genelde Excel dosyaları, eski PDF'ler ve WhatsApp mesajları arasında kaybolur. Sonuç: yanlış fiyat, eksik bilgi, çift satış ve güven kaybı.
 
-ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek bir birim kaydında tutulur; hiçbir yerde kopyalanmaz. Bir gayrimenkul danışmanı bir daireyi müşterisine paylaştığında, fiyat o anki canlı değerden basılır. Bir daire opsiyona alındığında, çift-satış kalkanı veritabanı seviyesinde kilitler. Her veride "● X önce" tazelik damgası bulunur; bilgi eskidikçe rozet renk değiştirir.
+Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek bir birim kaydında tutulur; hiçbir yerde kopyalanmaz. Bir gayrimenkul danışmanı bir daireyi müşterisine paylaştığında, fiyat o anki canlı değerden basılır. Bir daire opsiyona alındığında, çift-satış kalkanı veritabanı seviyesinde kilitler. Her veride "● X önce" tazelik damgası bulunur; bilgi eskidikçe rozet renk değiştirir.
 
-- Website: https://projepazar.vercel.app
+- Website: https://projedar.com
 - Platform: Web + PWA (mobil-önce, telefona kurulabilir, çevrimdışına dayanıklı)
 - Kategori: Proptech / B2B konut stoğu dağıtım ağı
 - Model: Kapalı-devre, davetli B2B ağ. Son kullanıcıya açık ilan yok; paylaşım birebir/WhatsApp.
@@ -16,13 +16,13 @@ ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız te
 
 ## Ana Sayfalar
 
-- [Ana sayfa](https://projepazar.vercel.app/) — 3 fazlı inşaat video hero'su, canlı havuz demosu, çift satış kalkanı, tahsis, ağ etkisi, SSS
-- [Müteahhitler için](https://projepazar.vercel.app/muteahhit) — envanter kontrolü, tahsis paneli, çift satış kalkanı, kurucu müteahhit kontenjanı, model karşılaştırması
-- [Danışmanlar için](https://projepazar.vercel.app/emlakci) — tahsisli canlı havuz, WhatsApp birebir paylaşım, opsiyon kilidi, komisyon güvencesi; tamamen ücretsiz
-- [Güven Protokolü](https://projepazar.vercel.app/guven) — 6 teminatın teknik dayanağı, EİDS konumlandırması (ilan değil tahsis), KVKK çizgisi
-- [Kullanım Koşulları](https://projepazar.vercel.app/kullanim-kosullari)
-- [Gizlilik](https://projepazar.vercel.app/gizlilik)
-- [KVKK Aydınlatma](https://projepazar.vercel.app/kvkk-aydinlatma)
+- [Ana sayfa](https://projedar.com/) — 3 fazlı inşaat video hero'su, canlı havuz demosu, çift satış kalkanı, tahsis, ağ etkisi, SSS
+- [Müteahhitler için](https://projedar.com/muteahhit) — envanter kontrolü, tahsis paneli, çift satış kalkanı, kurucu müteahhit kontenjanı, model karşılaştırması
+- [Danışmanlar için](https://projedar.com/emlakci) — tahsisli canlı havuz, WhatsApp birebir paylaşım, opsiyon kilidi, komisyon güvencesi; tamamen ücretsiz
+- [Güven Protokolü](https://projedar.com/guven) — 6 teminatın teknik dayanağı, EİDS konumlandırması (ilan değil tahsis), KVKK çizgisi
+- [Kullanım Koşulları](https://projedar.com/kullanim-kosullari)
+- [Gizlilik](https://projedar.com/gizlilik)
+- [KVKK Aydınlatma](https://projedar.com/kvkk-aydinlatma)
 
 ## Temel Özellikler
 
@@ -63,7 +63,7 @@ ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız te
 
 ## Sık Sorulan Sorular
 
-- **ProjePazar bir ilan portalı mı?** Hayır. Proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır.
+- **Projedar bir ilan portalı mı?** Hayır. Proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır.
 - **Gayrimenkul danışmanı için ücretli mi?** Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz.
 - **Danışman hangi projeleri görür?** Canlı havuzdaki projeleri görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açabilir.
 - **Fiyatlar nasıl güncel kalıyor?** Fiyat yalnız birim kaydında tutulur; paylaşımda o anki canlı değerden basılır, böylece eski fiyat dolaşamaz.
@@ -73,4 +73,4 @@ ProjePazar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız te
 
 ## Yasal Uyarı
 
-ProjePazar satışa aracılık yapmaz ve satıştan komisyon almaz. Kapalı-devre, davetli bir B2B altyapısıdır. Son kullanıcıya açık ilan yayınlamaz.
+Projedar satışa aracılık yapmaz ve satıştan komisyon almaz. Kapalı-devre, davetli bir B2B altyapısıdır. Son kullanıcıya açık ilan yayınlamaz.

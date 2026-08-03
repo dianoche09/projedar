@@ -1,8 +1,8 @@
-// Gizlilik Politikası — ProjePazar.
+// Gizlilik Politikası — Projedar.
 // ⚠️ TASLAK: yayın öncesi hukuki inceleme gerekir (KVKK rol-ayrımı, saklama süreleri, VERBİS).
 
 export const metadata = {
-  title: "Gizlilik Politikası — ProjePazar",
+  title: "Gizlilik Politikası — Projedar",
   robots: { index: false, follow: false },
 };
 
@@ -19,7 +19,7 @@ export default function Gizlilik() {
         <h2 className="font-display text-base font-semibold">Veri Sorumlusu / Veri İşleyen</h2>
         <p>
           Müşteri adayı (lead) verisinde, bilgiyi toplayan emlak danışmanı/ofisi <b>veri sorumlusu</b>;
-          ProjePazar yalnızca teknik altyapı sağlayan <b>veri işleyen</b> konumundadır. Hesap
+          Projedar yalnızca teknik altyapı sağlayan <b>veri işleyen</b> konumundadır. Hesap
           (müteahhit/danışman) verilerinde ise platform veri sorumlusudur.
         </p>
       </section>

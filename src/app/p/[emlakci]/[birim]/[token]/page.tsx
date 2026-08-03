@@ -200,7 +200,7 @@ export default async function PublicBirimPage({
           <div className="flex items-center gap-2">
             <GridMark />
             <span className="font-display text-xl font-bold tracking-tight text-ink">
-              Proje<span className="text-teal">Pazar</span>
+              Proje<span className="text-teal">dar</span>
             </span>
           </div>
           <div className="flex items-center gap-4">

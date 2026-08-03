@@ -179,7 +179,7 @@ export function DijitalKart({ genis = false }: { genis?: boolean }) {
         </span>
       </div>
       <div className="mt-3.5 flex items-center justify-between gap-2 border-t border-dashed border-[rgba(16,36,58,0.12)] pt-2.5">
-        <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#7d8da0]">ProjePazar · canlı kayıt</span>
+        <span className="font-mono text-[9.5px] uppercase tracking-wider text-[#7d8da0]">Projedar · canlı kayıt</span>
         <span className="font-mono text-[9.5px] text-[#7d8da0]">tek doğru kaynak</span>
       </div>
     </div>

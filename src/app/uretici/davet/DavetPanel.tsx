@@ -4,9 +4,9 @@ import { useState } from "react";
 
 export function DavetPanel({ link, ad }: { link: string; ad: string }) {
   const [kopyalandi, setKopyalandi] = useState(false);
-  const mesaj = `${ad} seni ProjePazar canlı stok ağına davet ediyor. Kaydol, sana tahsisli projeleri canlı gör ve paylaş: ${link}`;
+  const mesaj = `${ad} seni Projedar canlı stok ağına davet ediyor. Kaydol, sana tahsisli projeleri canlı gör ve paylaş: ${link}`;
   const wa = `https://wa.me/?text=${encodeURIComponent(mesaj)}`;
-  const mail = `mailto:?subject=${encodeURIComponent("ProjePazar daveti")}&body=${encodeURIComponent(mesaj)}`;
+  const mail = `mailto:?subject=${encodeURIComponent("Projedar daveti")}&body=${encodeURIComponent(mesaj)}`;
 
   const kopyala = async () => {
     try {

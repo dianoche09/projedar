@@ -151,7 +151,7 @@ export function HeroSinematik() {
       <header className="absolute inset-x-0 top-0 z-30">
         <div className="mx-auto flex w-full max-w-6xl items-baseline justify-between px-5 pt-5 sm:px-8">
           <span className="font-display text-lg font-extrabold tracking-tight text-ink">
-            Proje<span className="text-[#177f70]">Pazar</span>
+            Proje<span className="text-[#177f70]">dar</span>
           </span>
           <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/45">
             Design Lab · Mockup 04
@@ -191,7 +191,7 @@ export function HeroSinematik() {
       <div className="absolute inset-x-0 bottom-0 z-20 border-t border-white/20 bg-[rgba(8,18,32,0.55)] backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-5 py-3.5 sm:px-8">
           <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.18em] text-white/75">
-            ProjePazar · Monumental Kule
+            Projedar · Monumental Kule
           </p>
           <p className="font-mono text-[11.5px] tracking-wide text-white/85">
             <span

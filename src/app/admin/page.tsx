@@ -509,7 +509,7 @@ export default async function AdminPanel() {
       </section>
 
       <footer className="flex flex-wrap items-center justify-between gap-2 px-1 pt-1 text-[11.5px] text-gray">
-        <span>ProjePazar Admin Konsolu · Platform İşletmecisi paneli</span>
+        <span>Projedar Admin Konsolu · Platform İşletmecisi paneli</span>
         <span className="mono">Bu panel stok/birim/bina kesiti görmez; gelir · hesap · doğrulama · denetim odaklıdır.</span>
       </footer>
     </div>

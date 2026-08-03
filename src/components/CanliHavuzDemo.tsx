@@ -275,7 +275,7 @@ function DaireDetay({
                       {daire.fiyat}
                       <span className="ml-2 align-middle font-mono text-[9.5px] font-semibold text-[#1f7d4c]">● canlı fiyat · %30 peşin + 24 ay</span>
                     </p>
-                    <p className="mt-1 truncate font-mono text-[10.5px] text-[#027eb5] underline">projepazar.app/d/{daire.kod.toLowerCase()}</p>
+                    <p className="mt-1 truncate font-mono text-[10.5px] text-[#027eb5] underline">projedar.com/d/{daire.kod.toLowerCase()}</p>
                     <p className="mt-1.5 flex items-center justify-end gap-1 font-mono text-[9.5px] text-[#3b4a54]/70">
                       14:02
                       {iletildi ? <span className="font-bold text-[#34b7f1]">✓✓</span> : <span aria-hidden>…</span>}

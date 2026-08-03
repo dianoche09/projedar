@@ -5,7 +5,7 @@ import { HeroSatisOfisiCami } from "./_components/HeroSatisOfisiCami";
 import { MagnetKart, MiniPano } from "./_components/PanoParcalari";
 
 export const metadata: Metadata = {
-  title: "Mockup 08 · Satış Ofisi Panosu | ProjePazar Design Lab",
+  title: "Mockup 08 · Satış Ofisi Panosu | Projedar Design Lab",
   description:
     "Lüks konut projeleri için kapalı satış ağı konsepti: satış ofisindeki fiziksel daire panosunun yaşayan dijital hali. Magnet kartlar, opsiyon rayı, tahsisli görünürlük.",
   robots: { index: false },
@@ -34,7 +34,7 @@ export default function Mockup08Sayfasi() {
       <header className="border-b border-[rgba(58,44,26,0.16)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
           <Link href="/" className="flex items-baseline gap-3 text-[#261c10]">
-            <span className="font-display text-[21px] font-bold tracking-tight">ProjePazar</span>
+            <span className="font-display text-[21px] font-bold tracking-tight">Projedar</span>
             <span className="hidden border-l border-[rgba(58,44,26,0.2)] pl-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.2em] text-[#8a6a3a] sm:inline">
               Satış ofisi panosu · Mockup 08
             </span>
@@ -57,7 +57,7 @@ export default function Mockup08Sayfasi() {
           </h2>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[#5c4f3c]">
             Her lüks projenin satış ofisinde bir daire panosu vardır: kartlar asılır, satılan çekilir,
-            opsiyon kenara alınır. ProjePazar o panonun dijital halidir; fark şudur: bu pano yalnız
+            opsiyon kenara alınır. Projedar o panonun dijital halidir; fark şudur: bu pano yalnız
             ofiste değil, yetkilendirdiğiniz her danışmanın cebinde aynı anda günceldir.
           </p>
 
@@ -466,7 +466,7 @@ export default function Mockup08Sayfasi() {
       {/* ============ ALT BİLGİ ============ */}
       <footer className="border-t border-[rgba(58,44,26,0.16)]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 font-mono text-[10.5px] text-[#9c8c72] sm:flex-row sm:px-6">
-          <span>ProjePazar · Design Lab · Mockup 08 · Satış Ofisi Panosu</span>
+          <span>Projedar · Design Lab · Mockup 08 · Satış Ofisi Panosu</span>
           <Link href="/" className="underline decoration-dotted underline-offset-4 hover:text-[#261c10]">
             ana sayfaya dön
           </Link>

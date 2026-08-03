@@ -157,7 +157,7 @@ export function KayitForm({ davet }: { davet?: { ad: string; d: string; n: strin
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
           E-posta
-          <input name="email" type="email" required={adim === 1} autoComplete="email" placeholder="ornek@projepazar.com" className={inp} />
+          <input name="email" type="email" required={adim === 1} autoComplete="email" placeholder="ornek@projedar.com" className={inp} />
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-bold text-ink">
           Telefon

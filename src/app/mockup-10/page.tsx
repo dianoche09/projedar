@@ -13,7 +13,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Mockup 10 · Davetiye Baskısı | ProjePazar Design Lab",
+  title: "Mockup 10 · Davetiye Baskısı | Projedar Design Lab",
   description:
     "Letterpress lüks matbaa konsepti: her paylaşım bir davetiye baskısıdır, matbaa canlıdır. Fiyat değişince eski baskı geçersizleşir; yalnız canlı baskı geçerlidir.",
   robots: { index: false },
@@ -42,7 +42,7 @@ export default function Mockup10Sayfasi() {
       <header className="border-b border-[rgba(27,42,65,0.16)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
           <Link href="/" className="flex items-baseline gap-3 text-[#1b2a41]">
-            <span className="m10-serif text-[22px] font-bold tracking-tight">ProjePazar</span>
+            <span className="m10-serif text-[22px] font-bold tracking-tight">Projedar</span>
             <span className="hidden border-l border-[rgba(164,130,63,0.5)] pl-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.2em] text-[#7d6027] sm:inline">
               Davetiye baskısı · Mockup 10
             </span>
@@ -64,7 +64,7 @@ export default function Mockup10Sayfasi() {
             Her paylaşım bir davetiye baskısıdır; matbaa canlıdır.
           </h2>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[#5c6474]">
-            ProjePazar, inşaat hâlindeki lüks konut projeleri için kapalı bir satış ağıdır.
+            Projedar, inşaat hâlindeki lüks konut projeleri için kapalı bir satış ağıdır.
             Üretici stoğu tek kalıptan basar; davetli danışman yalnız kendisine basılan
             nüshaları görür ve paylaşır. Fiyat değiştiği anda eski baskı geçersizleşir:
             yalnız canlı baskı geçerlidir.
@@ -471,7 +471,7 @@ export default function Mockup10Sayfasi() {
       {/* ============ ALT BİLGİ ============ */}
       <footer className="border-t border-[rgba(27,42,65,0.16)]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 font-mono text-[10.5px] text-[#8b8f98] sm:flex-row sm:px-6">
-          <span>ProjePazar · Design Lab · Mockup 10 · Davetiye Baskısı</span>
+          <span>Projedar · Design Lab · Mockup 10 · Davetiye Baskısı</span>
           <Link href="/" className="underline decoration-dotted underline-offset-4 hover:text-[#1b2a41]">
             ana sayfaya dön
           </Link>

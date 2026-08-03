@@ -189,7 +189,7 @@ export function HeroFazSeridi() {
             Bloklar yükselir. Stok erir.
           </h1>
           <p className="mt-4 max-w-[52ch] text-pretty text-[14.5px] leading-relaxed text-white/85 sm:text-[16px]">
-            ProjePazar, müteahhidin canlı stoğunu tek noktadan yönettiği, yalnız tahsis ettiği danışmanlara
+            Projedar, müteahhidin canlı stoğunu tek noktadan yönettiği, yalnız tahsis ettiği danışmanlara
             açtığı dağıtım ağıdır. Fiyat ve durum tek kaynaktan dağıtılır; satış sürecinde herkes aynı doğruyu görür.
           </p>
           {/* rol kartları (kullanıcı tasarımı): koyu = proje sahibi, beyaz = danışman */}

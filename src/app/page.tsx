@@ -52,23 +52,23 @@ const GUVEN = [
   { Icon: FileCheck, b: "KVKK uyumlu", a: "Kişisel veri çizgisi nettir; piyasa zekâsı evet, müşteri profili hayır." },
 ];
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "ProjePazar: Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
+  title: "Projedar: Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
   description:
     "İlan portalı değil. Proje sahibi stoğunu ve fiyatını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla paylaşır. Yanlış fiyat yok, eksik bilgi yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "ProjePazar: Tüm projeler tek canlı havuzda",
+    title: "Projedar: Tüm projeler tek canlı havuzda",
     description:
       "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan ağ. Yanlış fiyat yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
     type: "website",
-    siteName: "ProjePazar",
+    siteName: "Projedar",
     url: SITE,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "ProjePazar: Tüm projeler tek canlı havuzda" },
+  twitter: { card: "summary_large_image", title: "Projedar: Tüm projeler tek canlı havuzda" },
 };
 
 const NAV = [
@@ -119,21 +119,21 @@ const PORTFOY = [
 ];
 
 const SSS: { s: string; c: string }[] = [
-  { s: "ProjePazar bir ilan portalı mı?", c: "Hayır. ProjePazar, proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır." },
+  { s: "Projedar bir ilan portalı mı?", c: "Hayır. Projedar, proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır." },
   { s: "Gayrimenkul danışmanı için ücretli mi?", c: "Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz. Danışman canlı havuzdaki projeleri görür ve müşterisine paylaşır." },
   { s: "Danışman hangi projeleri görür?", c: "Danışman, canlı havuzdaki projeleri görür. Proje sahibi isterse belirli daireleri veya projeleri yalnız seçtiği danışmanlara özel açabilir (tahsis)." },
   { s: "Fiyatlar nasıl güncel kalıyor?", c: "Fiyat yalnız birim kaydında tutulur; hiçbir yerde kopyalanmaz. Paylaşımda fiyat o anki canlı değerden basıldığı için eski fiyat dolaşıma giremez." },
   { s: "Aynı daire iki danışmana satılabilir mi?", c: "Hayır. Aktif opsiyon veritabanı seviyesinde kilitlenir; çift-satış kalkanı iki danışmanın aynı daireyi aynı anda satışa kilitlemesini engeller." },
   { s: "Proje sahibi neyi kontrol eder?", c: "Stoğunu, fiyatını ve kimin neyi göreceğini tek panelden yönetir; satışı canlı izler. Tüm bilgi tek doğru kaynaktadır." },
-  { s: "Mobilde çalışır mı?", c: "Evet. ProjePazar mobil-önce bir uygulamadır (PWA); telefona kurulabilir, sahada hızlı ve çevrimdışına dayanıklı çalışır." },
+  { s: "Mobilde çalışır mı?", c: "Evet. Projedar mobil-önce bir uygulamadır (PWA); telefona kurulabilir, sahada hızlı ve çevrimdışına dayanıklı çalışır." },
 ];
 
 function jsonLd() {
   return {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "Organization", "@id": `${SITE}/#org`, name: "ProjePazar", url: SITE, logo: `${SITE}/icon-512.png`, description: "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı B2B konut stoğu ağı." },
-      { "@type": "WebSite", "@id": `${SITE}/#website`, url: SITE, name: "ProjePazar", inLanguage: "tr-TR", publisher: { "@id": `${SITE}/#org` } },
+      { "@type": "Organization", "@id": `${SITE}/#org`, name: "Projedar", url: SITE, logo: `${SITE}/icon-512.png`, description: "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı B2B konut stoğu ağı." },
+      { "@type": "WebSite", "@id": `${SITE}/#website`, url: SITE, name: "Projedar", inLanguage: "tr-TR", publisher: { "@id": `${SITE}/#org` } },
       { "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: SSS.map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
     ],
   };
@@ -158,7 +158,7 @@ export default async function Home() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
@@ -550,7 +550,7 @@ export default async function Home() {
                 <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-white hover:underline">KVKK Aydınlatma</Link>
               </nav>
             </div>
-            <div className="border-t border-white/10 px-5 py-5 text-center text-[11px] text-white/45 sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
+            <div className="border-t border-white/10 px-5 py-5 text-center text-[11px] text-white/45 sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
           </footer>
         }
       />

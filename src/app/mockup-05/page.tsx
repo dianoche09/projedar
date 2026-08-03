@@ -19,7 +19,7 @@ import { OpsiyonKilidi } from "./_components/OpsiyonKilidi";
 import { TahsisZarfi } from "./_components/TahsisZarfi";
 
 export const metadata: Metadata = {
-  title: "Mockup 05 · Physical Data System | ProjePazar Design Lab",
+  title: "Mockup 05 · Physical Data System | Projedar Design Lab",
   description:
     "Fiziksel satış materyallerinin yaşayan dijital sisteme dönüşümü: kâğıt, mühür, etiket ve zarf dokusuyla canlı konut stoğu dağıtım ağı konsept sayfası.",
   robots: { index: false },
@@ -49,7 +49,7 @@ export default function Mockup05Sayfasi() {
       <header className="border-b border-[rgba(23,41,61,0.14)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6">
           <Link href="/" className="flex items-baseline gap-3 text-[#17293d]">
-            <span className="font-display text-[21px] font-bold tracking-tight">ProjePazar</span>
+            <span className="font-display text-[21px] font-bold tracking-tight">Projedar</span>
             <span className="hidden border-l border-[rgba(23,41,61,0.16)] pl-3 font-mono text-[9.5px] font-semibold uppercase tracking-[0.2em] text-[#177e6f] sm:inline">
               Fiziksel veri sistemi · Mockup 05
             </span>
@@ -125,7 +125,7 @@ export default function Mockup05Sayfasi() {
           </h2>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[#5a6577]">
             Excel satırı, basılı liste, yazışma dökümü ve kat planı aynı dairenin dört ayrı kopyasıdır.
-            ProjePazar bu katmanları tek kayda sıkıştırır: fiyat ve durum yalnız bir yerde yaşar.
+            Projedar bu katmanları tek kayda sıkıştırır: fiyat ve durum yalnız bir yerde yaşar.
           </p>
         </div>
         <Donusum className="mx-auto max-w-6xl px-5 pb-16 pt-4 sm:px-6 lg:pb-0 lg:pt-0" />
@@ -325,7 +325,7 @@ export default function Mockup05Sayfasi() {
       {/* ============ ALT BİLGİ ============ */}
       <footer className="border-t border-[rgba(23,41,61,0.14)]">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 font-mono text-[10.5px] text-[#8b97a8] sm:flex-row sm:px-6">
-          <span>ProjePazar · Design Lab · Mockup 05 · Physical Data System</span>
+          <span>Projedar · Design Lab · Mockup 05 · Physical Data System</span>
           <Link href="/" className="underline decoration-dotted underline-offset-4 hover:text-[#17293d]">
             ana sayfaya dön
           </Link>

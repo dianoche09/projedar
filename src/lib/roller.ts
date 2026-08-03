@@ -1,4 +1,4 @@
-// ProjePazar — rol → panel eşlemesi (Sistem Kuralları B.1: her rol AYRI panel görür).
+// Projedar — rol → panel eşlemesi (Sistem Kuralları B.1: her rol AYRI panel görür).
 
 export type Rol =
   | "uretici"

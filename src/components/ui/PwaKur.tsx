@@ -54,7 +54,7 @@ export function PwaKur() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/icon-192.png" alt="" className="size-9 rounded-lg" />
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-ink">ProjePazar&apos;ı kur</p>
+          <p className="text-sm font-semibold text-ink">Projedar&apos;ı kur</p>
           <p className="text-xs text-gray">
             {ios ? "Paylaş → “Ana Ekrana Ekle”" : "Ana ekranına ekle, uygulama gibi aç"}
           </p>

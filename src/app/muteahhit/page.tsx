@@ -11,23 +11,23 @@ import { CircleSlash, SlidersHorizontal, Database } from "lucide-react";
 
 /** Müteahhit (üretici) rol landing'i, güven-önce, veri-öne, komuta merkezi dili. */
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | ProjePazar",
+  title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar",
   description:
     "Stok, fiyat ve tahsis tek noktadan sizde. Çift satış veritabanı seviyesinde imkânsız, komisyon yok. Müteahhitler için kapalı devre canlı proje satış ağı.",
   alternates: { canonical: "/muteahhit" },
   openGraph: {
-    title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | ProjePazar",
+    title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar",
     description:
       "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde imkânsız. Komisyonsuz, kapalı devre.",
     type: "website",
-    siteName: "ProjePazar",
+    siteName: "Projedar",
     url: `${SITE}/muteahhit`,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | ProjePazar" },
+  twitter: { card: "summary_large_image", title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar" },
 };
 
 const NAV = [
@@ -95,7 +95,7 @@ const KIYAS_SATIRLARI: { etiket: string; portal: string; crm: string; biz: strin
 
 const SSS: { s: string; c: string }[] = [
   {
-    s: "ProjePazar satıştan komisyon alıyor mu?",
+    s: "Projedar satıştan komisyon alıyor mu?",
     c: "Hayır. Hiçbir satıştan pay almayız; gelir modeli sabit yıllık anlaşmadır. Ne kadar satarsanız satın maliyetiniz değişmez, işlemin içine girmeyiz.",
   },
   {
@@ -155,7 +155,7 @@ export default function MuteahhitSayfasi() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
@@ -301,7 +301,7 @@ export default function MuteahhitSayfasi() {
             <div className="mx-auto max-w-2xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Neden farklı</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Portal değil, CRM modülü değil</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Komisyonlu pazaryerleri satıştan pay alır; CRM broker modülleri seni kendi adanda bırakır. ProjePazar tahsisli dağıtım altyapısıdır.</p>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Komisyonlu pazaryerleri satıştan pay alır; CRM broker modülleri seni kendi adanda bırakır. Projedar tahsisli dağıtım altyapısıdır.</p>
             </div>
           </Reveal>
           <Reveal delay={100}>
@@ -312,7 +312,7 @@ export default function MuteahhitSayfasi() {
                     <th className="w-[160px]" />
                     <th>Komisyonlu pazaryerleri</th>
                     <th>CRM broker modülleri</th>
-                    <th className="bg-[var(--color-teal-soft)] text-[var(--color-teal-d)]">ProjePazar</th>
+                    <th className="bg-[var(--color-teal-soft)] text-[var(--color-teal-d)]">Projedar</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -434,7 +434,7 @@ export default function MuteahhitSayfasi() {
             <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );

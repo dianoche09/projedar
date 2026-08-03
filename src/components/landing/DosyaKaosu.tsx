@@ -7,7 +7,7 @@ import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } f
  * DosyaKaosu: "eski sistem bozuk" sticky storytelling bölümü.
  * Desktop: normal akışta sticky panel; scroll ilerledikçe dağınık parçalar
  * (Excel, PDF, WhatsApp balonları, bayat ekran görüntüsü, çakışma etiketi)
- * merkeze toplanıp soluklaşır ve tek ProjePazar canlı kayıt kartında birleşir.
+ * merkeze toplanıp soluklaşır ve tek Projedar canlı kayıt kartında birleşir.
  * Mobil ve prefers-reduced-motion: sticky yok, dikey iki statik sahne (kaos → tek kart).
  */
 
@@ -231,7 +231,7 @@ function CanliKayitKarti() {
         </span>
       </div>
       <div className="mt-3.5 flex items-center justify-between gap-2 border-t border-dashed border-[rgba(16,36,58,0.1)] pt-2.5">
-        <span className="font-mono text-[9.5px] uppercase tracking-wider text-[var(--ink-faint)]">ProjePazar · canlı kayıt</span>
+        <span className="font-mono text-[9.5px] uppercase tracking-wider text-[var(--ink-faint)]">Projedar · canlı kayıt</span>
         <span className="font-mono text-[9.5px] text-[var(--ink-faint)]">tek doğru kaynak</span>
       </div>
     </div>

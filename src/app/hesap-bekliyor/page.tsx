@@ -60,7 +60,7 @@ export default async function HesapBekliyor() {
 
         <div className="mt-8 flex flex-col gap-3">
           <a
-            href="https://wa.me/905444790787?text=Merhaba,%20ProjePazar%20denetimli%20hesap%20aktivasyonu%20istiyorum."
+            href="https://wa.me/905444790787?text=Merhaba,%20Projedar%20denetimli%20hesap%20aktivasyonu%20istiyorum."
             target="_blank"
             rel="noopener noreferrer"
             className="btn rounded-xl bg-teal text-white font-bold py-3.5 text-sm transition-all duration-300 hover:bg-teal-d shadow-[0_4px_12px_rgba(37,99,235,0.2)] flex items-center justify-center gap-2"

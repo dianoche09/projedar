@@ -9,7 +9,7 @@ import { Logo } from "@/components/Logo";
  */
 
 export const metadata: Metadata = {
-  title: "Mockup 11 · Sessiz Lüks Hero | ProjePazar Design Lab",
+  title: "Mockup 11 · Sessiz Lüks Hero | Projedar Design Lab",
   description: "Hallmark + copywriting skill disipliniyle tek ekranlık hero: lüks konut projeleri için canlı satış ağı.",
   robots: { index: false },
 };
@@ -36,7 +36,7 @@ export default function Mockup11() {
       {/* N9: uçlara hizalı minimal nav; arada geniş boşluk tasarımın kendisi */}
       <header className="absolute inset-x-0 top-0 z-20">
         <nav className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 sm:px-10">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="opacity-95"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="Projedar ana sayfa" className="opacity-95"><Logo size={26} wordmark /></Link>
           <Link
             href="/kayit?rol=uretici"
             className="inline-flex min-h-11 items-center rounded-full border border-white/35 px-6 text-[14px] font-semibold text-white transition-colors duration-200 hover:border-white/70 hover:bg-white/10"

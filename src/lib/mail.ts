@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const KEY = process.env.RESEND_API_KEY;
-const FROM = process.env.MAIL_FROM ?? "ProjePazar <bildirim@projepazar.com>";
+const FROM = process.env.MAIL_FROM ?? "Projedar <bildirim@projedar.com>";
 
 /**
  * Transactional mail — BEST-EFFORT. RESEND_API_KEY yoksa sessiz atlar (akışı bozmaz).
@@ -27,7 +27,7 @@ function htmlKacir(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projepazar.vercel.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
 
 /** Basit bildirim maili şablonu (tasarım tokenlarıyla uyumlu inline stil). */
 export function bildirimMaili(baslik: string, govde: string | null, link: string | null): string {
@@ -37,6 +37,6 @@ export function bildirimMaili(baslik: string, govde: string | null, link: string
     <h2 style="margin:0 0 8px;font-size:18px;color:#0f172a">${htmlKacir(baslik)}</h2>
     ${govde ? `<p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#475569">${htmlKacir(govde)}</p>` : ""}
     <a href="${htmlKacir(url)}" style="display:inline-block;background:#1e9b8a;color:#fff;text-decoration:none;padding:11px 20px;border-radius:9px;font-size:14px;font-weight:600">Panele git</a>
-    <p style="margin:22px 0 0;font-size:12px;color:#94a3b8">ProjePazar · tahsisli canlı satış ağı</p>
+    <p style="margin:22px 0 0;font-size:12px;color:#94a3b8">Projedar · tahsisli canlı satış ağı</p>
   </div></body></html>`;
 }

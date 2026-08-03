@@ -20,7 +20,7 @@ function MarkaLogo({ boyut = "text-2xl" }: { boyut?: string }) {
           />
         ))}
       </span>
-      proje<span className="text-teal">pazar</span>
+      proje<span className="text-teal">dar</span>
     </span>
   );
 }
@@ -131,7 +131,7 @@ export function AuthKabuk({ children }: { children: React.ReactNode }) {
             <Link
               href="/"
               className="absolute inset-0 flex items-center justify-center"
-              aria-label="ProjePazar ana sayfa"
+              aria-label="Projedar ana sayfa"
             >
               <MarkaLogo boyut="text-xl" />
             </Link>

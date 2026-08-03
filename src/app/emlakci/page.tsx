@@ -27,23 +27,23 @@ import {
    ikna aracı ikon değil, canlı simülasyon (HavuzKarti + TazelikDemo).
    ========================================================= */
 
-const SITE = "https://projepazar.vercel.app";
+const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Emlakçılar için ProjePazar: Ücretsiz | Komisyonun %100'ü senin",
+  title: "Emlakçılar için Projedar: Ücretsiz | Komisyonun %100'ü senin",
   description:
     "Sana tahsisli müteahhit stoğunu tek canlı havuzda gör, WhatsApp'tan birebir paylaş, opsiyonla kilitle. Tamamen ücretsiz; satışına girmeyiz, komisyonundan pay almayız.",
   alternates: { canonical: "/emlakci" },
   openGraph: {
-    title: "Emlakçılar için ProjePazar: Tamamen ücretsiz, komisyonun %100'ü senin",
+    title: "Emlakçılar için Projedar: Tamamen ücretsiz, komisyonun %100'ü senin",
     description:
       "Tahsisli müteahhit stoğu tek canlı havuzda. Fiyat her zaman güncel, opsiyon veritabanı seviyesinde kilitli, komisyonundan pay alınmaz.",
     type: "website",
-    siteName: "ProjePazar",
+    siteName: "Projedar",
     url: `${SITE}/emlakci`,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Emlakçılar için ProjePazar: Komisyonun %100'ü senin" },
+  twitter: { card: "summary_large_image", title: "Emlakçılar için Projedar: Komisyonun %100'ü senin" },
 };
 
 const NAV = [
@@ -88,7 +88,7 @@ const ADIMLAR = [
 
 /** Komisyon güvence üçlüsü (anti-“garanti” konumu, isim vermeden). */
 const GUVENCE = [
-  { Icon: CircleSlash, b: "Satışına hiç girmeyiz", a: "ProjePazar satışa taraf olmaz; sözleşme müteahhitle senin arandadır." },
+  { Icon: CircleSlash, b: "Satışına hiç girmeyiz", a: "Projedar satışa taraf olmaz; sözleşme müteahhitle senin arandadır." },
   { Icon: ShieldCheck, b: "Komisyondan pay almayız", a: "Kazancın %100'ü senin. Platform gelirini müteahhit tarafından kazanır." },
   { Icon: Handshake, b: "Lead'in senindir", a: "Müşterin sende kalır; kimseyle paylaşılmaz, kimseye satılmaz." },
 ];
@@ -104,7 +104,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "Lead'im ve müşterim kimin olur?",
-    c: "Senin. Paylaşım birebir yapılır, satış müteahhitle aranda gerçekleşir. ProjePazar satışa taraf olmaz, komisyonundan pay almaz ve müşterini kimseyle paylaşmaz.",
+    c: "Senin. Paylaşım birebir yapılır, satış müteahhitle aranda gerçekleşir. Projedar satışa taraf olmaz, komisyonundan pay almaz ve müşterini kimseyle paylaşmaz.",
   },
   {
     s: "Opsiyon nasıl çalışır?",
@@ -116,7 +116,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "KYC / belge doğrulaması neden var?",
-    c: "ProjePazar doğrulanmış danışman ağıdır. Yetki belgeni yüklersin, doğrulanınca rozetini alırsın. Müteahhitler stoklarını doğrulanmış danışmanlara gönül rahatlığıyla açar, bu gate ağdaki herkesin işini ve itibarını korur.",
+    c: "Projedar doğrulanmış danışman ağıdır. Yetki belgeni yüklersin, doğrulanınca rozetini alırsın. Müteahhitler stoklarını doğrulanmış danışmanlara gönül rahatlığıyla açar, bu gate ağdaki herkesin işini ve itibarını korur.",
   },
 ];
 
@@ -153,7 +153,7 @@ export default function EmlakciLanding() {
       {/* ============ ÜST MENÜ ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="ProjePazar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
+          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">
             {NAV.map((n) => (
               <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
@@ -297,7 +297,7 @@ export default function EmlakciLanding() {
               <div>
                 <h3 className="font-display text-[15px] font-bold tracking-tight text-ink">Doğrulanmış danışman ağı, belgeni yükle, rozetini al</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
-                  ProjePazar kapalı ve doğrulanmış bir ağdır. Yetki belgen doğrulanınca rozetini alırsın; müteahhitler stoklarını rozetli danışmanlara gönül rahatlığıyla açar. Doğrulama seni yavaşlatmaz, seni ağın güvenilir yüzü yapar.
+                  Projedar kapalı ve doğrulanmış bir ağdır. Yetki belgen doğrulanınca rozetini alırsın; müteahhitler stoklarını rozetli danışmanlara gönül rahatlığıyla açar. Doğrulama seni yavaşlatmaz, seni ağın güvenilir yüzü yapar.
                 </p>
               </div>
             </div>
@@ -408,7 +408,7 @@ export default function EmlakciLanding() {
             <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-ink hover:underline">KVKK Aydınlatma</Link>
           </nav>
         </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 ProjePazar, Tüm hakları saklıdır.</div>
+        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
     </main>
   );
