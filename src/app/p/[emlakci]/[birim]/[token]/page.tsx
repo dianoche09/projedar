@@ -8,6 +8,25 @@ import LeadForm from "./LeadForm";
 import { GridMark } from "@/components/GridMark";
 import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
+import { OdemeSlider } from "./OdemeSlider";
+
+/** Video URL'sini gömülebilir kaynağa çevirir (YouTube/Vimeo iframe, aksi halde doğrudan video). */
+function videoEmbed(url: string): { tip: "iframe" | "video"; src: string } | null {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtu.be") return { tip: "iframe", src: `https://www.youtube-nocookie.com/embed/${u.pathname.slice(1)}` };
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      const id = u.searchParams.get("v") ?? (u.pathname.startsWith("/embed/") ? u.pathname.split("/")[2] : null);
+      return id ? { tip: "iframe", src: `https://www.youtube-nocookie.com/embed/${id}` } : null;
+    }
+    if (host === "vimeo.com") return { tip: "iframe", src: `https://player.vimeo.com/video/${u.pathname.slice(1)}` };
+    if (/\.(mp4|webm|mov)$/i.test(u.pathname)) return { tip: "video", src: url };
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 const fmt = (n: number) => n.toLocaleString("tr-TR");
 const PARA_SIMGE: Record<string, string> = { TRY: "₺", USD: "$", EUR: "€", GBP: "£", AED: "AED" };
@@ -50,7 +69,7 @@ export default async function PublicBirimPage({
     .select(`
       id, daire_no, kat, durum, liste_fiyati, para_birimi, net_m2, brut_m2, yon, manzara, satilabilir, son_guncelleme, odeme_plani,
       proje:proje_id (
-        id, ad, il, ilce, mahalle, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, sorumlu_ad, sorumlu_tel, lat, lng, kira_getirisi_pct, amortisman_yil, oturum_uygun, golden_visa_esik,
+        id, ad, il, ilce, mahalle, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, sorumlu_ad, sorumlu_tel, lat, lng, video_url, kira_getirisi_pct, amortisman_yil, oturum_uygun, golden_visa_esik, kunye, ada, parsel, emsal, taks,
         uretici:uretici_id (
           id, ad, dogrulanmis
         )
@@ -70,6 +89,20 @@ export default async function PublicBirimPage({
   const t = birimData.tip as any;
   /* eslint-enable @typescript-eslint/no-explicit-any */
   const b = birimData;
+
+  // Proje künye / donatı / açıklama — kunye jsonb (üretici formundan; havuz/proje ile aynı kaynak)
+  const kunye = (p?.kunye ?? {}) as Record<string, unknown>;
+  const aciklama = typeof kunye.aciklama === "string" ? (kunye.aciklama as string).trim() : "";
+  const donati = Array.isArray(kunye.donati) ? (kunye.donati as string[]) : [];
+  const malzeme = Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]) : [];
+  const kunyeSatir: [string, string][] = [];
+  if (p?.ada || p?.parsel) kunyeSatir.push(["Ada / Parsel", [p?.ada, p?.parsel].filter(Boolean).join(" / ")]);
+  if (p?.emsal) kunyeSatir.push(["Emsal (KAKS)", String(p.emsal)]);
+  if (p?.taks) kunyeSatir.push(["TAKS", String(p.taks)]);
+  if (kunye.imar_durumu) kunyeSatir.push(["İmar Durumu", String(kunye.imar_durumu)]);
+  if (kunye.arsa_alani) kunyeSatir.push(["Arsa Alanı", `${kunye.arsa_alani} m²`]);
+  if (kunye.otopark) kunyeSatir.push(["Otopark", String(kunye.otopark)]);
+  const kunyeVar = kunyeSatir.length > 0;
 
   // Benzer birimler — aynı projede müsait diğer daireler (imzalı link ile funnel'da tut + görüntüleme üret)
   const { data: benzerRaw } = await supabase
@@ -114,13 +147,15 @@ export default async function PublicBirimPage({
   );
   const genelToplam = b.liste_fiyati != null ? b.liste_fiyati + eklentiToplam : null;
 
-  const { data: kapakBelge } = await supabase
+  const { data: belgelerRaw } = await supabase
     .from("proje_belge")
-    .select("url")
+    .select("tip, url")
     .eq("proje_id", p?.id)
-    .eq("tip", "kapak")
-    .maybeSingle();
-  const kapak = kapakBelge?.url ?? null;
+    .in("tip", ["kapak", "foto"])
+    .order("created_at", { ascending: true });
+  const belgeler = (belgelerRaw ?? []) as { tip: string; url: string | null }[];
+  const kapak = belgeler.find((x) => x.tip === "kapak")?.url ?? null;
+  const fotolar = belgeler.filter((x) => x.tip === "foto" && x.url).map((x) => x.url as string);
 
   const bDurum = b.durum as BirimDurum;
   const liste = b.liste_fiyati;
@@ -288,7 +323,7 @@ export default async function PublicBirimPage({
                   <span className="text-xs text-gray block">Liste Fiyatı</span>
                   <span className="text-2xl font-bold text-ink">{fmt(liste)} {psim}</span>
                   {odeme ? (
-                    <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm">
+                    <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm print:block hidden">
                       {odeme.pesinat ? (
                         <div className="flex justify-between"><span className="text-gray">Peşinat</span><span className="text-ink">{fmt(odeme.pesinat)} {psim}</span></div>
                       ) : null}
@@ -298,6 +333,19 @@ export default async function PublicBirimPage({
                       {odeme.vade === 0 ? <p className="text-[11px] font-medium text-teal-d">Vade farksız</p> : null}
                     </div>
                   ) : null}
+                  {/* interaktif ödeme simülasyonu (Sprint 2): peşinat kaydır → taksit değişsin; baskıda statik özet basılır */}
+                  <OdemeSlider
+                    liste={liste}
+                    psim={psim}
+                    varsayilanPesinat={op?.pesinat_pct ?? null}
+                    varsayilanTaksit={op?.taksit_sayisi ?? null}
+                    vadeFarkiPct={op?.vade_farki_pct ?? 0}
+                    araOdemePct={(op?.ara_odemeler ?? []).reduce((s, a) => s + (a?.pct ?? 0), 0)}
+                    emlakci={emlakci}
+                    birim={b.id}
+                    proje={p?.id ?? ""}
+                    token={token}
+                  />
                   {eklentiler.length > 0 ? (
                     <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm">
                       <p className="font-sans text-[11px] font-semibold uppercase tracking-wide text-gray">Eklentiler</p>
@@ -327,6 +375,125 @@ export default async function PublicBirimPage({
                 </div>
               )}
             </div>
+
+            {/* Proje Görselleri (üretici yüklediği foto galeri) */}
+            {fotolar.length > 0 ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm print:hidden">
+                <h2 className="font-display text-xl font-semibold text-ink">Proje Görselleri</h2>
+                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {fotolar.map((src, i) => (
+                    <a key={i} href={src} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[4/3] overflow-hidden rounded-xl border border-hair bg-paper">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={src} alt={`${p?.ad} görsel ${i + 1}`} loading="lazy" className="size-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* Proje Hakkında (kunye.aciklama) */}
+            {aciklama ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <h2 className="font-display text-xl font-semibold text-ink">Proje Hakkında</h2>
+                <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-gray">{aciklama}</p>
+              </div>
+            ) : null}
+
+            {/* Olanaklar & Donatı (kunye.donati / malzeme) */}
+            {donati.length > 0 || malzeme.length > 0 ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <h2 className="font-display text-xl font-semibold text-ink">Olanaklar &amp; Donatı</h2>
+                {donati.length > 0 ? (
+                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {donati.map((d) => (
+                      <div key={d} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
+                        <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-teal/10 text-xs text-teal">✓</span>
+                        <span className="min-w-0 truncate">{d}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+                {malzeme.length > 0 ? (
+                  <div className="mt-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray">Yapı Malzemeleri &amp; Standartlar</p>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {malzeme.map((m) => (
+                        <span key={m} className="rounded-md bg-paper px-2.5 py-1 text-xs text-ink">{m}</span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
+            {/* Proje Künyesi (ada/parsel/emsal/taks/imar/arsa/otopark) */}
+            {kunyeVar ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <h2 className="font-display text-xl font-semibold text-ink">Proje Künyesi</h2>
+                <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+                  {kunyeSatir.map(([k, v]) => (
+                    <div key={k} className="rounded-xl bg-paper p-3">
+                      <p className="text-xs text-gray">{k}</p>
+                      <p className="mt-1 font-semibold text-ink">{v}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* Proje Tanıtım Videosu (varsa) */}
+            {(() => {
+              const video = p?.video_url ? videoEmbed(p.video_url as string) : null;
+              if (!video) return null;
+              return (
+                <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm print:hidden">
+                  <h2 className="font-display text-xl font-semibold text-ink">Proje Tanıtımı</h2>
+                  <div className="mt-4 overflow-hidden rounded-xl border border-hair bg-paper">
+                    {video.tip === "iframe" ? (
+                      <iframe
+                        src={video.src}
+                        title={`${p?.ad} tanıtım videosu`}
+                        className="aspect-video w-full"
+                        allow="accelerometer; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                        loading="lazy"
+                      />
+                    ) : (
+                      // eslint-disable-next-line jsx-a11y/media-has-caption
+                      <video src={video.src} controls preload="metadata" className="aspect-video w-full" />
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Konum (koordinat varsa: OpenStreetMap gömme, anahtar gerektirmez) */}
+            {p?.lat != null && p?.lng != null ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm print:hidden">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-xl font-semibold text-ink">Konum</h2>
+                  <a
+                    href={`https://www.google.com/maps?q=${p.lat},${p.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold text-teal-d hover:underline"
+                  >
+                    Haritada aç →
+                  </a>
+                </div>
+                <div className="mt-4 overflow-hidden rounded-xl border border-hair">
+                  <iframe
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${Number(p.lng) - 0.008}%2C${Number(p.lat) - 0.005}%2C${Number(p.lng) + 0.008}%2C${Number(p.lat) + 0.005}&layer=mapnik&marker=${p.lat}%2C${p.lng}`}
+                    title={`${p?.ad} konumu`}
+                    className="h-64 w-full"
+                    loading="lazy"
+                  />
+                </div>
+                <p className="mt-2 text-xs text-gray">
+                  {[p?.mahalle, p?.ilce, p?.il].filter(Boolean).join(", ")}
+                </p>
+              </div>
+            ) : null}
           </div>
 
           {/* Sağ Kolon: İletişim / Danışman & Lead Formu */}

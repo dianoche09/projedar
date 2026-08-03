@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     if (!emlakci || !birim || !token || !verifyShareToken(emlakci, birim, token)) {
       return NextResponse.json({ hata: "Geçersiz istek" }, { status: 400 });
     }
-    const izinli = ["favori"];
+    const izinli = ["favori", "odeme_hesap"];
     if (!izinli.includes(tip)) {
       return NextResponse.json({ hata: "Geçersiz tip" }, { status: 400 });
     }
