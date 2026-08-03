@@ -84,7 +84,6 @@ export function CanliHavuzDemo() {
 
   return (
     <div className="kart relative overflow-hidden p-0">
-      <span className="absolute right-4 top-4 z-10 rounded-md border border-[var(--cizgi-2)] bg-white/90 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">örnek görünüm</span>
 
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-5 py-4 sm:px-6">
         <div className="flex items-center gap-3">
