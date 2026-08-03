@@ -204,13 +204,12 @@ export default async function Home() {
       <section className="relative border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
-            <div className="mx-auto max-w-2xl text-center">
+            <div className="mx-auto max-w-3xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı portföy</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
                 Her proje, tek havuzda canlı
-                <span className="ml-2 inline-block rounded-md border border-[var(--cizgi-2)] bg-white px-2 py-0.5 align-middle font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">örnek</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Her proje bir mini-panel: müsait / opsiyon / satıldı dağılımı, son güncelleme, talep sinyali.</p>
+              <p className="mx-auto mt-4 text-sm leading-relaxed text-ink-soft sm:text-base">Her proje bir mini-panel: müsait / opsiyon / satıldı dağılımı, son güncelleme, talep sinyali.</p>
             </div>
           </Reveal>
           <CanliPortfoy items={PORTFOY} />
