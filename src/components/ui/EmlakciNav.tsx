@@ -11,7 +11,7 @@ import type { ReactNode } from "react";
 const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon: ReactNode }[] = [
   {
     href: "/havuz",
-    etiket: "Havuz",
+    etiket: "Canlı Ağ",
     tam: true,
     canli: true,
     ikon: (
@@ -97,7 +97,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
 export function EmlakciNav({ bildirimSayi = 0 }: { bildirimSayi?: number }) {
   const yol = usePathname();
   const aktif = (n: { href: string; etiket: string; tam?: boolean }) =>
-    n.etiket === "Havuz" ? yol === n.href : n.tam ? yol === n.href || yol.startsWith(`${n.href}/`) : false;
+    n.href === "/havuz" ? yol === n.href : n.tam ? yol === n.href || yol.startsWith(`${n.href}/`) : false;
 
   return (
     <nav className="flex flex-col gap-1.5">
