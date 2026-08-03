@@ -2,6 +2,17 @@
 **Sürüm:** Build v1 · Strateji dokümanı v6'ya dayanır · 13 Haziran 2026
 **Amaç:** Bu dosyayı doğrudan IDE'ye (Cursor / Windsurf + Claude Code) ver. Tek başına yeterlidir; ürünün ne olduğu, MVP kapsamı, mimari, veri modeli (SQL + RLS), akışlar, ekranlar, marka, env değişkenleri ve PR-PR build sırası burada.
 
+---
+
+## ⚠️ REVİZYON NOTU (v1.1 · 2026-08-03 · koddan doğrulanmış)
+Bu handoff "Build v1" fotoğrafıdır; aşağıdaki 3 nokta o günden bu yana değişti. Çelişki hâlinde **bu not ve `ProjePazar-Sistem-Kurallari.md` bağlayıcıdır**, gövde metni değil.
+
+1. **Admin "minimal" değil, kapsamlı.** Gövdedeki "✅ minimal" ve "minimal admin" ifadeleri eskidi. Admin = platform işletmecisi (biz): üyelik/abonelik, hesap ve kota tanımlama, doğrulama ve güven rozeti, concierge, denetim, gelir. Kod bu kapsamlı paneli uyguluyor (`/admin/*`: uyelik, kullanicilar, ureticiler, ofisler, onay, dogrulama, denetim).
+2. **Lead Engine kaldırıldı, yerine "kim getirdi görünürlüğü" (2026-06-18).** Platform lead dağıtmaz, round-robin yapmaz, talep garanti etmez. Danışman lead'i kendi takibi için toplar; müteahhit ad/telefon **sorgulayınca** o müşterinin ilk kimin lead'i olduğunu görür (şeffaflık). Kodda `uretici/lead-sorgu` doğru, `uretici/leadler` feed'i kaldırıldı. Gövdedeki "Lead Engine V0.1 ZORUNLU" ve "round-robin dağıtım" dili bu notla geçersizdir.
+3. **Lansman öncesi operasyonel blokaj: domain ve Resend SMTP.** E-posta onayı açık; domain ile Resend bağlanana kadar gerçek kullanıcı akışı (signup, oturum, profil/belge) uçtan uca çalışmaz. Kod dayanıklı, blokaj operasyoneldir. Ek launch kontrolü: Vercel env `LEAD_SHARE_SECRET` ve `CRON_SECRET` tanımlı mı, Supabase RLS migration'ları (özellikle `db/2026-07-24_lead-select-rls.sql`) uygulandı mı, Vercel Cron Jobs listesinde `/api/cron/*` görünüyor mu.
+
+---
+
 > **Nasıl kullanılır:** Repo köküne bu dosyayı, `CLAUDE.md`'yi, `supabase-schema.sql`'i ve `.env.example`'ı koy. Claude Code'a ilk prompt: *"CLAUDE.md ve ProjePazar-Devir-Dokumani.md'yi oku. Bölüm 16'daki PR-1'i uygula."* Sonra sırayla ilerle.
 
 ---
@@ -21,9 +32,9 @@ ProjePazar, çok-müteahhitli, üretici-kontrollü, **canlı bir konut stoğu da
 | `ofis_yetkili` | Emlak ofisi / franchise broker | ✅ (ekip görünürlüğü basit) |
 | `arsa_sahibi` | Kat karşılığı arsa sahibi | ⛔ Faz 2 (salt-okunur) — MVP'de yok |
 | `marka_yetkili` | Remax/C21 marka | ⛔ Faz 2 |
-| `admin` | Biz (doğrulama, concierge) | ✅ minimal |
+| `admin` | Biz (platform işletmecisi) | ✅ kapsamlı (Bölüm 2 / Sistem Kuralları B.2) |
 
-İlk gelir: **ofis/franchise abonelik** (SaaS). Emlakçı freemium. Müteahhit MVP'de ücretsiz (concierge ile içeri al).
+İlk gelir (fazlı, 2026-06-18 revize): **erken aşamada ana gelir = müteahhit anlaşması** (birebir B2B deal) + **emlakçı bedava** (benimseme kaldıracı). Ofis/franchise abonelik (SaaS) ve emlakçı premium = değer kanıtlanınca sonraki faz. **Komisyon yok (değişmez).**
 
 > **Yurtdışı proje (Faz 2):** "üretici" rolünü yabancı geliştirici **veya** onun **TR master acentesi** üstlenir; tahsis→emlakçı modeli aynen çalışır. Veri modeli baştan ülke/döviz/getiri alanlarına hazır (Bölüm 4, 12). Detay: `ProjePazar-Yurtdisi-Proje-Pazari-Raporu.md`.
 
@@ -38,12 +49,12 @@ Hedef: 6–8 haftada sahaya çıkacak çekirdek. Tek metrik: **ortalama stok gü
 3. **Emlakçı Havuzu:** RLS-filtreli proje listesi + filtre (il/ilçe/tip/durum) + proje detay (künye, kat planı, birim ızgarası, daire detay).
 4. **Opsiyon kilidi + 2 kademeli onay:** durum makinesi (müsait→opsiyonlu→satış_beklemede→satıldı), cron ile zaman aşımı. **Pazarlama çekirdeği: "çift satış olmaz."**
 5. **Paylaşım (deep-link):** emlakçı "Projeyi Seç → WhatsApp'ta Paylaş" (2 dokunuş). Markalı görsel + kişiye özel landing linki. **Sıfır Cloud API maliyeti** (emlakçının kendi telefonundan deep-link).
-6. **Lead Engine V0.1 (ZORUNLU çarpan):** landing'de "Bu projeyle ilgileniyorum, danışman beni arasın" formu → linki paylaşan emlakçıya **Sıcak Lead** düşer. Jenerik dış lead'ler aktif/taze emlakçılara sıra ile dağıtılır.
+6. **Kim-getirdi görünürlüğü (2026-06-18 revize; eski "Lead Engine V0.1 dağıtım" YERİNE):** landing'de "Bu projeyle ilgileniyorum, danışman beni arasın" formu → linki paylaşan emlakçıya lead kaydedilir; danışman lead'i **kendi takibi** için tutar. Müteahhit ad/telefon **sorgulayınca** o müşterinin ilk kimin lead'i olduğunu görür (şeffaflık). **Platform lead dağıtmaz, round-robin yapmaz, talep garanti etmez.** Jenerik dış lead'in aktif/taze emlakçılara sıra ile dağıtımı KALDIRILDI.
 7. **Lead Protection ("ilk bayrağı ben diktim"):** paylaşımda müşteri telefonu (normalize) paylaşan emlakçıya eşlenir; müteahhit numarayı girince "bu lead'i X getirdi" çıkar.
 8. **Tazelik Sigortası:** N gün (örn. 15) hareketsiz projede cron → müteahhite **butonlu** WhatsApp teyidi ("hâlâ X TL mi? Evet/Hayır"); cevapsızsa emlakçı ekranında yeşil rozet **sarıya** döner.
 9. **Fiyat Sapma Alarmı (on-platform, lite):** platformda tek fiyat zaten sapmayı engeller; emlakçı farklı fiyat girmeye çalışırsa engellenir/uyarılır. (Off-platform Sahibinden taraması ⛔ Faz 2.)
 10. **PWA:** mobil-önce, kurulabilir, çevrimdışı son-senkron rozeti. Basit Mod (3 buton): Bul → WhatsApp Paylaş → Ara.
-11. **Concierge/Admin:** müteahhit stoğunu bizim girmemiz için minimal admin.
+11. **Concierge/Admin:** Ü2 müteahhit stoğunu bizim girmemiz için concierge + **kapsamlı admin** (üyelik/abonelik, hesap ve kota tanımlama, doğrulama/rozet, denetim, gelir; bkz. üst revizyon notu ve Sistem Kuralları Bölüm 2). *"Minimal admin" ifadesi eskidi; kod kapsamlı paneli uyguluyor.*
 12. **Proje zaman çizelgesi & künye:** inşaat başlama/tahmini teslim/**iskan tarihi** + inşaat aşaması + ilerleme % + etap; proje detayda görünür (off-plan yatırımcısı için kritik).
 13. **Belge-doğrulanmış proje rozeti:** üretici proje belgelerini (ruhsat/iskan/yapı denetim) yükler; admin/concierge doğrular → "belgeli proje" rozeti (güven protokolü; EDAP'tan öğrenildi). *Satış sonrası alıcı evrak yönetimi = Faz 2.*
 14. **Public proje microsite:** her projeye login'siz tek URL (galeri, kat planı, künye, harita, zaman çizelgesi). Emlakçı tek link atar; SEO + paylaşım. (`public_slug`)
@@ -130,7 +141,7 @@ Tam şema + RLS: **Bölüm 12** ve `supabase-schema.sql`.
 
 **5.4 Opsiyon → satış:** Emlakçı "Opsiyon Al" → birim `opsiyonlu`, `kilit_bitis=now()+48h`, **DB-seviyesinde tek opsiyon** (unique partial index). "Sattım" → `satis_beklemede` → üretici onay → `satildi`. Süre dolarsa cron → `musait`.
 
-**5.5 Lead Engine V0.1:** Landing formu (paylaşan varsa o emlakçıya), jenerik dış lead → aktif/taze emlakçı sırasına round-robin. Lead müteahhit ve ilgili emlakçı panelinde "Sıcak Lead".
+**5.5 Kim-getirdi görünürlüğü (revize):** Landing formu lead'i paylaşan danışmana kaydedilir; danışman kendi takibini yapar. Müteahhit ad/telefon **sorgulayınca** ilk paylaşanı görür. Platform **dağıtmaz, garanti etmez**; round-robin ve Lead Engine KALDIRILDI (bkz. üst revizyon notu, Sistem Kuralları Bölüm 5.2).
 
 **5.6 Tazelik Sigortası:** Cron her gün son_guncelleme > N gün projeleri tarar → müteahhite Cloud API butonlu şablon ("hâlâ X TL mi? Evet/Hayır"). Evet → son_guncelleme yenilenir. Cevapsız → birim/proje `tazelik=stale` → emlakçı UI rozet sarı.
 
@@ -219,7 +230,11 @@ WHATSAPP_TEMPLATE_FRESHNESS=stok_teyit
 ANTHROPIC_API_KEY=
 # Cron
 CRON_SECRET=
+# E-posta (lansman öncesi zorunlu)
+RESEND_API_KEY=                     # domain + Resend SMTP bağlanınca; onay maili buradan gider
 ```
+
+> **⚠️ Lansman öncesi operasyonel blokaj (üst revizyon notu #3):** E-posta onayı açık. Domain ve Resend SMTP bağlanana kadar gerçek kullanıcı akışı (signup → oturum → profil/belge) uçtan uca çalışmaz (kod dayanıklı, blokaj operasyonel). Deploy öncesi doğrula: `LEAD_SHARE_SECRET` + `CRON_SECRET` Vercel'de tanımlı mı, RLS migration'ları (özellikle `db/2026-07-24_lead-select-rls.sql`) uygulandı mı, Vercel Cron Jobs'ta `/api/cron/*` görünüyor mu.
 
 ---
 
@@ -372,7 +387,7 @@ Her özellikte test: *"canlı stok + üretici-kontrolü + güven + dağıtımı 
 - **PR-5 — Emlakçı havuz + proje detay kartları (MVP-3,15):** RLS-filtreli liste + filtre + proje detay + daire modalı (salt-okunur fiyat); kira getirisi/video/proje sorumlusu kartları; emlakçı kendi komisyonunu görür.
 - **PR-6 — Opsiyon makinesi + audit log (MVP-4,17):** Opsiyon Al (DB lock; yalnız `satilabilir=true`+`musait`) + Sattım + üretici onay; opsiyon/iptal/onay olayları `events`'e; `/api/cron/option-expiry` + `/api/cron/stok-acilis` (`satisa_acilis` geçen `planli` → `musait`).
 - **PR-7 — Paylaşım + Lead Protection + public microsite (MVP-5,7,14):** imzalı landing `/p/...` + deep-link WhatsApp + markalı görsel + telefon normalize eşleşme + events log; login'siz public proje microsite (`public_slug`: galeri/kat planı/künye/harita/zaman çizelgesi).
-- **PR-8 — Lead Engine V0.1 + eşleştirme bildirimi (MVP-6,16):** landing lead formu (KVKK rıza) → sıcak lead paylaşana; jenerik → round-robin dağıtım; üretici/emlakçı lead inbox; yeni/uygun (tahsisli) proje → bölge/bütçe ile ilgili emlakçıya bildirim.
+- **PR-8 — Kim-getirdi görünürlüğü + eşleştirme bildirimi (MVP-6,16; revize):** landing lead formu (KVKK rıza) → lead paylaşana kaydedilir; müteahhit **sorgu** ile ilk paylaşanı görür (feed/dağıtım YOK); üretici/emlakçı lead görünümü; yeni/uygun (tahsisli) proje → bölge/bütçe ile ilgili emlakçıya bildirim. **Round-robin/Lead Engine kaldırıldı** (bkz. üst revizyon notu).
 - **PR-9 — Tazelik + Fiyat Sapma (MVP-8,9):** `/api/cron/freshness` + butonlu WhatsApp teyit şablonu + stale rozet; on-platform fiyat kilidi.
 - **PR-10 — Admin/Concierge + belge doğrulama rozeti (MVP-11,13b):** minimal admin: concierge stok girişi, üretici doğrulama, proje belgelerini doğrula → "belgeli proje" rozeti (`belge_dogrulandi`).
 - **PR-11 — PWA/Saha cilası + deploy (MVP-10):** Basit Mod (3 buton: Bul→Paylaş→Ara), çevrimdışı rozet, mobil son rötuşlar; Vercel deploy.
