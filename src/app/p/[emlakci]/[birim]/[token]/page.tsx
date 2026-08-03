@@ -95,6 +95,8 @@ export default async function PublicBirimPage({
   const aciklama = typeof kunye.aciklama === "string" ? (kunye.aciklama as string).trim() : "";
   const donati = Array.isArray(kunye.donati) ? (kunye.donati as string[]) : [];
   const malzeme = Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]) : [];
+  const daireOzellikleri = Array.isArray(kunye.daire_ozellikleri) ? (kunye.daire_ozellikleri as string[]) : [];
+  const yakinCevre = Array.isArray(kunye.yakin_cevre) ? (kunye.yakin_cevre as string[]) : [];
   const kunyeSatir: [string, string][] = [];
   if (p?.ada || p?.parsel) kunyeSatir.push(["Ada / Parsel", [p?.ada, p?.parsel].filter(Boolean).join(" / ")]);
   if (p?.emsal) kunyeSatir.push(["Emsal (KAKS)", String(p.emsal)]);
@@ -423,6 +425,36 @@ export default async function PublicBirimPage({
                     </div>
                   </div>
                 ) : null}
+              </div>
+            ) : null}
+
+            {/* Daire İçi Özellikler (kunye.daire_ozellikleri) */}
+            {daireOzellikleri.length > 0 ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <h2 className="font-display text-xl font-semibold text-ink">Daire İçi Özellikler</h2>
+                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {daireOzellikleri.map((d) => (
+                    <div key={d} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
+                      <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-navy/10 text-xs text-navy">✓</span>
+                      <span className="min-w-0 truncate">{d}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {/* Yakın Çevre (kunye.yakin_cevre) */}
+            {yakinCevre.length > 0 ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <h2 className="font-display text-xl font-semibold text-ink">Yakın Çevre</h2>
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {yakinCevre.map((y) => (
+                    <li key={y} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
+                      <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-teal/10 text-xs text-teal">◉</span>
+                      <span className="min-w-0">{y}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ) : null}
 

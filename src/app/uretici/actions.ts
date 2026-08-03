@@ -984,6 +984,14 @@ export async function projeKunyeGuncelle(formData: FormData) {
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean),
+    daire_ozellikleri: String(formData.get("daire_ozellikleri") ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+    yakin_cevre: String(formData.get("yakin_cevre") ?? "")
+      .split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean),
   };
 
   const supabase = await createClient();

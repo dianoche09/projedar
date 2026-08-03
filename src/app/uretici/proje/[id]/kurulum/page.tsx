@@ -212,6 +212,8 @@ export default async function ProjeKurulum({
           </label>
           <textarea name="malzeme" defaultValue={Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]).join("\n") : ""} placeholder="Malzeme (her satır: Pencere · Schüco)" rows={3} className={`${inpCls} sm:col-span-2`} />
           <input name="donati" defaultValue={Array.isArray(kunye.donati) ? (kunye.donati as string[]).join(", ") : ""} placeholder="Sosyal donatı (virgülle: Havuz, Fitness, Güvenlik)" className={`${inpCls} sm:col-span-2`} />
+          <input name="daire_ozellikleri" defaultValue={Array.isArray(kunye.daire_ozellikleri) ? (kunye.daire_ozellikleri as string[]).join(", ") : ""} placeholder="Daire içi (virgülle: Ankastre, Akıllı ev, Çelik kapı, Fiber)" className={`${inpCls} sm:col-span-2`} />
+          <textarea name="yakin_cevre" defaultValue={Array.isArray(kunye.yakin_cevre) ? (kunye.yakin_cevre as string[]).join("\n") : ""} placeholder="Yakın çevre (her satır: Metro 400m, Bilkent Ü. 2km, AVM 1km)" rows={3} className={`${inpCls} sm:col-span-2`} />
           <div className="sm:col-span-2"><SubmitButton>Künyeyi kaydet</SubmitButton></div>
         </form>
       </Bolum>
