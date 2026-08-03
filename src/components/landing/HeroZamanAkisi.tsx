@@ -201,9 +201,9 @@ export function HeroFazSeridi() {
               <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/60">Müteahhit · Proje sahibi</p>
               <p className="mt-1.5 font-display text-lg font-extrabold text-white">Proje sahibiyim</p>
               <p className="mt-1 text-[12px] leading-snug text-white/70">Projeni yetkili danışman ağına aç; kim neyi görür, sen belirle. Satışı canlı izle.</p>
-              <p className="mt-2.5 text-[13px] font-semibold text-[#7fd4c4]">
+              <span className="mt-3 inline-flex h-10 items-center justify-center gap-1.5 rounded-full bg-[#1e9b8a] px-5 text-[13px] font-bold text-white transition-colors group-hover:bg-[#1a8676]">
                 Projemi satış ağına aç <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </p>
+              </span>
             </Link>
             <Link
               href="/emlakci"
@@ -215,9 +215,9 @@ export function HeroFazSeridi() {
                 <span className="rounded-full bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-[var(--color-teal-d)]">Ücretsiz</span>
               </p>
               <p className="mt-1 text-[12px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör; müşterine tek dokunuşla doğru fiyatı paylaş.</p>
-              <p className="mt-2.5 text-[13px] font-semibold text-[var(--color-teal-d)]">
+              <span className="mt-3 inline-flex h-10 items-center justify-center gap-1.5 rounded-full border-2 border-[var(--color-teal-d)] px-5 text-[13px] font-bold text-[var(--color-teal-d)] transition-colors group-hover:bg-[var(--color-teal-d)] group-hover:text-white">
                 Danışman olarak katıl <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
-              </p>
+              </span>
             </Link>
           </div>
         </div>
