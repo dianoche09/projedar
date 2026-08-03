@@ -47,7 +47,15 @@ export async function opsiyonTalepGonder(
   const { error } = await supabase
     .from("opsiyon_talep")
     .insert({ birim_id: b.data, talep_eden_id: user.id, durum: "beklemede" });
-  if (!error) {
+
+  // TANI (geçici): insert reddedilirse gerçek Postgres hatasını yüzeye çıkar (RLS/constraint kök-neden).
+  if (error) {
+    console.error("[opsiyonTalepGonder] insert HATASI:", error.code, "|", error.message, "|", error.details, "|", error.hint);
+    return { ok: false, mesaj: `Talep gönderilemedi [${error.code ?? "?"}]: ${error.message}` };
+  }
+
+  // insert BAŞARILI → kayıt/bildirim best-effort: burada bir throw core aksiyonu ASLA düşürmemeli.
+  try {
     await kayitYaz({
       tip: "opsiyon",
       profileId: user.id,
@@ -71,13 +79,15 @@ export async function opsiyonTalepGonder(
         link: "/uretici/opsiyonlar",
       });
     }
+  } catch (e) {
+    // TANI: insert sonrası çökme buraya düşer (createAdminClient env / bildirim tablosu vb.). Talep zaten oluştu.
+    console.error("[opsiyonTalepGonder] insert SONRASI bildirim/kayit hatası (yutuldu):", e);
   }
+
   revalidatePath(`/havuz/proje/${p.data}`);
   revalidatePath("/havuz");
   revalidatePath("/havuz/opsiyonlarim");
-  return error
-    ? { ok: false, mesaj: "Talep gönderilemedi — daire müsait olmayabilir" }
-    : { ok: true, mesaj: "Opsiyon talebin gönderildi — müteahhit onayına düştü" };
+  return { ok: true, mesaj: "Opsiyon talebin gönderildi — müteahhit onayına düştü" };
 }
 
 // ── KYC belge yükleme (mesleki yeterlilik + vergi levhası) → lib/belge (tek upload kaynağı) ──
