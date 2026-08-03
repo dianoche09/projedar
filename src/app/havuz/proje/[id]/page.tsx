@@ -7,6 +7,8 @@ import { EmlakciStok } from "@/components/EmlakciStok";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
 import { projeKapak } from "@/lib/gorsel";
 import { generateShareToken } from "@/lib/sharing";
+import { OzellikGoster } from "@/components/OzellikGoster";
+import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 
 type Belge = { id: string; tip: string | null; ad: string | null; url: string | null };
 type Mahal = { id: string; mahal: string; zemin: string | null; duvar: string | null; tavan: string | null; marka: string | null };
@@ -79,7 +81,7 @@ export default async function HavuzProjeDetay({
   const haritaVar = proje.lat != null && proje.lng != null;
   const haritaUrl = haritaVar ? `https://www.google.com/maps/search/?api=1&query=${proje.lat},${proje.lng}` : null;
 
-  const donati = Array.isArray(kunye.donati) ? (kunye.donati as string[]) : [];
+  const ozellikler = okuOzellikler(kunye);
   const malzeme = Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]) : [];
   const kunyeSatir: [string, string][] = [
     ["Ada / Parsel", `${proje.ada ?? "—"} / ${proje.parsel ?? "—"}`],
@@ -96,7 +98,7 @@ export default async function HavuzProjeDetay({
     kunye.imar_durumu ||
     kunye.otopark ||
     kunye.arsa_alani ||
-    donati.length ||
+    ozellikVarMi(ozellikler) ||
     malzeme.length
   );
 
@@ -344,20 +346,7 @@ export default async function HavuzProjeDetay({
             ))}
           </div>
 
-          {donati.length > 0 ? (
-            <div className="mt-5">
-              <p className="mono mb-2 text-[10px] font-bold uppercase tracking-[0.06em] text-[var(--ink-faint)]">
-                Sosyal Donatılar
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {donati.map((d) => (
-                  <span key={d} className="rounded-xl border border-hair bg-teal-soft px-3 py-1.5 text-[13px] font-semibold text-teal-d">
-                    {d}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
+          {ozellikVarMi(ozellikler) ? <OzellikGoster ozellikler={ozellikler} className="mt-5" /> : null}
 
           {malzeme.length > 0 ? (
             <div className="mt-5">

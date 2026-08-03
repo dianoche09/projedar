@@ -10,6 +10,8 @@ import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
 import { OdemeSlider } from "./OdemeSlider";
 import { Galeri } from "./Galeri";
+import { OzellikGoster } from "@/components/OzellikGoster";
+import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 
 /** Video URL'sini gömülebilir kaynağa çevirir (YouTube/Vimeo iframe, aksi halde doğrudan video). */
 function videoEmbed(url: string): { tip: "iframe" | "video"; src: string } | null {
@@ -94,10 +96,8 @@ export default async function PublicBirimPage({
   // Proje künye / donatı / açıklama — kunye jsonb (üretici formundan; havuz/proje ile aynı kaynak)
   const kunye = (p?.kunye ?? {}) as Record<string, unknown>;
   const aciklama = typeof kunye.aciklama === "string" ? (kunye.aciklama as string).trim() : "";
-  const donati = Array.isArray(kunye.donati) ? (kunye.donati as string[]) : [];
   const malzeme = Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]) : [];
-  const daireOzellikleri = Array.isArray(kunye.daire_ozellikleri) ? (kunye.daire_ozellikleri as string[]) : [];
-  const yakinCevre = Array.isArray(kunye.yakin_cevre) ? (kunye.yakin_cevre as string[]) : [];
+  const ozellikler = okuOzellikler(kunye);
   const kunyeSatir: [string, string][] = [];
   if (p?.ada || p?.parsel) kunyeSatir.push(["Ada / Parsel", [p?.ada, p?.parsel].filter(Boolean).join(" / ")]);
   if (p?.emsal) kunyeSatir.push(["Emsal (KAKS)", String(p.emsal)]);
@@ -395,23 +395,14 @@ export default async function PublicBirimPage({
               </div>
             ) : null}
 
-            {/* Olanaklar & Donatı (kunye.donati / malzeme) */}
-            {donati.length > 0 || malzeme.length > 0 ? (
+            {/* Olanaklar & Özellikler (yapılandırılmış taksonomi: daire içi/sosyal/bina/ulaşım/güvenlik/teknik/otopark/manzara) + malzeme */}
+            {ozellikVarMi(ozellikler) || malzeme.length > 0 ? (
               <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
-                <h2 className="font-display text-xl font-semibold text-ink">Olanaklar &amp; Donatı</h2>
-                {donati.length > 0 ? (
-                  <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {donati.map((d) => (
-                      <div key={d} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
-                        <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-teal/10 text-xs text-teal">✓</span>
-                        <span className="min-w-0 truncate">{d}</span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
+                <h2 className="font-display text-xl font-semibold text-ink">Olanaklar &amp; Özellikler</h2>
+                <OzellikGoster ozellikler={ozellikler} className="mt-4" />
                 {malzeme.length > 0 ? (
                   <div className="mt-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray">Yapı Malzemeleri &amp; Standartlar</p>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-faint)]">Yapı Malzemeleri &amp; Standartlar</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {malzeme.map((m) => (
                         <span key={m} className="rounded-md bg-paper px-2.5 py-1 text-xs text-ink">{m}</span>
@@ -419,36 +410,6 @@ export default async function PublicBirimPage({
                     </div>
                   </div>
                 ) : null}
-              </div>
-            ) : null}
-
-            {/* Daire İçi Özellikler (kunye.daire_ozellikleri) */}
-            {daireOzellikleri.length > 0 ? (
-              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
-                <h2 className="font-display text-xl font-semibold text-ink">Daire İçi Özellikler</h2>
-                <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {daireOzellikleri.map((d) => (
-                    <div key={d} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
-                      <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-navy/10 text-xs text-navy">✓</span>
-                      <span className="min-w-0 truncate">{d}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-
-            {/* Yakın Çevre (kunye.yakin_cevre) */}
-            {yakinCevre.length > 0 ? (
-              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
-                <h2 className="font-display text-xl font-semibold text-ink">Yakın Çevre</h2>
-                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {yakinCevre.map((y) => (
-                    <li key={y} className="flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-sm text-ink">
-                      <span className="inline-flex size-5 flex-none items-center justify-center rounded-md bg-teal/10 text-xs text-teal">◉</span>
-                      <span className="min-w-0">{y}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             ) : null}
 

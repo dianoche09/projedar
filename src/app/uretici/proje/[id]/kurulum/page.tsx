@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, mahalEkle, mahalSil } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { StokKurulumu } from "../StokKurulumu";
+import { OzellikSecici } from "@/components/OzellikSecici";
+import { okuOzellikler } from "@/lib/ozellikler";
 
 const inpCls =
   "w-full rounded-lg border border-hair bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
@@ -211,9 +213,7 @@ export default async function ProjeKurulum({
             <input type="checkbox" name="kat_karsiligi" defaultChecked={!!kunye.kat_karsiligi} className="size-4" /> Kat karşılığı proje
           </label>
           <textarea name="malzeme" defaultValue={Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]).join("\n") : ""} placeholder="Malzeme (her satır: Pencere · Schüco)" rows={3} className={`${inpCls} sm:col-span-2`} />
-          <input name="donati" defaultValue={Array.isArray(kunye.donati) ? (kunye.donati as string[]).join(", ") : ""} placeholder="Sosyal donatı (virgülle: Havuz, Fitness, Güvenlik)" className={`${inpCls} sm:col-span-2`} />
-          <input name="daire_ozellikleri" defaultValue={Array.isArray(kunye.daire_ozellikleri) ? (kunye.daire_ozellikleri as string[]).join(", ") : ""} placeholder="Daire içi (virgülle: Ankastre, Akıllı ev, Çelik kapı, Fiber)" className={`${inpCls} sm:col-span-2`} />
-          <textarea name="yakin_cevre" defaultValue={Array.isArray(kunye.yakin_cevre) ? (kunye.yakin_cevre as string[]).join("\n") : ""} placeholder="Yakın çevre (her satır: Metro 400m, Bilkent Ü. 2km, AVM 1km)" rows={3} className={`${inpCls} sm:col-span-2`} />
+          <OzellikSecici current={okuOzellikler(kunye)} />
           <div className="sm:col-span-2"><SubmitButton>Künyeyi kaydet</SubmitButton></div>
         </form>
       </Bolum>

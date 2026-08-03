@@ -8,6 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz, kayitlarYaz, durumTip } from "@/lib/events";
 import { bildirimYaz, bildirimlerYaz } from "@/lib/bildirim";
 import { UUID_RE, zUuid } from "@/lib/uuid";
+import { parseOzellikler } from "@/lib/ozellikler";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
 import * as XLSX from "xlsx";
@@ -980,18 +981,9 @@ export async function projeKunyeGuncelle(formData: FormData) {
       .split("\n")
       .map((s) => s.trim())
       .filter(Boolean),
-    donati: String(formData.get("donati") ?? "")
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean),
-    daire_ozellikleri: String(formData.get("daire_ozellikleri") ?? "")
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean),
-    yakin_cevre: String(formData.get("yakin_cevre") ?? "")
-      .split("\n")
-      .map((s) => s.trim())
-      .filter(Boolean),
+    // Yapılandırılmış öznitelikler (sabit sözlük, filtrelenebilir). Eski serbest-metin
+    // donati/daire_ozellikleri/yakin_cevre okuOzellikler() ile geri-uyumlu okunur.
+    ozellikler: parseOzellikler(formData),
   };
 
   const supabase = await createClient();
