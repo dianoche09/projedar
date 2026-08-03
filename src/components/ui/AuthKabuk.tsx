@@ -1,28 +1,9 @@
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
-/** Beyaz wordmark + 3×3 sinyal ızgarası (yeşil/teal/amber) — koyu marka paneli için. */
+/** Koyu marka paneli logosu — tek kaynak: Logo component'i (radar + beyaz wordmark). */
 function MarkaLogo({ boyut = "text-2xl" }: { boyut?: string }) {
-  return (
-    <span className={`inline-flex items-center gap-3 font-display ${boyut} font-extrabold tracking-tight text-white`}>
-      <span className="grid grid-cols-3 gap-1" aria-hidden>
-        {Array.from({ length: 9 }).map((_, i) => (
-          <span
-            key={i}
-            className={`size-2.5 rounded-[3px] ${
-              i === 2
-                ? "bg-green shadow-[0_0_8px_var(--color-green)]"
-                : i === 4
-                  ? "bg-teal shadow-[0_0_10px_var(--color-teal)]"
-                  : i === 6
-                    ? "bg-amber shadow-[0_0_8px_var(--color-amber)]"
-                    : "bg-white/25"
-            }`}
-          />
-        ))}
-      </span>
-      proje<span className="text-teal">dar</span>
-    </span>
-  );
+  return <Logo size={boyut === "text-xl" ? 26 : 32} wordmark acik />;
 }
 
 /**

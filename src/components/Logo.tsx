@@ -1,23 +1,22 @@
-/** Projedar sinyal logosu — 3×3 ızgara (Marka Panosu). Köşelerde yeşil/amber/kırmızı sinyal. */
+/** Projedar radar logosu — sonar halkaları + canlı blipler (yeşil müsait / amber opsiyon /
+ *  kırmızı satıldı) + yeşil ping halkası. acik=true → koyu zemin (beyaz halka/merkez). */
 export function Logo({ size = 28, wordmark = false, acik = false }: { size?: number; wordmark?: boolean; acik?: boolean }) {
-  // o=outline navy, g=yeşil, a=amber, r=kırmızı (Ekranlar.html birebir)
-  const cells = ["o", "o", "g", "o", "a", "o", "r", "o", "o"] as const;
-  const renk: Record<string, string> = { g: "bg-green", a: "bg-amber", r: "bg-red" };
-  const birim = size / 3.4;
-  const bosluk = size / 11;
+  const halka1 = acik ? "rgba(255,255,255,0.34)" : "rgba(16,36,58,0.24)";
+  const halka2 = acik ? "rgba(255,255,255,0.18)" : "rgba(16,36,58,0.13)";
+  const merkez = acik ? "#ffffff" : "#10243a";
   return (
     <span className="inline-flex items-center gap-2.5">
-      <span className="grid grid-cols-3" style={{ gap: bosluk }} aria-hidden>
-        {cells.map((c, i) => (
-          <span
-            key={i}
-            style={{ width: birim, height: birim }}
-            className={`rounded-[3px] ${c === "o" ? (acik ? "ring-2 ring-inset ring-white/85" : "ring-2 ring-inset ring-navy/85") : renk[c]}`}
-          />
-        ))}
-      </span>
+      <svg width={size} height={size} viewBox="0 0 40 40" className="flex-none" aria-hidden>
+        <circle cx="20" cy="20" r="15" fill="none" stroke={halka2} strokeWidth="1.8" />
+        <circle cx="20" cy="20" r="8" fill="none" stroke={halka1} strokeWidth="1.8" />
+        <circle cx="20" cy="20" r="2" fill={merkez} />
+        <circle cx="11" cy="13.5" r="3.4" fill="#d99a1a" />
+        <circle cx="24" cy="29" r="3.4" fill="#d15a4e" />
+        <circle cx="29" cy="14" r="6.6" fill="none" stroke="#2fb36b" strokeWidth="1.4" opacity="0.5" />
+        <circle cx="29" cy="14" r="3.8" fill="#2fb36b" />
+      </svg>
       {wordmark ? (
-        <span className={`font-display text-xl font-extrabold tracking-tight ${acik ? "text-white" : "text-navy"}`}>
+        <span className={`font-display text-2xl font-extrabold tracking-tight ${acik ? "text-white" : "text-navy"}`}>
           proje<span className="text-teal">dar</span>
         </span>
       ) : null}
