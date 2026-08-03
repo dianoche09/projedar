@@ -9,6 +9,7 @@ import { GridMark } from "@/components/GridMark";
 import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
 import { OdemeSlider } from "./OdemeSlider";
+import { Galeri } from "./Galeri";
 
 /** Video URL'sini gömülebilir kaynağa çevirir (YouTube/Vimeo iframe, aksi halde doğrudan video). */
 function videoEmbed(url: string): { tip: "iframe" | "video"; src: string } | null {
@@ -382,14 +383,7 @@ export default async function PublicBirimPage({
             {fotolar.length > 0 ? (
               <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm print:hidden">
                 <h2 className="font-display text-xl font-semibold text-ink">Proje Görselleri</h2>
-                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {fotolar.map((src, i) => (
-                    <a key={i} href={src} target="_blank" rel="noopener noreferrer" className="group relative block aspect-[4/3] overflow-hidden rounded-xl border border-hair bg-paper">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={src} alt={`${p?.ad} görsel ${i + 1}`} loading="lazy" className="size-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                    </a>
-                  ))}
-                </div>
+                <Galeri fotolar={fotolar} ad={p?.ad ?? ""} />
               </div>
             ) : null}
 
