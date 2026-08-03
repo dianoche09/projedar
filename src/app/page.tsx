@@ -72,8 +72,9 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
+  { etiket: "Müteahhitler için", href: "/muteahhit" },
+  { etiket: "Danışmanlar için", href: "/emlakci" },
   { etiket: "Nasıl çalışır", href: "#nasil-calisir" },
-  { etiket: "Kimler için", href: "#kimler-icin" },
   { etiket: "Sık sorulanlar", href: "#sss" },
 ];
 
