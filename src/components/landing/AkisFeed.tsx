@@ -34,7 +34,7 @@ const OLAY_HAVUZU: { renk: OlayRenk; metin: string; etiket: string }[] = [
   { renk: "teal", metin: "A Blok fiyat listesi güncellendi", etiket: "Çankaya Vadi · üretici" },
   { renk: "red", metin: "B-6-3 satıldı", etiket: "Çankaya Vadi · Yılmaz Emlak" },
   { renk: "amber", metin: "Opsiyon süresi doldu: A-5-2", etiket: "Meram Panorama · sistem" },
-  { renk: "green", metin: "Kaya Emlak havuza katıldı", etiket: "Meram Panorama · tahsis" },
+  { renk: "green", metin: "Kaya Emlak ağa katıldı", etiket: "Meram Panorama · tahsis" },
 ];
 
 const BASLANGIC_DAKIKA = 842; // 14:02

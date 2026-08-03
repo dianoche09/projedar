@@ -26,7 +26,7 @@ export function SonMesajCta() {
         Yarın sabahki ilk mesajın bu olmasın.
       </h2>
       <p className="mx-auto mt-5 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-        Canlı havuzuna gir, tahsisli stoğunu gör, ilk linkini bugün paylaş. Kurulum yok, eğitim yok,
+        Satış ağına gir, tahsisli stoğunu gör, ilk linkini bugün paylaş. Kurulum yok, eğitim yok,
         ücret yok.
       </p>
 

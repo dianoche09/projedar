@@ -95,7 +95,7 @@ export function AgDiyagrami() {
           viewBox="0 0 980 430"
           className="h-auto w-full"
           role="img"
-          aria-label="Akış diyagramı: geliştirici firmalar stoğu canlı proje havuzuna verir, her yetkili danışman havuzdan yalnız kendisine tahsisli birimleri görür ve müşteriye canlı fiyatlı bağlantı paylaşır"
+          aria-label="Akış diyagramı: geliştirici firmalar stoğu canlı satış ağına verir, her yetkili danışman ağdan yalnız kendisine tahsisli birimleri görür ve müşteriye canlı fiyatlı bağlantı paylaşır"
         >
           {/* ince koordinat/mimari doku */}
           <g aria-hidden="true">
@@ -114,7 +114,7 @@ export function AgDiyagrami() {
           {(
             [
               [115, "GELİŞTİRİCİ FİRMALAR"],
-              [400, "CANLI PROJE HAVUZU"],
+              [400, "CANLI SATIŞ AĞI"],
               [710, "YETKİLİ DANIŞMANLAR"],
               [890, "MÜŞTERİ BAĞLANTILARI"],
             ] as const
@@ -320,7 +320,7 @@ export function AgDiyagrami() {
           <div className="mt-3 rounded-2xl border border-[var(--cizgi)] bg-white p-4 shadow-[var(--golge-1)]">
             <div className="mb-2.5 flex items-center justify-between">
               <span className="font-mono text-[9.5px] font-bold uppercase tracking-[0.08em] text-ink-soft">
-                Canlı proje havuzu
+                Canlı satış ağı
               </span>
               <span className="font-mono text-[9px] text-[var(--ink-faint)]">tek doğru kaynak</span>
             </div>

@@ -355,7 +355,7 @@ export function KuleDemo() {
           <div className="min-w-0 flex-1 rounded-2xl border border-[var(--cizgi)] bg-[var(--color-soft)] p-4">
             <div className="flex items-center justify-between gap-2">
               <span className="text-[12px] font-bold text-ink">Başka danışmanın ekranı</span>
-              <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--ink-faint)]">aynı havuz</span>
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--ink-faint)]">aynı ağ</span>
             </div>
             <div className="mt-3 space-y-1">
               {katlar.map((kat) => (
@@ -393,7 +393,7 @@ export function KuleDemo() {
           {/* bileşen içi mini akış */}
           <div className="min-w-0 flex-1 rounded-2xl border border-[var(--cizgi)] bg-white p-4">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[12px] font-bold text-ink">Havuz hareketi</span>
+              <span className="text-[12px] font-bold text-ink">Ağ hareketi</span>
               <span className="flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider text-[#1f7d4c]">
                 <span className="size-1.5 rounded-full bg-green nabiz" /> canlı
               </span>

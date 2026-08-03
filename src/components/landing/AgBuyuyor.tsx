@@ -116,15 +116,15 @@ export function AgBuyuyor({ altKisim }: { altKisim?: React.ReactNode } = {}) {
                     <span className="rounded-full border border-[#2fb36b]/50 px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-[#2fb36b]">Ücretsiz</span>
                   </h3>
                   <p className="mt-3 text-[14px] leading-relaxed text-white/65">
-                    Size tahsisli projeleri tek canlı havuzda görün. &quot;Müsait mi?&quot; diye kimseyi aramayın:
+                    Size tahsisli projeleri tek canlı ağda görün. &quot;Müsait mi?&quot; diye kimseyi aramayın:
                     durum ekranda, fiyat günceldir. Tek dokunuşla paylaşın, opsiyonu anında kilitleyin.
                   </p>
-                  <p className="mono mt-4 text-[11.5px] tracking-wide text-[#3fbfae]">havuz · paylaş · opsiyon · lead</p>
+                  <p className="mono mt-4 text-[11.5px] tracking-wide text-[#3fbfae]">ağ · paylaş · opsiyon · lead</p>
                   <Link
                     href="/kayit?rol=emlakci"
                     className="mt-6 inline-flex h-11 items-center justify-center rounded-[13px] border border-white/30 px-6 text-[14px] font-semibold text-[#ece9e2] transition-colors hover:border-white/60"
                   >
-                    Havuza Katıl →
+                    Ağa Katıl →
                   </Link>
                 </div>
               </div>

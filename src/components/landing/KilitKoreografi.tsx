@@ -22,7 +22,7 @@ const ADIMLAR: Adim[] = [
   { kelime: "KİLİT", uzun: "48 saat kilit", renk: "#e3a12c", log: "14:02:12 · B-7-1 kilitlendi · 48 sa · veritabanı seviyesinde" },
   { kelime: "ENGEL", uzun: "ikinci erişim engellendi", renk: "#d15a4e", log: "14:03:40 · Kaya Emlak aynı birime talep gönderdi: reddedildi" },
   { kelime: "KAYIT", uzun: "işlem günlüğü", renk: "#3cc7b2", log: "14:03:41 · hareket günlüğe yazıldı · iz no 8412" },
-  { kelime: "AĞ", uzun: "ağ güncellendi", renk: "#2fb36b", log: "14:03:41 · havuzdaki tüm danışman ekranlarında durum aynı anda değişti" },
+  { kelime: "AĞ", uzun: "ağ güncellendi", renk: "#2fb36b", log: "14:03:41 · ağdaki tüm danışman ekranlarında durum aynı anda değişti" },
 ];
 
 const SON = ADIMLAR.length - 1;

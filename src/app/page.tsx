@@ -93,10 +93,10 @@ const FAYDA = {
   cons: {
     rol: "Gayrimenkul danışmanı için",
     baslik: "Doğru daire, doğru fiyat, tek dokunuş",
-    alt: "Canlı havuz, dağınık dosya yok, ücretsiz.",
+    alt: "Canlı satış ağı, dağınık dosya yok, ücretsiz.",
     sinyal: "var(--color-teal)",
     maddeler: [
-      ["Canlı havuzdaki projeler tek yerde", "dağınık Excel, eski PDF, WhatsApp yok."],
+      ["Sana tahsisli projeler tek canlı ağda", "dağınık Excel, eski PDF, WhatsApp yok."],
       ["Her zaman canlı fiyat", "eski fiyatla müşteri önünde rezil olma."],
       ["Tek dokunuşla paylaş", "fiyat o anki canlı değerden basılır."],
       ["Kazancın %100'ü sende", "komisyondan pay almayız; başlangıçta tamamen ücretsiz."],
@@ -106,7 +106,7 @@ const FAYDA = {
 
 const ADIMLAR = [
   { no: "01", baslik: "Proje sahibi stoğunu yükler", metin: "Proje, blok ve daireler tek noktaya alınır. Fiyat ve durum tek doğru kaynakta toplanır." },
-  { no: "02", baslik: "Canlı havuza açılır", metin: "Gayrimenkul danışmanları havuzdaki projeleri canlı görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açar." },
+  { no: "02", baslik: "Canlı satış ağına açılır", metin: "Yetkili danışmanlar ağdaki projeleri canlı görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açar." },
   { no: "03", baslik: "Danışman müşterisine paylaşır", metin: "Danışman kendine açık daireleri tek dokunuşla iletir; fiyat o anki canlı değerden basılır." },
   { no: "04", baslik: "Opsiyon → satış kapanır", metin: "Daire opsiyona kilitlenir; çift-satış kalkanı çakışmayı engeller. Satışta stok anında güncellenir." },
 ];
@@ -120,8 +120,8 @@ const PORTFOY = [
 
 const SSS: { s: string; c: string }[] = [
   { s: "Projedar bir ilan portalı mı?", c: "Hayır. Projedar, proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır." },
-  { s: "Gayrimenkul danışmanı için ücretli mi?", c: "Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz. Danışman canlı havuzdaki projeleri görür ve müşterisine paylaşır." },
-  { s: "Danışman hangi projeleri görür?", c: "Danışman, canlı havuzdaki projeleri görür. Proje sahibi isterse belirli daireleri veya projeleri yalnız seçtiği danışmanlara özel açabilir (tahsis)." },
+  { s: "Gayrimenkul danışmanı için ücretli mi?", c: "Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz. Danışman canlı ağdaki projeleri görür ve müşterisine paylaşır." },
+  { s: "Danışman hangi projeleri görür?", c: "Danışman, canlı ağdaki tahsisli projeleri görür. Proje sahibi isterse belirli daireleri veya projeleri yalnız seçtiği danışmanlara özel açabilir (tahsis)." },
   { s: "Fiyatlar nasıl güncel kalıyor?", c: "Fiyat yalnız birim kaydında tutulur; hiçbir yerde kopyalanmaz. Paylaşımda fiyat o anki canlı değerden basıldığı için eski fiyat dolaşıma giremez." },
   { s: "Aynı daire iki danışmana satılabilir mi?", c: "Hayır. Aktif opsiyon veritabanı seviyesinde kilitlenir; çift-satış kalkanı iki danışmanın aynı daireyi aynı anda satışa kilitlemesini engeller." },
   { s: "Proje sahibi neyi kontrol eder?", c: "Stoğunu, fiyatını ve kimin neyi göreceğini tek panelden yönetir; satışı canlı izler. Tüm bilgi tek doğru kaynaktadır." },
@@ -207,7 +207,7 @@ export default async function Home() {
             <div className="mx-auto max-w-3xl text-center">
               <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı portföy</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-                Her proje, tek havuzda canlı
+                Her proje, tek canlı ağda
               </h2>
               <p className="mx-auto mt-4 text-sm leading-relaxed text-ink-soft sm:text-base">Her proje bir mini-panel: müsait / opsiyon / satıldı dağılımı, son güncelleme, talep sinyali.</p>
             </div>
@@ -281,7 +281,7 @@ export default async function Home() {
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="mx-auto mb-12 max-w-2xl text-center">
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı havuz · dene</p>
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Canlı ağ · dene</p>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Üretici kontrolü tutar, danışman güncel satar.</h2>
               <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">Kat planı, net/brüt, cephe, ödeme planı ve canlı fiyat, hepsi tek tıkla açılır. Bina kesiti mi, tablo mu? Sen seç, daireye tıkla, detayı gör.</p>
             </div>

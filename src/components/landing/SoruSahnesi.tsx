@@ -110,7 +110,7 @@ export function SoruSahnesi() {
         </span>
       </h2>
       <p className="mx-auto mt-5 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
-        Müteahhidin sana tahsis ettiği daireleri tek canlı havuzdan görürsün. Fiyat günceldir, durum
+        Müteahhidin sana tahsis ettiği daireleri tek canlı ağdan görürsün. Fiyat günceldir, durum
         bellidir, kimseye sormazsın: bakarsın, paylaşırsın, opsiyonlarsın.
       </p>
 
