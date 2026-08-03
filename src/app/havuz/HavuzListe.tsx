@@ -21,6 +21,7 @@ export type ProjeKart = {
   mahalle: string | null;
   lat: number | null;
   lng: number | null;
+  ozellikler: string[];
   belge_dogrulandi: boolean;
   son_guncelleme: string;
   insaat_asamasi: string;
@@ -76,6 +77,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const [fiyatMin, setFiyatMin] = useState("");
   const [fiyatMax, setFiyatMax] = useState("");
   const [minKira, setMinKira] = useState("");
+  const [ozellik, setOzellik] = useState<string[]>([]);
   const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait">("taze");
   const [gorunum, setGorunum] = useState<"liste" | "harita">("liste");
 
@@ -95,14 +97,15 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
         (!tur.length || tur.some((t) => p.turler.includes(t))) &&
         (!fiyatMin || (p.max != null && p.max >= Number(fiyatMin))) &&
         (!fiyatMax || (p.min != null && p.min <= Number(fiyatMax))) &&
-        (!minKira || (p.kira_getirisi != null && p.kira_getirisi >= Number(minKira))),
+        (!minKira || (p.kira_getirisi != null && p.kira_getirisi >= Number(minKira))) &&
+        (!ozellik.length || ozellik.every((o) => p.ozellikler.includes(o))),
     );
     return [...l].sort((a, b) => {
       if (sirala === "ucuz") return (a.min ?? Infinity) - (b.min ?? Infinity);
       if (sirala === "musait") return b.musait - a.musait;
       return b.son_guncelleme.localeCompare(a.son_guncelleme);
     });
-  }, [projeler, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, sirala]);
+  }, [projeler, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, ozellik, sirala]);
 
   // KPI — GERÇEK değerlerden hesap (tahsisli RLS havuzundan).
   const toplamBirim = projeler.reduce((t, p) => t + p.toplam, 0);
@@ -113,6 +116,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
 
   const tipAcKapa = (t: string) => setTip((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
   const turAcKapa = (t: string) => setTur((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
+  const ozellikAcKapa = (o: string) => setOzellik((s) => (s.includes(o) ? s.filter((x) => x !== o) : [...s, o]));
   const temizle = () => {
     setIl("");
     setIlce("");
@@ -122,13 +126,15 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
     setFiyatMin("");
     setFiyatMax("");
     setMinKira("");
+    setOzellik([]);
   };
   const aktifSayi =
     (il ? 1 : 0) + (ilce ? 1 : 0) + tip.length + (durum ? 1 : 0) + tur.length +
-    (fiyatMin ? 1 : 0) + (fiyatMax ? 1 : 0) + (minKira ? 1 : 0);
+    (fiyatMin ? 1 : 0) + (fiyatMax ? 1 : 0) + (minKira ? 1 : 0) + ozellik.length;
   const filtreProps = {
     il, setIl, ilce, setIlce, tip, tipAcKapa, durum, setDurum, iller, ilceler,
     tur, turAcKapa, fiyatMin, setFiyatMin, fiyatMax, setFiyatMax, minKira, setMinKira,
+    ozellik, ozellikAcKapa,
   };
 
   const okChevron = (

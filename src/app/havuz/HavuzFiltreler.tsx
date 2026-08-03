@@ -1,5 +1,7 @@
 "use client";
 
+import { OZELLIK_KATEGORILERI } from "@/lib/ozellikler";
+
 const TIP_FILTRE = ["1+1", "2+1", "3+1", "4+1", "Dubleks"];
 const TUR_FILTRE: [string, string][] = [
   ["daire", "Daire"],
@@ -33,6 +35,8 @@ export function HavuzFiltreler({
   setFiyatMax,
   minKira,
   setMinKira,
+  ozellik,
+  ozellikAcKapa,
 }: {
   il: string;
   setIl: (v: string) => void;
@@ -52,6 +56,8 @@ export function HavuzFiltreler({
   setFiyatMax: (v: string) => void;
   minKira: string;
   setMinKira: (v: string) => void;
+  ozellik: string[];
+  ozellikAcKapa: (o: string) => void;
 }) {
   const inp =
     "w-full rounded-xl border border-hair bg-soft px-3.5 py-2.5 font-sans text-xs text-ink outline-none transition-all focus:border-teal focus:bg-card";
@@ -150,6 +156,20 @@ export function HavuzFiltreler({
         onChange={(e) => setMinKira(e.target.value)}
         className={`mt-2 ${inp}`}
       />
+
+      {/* Öznitelik facet'leri — sabit taksonomi (proje bunların HEPSİNE sahipse eşleşir) */}
+      {OZELLIK_KATEGORILERI.map((kat) => (
+        <div key={kat.key}>
+          <h4 className={baslik}>{kat.baslik}</h4>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {kat.secenekler.map((o) => (
+              <button key={o} type="button" onClick={() => ozellikAcKapa(o)} className={cip(ozellik.includes(o))}>
+                {o}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { HavuzListe, type ProjeKart } from "./HavuzListe";
+import { okuOzellikler, ozellikDuzList } from "@/lib/ozellikler";
 
 export default async function Havuz() {
   const supabase = await createClient();
@@ -8,7 +9,7 @@ export default async function Havuz() {
   const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }] = await Promise.all([
     supabase
       .from("proje")
-      .select("id, ad, il, ilce, mahalle, lat, lng, belge_dogrulandi, son_guncelleme, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, para_birimi, oturum_uygun, golden_visa_esik, kira_getirisi_pct")
+      .select("id, ad, il, ilce, mahalle, lat, lng, kunye, belge_dogrulandi, son_guncelleme, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, para_birimi, oturum_uygun, golden_visa_esik, kira_getirisi_pct")
       .order("son_guncelleme", { ascending: false }),
     supabase.from("birim").select("proje_id, tip_id, durum, liste_fiyati, tur"),
     supabase.from("daire_tipi").select("proje_id, oda, ad, net_m2"),
@@ -35,6 +36,7 @@ export default async function Havuz() {
       mahalle: p.mahalle,
       lat: p.lat != null ? Number(p.lat) : null,
       lng: p.lng != null ? Number(p.lng) : null,
+      ozellikler: ozellikDuzList(okuOzellikler((p.kunye ?? null) as Record<string, unknown> | null)),
       belge_dogrulandi: p.belge_dogrulandi,
       son_guncelleme: p.son_guncelleme,
       insaat_asamasi: p.insaat_asamasi,
