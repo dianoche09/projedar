@@ -1,6 +1,6 @@
 # Projedar
 
-> Proje sahipleri ile gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı bir B2B konut stoğu dağıtım ağı. İlan portalı değildir. Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla müşterisine paylaşır. Komisyon yok; danışmana ücretsiz.
+> Proje sahipleri ile gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı bir B2B konut stoğu dağıtım ağı. İlan portalı değildir. Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; gayrimenkul danışmanı canlı ağdaki projeleri doğru fiyatla müşterisine paylaşır. Komisyon yok; danışmana ücretsiz.
 
 ## Hakkında
 
@@ -16,9 +16,9 @@ Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek 
 
 ## Ana Sayfalar
 
-- [Ana sayfa](https://projedar.com/) — 3 fazlı inşaat video hero'su, canlı havuz demosu, çift satış kalkanı, tahsis, ağ etkisi, SSS
+- [Ana sayfa](https://projedar.com/) — 3 fazlı inşaat video hero'su, canlı satış ağı demosu, çift satış kalkanı, tahsis, ağ etkisi, SSS
 - [Müteahhitler için](https://projedar.com/muteahhit) — envanter kontrolü, tahsis paneli, çift satış kalkanı, kurucu müteahhit kontenjanı, model karşılaştırması
-- [Danışmanlar için](https://projedar.com/emlakci) — tahsisli canlı havuz, WhatsApp birebir paylaşım, opsiyon kilidi, komisyon güvencesi; tamamen ücretsiz
+- [Danışmanlar için](https://projedar.com/emlakci) — tahsisli canlı ağ, WhatsApp birebir paylaşım, opsiyon kilidi, komisyon güvencesi; tamamen ücretsiz
 - [Güven Protokolü](https://projedar.com/guven) — 6 teminatın teknik dayanağı, EİDS konumlandırması (ilan değil tahsis), KVKK çizgisi
 - [Kullanım Koşulları](https://projedar.com/kullanim-kosullari)
 - [Gizlilik](https://projedar.com/gizlilik)
@@ -35,7 +35,7 @@ Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek 
 - Bina kesiti, tablo ve mini-panel görünümleriyle tüm stok tek ekranda canlı.
 
 ### Granüler tahsis (opsiyonel)
-- Gayrimenkul danışmanı canlı havuzdaki projeleri görür.
+- Gayrimenkul danışmanı canlı ağdaki projeleri görür.
 - Proje sahibi isterse belirli daireleri veya projeleri yalnız seçtiği danışmanlara özel açar.
 
 ### Çift-satış kalkanı
@@ -50,7 +50,7 @@ Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek 
 ## Kimler İçin
 
 - **Proje sahibi (konut projesi geliştiren):** Stoğunu, fiyatını ve kimin neyi göreceğini tek panelden yönetir; yüzlerce danışmana tek noktadan ulaşır; markası yanlış bilgiyle yıpranmaz; satışı canlı izler.
-- **Gayrimenkul danışmanı (emlakçı):** Canlı havuzdaki projeleri görür, doğru fiyatla tek dokunuşla müşterisine paylaşır; eski fiyatla rezil olmaz; başlangıçta tamamen ücretsiz.
+- **Gayrimenkul danışmanı (emlakçı):** Canlı ağdaki projeleri görür, doğru fiyatla tek dokunuşla müşterisine paylaşır; eski fiyatla rezil olmaz; başlangıçta tamamen ücretsiz.
 - **Ofis / franchise:** Ekip erişimini ve portföyünü tek yerden yönetir.
 
 ## Farklılıklar (dağınık portal / Excel / WhatsApp yerine)
@@ -65,7 +65,7 @@ Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek 
 
 - **Projedar bir ilan portalı mı?** Hayır. Proje sahipleri ile gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir B2B ağdır. Son kullanıcıya açık ilan yoktur; paylaşım birebir/WhatsApp ile yapılır.
 - **Gayrimenkul danışmanı için ücretli mi?** Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz.
-- **Danışman hangi projeleri görür?** Canlı havuzdaki projeleri görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açabilir.
+- **Danışman hangi projeleri görür?** Canlı ağdaki projeleri görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açabilir.
 - **Fiyatlar nasıl güncel kalıyor?** Fiyat yalnız birim kaydında tutulur; paylaşımda o anki canlı değerden basılır, böylece eski fiyat dolaşamaz.
 - **Aynı daire iki danışmana satılabilir mi?** Hayır. Aktif opsiyon veritabanı seviyesinde kilitlenir (çift-satış kalkanı).
 - **Proje sahibi neyi kontrol eder?** Stoğunu, fiyatını ve kimin neyi göreceğini tek panelden yönetir; satışı canlı izler.
