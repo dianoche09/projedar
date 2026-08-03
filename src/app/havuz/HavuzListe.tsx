@@ -1,11 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { zamanOnce } from "@/lib/types";
 import { HavuzFiltreler } from "./HavuzFiltreler";
 import { projeKapak } from "@/lib/gorsel";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
+
+const HavuzHarita = dynamic(() => import("./HavuzHarita").then((m) => m.HavuzHarita), {
+  ssr: false,
+  loading: () => <div className="belir h-[560px] w-full animate-pulse rounded-2xl bg-[var(--color-soft)]" />,
+});
 
 export type ProjeKart = {
   id: string;
@@ -13,6 +19,8 @@ export type ProjeKart = {
   il: string | null;
   ilce: string | null;
   mahalle: string | null;
+  lat: number | null;
+  lng: number | null;
   belge_dogrulandi: boolean;
   son_guncelleme: string;
   insaat_asamasi: string;
@@ -69,6 +77,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const [fiyatMax, setFiyatMax] = useState("");
   const [minKira, setMinKira] = useState("");
   const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait">("taze");
+  const [gorunum, setGorunum] = useState<"liste" | "harita">("liste");
 
   const iller = useMemo(() => [...new Set(projeler.map((p) => p.il).filter(Boolean))] as string[], [projeler]);
   const ilceler = useMemo(
@@ -152,16 +161,32 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             paylaşır, opsiyon alırsın.
           </p>
         </div>
-        <select
-          value={sirala}
-          onChange={(e) => setSirala(e.target.value as typeof sirala)}
-          className="rounded-xl border border-[var(--cizgi-2)] bg-white px-4 py-2.5 text-xs font-bold text-ink shadow-sm outline-none focus:border-teal/50"
-          aria-label="Sıralama"
-        >
-          <option value="taze">En taze ▾</option>
-          <option value="musait">En çok müsait</option>
-          <option value="ucuz">En uygun</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <div className="inline-flex rounded-xl border border-[var(--cizgi-2)] bg-white p-0.5 shadow-sm" role="tablist" aria-label="Görünüm">
+            {([["liste", "Liste"], ["harita", "Harita"]] as const).map(([g, etiket]) => (
+              <button
+                key={g}
+                type="button"
+                onClick={() => setGorunum(g)}
+                role="tab"
+                aria-selected={gorunum === g}
+                className={`rounded-[9px] px-3.5 py-2 text-xs font-bold transition ${gorunum === g ? "bg-navy text-white shadow-sm" : "text-ink-soft hover:text-ink"}`}
+              >
+                {etiket}
+              </button>
+            ))}
+          </div>
+          <select
+            value={sirala}
+            onChange={(e) => setSirala(e.target.value as typeof sirala)}
+            className="rounded-xl border border-[var(--cizgi-2)] bg-white px-4 py-2.5 text-xs font-bold text-ink shadow-sm outline-none focus:border-teal/50"
+            aria-label="Sıralama"
+          >
+            <option value="taze">En taze ▾</option>
+            <option value="musait">En çok müsait</option>
+            <option value="ucuz">En uygun</option>
+          </select>
+        </div>
       </header>
 
       {/* Filtre çubuğu — v2 chip özeti + gerçek filtre paneli (açılır) */}
@@ -285,7 +310,10 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
         <span className="hidden text-[12px] text-[var(--ink-faint)] sm:inline">Yalnız sana tahsisli stok gösteriliyor</span>
       </div>
 
-      {/* ============ PROJE KARTLARI ============ */}
+      {/* ============ PROJE KARTLARI / HARİTA ============ */}
+      {gorunum === "harita" ? (
+        <HavuzHarita projeler={liste} />
+      ) : (
       <div className="proj-grid grid grid-cols-1 gap-4 lg:grid-cols-2">
         {liste.map((p, i) => {
           const wa = [
@@ -460,6 +488,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
           </div>
         )}
       </div>
+      )}
 
       {/* footer mini */}
       <div className="mt-7 pb-2 text-center text-[11.5px] text-[var(--ink-faint)]">
