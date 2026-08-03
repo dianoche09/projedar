@@ -235,7 +235,7 @@ export function HeroFazSeridi() {
             className="ml-auto max-w-[18ch] text-right font-display text-2xl font-bold leading-snug text-white [text-shadow:0_2px_28px_rgba(8,16,28,0.6)] sm:text-3xl"
             style={{ animation: azalt ? undefined : "ppSayiGir 700ms cubic-bezier(0.16, 1, 0.3, 1) both" }}
           >
-            Projemizde daireler tükenmiştir. İlginize teşekkür ederiz.
+            Stok ağda eridi. Sıradaki proje seninki olsun.
           </p>
         ) : (
           <>
