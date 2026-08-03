@@ -55,20 +55,20 @@ const GUVEN = [
 const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Projedar: Tüm projeler tek canlı havuzda | Gayrimenkul danışmanı ağı",
+  title: "Projedar — Yeni projelerin profesyonel satış ağı",
   description:
-    "İlan portalı değil. Proje sahibi stoğunu ve fiyatını tek noktadan yönetir; gayrimenkul danışmanı canlı havuzdaki projeleri doğru fiyatla paylaşır. Yanlış fiyat yok, eksik bilgi yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
+    "İnşaat firmalarının canlı proje bilgilerini, güncel fiyatlarını ve bağımsız bölüm durumlarını yetkili gayrimenkul danışmanlarıyla tek satış ağında buluşturur. Bir daire değişir, bütün ağ güncellenir. Kontrollü erişim, tek doğru veri, komisyon yok.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Projedar: Tüm projeler tek canlı havuzda",
+    title: "Projedar — Yeni projelerin profesyonel satış ağı",
     description:
-      "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan ağ. Yanlış fiyat yok, çift satış yok. Komisyonsuz; danışmana ücretsiz.",
+      "Proje sahibiyle yetkili danışmanları aynı canlı, güncel gerçekte buluşturan satış ve dağıtım ağı. Tek doğru veri, çift-satış kalkanı, komisyon yok.",
     type: "website",
     siteName: "Projedar",
     url: SITE,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Projedar: Tüm projeler tek canlı havuzda" },
+  twitter: { card: "summary_large_image", title: "Projedar — Yeni projelerin profesyonel satış ağı" },
 };
 
 const NAV = [

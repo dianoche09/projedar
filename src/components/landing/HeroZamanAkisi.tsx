@@ -184,13 +184,13 @@ export function HeroFazSeridi() {
       {/* başlık: sabit tek hiyerarşi (akış içinde; alt künye mt-auto ile hep görünür) */}
       <div className="relative z-10">
         <div className="mx-auto w-full max-w-7xl px-6 pb-10 pt-16 sm:px-10 sm:pt-24">
-          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">Canlı konut stoğu dağıtım ağı</p>
+          <p className="font-mono text-[12px] font-semibold uppercase tracking-[0.22em] text-white/75">Yeni projelerin profesyonel satış ağı</p>
           <h1 className="mt-3 max-w-[14ch] font-display text-[11vw] font-extrabold leading-[1.0] tracking-tight sm:text-[60px] lg:text-[76px]">
             Bloklar yükselir. Stok erir.
           </h1>
           <p className="mt-4 max-w-[52ch] text-pretty text-[14.5px] leading-relaxed text-white/85 sm:text-[16px]">
-            Projedar, müteahhidin canlı stoğunu tek noktadan yönettiği, yalnız tahsis ettiği danışmanlara
-            açtığı dağıtım ağıdır. Fiyat ve durum tek kaynaktan dağıtılır; satış sürecinde herkes aynı doğruyu görür.
+            Projedar; inşaat firmalarının canlı proje bilgilerini, güncel fiyatlarını ve bağımsız bölüm durumlarını
+            yetkili gayrimenkul danışmanlarıyla tek satış ağında buluşturur. Fiyat ya da durum değişince bütün yetkili ağ aynı anda güncellenir.
           </p>
           {/* rol kartları (kullanıcı tasarımı): koyu = proje sahibi, beyaz = danışman */}
           <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-2">
@@ -200,9 +200,9 @@ export function HeroFazSeridi() {
             >
               <p className="font-mono text-[9.5px] font-bold uppercase tracking-[0.16em] text-white/60">Müteahhit · Proje sahibi</p>
               <p className="mt-1.5 font-display text-lg font-extrabold text-white">Proje sahibiyim</p>
-              <p className="mt-1 text-[12px] leading-snug text-white/70">Stoğunu tek noktadan yönet; kim neyi görür, sen belirle. Satışı canlı izle.</p>
+              <p className="mt-1 text-[12px] leading-snug text-white/70">Projeni yetkili danışman ağına aç; kim neyi görür, sen belirle. Satışı canlı izle.</p>
               <p className="mt-2.5 text-[13px] font-semibold text-[#7fd4c4]">
-                Panelini gör <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+                Projemi satış ağına aç <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
               </p>
             </Link>
             <Link
@@ -216,7 +216,7 @@ export function HeroFazSeridi() {
               </p>
               <p className="mt-1 text-[12px] leading-snug text-ink-soft">Sana tahsisli projeleri canlı gör; müşterine tek dokunuşla doğru fiyatı paylaş.</p>
               <p className="mt-2.5 text-[13px] font-semibold text-[var(--color-teal-d)]">
-                Havuza katıl <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+                Danışman olarak katıl <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
               </p>
             </Link>
           </div>
