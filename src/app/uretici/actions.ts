@@ -540,6 +540,57 @@ export async function talepReddet(talepId: string): Promise<{ ok: boolean; mesaj
   return error ? { ok: false, mesaj: error.message } : { ok: true, mesaj: "Talep reddedildi" };
 }
 
+// ── GEÇİCİ opsiyon (yöntem 'gecici'): emlakçı anında kilitledi (dogrulandi=false); müteahhit KESİNLEŞTİRİR/REDDEDER. ──
+
+/** Geçici opsiyon sahibi emlakçıya doğrulama/red bildirimi (best-effort). */
+async function opsiyonBildir(opsiyonId: string, karar: "dogrula" | "reddet"): Promise<void> {
+  try {
+    const admin = createAdminClient();
+    const { data: ops } = await admin
+      .from("opsiyon")
+      .select("satici_id, birim:birim_id(daire_no, proje:proje_id(ad))")
+      .eq("id", opsiyonId)
+      .single();
+    if (!ops?.satici_id) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const birim = ops.birim as any;
+    const daire = birim?.daire_no ?? "?";
+    const projeAd = birim?.proje?.ad ?? "Proje";
+    await bildirimYaz({
+      profile_id: ops.satici_id as string,
+      tip: karar === "dogrula" ? "onay" : "red",
+      baslik: karar === "dogrula" ? "Opsiyonun doğrulandı" : "Opsiyonun reddedildi",
+      govde: karar === "dogrula" ? `${projeAd} · Daire ${daire} · kesin opsiyon` : `${projeAd} · Daire ${daire} · daire serbest`,
+      link: "/havuz/opsiyonlarim",
+    });
+  } catch {
+    /* best-effort */
+  }
+}
+
+export async function opsiyonDogrula(opsiyonId: string): Promise<{ ok: boolean; mesaj: string }> {
+  if (!UUID_RE.test(opsiyonId)) return { ok: false, mesaj: "Geçersiz opsiyon" };
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("opsiyon_dogrula", { p_ops: opsiyonId });
+  if (!error) await opsiyonBildir(opsiyonId, "dogrula");
+  revalidatePath("/uretici/opsiyonlar");
+  revalidatePath("/uretici/stok");
+  revalidatePath("/uretici");
+  return error ? { ok: false, mesaj: error.message.replace(/^.*?:\s*/, "") } : { ok: true, mesaj: "Opsiyon doğrulandı — kesin kilit" };
+}
+
+export async function opsiyonReddet(opsiyonId: string): Promise<{ ok: boolean; mesaj: string }> {
+  if (!UUID_RE.test(opsiyonId)) return { ok: false, mesaj: "Geçersiz opsiyon" };
+  const supabase = await createClient();
+  // Bildirim reddetmeden ÖNCE (silinince satici_id okunamaz)
+  await opsiyonBildir(opsiyonId, "reddet");
+  const { error } = await supabase.rpc("opsiyon_reddet", { p_ops: opsiyonId });
+  revalidatePath("/uretici/opsiyonlar");
+  revalidatePath("/uretici/stok");
+  revalidatePath("/uretici");
+  return error ? { ok: false, mesaj: error.message.replace(/^.*?:\s*/, "") } : { ok: true, mesaj: "Opsiyon reddedildi — daire serbest" };
+}
+
 // ---- Çoklu seçim: toplu durum/fiyat güncelle ----
 function idListesi(formData: FormData): string[] {
   return String(formData.get("birim_idler") ?? "")
@@ -1148,14 +1199,32 @@ export async function lansmanEkle(formData: FormData) {
   basariya("/uretici/lansman", formData, "Lansman eklendi");
 }
 
-/** Proje opsiyon yöntemi: 'dogrudan' (anlık kilit) | 'talep_kod' (müteahhit onayı). */
-export async function projeOpsiyonYontemi(formData: FormData) {
+/**
+ * Proje opsiyon disiplini ayarı (müteahhit tanımlar — DEĞİŞMEZ #3 güçlendirmesi).
+ * yontem: 'gecici' (geçici kilit + müteahhit doğrulaması — ÖNERİLEN) | 'onay' (talep→onay) | 'dogrudan' (anlık, güvenilen).
+ * proje.opsiyon_ayar jsonb: { yontem, dogrulama_saat, kilit_gun, kota, musteri_zorunlu }.
+ */
+export async function projeOpsiyonAyar(formData: FormData) {
   const proje_id = String(formData.get("proje_id") ?? "");
-  const yontem = String(formData.get("opsiyon_yontemi") ?? "");
-  if (!UUID_RE.test(proje_id) || !["dogrudan", "talep_kod"].includes(yontem)) return;
+  const yontem = String(formData.get("yontem") ?? "");
+  if (!UUID_RE.test(proje_id) || !["gecici", "onay", "dogrudan"].includes(yontem)) return;
   const supabase = await createClient();
   if (!(await projeSahibiMi(supabase, proje_id))) return;
-  await supabase.from("proje").update({ opsiyon_yontemi: yontem }).eq("id", proje_id);
+  // Sayısal sınırlar: doğrulama penceresi 1-72sa, kesin kilit 1-30g, kota 1-20
+  const sinir = (v: FormDataEntryValue | null, min: number, max: number, def: number) => {
+    const n = parseInt(String(v ?? ""), 10);
+    return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : def;
+  };
+  const opsiyon_ayar = {
+    yontem,
+    dogrulama_saat: sinir(formData.get("dogrulama_saat"), 1, 72, 2),
+    kilit_gun: sinir(formData.get("kilit_gun"), 1, 30, 3),
+    kota: sinir(formData.get("kota"), 1, 20, 3),
+    musteri_zorunlu: String(formData.get("musteri_zorunlu") ?? "") === "on",
+  };
+  // Legacy opsiyon_yontemi kolonu senkron (eski okuyucular için): 'gecici'/'dogrudan'→'dogrudan', 'onay'→'talep_kod'.
+  const legacy = yontem === "onay" ? "talep_kod" : "dogrudan";
+  await supabase.from("proje").update({ opsiyon_ayar, opsiyon_yontemi: legacy }).eq("id", proje_id);
   revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
   revalidatePath(`/uretici/proje/${proje_id}`);
 }

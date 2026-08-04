@@ -96,12 +96,13 @@ export async function opsiyonSuresiCalistir(): Promise<CronSonuc> {
   const supabase = createAdminClient();
   const simdi = new Date().toISOString();
 
-  // Süresi dolan aktif opsiyonları önce çek (audit için), sonra sil.
+  // Süresi dolan opsiyonlar: (a) kesin opsiyon kilit_bitis geçti, VEYA (b) geçici kilit doğrulama
+  // penceresi doldu (dogrulandi=false + dogrulama_bitis geçti). İkisi de serbest bırakılır.
   const { data: dolanlar, error: secErr } = await supabase
     .from("opsiyon")
     .select("id, birim_id, satici_id, birim:birim_id(proje_id)")
-    .lt("kilit_bitis", simdi)
-    .in("durum", ["opsiyonlu", "satis_beklemede"]);
+    .in("durum", ["opsiyonlu", "satis_beklemede"])
+    .or(`kilit_bitis.lt.${simdi},and(dogrulandi.is.false,dogrulama_bitis.lt.${simdi})`);
 
   if (secErr) {
     console.error("Opsiyon süre aşımı (seçim) cron hatası:", secErr);

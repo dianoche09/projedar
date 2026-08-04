@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { birimDurumGuncelle, birimGuncelle, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
-import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonBirakSessiz } from "@/app/havuz/actions";
+import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/havuz/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
@@ -128,6 +128,10 @@ export function DaireModal({
 }) {
   const [durum, setDurum] = useState<BirimDurum>(birim.durum);
   const [bekliyor, basla] = useTransition();
+  // Geçici opsiyon (yöntem 'gecici') müşteri bilgisi — boş-opsiyon kalkanı (guardrail #1).
+  const [musteriAd, setMusteriAd] = useState("");
+  const [musteriTel, setMusteriTel] = useState("");
+  const [gerekce, setGerekce] = useState("");
   const toast = useToast();
 
   const taban = birim.taban_fiyat;
@@ -464,7 +468,51 @@ export function DaireModal({
                 <p className="text-center text-[10.5px] leading-snug text-[var(--ink-faint)] font-bold">
                   Müşterinizle birebir paylaşın — yetkisiz ilan yasal risk taşımaktadır.
                 </p>
-                {opsiyonYontemi === "dogrudan" ? (
+                {opsiyonYontemi === "gecici" ? (
+                  <>
+                    <div className="rounded-xl border border-hair bg-soft p-3 space-y-2">
+                      <p className="text-[10.5px] font-bold text-ink-soft leading-snug">
+                        Gerçek müşteri için opsiyon alıyorsunuz. Bilgiler müteahhide doğrulama için iletilir.
+                      </p>
+                      <input
+                        value={musteriAd}
+                        onChange={(e) => setMusteriAd(e.target.value)}
+                        placeholder="Müşteri ad soyad *"
+                        className={inp}
+                      />
+                      <input
+                        value={musteriTel}
+                        onChange={(e) => setMusteriTel(e.target.value)}
+                        placeholder="Müşteri telefon *"
+                        inputMode="tel"
+                        className={inp}
+                      />
+                      <input
+                        value={gerekce}
+                        onChange={(e) => setGerekce(e.target.value)}
+                        placeholder="Not / gerekçe (opsiyonel)"
+                        className={inp}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      disabled={bekliyor || musteriAd.trim() === "" || musteriTel.trim() === ""}
+                      onClick={() =>
+                        basla(async () => {
+                          const r = await opsiyonAlGecici(birim.id, projeId, musteriAd, musteriTel, gerekce);
+                          toast.goster(r.mesaj, r.ok ? "basari" : "hata");
+                          if (r.ok) onKapat();
+                        })
+                      }
+                      className="w-full rounded-xl bg-teal font-bold py-3.5 text-xs text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_4px_12px_rgba(30,155,138,0.25)] cursor-pointer"
+                    >
+                      {bekliyor ? "Kilitleniyor…" : "Opsiyon Al (geçici kilit)"}
+                    </button>
+                    <p className="text-center text-[10px] leading-snug text-[var(--ink-faint)] font-bold">
+                      Daire anında kilitlenir · müteahhit doğrulaması bekler · doğrulanmazsa süre sonunda serbest kalır
+                    </p>
+                  </>
+                ) : opsiyonYontemi === "dogrudan" ? (
                   <>
                     <button
                       type="button"

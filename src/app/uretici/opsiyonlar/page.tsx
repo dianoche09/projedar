@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { paraKisa, tazelik, DURUM_AD, DURUM_SINIF, kova } from "@/lib/stok";
 import { zamanOnce } from "@/lib/types";
 import { TalepKarar } from "./TalepKarar";
+import { OpsiyonKarar } from "./OpsiyonKarar";
 
 /* =========================================================
    OPSİYONLAR — bekleyen talepler (onay kuyruğu) + aktif opsiyon/satış (üretici).
@@ -27,7 +28,18 @@ type BirimRaw = {
   son_guncelleme: string | null;
 };
 
-type OpsiyonRaw = { birim_id: string; satici_id: string; durum: string; kilit_bitis: string | null };
+type OpsiyonRaw = {
+  id: string;
+  birim_id: string;
+  satici_id: string;
+  durum: string;
+  kilit_bitis: string | null;
+  dogrulandi: boolean | null;
+  dogrulama_bitis: string | null;
+  musteri_ad: string | null;
+  musteri_tel: string | null;
+  gerekce: string | null;
+};
 
 type TalepRaw = {
   id: string;
@@ -72,7 +84,10 @@ export default async function UreticiOpsiyonlar() {
       supabase.from("blok").select("id, ad"),
       supabase.from("daire_tipi").select("id, ad, oda"),
       supabase.from("proje").select("id, ad"),
-      supabase.from("opsiyon").select("birim_id, satici_id, durum, kilit_bitis").in("durum", ["opsiyonlu", "satis_beklemede"]),
+      supabase
+        .from("opsiyon")
+        .select("id, birim_id, satici_id, durum, kilit_bitis, dogrulandi, dogrulama_bitis, musteri_ad, musteri_tel, gerekce")
+        .in("durum", ["opsiyonlu", "satis_beklemede"]),
       supabase
         .from("opsiyon_talep")
         .select(
@@ -111,6 +126,12 @@ export default async function UreticiOpsiyonlar() {
   const tipAd = new Map((tipler ?? []).map((t) => [t.id, (t.oda as string | null) ?? (t.ad as string | null)]));
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
   const opsByBirim = new Map(opsiyonlar.map((o) => [o.birim_id, o]));
+  const birimById = new Map(birimler.map((b) => [b.id, b]));
+
+  // GEÇİCİ opsiyonlar (dogrulandi=false): müteahhit doğrulaması bekliyor — en öncelikli aksiyon.
+  const geciciler = opsiyonlar
+    .filter((o) => o.dogrulandi === false)
+    .sort((a, b) => (a.dogrulama_bitis ?? "").localeCompare(b.dogrulama_bitis ?? ""));
 
   const satirlar = [...birimler].sort((a, b) => (b.son_guncelleme ?? "").localeCompare(a.son_guncelleme ?? ""));
   const opsiyonlu = satirlar.filter((b) => b.durum === "opsiyonlu").length;
@@ -133,6 +154,81 @@ export default async function UreticiOpsiyonlar() {
           seviyesindedir; onayla birlikte devreye girer.
         </p>
       </header>
+
+      {/* GEÇİCİ OPSİYONLAR — doğrulama bekliyor (süre kısa, en öncelikli aksiyon) */}
+      {geciciler.length > 0 ? (
+        <section className="kart belir belir-1 mb-5 overflow-hidden" style={{ borderLeft: "3px solid var(--color-amber)" }}>
+          <div className="flex items-center justify-between border-b border-[var(--cizgi)] px-5 py-3.5">
+            <div>
+              <h2 className="font-display text-[15px] font-bold text-ink">Doğrulama Bekleyen Opsiyonlar</h2>
+              <p className="mt-0.5 text-[11.5px] text-[var(--ink-faint)]">
+                Danışman gerçek müşteri için daireyi geçici kilitledi. Doğrularsan kesinleşir, reddedersen daire serbest kalır. Süre dolarsa otomatik serbest kalır.
+              </p>
+            </div>
+            <span className="inline-flex flex-none items-center gap-1.5 rounded-full bg-amber-soft px-2.5 py-1 text-[11.5px] font-semibold text-[#9a6a12]">
+              {geciciler.length} doğrulama bekliyor
+            </span>
+          </div>
+          <ul className="divide-y divide-[var(--cizgi)]">
+            {geciciler.map((o) => {
+              const b = birimById.get(o.birim_id);
+              const s = sahip(o.satici_id);
+              const kalan = kalanMetin(o.dogrulama_bitis);
+              const daire = [blokAd.get(b?.blok_id ?? ""), b?.daire_no].filter(Boolean).join(" ") || b?.daire_no || "—";
+              return (
+                <li key={o.id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5">
+                  <div className="min-w-0">
+                    <p className="text-[13.5px] font-semibold text-ink">
+                      {(b ? projeAd.get(b.proje_id) : null) ?? "—"} · <span className="mono">{daire}</span>
+                    </p>
+                    <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[11.5px] text-[var(--ink-faint)]">
+                      <span>
+                        {(b?.tip_id ? tipAd.get(b.tip_id) : null) ?? "—"}
+                        {b?.liste_fiyati ? ` · ${paraKisa(b.liste_fiyati, b.para_birimi)}` : ""}
+                      </span>
+                      <span
+                        className={
+                          kalan.gecti
+                            ? "rounded-full bg-red-soft px-2 py-[2px] text-[10px] font-bold text-red"
+                            : kalan.kritik
+                              ? "rounded-full bg-amber-soft px-2 py-[2px] text-[10px] font-bold text-[#9a6a12]"
+                              : "text-[11px] text-ink-soft"
+                        }
+                      >
+                        {kalan.gecti ? "doğrulama süresi doldu" : `doğrulama: ${kalan.metin}`}
+                      </span>
+                    </p>
+                    <p className="mt-1 text-[12px] font-medium text-ink">
+                      <span className="text-[var(--ink-faint)]">Müşteri:</span> {o.musteri_ad ?? "—"}
+                      {o.musteri_tel ? (
+                        <>
+                          {" · "}
+                          <a href={`tel:${o.musteri_tel}`} className="font-semibold text-teal hover:underline">
+                            {o.musteri_tel}
+                          </a>
+                        </>
+                      ) : null}
+                      {o.gerekce ? <span className="text-[var(--ink-faint)]"> · {o.gerekce}</span> : null}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-right">
+                      <div className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</div>
+                      {s?.ofis ? <div className="text-[11px] text-[var(--ink-faint)]">{s.ofis}</div> : null}
+                      {s?.tel ? (
+                        <a href={`tel:${s.tel}`} className="text-[11px] font-medium text-teal hover:underline">
+                          {s.tel}
+                        </a>
+                      ) : null}
+                    </div>
+                    <OpsiyonKarar opsiyonId={o.id} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
 
       {/* BEKLEYEN TALEPLER — onay kuyruğu (en önemli aksiyon) */}
       {talepler.length > 0 ? (
@@ -232,7 +328,8 @@ export default async function UreticiOpsiyonlar() {
                   const k = kova(b.durum);
                   const t = tazelik(b.son_guncelleme);
                   const ops = opsByBirim.get(b.id) ?? null;
-                  const kalan = kalanMetin(ops?.kilit_bitis ?? null);
+                  const gecici = ops?.dogrulandi === false;
+                  const kalan = kalanMetin(gecici ? ops?.dogrulama_bitis ?? null : ops?.kilit_bitis ?? null);
                   const s = ops ? sahip(ops.satici_id) : null;
                   const daire = [blokAd.get(b.blok_id ?? ""), b.daire_no].filter(Boolean).join(" · ") || b.daire_no || "—";
                   return (
@@ -265,7 +362,7 @@ export default async function UreticiOpsiyonlar() {
                                 : "text-[12px] text-ink-soft"
                           }
                         >
-                          {kalan.metin}
+                          {gecici ? `doğrulama · ${kalan.metin}` : kalan.metin}
                         </span>
                       </td>
                       <td>

@@ -145,6 +145,71 @@ export async function opsiyonAlDogrudan(
   return { ok: true, mesaj: "Opsiyon alındı — daire sana kilitlendi" };
 }
 
+/**
+ * Emlakçı GEÇİCİ opsiyon alır (yöntem 'gecici') — 2 FAZLI disiplin.
+ * RPC opsiyon_al_gecici (SECURITY DEFINER): tahsis + müsait + müşteri-zorunlu + kota → daire ANINDA
+ * kilitlenir ama dogrulandi=false (geçici). Müteahhit doğrulamazsa doğrulama penceresi dolunca cron serbest bırakır.
+ * Boş/anlamsız opsiyon kalkanı: müşteri bilgisi zorunlu + emlakçı aktif-opsiyon kotası.
+ */
+export async function opsiyonAlGecici(
+  birimId: string,
+  projeId: string,
+  musteriAd: string,
+  musteriTel: string,
+  gerekce: string,
+): Promise<{ ok: boolean; mesaj: string }> {
+  const b = uuid.safeParse(birimId);
+  const p = uuid.safeParse(projeId);
+  if (!b.success || !p.success) return { ok: false, mesaj: "Geçersiz istek" };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, mesaj: "Giriş gerekli" };
+
+  const { data: opsId, error } = await supabase.rpc("opsiyon_al_gecici", {
+    p_birim: b.data,
+    p_ad: musteriAd,
+    p_tel: musteriTel,
+    p_gerekce: gerekce.trim() || null,
+  });
+  if (error) {
+    const dup = error.code === "23505" || /opsiyon_tek_aktif|duplicate key/i.test(error.message);
+    console.error("[opsiyonAlGecici] RPC hatası:", error.code, error.message);
+    // RPC RAISE mesajını temizle (Postgres "ERROR: " öneki + fonksiyon bağlamı)
+    const temiz = error.message.replace(/^.*?:\s*/, "").trim();
+    return { ok: false, mesaj: dup ? "Bu daireyi az önce başka danışman kilitledi" : temiz || "Opsiyon alınamadı" };
+  }
+
+  // Bildirim/kayıt best-effort — asla core aksiyonu düşürmez
+  try {
+    await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: p.data, birimId: b.data, payload: { eylem: "gecici", opsiyon_id: opsId } });
+    const admin = createAdminClient();
+    const [{ data: proje }, { data: birim }, { data: ben }] = await Promise.all([
+      admin.from("proje").select("ad, uretici_id").eq("id", p.data).single(),
+      admin.from("birim").select("daire_no").eq("id", b.data).single(),
+      admin.from("profiles").select("ad").eq("id", user.id).single(),
+    ]);
+    if (proje?.uretici_id) {
+      await bildirimYaz({
+        profile_id: proje.uretici_id as string,
+        tip: "talep",
+        baslik: "Opsiyon doğrulaması bekliyor",
+        govde: `${ben?.ad ?? "Bir danışman"} · ${proje.ad ?? "Proje"} · Daire ${birim?.daire_no ?? "?"} · Müşteri: ${musteriAd.trim()}`,
+        link: "/uretici/opsiyonlar",
+      });
+    }
+  } catch (e) {
+    console.error("[opsiyonAlGecici] bildirim/kayit hatası (yutuldu):", e);
+  }
+
+  revalidatePath(`/havuz/proje/${p.data}`);
+  revalidatePath("/havuz");
+  revalidatePath("/havuz/opsiyonlarim");
+  return { ok: true, mesaj: "Daire geçici kilitlendi — müteahhit doğrulaması bekleniyor" };
+}
+
 // ── KYC belge yükleme (mesleki yeterlilik + vergi levhası) → lib/belge (tek upload kaynağı) ──
 export async function belgeYukle(formData: FormData): Promise<void> {
   const r = await belgeleriKaydet(formData);

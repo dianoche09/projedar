@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, projeOpsiyonYontemi, mahalEkle, mahalSil } from "@/app/uretici/actions";
+import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, projeOpsiyonAyar, mahalEkle, mahalSil } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { StokKurulumu } from "../StokKurulumu";
 import { OzellikSecici } from "@/components/OzellikSecici";
@@ -195,36 +195,70 @@ export default async function ProjeKurulum({
         <Rozet ok={belgelerResmi.length > 0} etiket={`${belgelerResmi.length} Resmi belge`} />
       </div>
 
-      {/* OPSİYON YÖNTEMİ — emlakçı daireyi nasıl opsiyonlar */}
-      <Bolum baslik="Opsiyon Yöntemi" aciklama="Emlakçı daireyi nasıl opsiyonlar: anında kilit mi, senin onayınla mı.">
-        <form action={projeOpsiyonYontemi} className="flex flex-wrap items-stretch gap-3">
-          <input type="hidden" name="proje_id" value={id} />
-          {(
-            [
-              ["dogrudan", "Anında kilit", "Emlakçı Opsiyon Al der, daire aynı an kilitlenir. Çift-satış imkânsız (DB kilidi)."],
-              ["talep_kod", "Onaylı", "Emlakçı talep gönderir, sen onaylayınca kilitlenir. Tam kontrol sende."],
-            ] as const
-          ).map(([v, et, ac]) => {
-            const secili = (proje.opsiyon_yontemi ?? "dogrudan") === v;
-            return (
-              <label
-                key={v}
-                className={`min-w-[220px] flex-1 cursor-pointer rounded-xl border p-3 transition-colors ${
-                  secili ? "border-teal bg-teal-soft" : "border-hair bg-soft hover:border-teal/30"
-                }`}
-              >
-                <span className="flex items-center gap-2 font-display text-sm font-bold text-ink">
-                  <input type="radio" name="opsiyon_yontemi" value={v} defaultChecked={secili} className="size-4" />
-                  {et}
-                </span>
-                <span className="mt-1 block text-[12px] text-ink-soft">{ac}</span>
+      {/* OPSİYON DİSİPLİNİ — emlakçı daireyi nasıl opsiyonlar + boş-opsiyon kalkanları */}
+      <Bolum baslik="Opsiyon Disiplini" aciklama="Emlakçı daireyi nasıl opsiyonlar ve boş opsiyon almasını nasıl engellersin. Sistematiği sen tanımlarsın.">
+        {(() => {
+          const oa = (proje.opsiyon_ayar ?? {}) as {
+            yontem?: string;
+            dogrulama_saat?: number;
+            kilit_gun?: number;
+            kota?: number;
+            musteri_zorunlu?: boolean;
+          };
+          const seciliY = oa.yontem ?? (proje.opsiyon_yontemi === "talep_kod" ? "onay" : "gecici");
+          return (
+            <form action={projeOpsiyonAyar} className="space-y-4">
+              <input type="hidden" name="proje_id" value={id} />
+              <div className="flex flex-wrap items-stretch gap-3">
+                {(
+                  [
+                    ["gecici", "Geçici kilit + doğrulama", "Emlakçı gerçek müşteri bilgisiyle daireyi anında kilitler; sen doğrulayınca kesinleşir. Doğrulamazsan süre sonunda otomatik serbest kalır. (Önerilen)"],
+                    ["onay", "Önce onay", "Emlakçı talep gönderir, daire ancak sen onaylayınca kilitlenir. En sıkı kontrol."],
+                    ["dogrudan", "Anında kilit", "Emlakçı Opsiyon Al der, daire aynı an kesin kilitlenir. Doğrulama yok — güvenilen ağ için."],
+                  ] as const
+                ).map(([v, et, ac]) => {
+                  const secili = seciliY === v;
+                  return (
+                    <label
+                      key={v}
+                      className={`min-w-[200px] flex-1 cursor-pointer rounded-xl border p-3 transition-colors ${
+                        secili ? "border-teal bg-teal-soft" : "border-hair bg-soft hover:border-teal/30"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2 font-display text-sm font-bold text-ink">
+                        <input type="radio" name="yontem" value={v} defaultChecked={secili} className="size-4" />
+                        {et}
+                      </span>
+                      <span className="mt-1 block text-[12px] text-ink-soft">{ac}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Doğrulama süresi (saat)
+                  <input type="number" name="dogrulama_saat" min={1} max={72} defaultValue={oa.dogrulama_saat ?? 2} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Geçici kilidin doğrulama beklerken açık kalacağı süre.</span>
+                </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Kesin kilit süresi (gün)
+                  <input type="number" name="kilit_gun" min={1} max={30} defaultValue={oa.kilit_gun ?? 3} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Sen doğruladıktan sonra opsiyonun geçerli olacağı süre.</span>
+                </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Emlakçı opsiyon kotası
+                  <input type="number" name="kota" min={1} max={20} defaultValue={oa.kota ?? 3} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Bir emlakçının aynı anda tutabileceği aktif opsiyon sayısı.</span>
+                </label>
+              </div>
+              <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
+                <input type="checkbox" name="musteri_zorunlu" defaultChecked={oa.musteri_zorunlu ?? true} className="size-4" />
+                Müşteri ad + telefon zorunlu (boş-opsiyon kalkanı)
               </label>
-            );
-          })}
-          <div className="w-full">
-            <SubmitButton>Yöntemi kaydet</SubmitButton>
-          </div>
-        </form>
+              <SubmitButton>Opsiyon disiplinini kaydet</SubmitButton>
+            </form>
+          );
+        })()}
       </Bolum>
 
       {/* 1 — KİMLİK & İMAR */}
