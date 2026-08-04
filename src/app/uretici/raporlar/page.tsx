@@ -27,7 +27,7 @@ export default async function Raporlar() {
   // YALNIZ stok verisi. Lead verisi raporlanmaz (sorgu-only model: müteahhit emlakçının
   // lead havuzunu toplu göremez — tek görünüm /uretici/lead-sorgu bireysel sorgusudur).
   const [{ data: birimler }, { data: tipler }, { data: projeler }, { data: fiyatRaw }] = await Promise.all([
-    supabase.from("birim").select("tip_id, durum, satilabilir, son_guncelleme"),
+    supabase.from("birim").select("proje_id, tip_id, durum, satilabilir, son_guncelleme"),
     supabase.from("daire_tipi").select("id, oda, ad"),
     supabase.from("proje").select("id, ad"),
     supabase
@@ -40,6 +40,8 @@ export default async function Raporlar() {
   ]);
 
   const B = birimler ?? [];
+  const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
+  const projeIds = new Set(projeAd.keys()); // kod-scope: events RLS'e güvenme (talep-radari deseni)
   const toplam = B.length;
   const say = (d: string[]) => B.filter((b) => d.includes(b.durum)).length;
   const musait = say(["musait"]);
@@ -61,9 +63,31 @@ export default async function Raporlar() {
   const tukenisAy = aylikHiz > 0 ? Math.ceil(kalanMusait / aylikHiz) : null;
   const absorpsiyonOran = satilabilirB.length ? Math.round((satilan30 / satilabilirB.length) * 100) : 0;
 
+  // Proje bazında absorpsiyon (birden çok proje varsa kırılım)
+  type ProjeAbs = { kalan: number; satilan90: number };
+  const projeAbs = new Map<string, ProjeAbs>();
+  for (const b of satilabilirB) {
+    if (!b.proje_id) continue;
+    const a = projeAbs.get(b.proje_id) ?? { kalan: 0, satilan90: 0 };
+    if (b.durum === "musait") a.kalan++;
+    else if (b.durum === "satildi" && b.son_guncelleme && b.son_guncelleme >= g90) a.satilan90++;
+    projeAbs.set(b.proje_id, a);
+  }
+  const projeAbsListe = [...projeAbs.entries()]
+    .map(([id, a]) => {
+      const hiz = a.satilan90 / 3;
+      return { id, kalan: a.kalan, hiz, ay: hiz > 0 ? Math.ceil(a.kalan / hiz) : null };
+    })
+    .filter((p) => p.kalan > 0 || p.hiz > 0)
+    .sort((x, y) => {
+      // tükenişi yaklaşan (ay küçük) önce; hız yoksa (ay null) en sona, kalan çoktan aza
+      if (x.ay == null && y.ay == null) return y.kalan - x.kalan;
+      if (x.ay == null) return 1;
+      if (y.ay == null) return -1;
+      return x.ay - y.ay;
+    });
+
   // — FİYAT HAREKETLERİ (90g) — DB trigger 'fiyat' event'lerinden (birim_fiyat_log) —
-  const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
-  const projeIds = new Set(projeAd.keys()); // kod-scope: events RLS'e güvenme (talep-radari deseni)
   type FiyatPayload = { eski?: number; yeni?: number; pct?: number; daire_no?: string | null; para_birimi?: string | null };
   type FiyatRaw = { proje_id: string | null; payload: FiyatPayload | null; created_at: string };
   const fiyatlar = ((fiyatRaw ?? []) as FiyatRaw[])
@@ -144,6 +168,25 @@ export default async function Raporlar() {
               <Stat etiket="Son 90 gün" deger={String(satilan90)} alt="satış" />
               <Stat etiket="Aylık absorpsiyon" deger={`%${absorpsiyonOran}`} alt="satılabilir stoğun" />
             </div>
+
+            {projeAbsListe.length > 1 ? (
+              <div className="mt-5 border-t border-hair pt-4">
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray">Proje bazında</p>
+                <ul className="mt-2 divide-y divide-hair">
+                  {projeAbsListe.map((p) => (
+                    <li key={p.id} className="flex items-center gap-3 py-2 text-sm">
+                      <span className="min-w-0 flex-1 truncate text-ink">{projeAd.get(p.id) ?? "—"}</span>
+                      <span className="shrink-0 font-mono text-xs tabular-nums text-gray">
+                        {p.kalan} müsait · {p.hiz.toFixed(1)}/ay
+                      </span>
+                      <span className="w-20 shrink-0 text-right font-mono text-xs font-semibold tabular-nums text-ink">
+                        {p.kalan === 0 ? "tükendi" : p.ay != null ? `≈ ${p.ay} ay` : "veri yok"}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </>
         )}
       </section>
