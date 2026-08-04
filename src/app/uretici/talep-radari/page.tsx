@@ -40,6 +40,7 @@ function gunOnce(g: number): string {
 export default async function UreticiTalepRadari() {
   const supabase = await createClient();
   const otuzGunOnce = gunOnce(30);
+  const altmisGunOnce = gunOnce(60);
   const yediGunOnce = gunOnce(7);
 
   const [{ data: projeler }, { data: birimRaw }, { data: eventRaw }] = await Promise.all([
@@ -48,9 +49,9 @@ export default async function UreticiTalepRadari() {
     supabase
       .from("events")
       .select("tip, proje_id, birim_id, profile_id, payload, created_at")
-      .gte("created_at", otuzGunOnce)
+      .gte("created_at", altmisGunOnce)
       .order("created_at", { ascending: false })
-      .limit(5000),
+      .limit(6000),
   ]);
 
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
@@ -60,6 +61,28 @@ export default async function UreticiTalepRadari() {
   const birimler = ((birimRaw ?? []) as BirimRaw[]).filter((b) => projeIds.has(b.proje_id));
   const son7 = events.filter((e) => e.created_at >= yediGunOnce);
   const say = (tip: string) => son7.filter((e) => e.tip === tip).length;
+
+  // — AKTİVİTE TRENDİ (8 hafta) + son 30g / önceki 30g delta —
+  // Talep sinyalleri (durum değişimi hariç): ağdaki gerçek ilgi ritmi.
+  // ISO-string sınırlarıyla kovala (render'da Date.now() yok; dosyanın mevcut deseni).
+  const AKTIF_TIP = new Set(["goruntuleme", "paylasim", "lead", "opsiyon", "favori", "satis"]);
+  const haftaSinir = Array.from({ length: 9 }, (_, i) => gunOnce(i * 7)); // [şimdi, -7g, … -56g]
+  const haftaKova = Array<number>(8).fill(0); // 0 = 8 hafta önce … 7 = bu hafta
+  for (const e of events) {
+    if (!AKTIF_TIP.has(e.tip) || e.created_at < haftaSinir[8]) continue;
+    for (let k = 0; k < 8; k++) {
+      if (e.created_at >= haftaSinir[k + 1] && e.created_at < haftaSinir[k]) {
+        haftaKova[7 - k]++;
+        break;
+      }
+    }
+  }
+  const haftaMax = Math.max(1, ...haftaKova);
+  const son30Aktif = events.filter((e) => AKTIF_TIP.has(e.tip) && e.created_at >= otuzGunOnce).length;
+  const onceki30Aktif = events.filter(
+    (e) => AKTIF_TIP.has(e.tip) && e.created_at >= altmisGunOnce && e.created_at < otuzGunOnce,
+  ).length;
+  const aktifDelta = onceki30Aktif > 0 ? Math.round(((son30Aktif - onceki30Aktif) / onceki30Aktif) * 100) : null;
 
   // — DÖNÜŞÜM HUNİSİ (7g) —
   const funnel = [
@@ -188,6 +211,42 @@ export default async function UreticiTalepRadari() {
                 </div>
               )}
             </section>
+
+            {/* AKTİVİTE TRENDİ */}
+            {events.length > 0 ? (
+              <section className="kart p-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-[15px] font-bold text-ink">Aktivite Trendi · 8 hafta</h2>
+                  {aktifDelta != null ? (
+                    <span className={`mono text-[12px] font-semibold ${aktifDelta >= 0 ? "text-teal-d" : "text-red"}`}>
+                      {aktifDelta >= 0 ? "▲" : "▼"} %{Math.abs(aktifDelta)}
+                      <span className="ml-1 font-normal text-[var(--ink-faint)]">son 30g / önceki 30g</span>
+                    </span>
+                  ) : null}
+                </div>
+                <div className="mt-4 flex items-end gap-1.5">
+                  {haftaKova.map((n, i) => (
+                    <div key={i} className="flex flex-1 flex-col items-center gap-1">
+                      <div className="flex w-full items-end justify-center" style={{ height: 56 }}>
+                        <div
+                          className="w-full max-w-[26px] rounded-t"
+                          style={{
+                            height: `${Math.max(4, Math.round((n / haftaMax) * 56))}px`,
+                            background: i === 7 ? "var(--color-teal)" : "var(--color-navy)",
+                          }}
+                          title={`${n} hareket`}
+                        />
+                      </div>
+                      <span className="mono text-[10px] text-[var(--ink-faint)]">{n}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-1 flex justify-between text-[10px] text-[var(--ink-faint)]">
+                  <span>8 hafta önce</span>
+                  <span>bu hafta</span>
+                </div>
+              </section>
+            ) : null}
 
             {/* İÇGÖRÜ KARTLARI */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
