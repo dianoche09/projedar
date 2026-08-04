@@ -73,3 +73,21 @@ returns jsonb language sql stable security definer set search_path=public as $$
   ) x
 $$;
 grant execute on function muteahhit_skor(uuid) to authenticated;
+
+-- ── Admin komuta tablosu: tüm emlakçı / müteahhit skorları tek sorguda (scalar fonksiyonları yeniden kullanır) ──
+create or replace function emlakci_skor_tablo()
+returns table(profil_id uuid, ad text, ofis_id uuid, skor int, detay jsonb)
+language sql stable security definer set search_path=public as $$
+  select p.id, p.ad, p.ofis_id, (e->>'skor')::int, e
+  from profiles p cross join lateral (select emlakci_skor(p.id) as e) x
+  where p.rol='emlakci'
+$$;
+grant execute on function emlakci_skor_tablo() to authenticated;
+
+create or replace function muteahhit_skor_tablo()
+returns table(uretici_id uuid, ad text, skor int, detay jsonb)
+language sql stable security definer set search_path=public as $$
+  select u.id, u.ad, (m->>'skor')::int, m
+  from uretici u cross join lateral (select muteahhit_skor(u.id) as m) x
+$$;
+grant execute on function muteahhit_skor_tablo() to authenticated;

@@ -50,6 +50,11 @@ const YONETIM: NavItem[] = [
     ikon: ic(<><rect x="2" y="5" width="20" height="14" rx="2.5" /><path d="M2 10h20" /></>),
   },
   {
+    href: "/admin/guven",
+    etiket: "Güven Skorları",
+    ikon: ic(<><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /><path d="M12 8v4" /><circle cx="12" cy="15.5" r="0.5" fill="currentColor" /></>),
+  },
+  {
     href: "/admin/denetim",
     etiket: "Denetim",
     ikon: ic(<><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /><path d="M9 12l2 2 4-4" /></>),
