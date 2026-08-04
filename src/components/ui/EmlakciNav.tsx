@@ -72,6 +72,17 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
+    href: "/havuz/lansman",
+    etiket: "Lansman",
+    tam: true,
+    ikon: (
+      <>
+        <path d="M3 11l14-7v16L3 13v-2z" />
+        <path d="M7 13v4a2 2 0 0 0 4 0v-2" />
+      </>
+    ),
+  },
+  {
     href: "/havuz/bildirimler",
     etiket: "Bildirimler",
     tam: true,

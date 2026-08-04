@@ -1120,3 +1120,39 @@ export async function ureticiProfilGuncelle(formData: FormData) {
   revalidatePath("/uretici/ayarlar");
   basariya("/uretici/ayarlar", formData, "Firma profili güncellendi");
 }
+
+/** Üretici lansman/kampanya oluşturur (kendi projesine). RLS lansman_owner sahipliği doğrular. */
+export async function lansmanEkle(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+  const proje_id = String(formData.get("proje_id") ?? "");
+  const baslik = String(formData.get("baslik") ?? "").trim();
+  if (!UUID_RE.test(proje_id) || !baslik) hataya("/uretici/lansman", "Proje ve başlık zorunlu");
+  const metin = (v: FormDataEntryValue | null) => {
+    const s = String(v ?? "").trim();
+    return s === "" ? null : s;
+  };
+  const { error } = await supabase.from("lansman").insert({
+    proje_id,
+    baslik,
+    aciklama: metin(formData.get("aciklama")),
+    tarih: metin(formData.get("tarih")),
+    konum: metin(formData.get("konum")),
+    durum: metin(formData.get("durum")) ?? "lansman",
+  });
+  if (error) hataya("/uretici/lansman", error.message);
+  revalidatePath("/uretici/lansman");
+  basariya("/uretici/lansman", formData, "Lansman eklendi");
+}
+
+/** Üretici kendi lansmanını siler (RLS lansman_owner). */
+export async function lansmanSil(formData: FormData) {
+  const supabase = await createClient();
+  const id = String(formData.get("id") ?? "");
+  if (!UUID_RE.test(id)) return;
+  await supabase.from("lansman").delete().eq("id", id);
+  revalidatePath("/uretici/lansman");
+}
