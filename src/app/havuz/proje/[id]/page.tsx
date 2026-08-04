@@ -9,6 +9,7 @@ import { projeKapak } from "@/lib/gorsel";
 import { generateShareToken } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
+import { KatalogSecici, type SeciBirim } from "./KatalogSecici";
 
 type Belge = { id: string; tip: string | null; ad: string | null; url: string | null };
 type Mahal = { id: string; mahal: string; zemin: string | null; duvar: string | null; tavan: string | null; marka: string | null };
@@ -129,6 +130,20 @@ export default async function HavuzProjeDetay({
   const shareUrlMap = Object.fromEntries(
     stok.map((b) => [b.id, `${appUrl}/p/${emlakciId}/${b.id}/${generateShareToken(emlakciId, b.id)}`]),
   );
+
+  // Katalog seçimi için müsait + satılabilir ana daireler (eklentiler hariç). Oda tipten çözülür.
+  const tipOdaMap = new Map(tipListe.map((t) => [t.id, t.oda]));
+  const katalogBirimler: SeciBirim[] = stok
+    .filter((b) => b.durum === "musait" && b.satilabilir && b.ana_birim_id == null)
+    .map((b) => ({
+      id: b.id as string,
+      daire_no: (b.daire_no as string | null) ?? null,
+      oda: b.tip_id ? tipOdaMap.get(b.tip_id as string) ?? null : null,
+      kat: (b.kat as number | null) ?? null,
+      net_m2: (b.net_m2 as number | null) ?? null,
+      liste_fiyati: (b.liste_fiyati as number | null) ?? null,
+      para_birimi: (b.para_birimi as string | null) ?? null,
+    }));
 
   // Bu emlakçının KENDİ opsiyonladığı birimler (DaireModal'da "Opsiyonu bırak" yalnız bunlarda)
   const { data: benimOps } = await supabase
@@ -468,6 +483,9 @@ export default async function HavuzProjeDetay({
         </div>
       ) : null}
 
+      {/* ===== MÜŞTERİ KATALOĞU (seçmeli) ===== */}
+      {katalogBirimler.length > 0 ? <KatalogSecici projeId={id} birimler={katalogBirimler} /> : null}
+
       {/* ===== FİYAT LİSTESİ · CANLI STOK ===== */}
       <div className="mt-8">
         <h2 className="font-display text-lg font-semibold text-ink">Fiyat Listesi · Canlı Stok</h2>
@@ -485,7 +503,10 @@ export default async function HavuzProjeDetay({
               baslangic={stok as never}
               shareUrlMap={shareUrlMap}
               benimOpsiyonlar={benimOpsiyonlar}
-              opsiyonYontemi={proje.opsiyon_yontemi ?? "talep_kod"}
+              opsiyonYontemi={
+                ((proje.opsiyon_ayar as { yontem?: string } | null)?.yontem) ??
+                (proje.opsiyon_yontemi === "dogrudan" ? "dogrudan" : "onay")
+              }
             />
           )}
         </div>
