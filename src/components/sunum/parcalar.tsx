@@ -84,6 +84,111 @@ export function AlintiSlayt({ metin, alt }: { metin: ReactNode; alt?: string }) 
   );
 }
 
+/** Eski düzen (✕) ve Projedar (✓) karşılaştırma tablosu. */
+export function FarkTablosu({
+  eski,
+  yeni,
+  eskiBaslik = "Bugünkü düzen",
+  yeniBaslik = "Projedar ile",
+}: {
+  eski: string[];
+  yeni: string[];
+  eskiBaslik?: string;
+  yeniBaslik?: string;
+}) {
+  return (
+    <div className="grid gap-3 text-left lg:grid-cols-2">
+      <div className="deck-kart p-5 sm:p-6">
+        <p className="mono text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#e07a6e]">{eskiBaslik}</p>
+        <ul className="mt-4 space-y-3">
+          {eski.map((m) => (
+            <li key={m} className="flex items-start gap-2.5">
+              <span className="mono flex-none text-[13px] font-bold text-[#e07a6e]">✕</span>
+              <span className="deck-soft text-[13.5px] leading-relaxed">{m}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="deck-kart border-[#2fd3bc]/40 bg-[rgba(47,211,188,0.08)] p-5 sm:p-6">
+        <p className="mono text-[10.5px] font-bold uppercase tracking-[0.12em] text-[#2fd3bc]">{yeniBaslik}</p>
+        <ul className="mt-4 space-y-3">
+          {yeni.map((m) => (
+            <li key={m} className="flex items-start gap-2.5">
+              <span className="mono flex-none text-[13px] font-bold text-[#2fd3bc]">✓</span>
+              <span className="text-[13.5px] leading-relaxed text-white/90">{m}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+/** Soru-cevap kartı (SSS slaytları). */
+export function SoruKart({ soru, cevap }: { soru: string; cevap: string }) {
+  return (
+    <div className="deck-kart p-5 text-left">
+      <p className="text-[15px] font-bold leading-snug text-white">{soru}</p>
+      <p className="deck-soft mt-2 text-[13px] leading-relaxed">{cevap}</p>
+    </div>
+  );
+}
+
+/** Yatay akış şeması: Proje sahibi → PROJEDAR → Danışman → Müşteri. */
+export function AkisSema({ dugumler }: { dugumler: { baslik: string; alt: string; vurgu?: boolean }[] }) {
+  return (
+    <div className="flex flex-col items-stretch gap-2.5 text-left lg:flex-row lg:items-stretch">
+      {dugumler.map((d, i) => (
+        <div key={d.baslik} className="contents">
+          {i > 0 ? (
+            <span className="mono flex flex-none items-center justify-center text-[18px] font-bold text-[#2fd3bc] lg:px-1">
+              ⇄
+            </span>
+          ) : null}
+          <div
+            className={`flex-1 rounded-2xl border p-4 sm:p-5 ${
+              d.vurgu
+                ? "border-[#2fd3bc] bg-[rgba(47,211,188,0.12)] shadow-[0_0_40px_rgba(47,211,188,0.15)]"
+                : "deck-kart"
+            }`}
+          >
+            <p className={`text-[14.5px] font-bold ${d.vurgu ? "text-[#2fd3bc]" : "text-white"}`}>{d.baslik}</p>
+            <p className={`mt-1 text-[12px] leading-relaxed ${d.vurgu ? "text-white/90" : "deck-soft"}`}>{d.alt}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Mini canlı fiyat listesi mock'u (üç satır + tazelik etiketi). */
+export function FiyatListesiMock() {
+  const satirlar = [
+    { kod: "A-04 · 2+1", fiyat: "₺4.850.000", taze: "güncel", yeni: false },
+    { kod: "A-07 · 3+1", fiyat: "₺6.320.000", taze: "az önce", yeni: true },
+    { kod: "A-11 · 3+1", fiyat: "₺6.480.000", taze: "güncel", yeni: false },
+  ];
+  return (
+    <div className="kart overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
+      <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
+        <span className="font-display text-[14px] font-bold text-ink">Vadi Konakları · A Blok</span>
+        <OrnekRozet acik />
+      </div>
+      <div>
+        {satirlar.map((s) => (
+          <div key={s.kod} className="flex items-center justify-between gap-3 border-b border-[var(--cizgi)] px-4 py-3 last:border-b-0">
+            <span className="mono text-[12px] font-semibold text-ink">{s.kod}</span>
+            <span className="mono text-[14px] font-semibold text-ink">{s.fiyat}</span>
+            <span className={`taze ${s.yeni ? "t-0" : "t-7"} text-[10.5px]`}>
+              <span className={`nokta ${s.yeni ? "nabiz" : ""}`} /> {s.taze}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** İkonlu madde kartı (koyu cam); sinyal verilirse üstte 4px renk şeridi. */
 export function MaddeKart({
   Ikon,

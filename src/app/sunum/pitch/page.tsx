@@ -232,8 +232,8 @@ export default function PitchDeck() {
     <Slayt
       key="rekabet"
       kicker="Rekabet"
-      baslik="Boş hücre bizim"
-      alt="Eksenler: stoğu kim kontrol eder × erişim modeli. Dördüncü hücrede çok-müteahhitli ve komisyonsuz kimse yok."
+      baslik="Bu modeli yapan başka kimse yok"
+      alt="Piyasadaki çözümler dört gruba ayrılıyor. Çok müteahhitli, üretici kontrollü ve komisyonsuz ağ kuran tek oyuncu biziz."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <MatrisHucre
@@ -251,7 +251,7 @@ export default function PitchDeck() {
         <MatrisHucre
           biz
           baslik="Tahsisli · müteahhit kontrolü · çok-üretici"
-          ornek="Projedar: canlı havuz + granüler tahsis + DB çift-satış kalkanı + komisyonsuz. Boş hücre."
+          ornek="Projedar: canlı havuz + tahsisli erişim + veritabanında çift satış kalkanı + komisyonsuz. Bu alanda tek oyuncu biziz."
         />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
@@ -361,7 +361,7 @@ export default function PitchDeck() {
       orta
       kicker="Ekip & iletişim"
       baslik="Ağı birlikte kuralım"
-      alt="Kurucu: ürün, yazılım ve büyüme tek elde; gayrimenkul teknolojisi alanında yayında ürün deneyimi (KolayIMAR). Yatırım görüşmesi ve detaylı veri odası için iletişime geçin."
+      alt="Kurucu: ürün, yazılım ve büyüme tek elde; gayrimenkul teknolojisi alanında yayında ürün geliştirme deneyimi. Yatırım görüşmesi ve detaylı veri odası için iletişime geçin."
     >
       <p className="mono mt-6 text-[15px] font-semibold tracking-wide text-[#2fd3bc]">projedar.com</p>
     </Slayt>,
