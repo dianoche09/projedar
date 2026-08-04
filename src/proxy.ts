@@ -17,7 +17,9 @@ export const config = {
      * - SEO/metadata: robots.txt, sitemap.xml, opengraph-image, twitter-image. Bunlar anonim
      *   crawler'lar (Googlebot/GPTBot vb.) tarafından çekilir; /login'e yönlendirilirse
      *   robots+sitemap+OG görseli arama motorlarına görünmez olur.
+     * - .txt/.xml static dosyalar: llms.txt, llms-full.txt, IndexNow key (<key>.txt) da anonim
+     *   çekilir; uzantı muafiyeti bunları /login redirect'inden korur.
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json|robots.txt|sitemap.xml|opengraph-image|twitter-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json|robots.txt|sitemap.xml|opengraph-image|twitter-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt|xml)$).*)",
   ],
 };
