@@ -90,6 +90,61 @@ export async function opsiyonTalepGonder(
   return { ok: true, mesaj: "Opsiyon talebin gönderildi — müteahhit onayına düştü" };
 }
 
+/**
+ * Emlakçı ANLIK opsiyon alır — yalnız proje yöntemi 'dogrudan' ise (müteahhit seçer).
+ * RPC opsiyon_al_dogrudan (SECURITY DEFINER): tahsis + müsait + yöntem kontrolü → kilit.
+ * Çift-satış kalkanı (opsiyon_tek_aktif unique index) eş-zamanlı ikinci alanı reddeder.
+ */
+export async function opsiyonAlDogrudan(
+  birimId: string,
+  projeId: string,
+): Promise<{ ok: boolean; mesaj: string }> {
+  const b = uuid.safeParse(birimId);
+  const p = uuid.safeParse(projeId);
+  if (!b.success || !p.success) return { ok: false, mesaj: "Geçersiz istek" };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, mesaj: "Giriş gerekli" };
+
+  const { error } = await supabase.rpc("opsiyon_al_dogrudan", { p_birim: b.data });
+  if (error) {
+    // 23505 = unique_violation → başka danışman az önce kilitledi (çift-satış kalkanı)
+    const dup = error.code === "23505" || /opsiyon_tek_aktif|duplicate key/i.test(error.message);
+    console.error("[opsiyonAlDogrudan] RPC hatası:", error.code, error.message);
+    return { ok: false, mesaj: dup ? "Bu daireyi az önce başka danışman opsiyonladı" : error.message };
+  }
+
+  // Bildirim/kayıt best-effort — asla core aksiyonu düşürmez
+  try {
+    await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: p.data, birimId: b.data, payload: { eylem: "dogrudan" } });
+    const admin = createAdminClient();
+    const [{ data: proje }, { data: birim }, { data: ben }] = await Promise.all([
+      admin.from("proje").select("ad, uretici_id").eq("id", p.data).single(),
+      admin.from("birim").select("daire_no").eq("id", b.data).single(),
+      admin.from("profiles").select("ad").eq("id", user.id).single(),
+    ]);
+    if (proje?.uretici_id) {
+      await bildirimYaz({
+        profile_id: proje.uretici_id as string,
+        tip: "onay",
+        baslik: "Daire opsiyonlandı",
+        govde: `${ben?.ad ?? "Bir danışman"} · ${proje.ad ?? "Proje"} · Daire ${birim?.daire_no ?? "?"} anlık opsiyona alındı`,
+        link: "/uretici/opsiyonlar",
+      });
+    }
+  } catch (e) {
+    console.error("[opsiyonAlDogrudan] bildirim/kayit hatası (yutuldu):", e);
+  }
+
+  revalidatePath(`/havuz/proje/${p.data}`);
+  revalidatePath("/havuz");
+  revalidatePath("/havuz/opsiyonlarim");
+  return { ok: true, mesaj: "Opsiyon alındı — daire sana kilitlendi" };
+}
+
 // ── KYC belge yükleme (mesleki yeterlilik + vergi levhası) → lib/belge (tek upload kaynağı) ──
 export async function belgeYukle(formData: FormData): Promise<void> {
   const r = await belgeleriKaydet(formData);

@@ -44,6 +44,7 @@ export function EmlakciStok({
   baslangic,
   shareUrlMap,
   benimOpsiyonlar,
+  opsiyonYontemi = "talep_kod",
 }: {
   projeId: string;
   projeAd: string;
@@ -53,6 +54,8 @@ export function EmlakciStok({
   shareUrlMap: Record<string, string>;
   /** Bu emlakçıya ait opsiyonlu birim id'leri (bırak butonu için). */
   benimOpsiyonlar?: string[];
+  /** Proje opsiyon yöntemi: 'dogrudan' → anlık kilit; diğer → talep→onay. */
+  opsiyonYontemi?: string;
 }) {
   const [birimler, setBirimler] = useState<BinaBirim[]>(baslangic);
   const [canli, setCanli] = useState(false);
@@ -196,6 +199,7 @@ export function EmlakciStok({
             projeAd={projeAd}
             shareUrlMap={shareUrlMap}
             benimOpsiyonlar={benimOpsiyonlar}
+            opsiyonYontemi={opsiyonYontemi}
           />
         </div>
       ) : null}
@@ -265,6 +269,7 @@ export function EmlakciStok({
           projeAd={projeAd}
           shareUrl={shareUrlMap[secili.id] ?? ""}
           benimOpsiyon={benimOpsiyonlar?.includes(secili.id) ?? false}
+          opsiyonYontemi={opsiyonYontemi}
           eklentiler={birimler
             .filter((e) => e.ana_birim_id === secili.id)
             .map((e) => ({

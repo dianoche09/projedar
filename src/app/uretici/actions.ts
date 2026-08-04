@@ -1148,6 +1148,18 @@ export async function lansmanEkle(formData: FormData) {
   basariya("/uretici/lansman", formData, "Lansman eklendi");
 }
 
+/** Proje opsiyon yöntemi: 'dogrudan' (anlık kilit) | 'talep_kod' (müteahhit onayı). */
+export async function projeOpsiyonYontemi(formData: FormData) {
+  const proje_id = String(formData.get("proje_id") ?? "");
+  const yontem = String(formData.get("opsiyon_yontemi") ?? "");
+  if (!UUID_RE.test(proje_id) || !["dogrudan", "talep_kod"].includes(yontem)) return;
+  const supabase = await createClient();
+  if (!(await projeSahibiMi(supabase, proje_id))) return;
+  await supabase.from("proje").update({ opsiyon_yontemi: yontem }).eq("id", proje_id);
+  revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
+  revalidatePath(`/uretici/proje/${proje_id}`);
+}
+
 /** Üretici kendi lansmanını siler (RLS lansman_owner). */
 export async function lansmanSil(formData: FormData) {
   const supabase = await createClient();

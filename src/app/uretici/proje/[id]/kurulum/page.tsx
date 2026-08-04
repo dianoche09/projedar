@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, mahalEkle, mahalSil } from "@/app/uretici/actions";
+import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, projeOpsiyonYontemi, mahalEkle, mahalSil } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { StokKurulumu } from "../StokKurulumu";
 import { OzellikSecici } from "@/components/OzellikSecici";
@@ -194,6 +194,38 @@ export default async function ProjeKurulum({
         <Rozet ok={fotolar.length > 0} etiket={`${fotolar.length} Tanıtım görseli`} />
         <Rozet ok={belgelerResmi.length > 0} etiket={`${belgelerResmi.length} Resmi belge`} />
       </div>
+
+      {/* OPSİYON YÖNTEMİ — emlakçı daireyi nasıl opsiyonlar */}
+      <Bolum baslik="Opsiyon Yöntemi" aciklama="Emlakçı daireyi nasıl opsiyonlar: anında kilit mi, senin onayınla mı.">
+        <form action={projeOpsiyonYontemi} className="flex flex-wrap items-stretch gap-3">
+          <input type="hidden" name="proje_id" value={id} />
+          {(
+            [
+              ["dogrudan", "Anında kilit", "Emlakçı Opsiyon Al der, daire aynı an kilitlenir. Çift-satış imkânsız (DB kilidi)."],
+              ["talep_kod", "Onaylı", "Emlakçı talep gönderir, sen onaylayınca kilitlenir. Tam kontrol sende."],
+            ] as const
+          ).map(([v, et, ac]) => {
+            const secili = (proje.opsiyon_yontemi ?? "dogrudan") === v;
+            return (
+              <label
+                key={v}
+                className={`min-w-[220px] flex-1 cursor-pointer rounded-xl border p-3 transition-colors ${
+                  secili ? "border-teal bg-teal-soft" : "border-hair bg-soft hover:border-teal/30"
+                }`}
+              >
+                <span className="flex items-center gap-2 font-display text-sm font-bold text-ink">
+                  <input type="radio" name="opsiyon_yontemi" value={v} defaultChecked={secili} className="size-4" />
+                  {et}
+                </span>
+                <span className="mt-1 block text-[12px] text-ink-soft">{ac}</span>
+              </label>
+            );
+          })}
+          <div className="w-full">
+            <SubmitButton>Yöntemi kaydet</SubmitButton>
+          </div>
+        </form>
+      </Bolum>
 
       {/* 1 — KİMLİK & İMAR */}
       <Bolum baslik="Kimlik & İmar" aciklama="Ada/parsel, emsal, ruhsat, otopark kuralı, malzeme & donatı.">

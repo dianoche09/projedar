@@ -485,6 +485,7 @@ export default async function HavuzProjeDetay({
               baslangic={stok as never}
               shareUrlMap={shareUrlMap}
               benimOpsiyonlar={benimOpsiyonlar}
+              opsiyonYontemi={proje.opsiyon_yontemi ?? "talep_kod"}
             />
           )}
         </div>

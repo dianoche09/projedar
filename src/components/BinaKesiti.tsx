@@ -48,6 +48,7 @@ export function BinaKesiti({
   projeAd = "",
   shareUrlMap,
   benimOpsiyonlar,
+  opsiyonYontemi = "talep_kod",
 }: {
   bloklar: Blok[];
   birimler: BinaBirim[];
@@ -58,6 +59,7 @@ export function BinaKesiti({
   shareUrlMap?: Record<string, string>;
   /** Emlakçı modu: bu emlakçıya ait opsiyonlu birim id'leri (bırak butonu için). */
   benimOpsiyonlar?: string[];
+  opsiyonYontemi?: string;
 }) {
   const tipMap = new Map(tipler.map((t) => [t.id, t]));
 
@@ -180,6 +182,7 @@ export function BinaKesiti({
                                   projeAd={projeAd}
                                   shareUrl={shareUrl}
                                   benimOpsiyon={benimOpsiyonlar?.includes(b.id) ?? false}
+                                  opsiyonYontemi={opsiyonYontemi}
                                   eklentiler={eklentiler}
                                   birim={{
                                     id: b.id,

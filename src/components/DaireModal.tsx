@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { birimDurumGuncelle, birimGuncelle, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
-import { opsiyonTalepGonder, opsiyonBirakSessiz } from "@/app/havuz/actions";
+import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonBirakSessiz } from "@/app/havuz/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
@@ -110,6 +110,7 @@ export function DaireModal({
   projeAd = "",
   shareUrl = "",
   benimOpsiyon = false,
+  opsiyonYontemi = "talep_kod",
   eklentiler = [],
 }: {
   birim: ModalBirim;
@@ -120,6 +121,8 @@ export function DaireModal({
   shareUrl?: string;
   /** Emlakçı modu: bu opsiyon bu emlakçıya mı ait (bırak butonu yalnız o zaman). */
   benimOpsiyon?: boolean;
+  /** Proje opsiyon yöntemi: 'dogrudan' → anlık kilit; diğer → talep→onay. */
+  opsiyonYontemi?: string;
   /** Bu daireye bağlı eklentiler (otopark/depo). Üretici modunda ekle/sil; diğerlerinde salt-okunur. */
   eklentiler?: Eklenti[];
 }) {
@@ -461,23 +464,47 @@ export function DaireModal({
                 <p className="text-center text-[10.5px] leading-snug text-[var(--ink-faint)] font-bold">
                   Müşterinizle birebir paylaşın — yetkisiz ilan yasal risk taşımaktadır.
                 </p>
-                <button
-                  type="button"
-                  disabled={bekliyor}
-                  onClick={() =>
-                    basla(async () => {
-                      const r = await opsiyonTalepGonder(birim.id, projeId);
-                      toast.goster(r.mesaj, r.ok ? "basari" : "hata");
-                      if (r.ok) onKapat();
-                    })
-                  }
-                  className="w-full rounded-xl bg-teal font-bold py-3.5 text-xs text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_4px_12px_rgba(30,155,138,0.25)] cursor-pointer"
-                >
-                  {bekliyor ? "Gönderiliyor…" : "Opsiyon Talebi Gönder"}
-                </button>
-                <p className="text-center text-[10px] leading-snug text-[var(--ink-faint)] font-bold">
-                  Müteahhit onayına düşer · doğrudan kilit yok
-                </p>
+                {opsiyonYontemi === "dogrudan" ? (
+                  <>
+                    <button
+                      type="button"
+                      disabled={bekliyor}
+                      onClick={() =>
+                        basla(async () => {
+                          const r = await opsiyonAlDogrudan(birim.id, projeId);
+                          toast.goster(r.mesaj, r.ok ? "basari" : "hata");
+                          if (r.ok) onKapat();
+                        })
+                      }
+                      className="w-full rounded-xl bg-teal font-bold py-3.5 text-xs text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_4px_12px_rgba(30,155,138,0.25)] cursor-pointer"
+                    >
+                      {bekliyor ? "Alınıyor…" : "Opsiyon Al"}
+                    </button>
+                    <p className="text-center text-[10px] leading-snug text-[var(--ink-faint)] font-bold">
+                      Anında kilitlenir · çift-satış imkânsız
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      disabled={bekliyor}
+                      onClick={() =>
+                        basla(async () => {
+                          const r = await opsiyonTalepGonder(birim.id, projeId);
+                          toast.goster(r.mesaj, r.ok ? "basari" : "hata");
+                          if (r.ok) onKapat();
+                        })
+                      }
+                      className="w-full rounded-xl bg-teal font-bold py-3.5 text-xs text-white transition-all duration-300 hover:bg-teal-d disabled:opacity-50 shadow-[0_4px_12px_rgba(30,155,138,0.25)] cursor-pointer"
+                    >
+                      {bekliyor ? "Gönderiliyor…" : "Opsiyon Talebi Gönder"}
+                    </button>
+                    <p className="text-center text-[10px] leading-snug text-[var(--ink-faint)] font-bold">
+                      Müteahhit onayına düşer · doğrudan kilit yok
+                    </p>
+                  </>
+                )}
               </>
             ) : (
               <div className="rounded-xl border border-hair bg-soft p-4 text-center">

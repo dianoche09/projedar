@@ -25,6 +25,7 @@ export function BirimHucre({
   projeAd = "",
   shareUrl = "",
   benimOpsiyon = false,
+  opsiyonYontemi = "talep_kod",
   eklentiler = [],
 }: {
   birim: ModalBirim;
@@ -33,6 +34,7 @@ export function BirimHucre({
   projeAd?: string;
   shareUrl?: string;
   benimOpsiyon?: boolean;
+  opsiyonYontemi?: string;
   eklentiler?: Eklenti[];
 }) {
   const [acik, setAcik] = useState(false);
@@ -71,6 +73,7 @@ export function BirimHucre({
           projeAd={projeAd}
           shareUrl={shareUrl}
           benimOpsiyon={benimOpsiyon}
+          opsiyonYontemi={opsiyonYontemi}
           eklentiler={eklentiler}
           onKapat={() => setAcik(false)}
         />
