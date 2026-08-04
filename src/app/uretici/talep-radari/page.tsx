@@ -43,7 +43,7 @@ export default async function UreticiTalepRadari() {
   const altmisGunOnce = gunOnce(60);
   const yediGunOnce = gunOnce(7);
 
-  const [{ data: projeler }, { data: birimRaw }, { data: eventRaw }] = await Promise.all([
+  const [{ data: projeler }, { data: birimRaw }, { data: eventRaw }, { data: tahsisRaw }] = await Promise.all([
     supabase.from("proje").select("id, ad").order("created_at", { ascending: false }),
     supabase.from("birim").select("proje_id, durum, son_guncelleme"),
     supabase
@@ -52,6 +52,7 @@ export default async function UreticiTalepRadari() {
       .gte("created_at", altmisGunOnce)
       .order("created_at", { ascending: false })
       .limit(6000),
+    supabase.from("tahsis").select("proje_id, hedef_tip, hedef_id, munhasir, bitis"),
   ]);
 
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
@@ -152,6 +153,48 @@ export default async function UreticiTalepRadari() {
     .sort((a, b) => b.oran - a.oran);
   const enHizli = oranliste[0] ?? null;
   const feed = events.slice(0, 18);
+
+  // — TAHSİS PERFORMANSI (yalnız isimli 'danisman' tahsisleri → net atıf) —
+  // Tahsis MOAT'ını sonuca bağlar: kime açtın, o kişi 30g'de dokundu mu?
+  type TahsisRow = { proje_id: string; hedef_tip: string; hedef_id: string | null; munhasir: boolean | null; bitis: string | null };
+  const tahsisler = ((tahsisRaw ?? []) as TahsisRow[]).filter(
+    (t) => t.hedef_tip === "danisman" && t.hedef_id && projeIds.has(t.proje_id) && (!t.bitis || t.bitis > haftaSinir[0]),
+  );
+  const tKey = (p: string, h: string) => `${p}|${h}`;
+  const tahsisGrup = new Map<string, { proje_id: string; hedef_id: string; munhasir: boolean }>();
+  for (const t of tahsisler) {
+    const k = tKey(t.proje_id, t.hedef_id as string);
+    const mev = tahsisGrup.get(k);
+    if (!mev) tahsisGrup.set(k, { proje_id: t.proje_id, hedef_id: t.hedef_id as string, munhasir: !!t.munhasir });
+    else if (t.munhasir) mev.munhasir = true;
+  }
+  const grupAkt = new Map<string, { aktif: number; lead: number; opsiyon: number; son: string | null }>();
+  for (const e of events) {
+    if (!e.profile_id || !e.proje_id || e.created_at < otuzGunOnce) continue;
+    const k = tKey(e.proje_id, e.profile_id);
+    if (!tahsisGrup.has(k)) continue;
+    const g = grupAkt.get(k) ?? { aktif: 0, lead: 0, opsiyon: 0, son: null };
+    if (e.tip === "paylasim" || e.tip === "goruntuleme") g.aktif++;
+    else if (e.tip === "lead") g.lead++;
+    else if (e.tip === "opsiyon") g.opsiyon++;
+    if (!g.son || e.created_at > g.son) g.son = e.created_at;
+    grupAkt.set(k, g);
+  }
+  const tPuan = (a: { aktif: number; lead: number; opsiyon: number }) => a.aktif + a.lead * 3 + a.opsiyon * 5;
+  const tahsisPerf = [...tahsisGrup.entries()]
+    .map(([k, g]) => ({ key: k, ...g, ...(grupAkt.get(k) ?? { aktif: 0, lead: 0, opsiyon: 0, son: null }) }))
+    .sort((x, y) => tPuan(y) - tPuan(x));
+  const pasifTahsis = tahsisPerf.filter((t) => t.aktif === 0 && t.lead === 0 && t.opsiyon === 0).length;
+  let tahsisAd = new Map<string, string | null>();
+  if (tahsisPerf.length) {
+    try {
+      const admin = createAdminClient();
+      const { data: prof } = await admin.from("profiles").select("id, ad").in("id", tahsisPerf.map((t) => t.hedef_id));
+      tahsisAd = new Map((prof ?? []).map((p) => [p.id as string, p.ad as string | null]));
+    } catch {
+      tahsisAd = new Map();
+    }
+  }
 
   return (
     <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
@@ -295,6 +338,56 @@ export default async function UreticiTalepRadari() {
                     </div>
                   ))}
                 </div>
+              </section>
+            ) : null}
+
+            {/* TAHSİS PERFORMANSI */}
+            {tahsisPerf.length > 0 ? (
+              <section className="kart overflow-hidden">
+                <div className="flex items-center justify-between border-b border-[var(--cizgi)] px-5 py-3.5">
+                  <h2 className="font-display text-[15px] font-bold text-ink">Tahsis Performansı · 30g</h2>
+                  {pasifTahsis > 0 ? (
+                    <span className="mono rounded-full bg-amber-soft px-2 py-[3px] text-[11px] font-semibold text-amber">
+                      {pasifTahsis} pasif
+                    </span>
+                  ) : null}
+                </div>
+                <p className="px-5 pt-2.5 text-[11.5px] text-[var(--ink-faint)]">
+                  İsimli danışman tahsisleri. Sayılar: paylaşım+görüntüleme · lead · opsiyon.
+                </p>
+                <ul className="mt-1 divide-y divide-[var(--cizgi)]">
+                  {tahsisPerf.slice(0, 8).map((t) => {
+                    const pasif = t.aktif === 0 && t.lead === 0 && t.opsiyon === 0;
+                    return (
+                      <li key={t.key} className="flex items-center gap-3 px-5 py-2.5">
+                        <span
+                          className="size-[7px] shrink-0 rounded-full"
+                          style={{ background: pasif ? "var(--color-red)" : "var(--color-green)" }}
+                          aria-hidden
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5 truncate text-[13px] font-medium text-ink">
+                            <span className="truncate">{tahsisAd.get(t.hedef_id) ?? "Danışman"}</span>
+                            {t.munhasir ? (
+                              <span className="shrink-0 rounded bg-navy-soft px-1.5 py-[1px] text-[10px] font-semibold text-ink-soft">
+                                münhasır
+                              </span>
+                            ) : null}
+                          </div>
+                          <div className="truncate text-[11px] text-[var(--ink-faint)]">
+                            {projeAd.get(t.proje_id) ?? "—"}
+                            {t.son ? ` · son ${zamanOnce(t.son)}` : " · hiç hareket yok"}
+                          </div>
+                        </div>
+                        <div className="mono flex shrink-0 items-center gap-3 text-[11.5px]">
+                          <span className="text-ink-soft" title="paylaşım+görüntüleme">{t.aktif}</span>
+                          <span className="text-green" title="lead">{t.lead}</span>
+                          <span className="text-amber" title="opsiyon">{t.opsiyon}</span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
               </section>
             ) : null}
           </div>
