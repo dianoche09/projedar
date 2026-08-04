@@ -15,7 +15,7 @@ import { Slayt } from "@/components/sunum/Slayt";
 import {
   AdimSirasi,
   CanliBirimKart,
-  KapakSlayt,
+  GorselSlayt,
   LeadSorguKart,
   MaddeKart,
   OnayMadde,
@@ -29,29 +29,31 @@ export const metadata: Metadata = {
   description: "Yüz yüze görüşme sunumu: canlı konut stoğu dağıtım ağı, emlakçı tarafı.",
 };
 
-/* 11 slayt: kapak, problem, çözüm, akış, mikrosite, opsiyon, lead,
-   tazelik, ücret, katılım, kapanış CTA. */
+/* 12 slayt: kapak, problem, çözüm, akış(demo), mikrosite, opsiyon-mesaj(görsel),
+   opsiyon-mekanizma, lead, tazelik, ücret, katılım, CTA. */
 export default function EmlakciSunum() {
   const slides = [
     /* 1 · Kapak */
-    <KapakSlayt
+    <GorselSlayt
       key="kapak"
+      gorsel="/sunum/konut-aksam.jpg"
+      logo
       kicker="Projedar · Danışman sunumu"
       baslik="Sana tahsisli projeler. Tek canlı havuz."
       alt="Yeni konut projelerini her an güncel fiyat ve durumla paylaş. Temel üyelik ücretsiz."
     >
-      <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-        <span className="taze t-0 rounded-full border border-[var(--cizgi-2)] bg-white/85 px-3.5 py-2 text-[12px]">
-          <span className="nokta nabiz" /> canlı · şimdi güncellendi
+      <div className="da da-4 mt-8 flex flex-wrap items-center justify-center gap-3">
+        <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-semibold text-[#3ddc8f] backdrop-blur-md">
+          <span className="nabiz size-2 rounded-full bg-[#3ddc8f]" /> canlı · şimdi güncellendi
         </span>
-        <span className="mono rounded-full border border-[var(--cizgi-2)] bg-white/85 px-3.5 py-2 text-[11px] font-semibold text-[#1f7d4c]">
+        <span className="mono rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold text-white/85 backdrop-blur-md">
           temel üyelik ücretsiz
         </span>
       </div>
-      <p className="mono mt-12 text-[10px] uppercase tracking-[0.16em] text-[var(--ink-faint)]">
+      <p className="da da-5 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
         ok tuşları veya kaydırma ile ilerleyin
       </p>
-    </KapakSlayt>,
+    </GorselSlayt>,
 
     /* 2 · Problem */
     <Slayt
@@ -75,7 +77,7 @@ export default function EmlakciSunum() {
           Ikon={UserX}
           baslik="Güven kaybı"
           metin="Satıldı çıkan daire veya eski fiyat, müşteriyi bir daha geri getirmez."
-          sinyal="#d15a4e"
+          sinyal="#e07a6e"
         />
       </div>
     </Slayt>,
@@ -84,8 +86,8 @@ export default function EmlakciSunum() {
     <Slayt
       key="cozum"
       kicker="Çözüm"
-      baslik="Tek canlı havuz"
-      alt="Sana tahsisli projeler tek ekranda; her birimin yanında son güncelleme yaşar."
+      baslik="Cebinde canlı satış ofisi"
+      alt="Sana tahsisli projeler tek ekranda; her birimin yanında son güncelleme yaşar. Müteahhidi aramadan, listeyi sormadan satarsın."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_360px]">
         <ul className="space-y-4">
@@ -107,7 +109,7 @@ export default function EmlakciSunum() {
           { baslik: "Opsiyon al", metin: "Beğendi mi? 48 saatlik kilitle daireyi güvenceye al." },
         ]}
       />
-      <p className="mono mb-3 mt-8 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-teal">
+      <p className="mono mb-3 mt-8 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Dene: bir daireye dokun, opsiyon kilidini test et
       </p>
       <KuleDemo />
@@ -120,12 +122,12 @@ export default function EmlakciSunum() {
       baslik="PDF değil: yaşayan satış sayfası"
       alt="Gönderdiğin link her açıldığında canlı fiyatı basar. Üstte canlı stok rozeti, altta senin kartın ve WhatsApp butonun."
     >
-      <div className="kart mx-auto max-w-md overflow-hidden p-0">
+      <div className="kart mx-auto max-w-md overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
         <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
           <span className="taze t-0 text-[11px]">
             <span className="nokta nabiz" /> Canlı stoktan alındı · 2 dk önce güncellendi
           </span>
-          <OrnekRozet />
+          <OrnekRozet acik />
         </div>
         <div className="px-4 py-4">
           <p className="font-display text-lg font-extrabold tracking-tight text-ink">Çankaya Vadi · A-7-2</p>
@@ -142,20 +144,24 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 6 · Opsiyon kilidi */
-    <Slayt
-      key="kilit"
-      orta
+    /* 6 · Opsiyon mesajı (görsel) */
+    <GorselSlayt
+      key="kilit-mesaj"
+      gorsel="/sunum/kule-cephe.jpg"
+      hiza="sol"
       kicker="Güvence"
       baslik="Opsiyonu aldıysan daire senindir"
       alt="48 saat boyunca daire sana kilitli. Çift satış veritabanı seviyesinde engellidir; kimse daireyi altından alamaz."
-    >
+    />,
+
+    /* 7 · Opsiyon mekanizması */
+    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Kilit nasıl çalışır?">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Lock}
           baslik="Anında kilit"
           metin="Opsiyon aldığın an daire diğer tüm danışman ekranlarında kilitli görünür."
-          sinyal="#e3a12c"
+          sinyal="#e8b04b"
         />
         <MaddeKart
           Ikon={Clock}
@@ -170,7 +176,7 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 7 · Lead koruması */
+    /* 8 · Lead koruması */
     <Slayt
       key="lead"
       kicker="Emeğin kayıtlı"
@@ -187,7 +193,7 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 8 · Tazelik */
+    /* 9 · Tazelik */
     <Slayt
       key="tazelik"
       kicker="Tazelik"
@@ -197,7 +203,7 @@ export default function EmlakciSunum() {
       <TazelikOlcek />
     </Slayt>,
 
-    /* 9 · Ücret */
+    /* 10 · Ücret */
     <Slayt
       key="ucret"
       orta
@@ -210,7 +216,7 @@ export default function EmlakciSunum() {
           Ikon={BadgeCheck}
           baslik="Üyelik ücretsiz"
           metin="Temel erişim için ödeme yok; kayıt ol, tahsisli havuzunu gör."
-          sinyal="#2fb36b"
+          sinyal="#3ddc8f"
         />
         <MaddeKart
           Ikon={Percent}
@@ -225,7 +231,7 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 10 · Katılım */
+    /* 11 · Katılım */
     <Slayt
       key="katilim"
       kicker="Katılım"
@@ -241,15 +247,16 @@ export default function EmlakciSunum() {
       />
     </Slayt>,
 
-    /* 11 · Kapanış CTA */
-    <KapakSlayt
+    /* 12 · Kapanış CTA */
+    <GorselSlayt
       key="cta"
+      gorsel="/sunum/sehir-panorama.jpg"
       kicker="Sonraki adım"
       baslik="İlk tahsisli projeni gör"
       alt="Kayıt birkaç dakika sürer; temel üyelik ücretsizdir."
     >
-      <p className="mono mt-8 text-[14px] font-semibold tracking-wide text-navy">projedar.com/kayit</p>
-    </KapakSlayt>,
+      <p className="da da-4 mono mt-9 text-[15px] font-semibold tracking-wide text-[#2fd3bc]">projedar.com/kayit</p>
+    </GorselSlayt>,
   ];
 
   return <DeckShell baslik="Danışman sunumu" slides={slides} />;
