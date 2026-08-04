@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { zamanOnce } from "@/lib/types";
+import { ExcelIndir } from "@/components/ExcelIndir";
 
 const PARA_SIMGE: Record<string, string> = { TRY: "₺", USD: "$", EUR: "€", GBP: "£", AED: "AED" };
 const fmt = (n: number) => n.toLocaleString("tr-TR");
@@ -46,6 +47,22 @@ export default async function Paylastiklarim() {
   const projeMap = new Map((projeler ?? []).map((p) => [p.id, p]));
   const birimMap = new Map((birimler ?? []).map((b) => [b.id, b]));
 
+  // Excel export satırları (RLS: kendi paylaşım izlerin). Fiyat paylaşım anındaki değil,
+  // birimin güncel değeri (Paylaştıklarım zaten canlı değerden gösterir).
+  const excelSatirlar = liste.map((e) => {
+    const proje = e.proje_id ? projeMap.get(e.proje_id) : null;
+    const birim = e.birim_id ? birimMap.get(e.birim_id) : null;
+    return {
+      Proje: proje?.ad ?? "",
+      İl: proje?.il ?? "",
+      İlçe: proje?.ilce ?? "",
+      Daire: birim?.daire_no ?? "",
+      Fiyat: birim?.liste_fiyati ?? "",
+      "Para Birimi": birim?.para_birimi ?? "",
+      Tarih: new Date(e.created_at).toLocaleDateString("tr-TR"),
+    };
+  });
+
   const toplam = liste.length;
   const projeSayi = new Set(liste.map((e) => e.proje_id).filter(Boolean)).size;
 
@@ -65,6 +82,12 @@ export default async function Paylastiklarim() {
           WhatsApp ve link ile paylaştığın birimlerin izi. Fiyat paylaşım anında canlı değerden basılır — sonradan değişirse senin görünümün de güncel kalır.
         </p>
       </header>
+
+      {toplam > 0 ? (
+        <div className="mb-4 flex justify-end">
+          <ExcelIndir satirlar={excelSatirlar} dosyaAd="paylastiklarim.xlsx" sheetAd="Paylasimlar" etiket="Paylaşımları Excel indir" />
+        </div>
+      ) : null}
 
       {/* KPI */}
       <div className="belir belir-1 mb-6 grid grid-cols-2 gap-3.5">

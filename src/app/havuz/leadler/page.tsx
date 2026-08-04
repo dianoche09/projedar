@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { zamanOnce } from "@/lib/types";
 import { LeadDurum } from "./LeadDurum";
+import { ExcelIndir } from "@/components/ExcelIndir";
 
 /** Lead durum → lead-pill renk + etiket (sinyal dili). */
 const LEAD_PILL: Record<string, { bg: string; renk: string; et: string }> = {
@@ -26,6 +27,20 @@ export default async function Leadler() {
   const kazanilan = liste.filter((l) => l.durum === "kazanildi").length;
   const sicak = liste.filter((l) => ["gorusme", "opsiyon"].includes(l.durum)).length;
 
+  // Excel export satırları (RLS ile server'da zaten emlakçının kendi leadleri).
+  const excelSatirlar = liste.map((l) => {
+    const proje = l.proje as { ad?: string } | null;
+    const birim = l.birim as { daire_no?: string } | null;
+    return {
+      Ad: l.ad ?? "",
+      Telefon: l.telefon ?? "",
+      Durum: LEAD_PILL[l.durum]?.et ?? l.durum,
+      Proje: proje?.ad ?? "",
+      Daire: birim?.daire_no ?? "",
+      Tarih: new Date(l.created_at).toLocaleDateString("tr-TR"),
+    };
+  });
+
   const KPI: [string, number, string][] = [
     ["Toplam Lead", toplam, "var(--color-navy)"],
     ["Açık Takip", acik, "var(--color-teal)"],
@@ -49,6 +64,12 @@ export default async function Leadler() {
           Paylaşımlarından gelen müşteri adayları. Yalnız sana atanan/paylaştığın leadleri görürsün — durumu ilerlet, ara, WhatsApp&apos;tan dönüş yap.
         </p>
       </header>
+
+      {liste.length > 0 ? (
+        <div className="mb-4 flex justify-end">
+          <ExcelIndir satirlar={excelSatirlar} dosyaAd="leadlerim.xlsx" sheetAd="Leadler" etiket="Lead'leri Excel indir" />
+        </div>
+      ) : null}
 
       {/* KPI şeridi */}
       <div className="belir belir-1 mb-6 grid grid-cols-2 gap-3.5 lg:grid-cols-4">
