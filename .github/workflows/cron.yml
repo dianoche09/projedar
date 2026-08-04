@@ -1,4 +1,4 @@
-# ProjePazar zamanlanmış işler — Vercel Hobby cron sınırı (max 2/günlük) yerine GitHub Actions.
+# Projedar zamanlanmış işler — Vercel Hobby cron sınırı (max 2/günlük) yerine GitHub Actions.
 # 15 dakikada bir 3 cron rotasını tetikler (rotalar idempotent; bir şey yoksa no-op).
 #   - option-expiry: süresi dolan 48s opsiyon kilidini temizler (zaman-hassas)
 #   - stok-acilis:   açılış tarihi gelen planlı birimi 'müsait' yapar
@@ -20,7 +20,7 @@ jobs:
   tick:
     runs-on: ubuntu-latest
     env:
-      BASE: https://projepazar.vercel.app
+      BASE: https://projedar.com
       AUTH: "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
     steps:
       - name: option-expiry
