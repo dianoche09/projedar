@@ -27,6 +27,7 @@ import {
   AkisSema,
   AlintiSlayt,
   CanliBirimKart,
+  EkranKart,
   FarkTablosu,
   FiyatListesiMock,
   GorselSlayt,
@@ -34,6 +35,7 @@ import {
   OnayMadde,
   SoruKart,
 } from "@/components/sunum/parcalar";
+import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 
@@ -97,9 +99,15 @@ export default function UreticiSunumV2() {
       </div>
     </Slayt>,
 
-    /* 3 · Sorun */
-    <Slayt key="sorun" kicker="Sorun" baslik="Bugün proje stoğu nasıl dolaşıyor?">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 3 · Sorun (görsel zemin) */
+    <GorselSlayt
+      key="sorun"
+      gorsel="/sunum/excel-kaos.jpg"
+      hiza="sol"
+      kicker="Sorun"
+      baslik="Bugün proje stoğu nasıl dolaşıyor?"
+    >
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={FileSpreadsheet}
           baslik="Excel ve PDF listeler"
@@ -122,7 +130,7 @@ export default function UreticiSunumV2() {
           metin="Stoğunuzu kimin, kime, hangi koşullarla sunduğunu göremezsiniz; kontrol elden çıkar."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 4 · Alıntı */
     <AlintiSlayt
@@ -166,7 +174,9 @@ export default function UreticiSunumV2() {
           <OnayMadde>Değişiklik tüm ağa anında yayılır.</OnayMadde>
           <OnayMadde>Her bilginin üzerinde tazelik damgası: &ldquo;X önce güncellendi&rdquo;.</OnayMadde>
         </ul>
-        <FiyatListesiMock />
+        <EkranKart url="projedar.com/uretici/stok">
+          <FiyatListesiMock />
+        </EkranKart>
       </div>
     </Slayt>,
 
@@ -198,7 +208,9 @@ export default function UreticiSunumV2() {
       <p className="mono mb-3 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Deneyin: bir daireye dokunun, opsiyon kilidini test edin
       </p>
-      <KuleDemo />
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+        <KuleDemo />
+      </EkranKart>
     </Slayt>,
 
     /* 9 · Özellik: tahsis + demo */
@@ -209,7 +221,9 @@ export default function UreticiSunumV2() {
       baslik="Kim neyi görür? Siz seçersiniz"
       alt="Projedar kapalı bir ağdır. Hangi ofisin veya danışmanın hangi projeye, bloğa, daire tipine, hatta tek tek dairelere erişeceğini siz tanımlarsınız; münhasırlık ve kontenjan gibi koşulları da tahsisle belirlersiniz. Yetki anında verilir, anında kaldırılır."
     >
-      <TahsisPaneli />
+      <EkranKart url="projedar.com/uretici/tahsis">
+        <TahsisPaneli />
+      </EkranKart>
     </Slayt>,
 
     /* 10 · Nasıl çalışır */
@@ -224,9 +238,15 @@ export default function UreticiSunumV2() {
       />
     </Slayt>,
 
-    /* 11 · Değer önerisi */
-    <Slayt key="deger" kicker="Değer önerisi" baslik="Projedar proje sahibine ne kazandırır?">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 11 · Değer önerisi (görsel zemin) */
+    <GorselSlayt
+      key="deger"
+      gorsel="/sunum/el-sikisma.jpg"
+      hiza="sol"
+      kicker="Değer önerisi"
+      baslik="Projedar proje sahibine ne kazandırır?"
+    >
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={TrendingUp}
           baslik="Fiyat disiplini"
@@ -249,7 +269,7 @@ export default function UreticiSunumV2() {
           metin="Hangi daire ilgi görüyor, hangi danışman aktif, talep nereye akıyor: Talep Radarı panelinizde."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 12 · Ağın gücü */
     <Slayt
@@ -279,6 +299,19 @@ export default function UreticiSunumV2() {
       <p className="deck-kart mt-4 px-5 py-4 text-[14px] font-semibold leading-relaxed text-white/90">
         Sonuç: stoğunuz, satmaya istekli ve doğru bilgiyle donanmış bir ağda dolaşır.
       </p>
+    </Slayt>,
+
+    /* 12b · Ağ diyagramı (canlı grafik) */
+    <Slayt
+      key="ag-diyagram"
+      genis
+      kicker="Ağın gücü · Canlı görünüm"
+      baslik="Tek proje aracı değil, ağ"
+      alt="Her yeni proje haritaya bir kütle, her yeni danışman bir erişim noktası ekler. Bir danışmanın üstüne gelin: yalnız ona tahsisli hat parlar."
+    >
+      <EkranKart url="projedar.com">
+        <AgDiyagrami />
+      </EkranKart>
     </Slayt>,
 
     /* 13 · Fark tablosu */
@@ -412,16 +445,24 @@ export default function UreticiSunumV2() {
       </div>
     </Slayt>,
 
-    /* 18 · Özet */
-    <Slayt key="ozet" kicker="Özet" baslik="Üç cümlede Projedar">
-      <AdimSirasi
-        adimlar={[
-          { baslik: "Stoğunuz tek merkezden, canlı yönetilir", metin: "Fiyat ve birim durumu tüm ağda her an günceldir; sürüm karmaşası biter." },
-          { baslik: "Çift satış imkânsızlaşır", metin: "Opsiyon kilidi ve kayıtlı süreç, kapora çakışmalarını ve mağduriyetleri bitirir." },
-          { baslik: "Kontrol ve talep zekâsı sizde", metin: "Kim neyi görür siz seçersiniz; ağdaki her sinyal Talep Radarı'nda fiyat ve satış kararına dönüşür." },
-        ]}
-      />
-    </Slayt>,
+    /* 18 · Özet (görsel zemin) */
+    <GorselSlayt
+      key="ozet"
+      gorsel="/sunum/satis-ofisi.jpg"
+      hiza="sol"
+      kicker="Özet"
+      baslik="Üç cümlede Projedar"
+    >
+      <div className="da da-3 mt-8 w-full">
+        <AdimSirasi
+          adimlar={[
+            { baslik: "Stoğunuz tek merkezden, canlı yönetilir", metin: "Fiyat ve birim durumu tüm ağda her an günceldir; sürüm karmaşası biter." },
+            { baslik: "Çift satış imkânsızlaşır", metin: "Opsiyon kilidi ve kayıtlı süreç, kapora çakışmalarını ve mağduriyetleri bitirir." },
+            { baslik: "Kontrol ve talep zekâsı sizde", metin: "Kim neyi görür siz seçersiniz; ağdaki her sinyal Talep Radarı'nda fiyat ve satış kararına dönüşür." },
+          ]}
+        />
+      </div>
+    </GorselSlayt>,
 
     /* 19 · Başlangıç */
     <Slayt key="baslangic" kicker="Başlangıç" baslik="Yayına alma süreci">

@@ -84,6 +84,36 @@ export function AlintiSlayt({ metin, alt }: { metin: ReactNode; alt?: string }) 
   );
 }
 
+/** SaaS katalog görünümü: tarayıcı çerçevesi içinde ürün ekranı/bileşeni. */
+export function EkranKart({ url = "projedar.com", children }: { url?: string; children: ReactNode }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/12 bg-[#0b1c2e] shadow-[0_26px_90px_rgba(0,0,0,0.55)]">
+      <div className="flex items-center gap-3 border-b border-white/10 bg-white/5 px-4 py-2.5">
+        <span className="flex flex-none gap-1.5" aria-hidden>
+          <i className="size-2.5 rounded-full bg-[#e07a6e]/80" />
+          <i className="size-2.5 rounded-full bg-[#e8b04b]/80" />
+          <i className="size-2.5 rounded-full bg-[#3ddc8f]/80" />
+        </span>
+        <span className="mono mx-auto flex items-center gap-1.5 rounded-lg bg-white/8 px-3 py-1 text-[10.5px] text-white/65">
+          <span className="size-1.5 rounded-full bg-[#3ddc8f]" aria-hidden /> {url}
+        </span>
+        <span className="w-12 flex-none" aria-hidden />
+      </div>
+      <div className="p-3 sm:p-4">{children}</div>
+    </div>
+  );
+}
+
+/** İçerikle ilgili fotoğraf kartı (grid içinde yan görsel). */
+export function GorselKart({ src, oran = "aspect-[4/3]" }: { src: string; oran?: string }) {
+  return (
+    <div className={`overflow-hidden rounded-2xl border border-white/12 shadow-[0_20px_70px_rgba(0,0,0,0.5)] ${oran}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" className="h-full w-full object-cover" />
+    </div>
+  );
+}
+
 /** Eski düzen (✕) ve Projedar (✓) karşılaştırma tablosu. */
 export function FarkTablosu({
   eski,
