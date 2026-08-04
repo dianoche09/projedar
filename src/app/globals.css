@@ -859,3 +859,72 @@ a:focus-visible,
 /* canlı havuz görünüm geçişi */
 .havuz-view { transition: opacity 0.3s ease; }
 .havuz-view.gizli { display: none; }
+
+/* =========================================================
+   SUNUM DECK — koyu sinematik "komuta" teması (/sunum/*)
+   ========================================================= */
+.deck-zemin {
+  color: #eaf1f7;
+  background:
+    radial-gradient(1000px 520px at 82% -12%, rgba(30, 155, 138, 0.22), transparent 60%),
+    radial-gradient(820px 440px at -4% 112%, rgba(47, 179, 107, 0.12), transparent 55%),
+    linear-gradient(165deg, #071522 0%, #0a1f33 52%, #0d2942 100%);
+}
+/* koyu cam kart */
+.deck-kart {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 34px rgba(2, 10, 18, 0.35);
+}
+.deck-soft { color: #a8bccc; }
+.deck-faint { color: #6e8496; }
+.deck-teal { color: #2fd3bc; }
+/* tam ekran görsel katmanı + okunabilirlik degradesi */
+.deck-gorsel { position: absolute; inset: 0; overflow: hidden; }
+.deck-gorsel img { width: 100%; height: 100%; object-fit: cover; }
+.deck-gorsel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 21, 34, 0.42) 0%, rgba(7, 21, 34, 0.18) 38%, rgba(7, 21, 34, 0.88) 100%);
+}
+.deck-gorsel.sol::after {
+  background:
+    linear-gradient(90deg, rgba(7, 21, 34, 0.94) 0%, rgba(7, 21, 34, 0.55) 46%, rgba(7, 21, 34, 0.12) 100%),
+    linear-gradient(180deg, transparent 62%, rgba(7, 21, 34, 0.8) 100%);
+}
+/* slayt giriş koreografisi: aktif olunca .da elemanları sırayla belirir */
+.deck-slayt .da { opacity: 0; }
+.deck-slayt.aktif .da { animation: deckGir 0.75s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.deck-slayt.aktif .da-1 { animation-delay: 0.1s; }
+.deck-slayt.aktif .da-2 { animation-delay: 0.22s; }
+.deck-slayt.aktif .da-3 { animation-delay: 0.34s; }
+.deck-slayt.aktif .da-4 { animation-delay: 0.46s; }
+.deck-slayt.aktif .da-5 { animation-delay: 0.58s; }
+.deck-slayt.aktif .da-6 { animation-delay: 0.7s; }
+@keyframes deckGir {
+  from { opacity: 0; transform: translateY(28px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+/* görselde yavaş Ken Burns (aktif slaytta) */
+.deck-slayt.aktif .kenburns { animation: kenburns 16s ease-out both; }
+@keyframes kenburns {
+  from { transform: scale(1.09); }
+  to { transform: scale(1.0); }
+}
+/* dev vurgu rakamı */
+.deck-dev {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-slayt .da { opacity: 1; animation: none !important; }
+  .deck-slayt .kenburns { animation: none !important; }
+}

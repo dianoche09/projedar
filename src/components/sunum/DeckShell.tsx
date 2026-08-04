@@ -5,9 +5,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
 /**
- * Tam ekran sunum kabuğu: ok tuşları + swipe + alt kontrol barı.
+ * Tam ekran koyu sinematik sunum kabuğu: ok tuşları + swipe + alt kontrol barı.
  * Tüm slaytlar mounted kalır (KuleDemo/TahsisPaneli gibi demoların state'i
- * korunur); aktif olmayan slayt görünmez ve etkileşime kapalıdır.
+ * korunur); aktif slayt "aktif" sınıfını alır → .da elemanları sırayla belirir,
+ * .kenburns görselleri yavaşça yakınlaşır (globals.css deck teması).
  */
 export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNode[] }) {
   const [aktif, setAktif] = useState(0);
@@ -43,7 +44,7 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
 
   return (
     <div
-      className="relative h-dvh w-full overflow-hidden"
+      className="deck-zemin relative h-dvh w-full select-none overflow-hidden"
       onTouchStart={(e) => {
         dokunus.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       }}
@@ -60,9 +61,9 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
       {/* üst bar */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 py-4 sm:px-8">
         <span className="pointer-events-auto">
-          <Logo size={26} wordmark />
+          <Logo size={26} wordmark acik />
         </span>
-        <span className="mono rounded-full border border-[var(--cizgi-2)] bg-white/85 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-soft">
+        <span className="mono rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80 backdrop-blur-md">
           {baslik}
         </span>
       </header>
@@ -72,10 +73,10 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
         <section
           key={i}
           aria-hidden={i !== aktif}
-          className={`absolute inset-0 overflow-y-auto transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`deck-slayt absolute inset-0 overflow-y-auto transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             i === aktif
-              ? "translate-x-0 opacity-100"
-              : `pointer-events-none opacity-0 ${i < aktif ? "-translate-x-6" : "translate-x-6"}`
+              ? "aktif translate-x-0 opacity-100"
+              : `pointer-events-none opacity-0 ${i < aktif ? "-translate-x-8" : "translate-x-8"}`
           }`}
         >
           {s}
@@ -89,7 +90,7 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
           onClick={() => git(aktif - 1)}
           disabled={aktif === 0}
           aria-label="Önceki slayt"
-          className="flex size-11 flex-none items-center justify-center rounded-[13px] border border-[var(--cizgi-2)] bg-white text-ink shadow-[var(--golge-1)] transition-colors hover:bg-[var(--color-soft)] disabled:cursor-not-allowed disabled:opacity-35"
+          className="flex size-11 flex-none items-center justify-center rounded-[13px] border border-white/15 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft size={18} strokeWidth={2.2} />
         </button>
@@ -106,14 +107,14 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
             >
               <span
                 className={`h-1 w-full rounded-full transition-colors ${
-                  i <= aktif ? "bg-teal" : "bg-[var(--cizgi-2)] group-hover:bg-[rgba(16,36,58,0.25)]"
+                  i <= aktif ? "bg-[#2fd3bc]" : "bg-white/15 group-hover:bg-white/30"
                 }`}
               />
             </button>
           ))}
         </div>
 
-        <span className="mono flex-none text-[11px] font-semibold tabular-nums text-ink-soft">
+        <span className="mono flex-none text-[11px] font-semibold tabular-nums text-white/70">
           {String(aktif + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
         </span>
 
@@ -122,7 +123,7 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
           onClick={() => git(aktif + 1)}
           disabled={aktif === son}
           aria-label="Sonraki slayt"
-          className="flex size-11 flex-none items-center justify-center rounded-[13px] bg-navy text-white shadow-[var(--golge-1)] transition-colors hover:bg-[#0d2438] disabled:cursor-not-allowed disabled:opacity-35"
+          className="flex size-11 flex-none items-center justify-center rounded-[13px] bg-teal text-white shadow-[0_6px_18px_rgba(30,155,138,0.4)] transition-colors hover:bg-[#1a8676] disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight size={18} strokeWidth={2.2} />
         </button>

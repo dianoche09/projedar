@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Ortak slayt yerleşimi: kicker + başlık + alt metin + içerik alanı. */
+/** Koyu tema içerik slaytı: kicker + başlık + alt metin + içerik (kademeli giriş). */
 export function Slayt({
   kicker,
   baslik,
@@ -22,19 +22,19 @@ export function Slayt({
     <div className="flex min-h-full w-full items-center justify-center px-5 pb-24 pt-20 sm:px-10">
       <div className={`w-full ${genis ? "max-w-6xl" : "max-w-4xl"} ${orta ? "text-center" : ""}`}>
         {kicker ? (
-          <p className="mono text-[11px] font-bold uppercase tracking-[0.16em] text-teal">{kicker}</p>
+          <p className="da da-1 mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#2fd3bc]">{kicker}</p>
         ) : null}
         {baslik ? (
-          <h2 className="font-display mt-3 text-3xl font-extrabold leading-[1.08] tracking-tight text-ink sm:text-5xl">
+          <h2 className="da da-2 font-display mt-3 text-3xl font-extrabold leading-[1.06] tracking-tight text-white sm:text-[52px]">
             {baslik}
           </h2>
         ) : null}
         {alt ? (
-          <p className={`mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-soft sm:text-lg ${orta ? "mx-auto" : ""}`}>
+          <p className={`da da-3 deck-soft mt-5 max-w-2xl text-[15px] leading-relaxed sm:text-lg ${orta ? "mx-auto" : ""}`}>
             {alt}
           </p>
         ) : null}
-        {children ? <div className="mt-8">{children}</div> : null}
+        {children ? <div className="da da-4 mt-8">{children}</div> : null}
       </div>
     </div>
   );
