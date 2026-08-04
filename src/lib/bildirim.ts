@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import { mailGonder, bildirimMaili } from "@/lib/mail";
+import { mailGonder, bildirimMailiTipli } from "@/lib/mail";
 
 export type BildirimTip = "talep" | "onay" | "red" | "tahsis" | "lead" | "sistem";
 type Yeni = { profile_id: string; tip: BildirimTip; baslik: string; govde?: string | null; link?: string | null };
@@ -23,7 +23,7 @@ export async function bildirimYaz(b: Yeni): Promise<void> {
     const { data: u } = await admin.auth.admin.getUserById(b.profile_id);
     const email = u?.user?.email;
     if (email) {
-      await mailGonder({ to: email, konu: b.baslik, html: bildirimMaili(b.baslik, b.govde ?? null, b.link ?? null) });
+      await mailGonder({ to: email, konu: b.baslik, html: bildirimMailiTipli(b.tip, b.baslik, b.govde ?? null, b.link ?? null) });
     }
   } catch {
     /* bildirim best-effort */

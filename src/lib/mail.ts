@@ -2,6 +2,7 @@ import { Resend } from "resend";
 
 const KEY = process.env.RESEND_API_KEY;
 const FROM = process.env.MAIL_FROM ?? "Projedar <bildirim@projedar.com>";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
 
 /**
  * Transactional mail — BEST-EFFORT. RESEND_API_KEY yoksa sessiz atlar (akışı bozmaz).
@@ -27,16 +28,112 @@ function htmlKacir(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
+/* ── Marka tokenları (email-safe hex; tasarım dili "Spatial Açık") ────────────── */
+const RENK = {
+  zemin: "#eef1f6",
+  kart: "#ffffff",
+  ink: "#10243a",
+  inkSoft: "#46586b",
+  inkFaint: "#8a97a6",
+  teal: "#1e9b8a",
+  cizgi: "#e4e8ef",
+  kutuZemin: "#f6f8fb",
+} as const;
+const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const LOGO = "https://projedar.com/icon-192.png";
 
-/** Basit bildirim maili şablonu (tasarım tokenlarıyla uyumlu inline stil). */
+/**
+ * Ortak marka kabuğu — tüm işlemsel mailler bunu kullanır.
+ * Üst sinyal şeridi (statü rengi) + logo + rozet + başlık + veri kutusu + teal CTA + footer.
+ * Tablo-tabanlı + inline stil (Outlook/Gmail uyumu). SVG YOK (client'lar strip'ler) → hosted PNG logo.
+ */
+export function mailKabuk(o: {
+  preheader: string;
+  rozet: string;
+  renk: string; // statü rengi (üst şerit + veri kutusu sol kenarı + rozet metni)
+  tint: string; // rozet arka planı (statü renginin açık tonu)
+  baslik: string;
+  govde?: string | null;
+  ctaLabel: string;
+  ctaUrl: string;
+  altNot?: string | null;
+}): string {
+  const yil = new Date().getFullYear();
+  const govdeBlok = o.govde
+    ? `<tr><td style="padding:12px 28px 0;">
+        <div style="padding:12px 14px;background:${RENK.kutuZemin};border:1px solid ${RENK.cizgi};border-left:3px solid ${o.renk};border-radius:10px;font-family:${FONT};font-size:13.5px;line-height:1.5;color:${RENK.inkSoft};">${htmlKacir(o.govde)}</div>
+      </td></tr>`
+    : "";
+  const altNotBlok = o.altNot
+    ? `<tr><td style="padding:10px 28px 0;">
+        <p style="margin:0;font-family:${FONT};font-size:12px;line-height:1.5;color:${RENK.inkFaint};">${htmlKacir(o.altNot)}</p>
+      </td></tr>`
+    : "";
+  return `<!doctype html><html lang="tr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only"><meta name="supported-color-schemes" content="light">
+<title>Projedar</title></head>
+<body style="margin:0;padding:0;background:${RENK.zemin};">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${htmlKacir(o.preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${RENK.zemin};padding:28px 16px;">
+<tr><td align="center">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${RENK.kart};border:1px solid ${RENK.cizgi};border-radius:20px;overflow:hidden;">
+    <tr><td style="height:4px;background:${o.renk};font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td style="padding:22px 28px 2px;">
+      <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+        <td style="vertical-align:middle;padding-right:10px;"><img src="${LOGO}" width="34" height="34" alt="Projedar" style="display:block;border-radius:9px;"></td>
+        <td style="vertical-align:middle;font-family:${FONT};font-size:19px;font-weight:800;letter-spacing:-.02em;color:${RENK.ink};">proje<span style="color:${RENK.teal};">dar</span></td>
+      </tr></table>
+    </td></tr>
+    <tr><td style="padding:16px 28px 0;">
+      <span style="display:inline-block;background:${o.tint};color:${o.renk};font-family:${FONT};font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;">${htmlKacir(o.rozet)}</span>
+    </td></tr>
+    <tr><td style="padding:12px 28px 0;">
+      <h1 style="margin:0;font-family:${FONT};font-size:21px;line-height:1.28;font-weight:800;color:${RENK.ink};">${htmlKacir(o.baslik)}</h1>
+    </td></tr>
+    ${govdeBlok}
+    <tr><td style="padding:22px 28px 4px;">
+      <a href="${htmlKacir(o.ctaUrl)}" style="display:inline-block;background:${RENK.teal};color:#ffffff;text-decoration:none;font-family:${FONT};font-size:14px;font-weight:700;padding:13px 26px;border-radius:11px;">${htmlKacir(o.ctaLabel)} &rarr;</a>
+    </td></tr>
+    ${altNotBlok}
+    <tr><td style="padding:24px 28px 26px;">
+      <hr style="border:none;border-top:1px solid ${RENK.cizgi};margin:0 0 16px;">
+      <p style="margin:0 0 4px;font-family:${FONT};font-size:12px;font-weight:600;color:${RENK.inkSoft};">Projedar &middot; tahsisli canlı satış ağı</p>
+      <p style="margin:0;font-family:${FONT};font-size:11px;line-height:1.5;color:${RENK.inkFaint};">Bu bir işlem bildirimidir, pazarlama e-postası değildir; bir hesap hareketi olduğu için aldın. Soru için <a href="mailto:destek@projedar.com" style="color:${RENK.teal};text-decoration:none;">destek@projedar.com</a>.</p>
+    </td></tr>
+  </table>
+  <p style="margin:16px 0 0;font-family:${FONT};font-size:11px;color:${RENK.inkFaint};">© ${yil} Projedar &middot; projedar.com</p>
+</td></tr>
+</table></body></html>`;
+}
+
+/* ── Bildirim tipi → mail stili (sinyal renk = statü dili; CTA teal = aksiyon) ── */
+type MailStil = { renk: string; tint: string; rozet: string; cta: string };
+const STIL: Record<string, MailStil> = {
+  talep: { renk: "#e3a12c", tint: "#fbf1dd", rozet: "Yeni talep", cta: "Talebi incele" },
+  onay: { renk: "#2fb36b", tint: "#e4f5ec", rozet: "Onaylandı", cta: "Opsiyonlarıma git" },
+  red: { renk: "#d15a4e", tint: "#f9e7e4", rozet: "Yanıtlandı", cta: "Opsiyonlarıma git" },
+  lead: { renk: "#1e9b8a", tint: "#e2f1ef", rozet: "Yeni lead", cta: "Lead'i gör" },
+  tahsis: { renk: "#2fb36b", tint: "#e4f5ec", rozet: "Yeni tahsis", cta: "Projeyi gör" },
+  sistem: { renk: "#13314b", tint: "#e6ebf1", rozet: "Bilgi", cta: "Panele git" },
+};
+
+/** Tip-bazlı işlemsel bildirim maili (opsiyon talep/onay/red, lead, tahsis, sistem). */
+export function bildirimMailiTipli(tip: string, baslik: string, govde: string | null, link: string | null): string {
+  const s = STIL[tip] ?? STIL.sistem;
+  return mailKabuk({
+    preheader: govde ? `${baslik} — ${govde}` : baslik,
+    rozet: s.rozet,
+    renk: s.renk,
+    tint: s.tint,
+    baslik,
+    govde,
+    ctaLabel: s.cta,
+    ctaUrl: link ? `${SITE_URL}${link}` : SITE_URL,
+  });
+}
+
+/** Geriye dönük uyum — tip verilmeyen çağrılar "sistem" stiliyle basılır. */
 export function bildirimMaili(baslik: string, govde: string | null, link: string | null): string {
-  const url = link ? `${SITE_URL}${link}` : SITE_URL;
-  return `<!doctype html><html><body style="font-family:system-ui,-apple-system,sans-serif;background:#f5f5f4;margin:0;padding:24px">
-  <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:14px;padding:26px;border:1px solid #e7e5e4">
-    <h2 style="margin:0 0 8px;font-size:18px;color:#0f172a">${htmlKacir(baslik)}</h2>
-    ${govde ? `<p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#475569">${htmlKacir(govde)}</p>` : ""}
-    <a href="${htmlKacir(url)}" style="display:inline-block;background:#1e9b8a;color:#fff;text-decoration:none;padding:11px 20px;border-radius:9px;font-size:14px;font-weight:600">Panele git</a>
-    <p style="margin:22px 0 0;font-size:12px;color:#94a3b8">Projedar · tahsisli canlı satış ağı</p>
-  </div></body></html>`;
+  return bildirimMailiTipli("sistem", baslik, govde, link);
 }
