@@ -25,6 +25,7 @@ import {
   AdimSirasi,
   AkisSema,
   AlintiSlayt,
+  EkranKart,
   FarkTablosu,
   FiyatListesiMock,
   GorselSlayt,
@@ -94,9 +95,15 @@ export default function EmlakciSunumV2() {
       </div>
     </Slayt>,
 
-    /* 3 · Sorun */
-    <Slayt key="sorun" kicker="Sorun" baslik="Proje satarken sahada neler yaşanıyor?">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 3 · Sorun (görsel zemin) */
+    <GorselSlayt
+      key="sorun"
+      gorsel="/sunum/excel-kaos.jpg"
+      hiza="sol"
+      kicker="Sorun"
+      baslik="Proje satarken sahada neler yaşanıyor?"
+    >
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={FileX}
           baslik="Eski fiyat listeleri"
@@ -119,7 +126,7 @@ export default function EmlakciSunumV2() {
           metin="Portföy erişimi için üyelikler, ilan paketleri, kesintiler: kazanç daha satmadan erir."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 4 · Alıntı */
     <AlintiSlayt
@@ -163,7 +170,9 @@ export default function EmlakciSunumV2() {
           <OnayMadde>Tazelik damgası: bilgin kanıtlı, müşteriye kanıtıyla konuşursun.</OnayMadde>
           <OnayMadde>Satılan daire anında kapanır; boşuna pazarlamazsın.</OnayMadde>
         </ul>
-        <FiyatListesiMock />
+        <EkranKart url="projedar.com/havuz">
+          <FiyatListesiMock />
+        </EkranKart>
       </div>
     </Slayt>,
 
@@ -180,7 +189,8 @@ export default function EmlakciSunumV2() {
           <OnayMadde>Galeri, ödeme planı ve konum tek linkte.</OnayMadde>
           <OnayMadde>Sayfadaki formu dolduran müşteri senin lead&apos;in olur.</OnayMadde>
         </ul>
-        <div className="kart overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
+        <EkranKart url="projedar.com/p/vadi-a07">
+        <div className="kart overflow-hidden p-0 text-left">
           <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
             <span className="taze t-0 text-[11px]">
               <span className="nokta nabiz" /> Canlı stoktan alındı · 2 dk önce güncellendi
@@ -200,6 +210,7 @@ export default function EmlakciSunumV2() {
             </div>
           </div>
         </div>
+        </EkranKart>
       </div>
     </Slayt>,
 
@@ -214,17 +225,20 @@ export default function EmlakciSunumV2() {
       <p className="mono mb-3 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Dene: bir daireye dokun, opsiyon kilidini test et
       </p>
-      <KuleDemo />
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+        <KuleDemo />
+      </EkranKart>
     </Slayt>,
 
-    /* 9 · Kazanç modeli */
-    <Slayt
+    /* 9 · Kazanç modeli (görsel zemin) */
+    <GorselSlayt
       key="kazanc"
-      orta
+      gorsel="/sunum/anahtar-teslim.jpg"
+      hiza="sol"
       kicker="Kazanç modeli"
       baslik="Ücretsiz üyelik, komisyonsuz kazanç"
     >
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={BadgeCheck}
           baslik="Üyelik ücretsiz"
@@ -242,10 +256,10 @@ export default function EmlakciSunumV2() {
           metin="Her projenin komisyon ve satış koşulları üreticiyle arandaki anlaşmayla belirlenir; platform şeffaf zemin sunar."
         />
       </div>
-      <p className="deck-kart mt-4 px-5 py-4 text-[14px] font-semibold leading-relaxed text-white/90">
+      <p className="da da-4 deck-kart mt-4 w-full px-5 py-4 text-[14px] font-semibold leading-relaxed text-white/90">
         Maliyetin sıfır, kazancın senin: Projedar gelirini proje sahiplerinden elde eder.
       </p>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 10 · Nasıl çalışır */
     <Slayt key="nasil" kicker="Nasıl çalışır" baslik="Kayıttan satışa dört adım">
@@ -259,9 +273,15 @@ export default function EmlakciSunumV2() {
       />
     </Slayt>,
 
-    /* 11 · Değer önerisi */
-    <Slayt key="deger" kicker="Değer önerisi" baslik="Projedar danışmana ne kazandırır?">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 11 · Değer önerisi (görsel zemin) */
+    <GorselSlayt
+      key="deger"
+      gorsel="/sunum/danisman-musteri.jpg"
+      hiza="sol"
+      kicker="Değer önerisi"
+      baslik="Projedar danışmana ne kazandırır?"
+    >
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Zap}
           baslik="Hız ve doğruluk"
@@ -284,7 +304,7 @@ export default function EmlakciSunumV2() {
           metin="Müşteriye canlı, doğrulanabilir veriyle sunum yapmak seni rakiplerinden ayırır."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 12 · Fark tablosu */
     <Slayt key="fark" genis kicker="Fark" baslik="Bugünkü düzen ve Projedar">
@@ -417,17 +437,25 @@ export default function EmlakciSunumV2() {
       </div>
     </Slayt>,
 
-    /* 17 · Örnek akış */
-    <Slayt key="ornek-akis" kicker="Örnek akış" baslik="Bir satışın hikâyesi">
-      <AdimSirasi
-        adimlar={[
-          { baslik: "Talep geldi", metin: "Müşterin yeni projede 3+1 arıyor; yetkili olduğun projeleri açıyorsun." },
-          { baslik: "Link gönderdin", metin: "Uygun dairenin linkini WhatsApp'tan paylaştın; müşteri güncel fiyatı gördü." },
-          { baslik: "Opsiyonladın", metin: "Müşteri ciddileşti; daireyi kilitledin. Artık kimse o daireyi satamaz." },
-          { baslik: "Satışı kapattın", metin: "Sözleşme imzalandı; komisyonun kesintisiz senin." },
-        ]}
-      />
-    </Slayt>,
+    /* 17 · Örnek akış (görsel zemin) */
+    <GorselSlayt
+      key="ornek-akis"
+      gorsel="/sunum/el-sikisma.jpg"
+      hiza="sol"
+      kicker="Örnek akış"
+      baslik="Bir satışın hikâyesi"
+    >
+      <div className="da da-3 mt-8 w-full">
+        <AdimSirasi
+          adimlar={[
+            { baslik: "Talep geldi", metin: "Müşterin yeni projede 3+1 arıyor; yetkili olduğun projeleri açıyorsun." },
+            { baslik: "Link gönderdin", metin: "Uygun dairenin linkini WhatsApp'tan paylaştın; müşteri güncel fiyatı gördü." },
+            { baslik: "Opsiyonladın", metin: "Müşteri ciddileşti; daireyi kilitledin. Artık kimse o daireyi satamaz." },
+            { baslik: "Satışı kapattın", metin: "Sözleşme imzalandı; komisyonun kesintisiz senin." },
+          ]}
+        />
+      </div>
+    </GorselSlayt>,
 
     /* 18 · Özet */
     <Slayt key="ozet" kicker="Özet" baslik="Üç cümlede Projedar">

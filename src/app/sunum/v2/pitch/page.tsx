@@ -26,10 +26,12 @@ import {
   AkisSema,
   AlintiSlayt,
   DevSayi,
+  EkranKart,
   GorselSlayt,
   MaddeKart,
   OnayMadde,
 } from "@/components/sunum/parcalar";
+import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 
 export const metadata: Metadata = {
@@ -118,9 +120,15 @@ export default function PitchV2() {
       alt="Bugün Excel listeleri, WhatsApp grupları ve telefon teyitleriyle dönen milyarlarca liralık birincil konut satışını tek canlı ağda topluyoruz."
     />,
 
-    /* 3 · Sorun */
-    <Slayt key="sorun" kicker="Sorun" baslik="Yeni konut satışı hâlâ elle yürüyor">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 3 · Sorun (görsel zemin) */
+    <GorselSlayt
+      key="sorun"
+      gorsel="/sunum/excel-kaos.jpg"
+      hiza="sol"
+      kicker="Sorun"
+      baslik="Yeni konut satışı hâlâ elle yürüyor"
+    >
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Copy}
           baslik="Dağınık, eskiyen veri"
@@ -143,7 +151,7 @@ export default function PitchV2() {
           metin="Doğru bilgiye ulaşmak telefon teyidine bakar; müşteri bekletilir, satış fırsatı kaçar."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 4 · Pazar */
     <Slayt
@@ -219,7 +227,9 @@ export default function PitchV2() {
       <p className="deck-soft -mt-3 mb-5 text-[14px]">
         Bu bir görsel değil: aşağıdaki bina kesiti etkileşimli. Bir daireye dokunun, opsiyon kilidini deneyin.
       </p>
-      <KuleDemo />
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+        <KuleDemo />
+      </EkranKart>
     </Slayt>,
 
     /* 8 · İş modeli */
@@ -254,6 +264,7 @@ export default function PitchV2() {
     /* 9 · Ağ etkisi */
     <Slayt
       key="ag-etkisi"
+      genis
       kicker="Ağ etkisi"
       baslik="Kendi kendini büyüten döngü"
     >
@@ -265,6 +276,11 @@ export default function PitchV2() {
           { baslik: "Daha güçlü çekim", metin: "Sonuç gören üreticiler yeni projeleri ağa getirir; döngü yeniden başlar." },
         ]}
       />
+      <div className="mt-6">
+        <EkranKart url="projedar.com">
+          <AgDiyagrami />
+        </EkranKart>
+      </div>
     </Slayt>,
 
     /* 10 · Rekabet */
@@ -332,8 +348,9 @@ export default function PitchV2() {
       </div>
     </Slayt>,
 
-    /* 13 · Yol haritası */
-    <Slayt key="yol" kicker="Yol haritası" baslik="Nereden nereye">
+    /* 13 · Yol haritası (görsel zemin) */
+    <GorselSlayt key="yol" gorsel="/sunum/vinc-siluet.jpg" hiza="sol" kicker="Yol haritası" baslik="Nereden nereye">
+      <div className="da da-3 mt-8 w-full">
       <AdimSirasi
         adimlar={[
           { baslik: "Faz 1 · Bugün: canlı satış ağı", metin: "Platform canlı (projedar.com): stok, tahsis, opsiyon, paylaşım tamam. Lansman: ilk üretici ve danışman ağı." },
@@ -345,7 +362,8 @@ export default function PitchV2() {
         Türklerin yurtdışı gayrimenkul yatırımı 2025&apos;te yaklaşık 2,4 milyar dolar: Faz 2&apos;de aynı tahsis
         modeli yurtdışı proje stoğuna açılır.
       </p>
-    </Slayt>,
+      </div>
+    </GorselSlayt>,
 
     /* 14 · Ekip & yatırım */
     <Slayt
