@@ -60,6 +60,17 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
+    href: "/havuz/performans",
+    etiket: "Performansım",
+    tam: true,
+    ikon: (
+      <>
+        <path d="M3 3v18h18" />
+        <path d="M7 14l4-4 3 3 5-6" />
+      </>
+    ),
+  },
+  {
     href: "/havuz/eslestir",
     etiket: "Eşleştir",
     tam: true,
