@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { after } from "next/server";
 import { verifyShareToken, generateShareToken } from "@/lib/sharing";
@@ -40,6 +41,77 @@ function tazelikRenk(iso: string): { dot: string; text: string } {
   if (gun <= 7) return { dot: "bg-teal", text: "text-teal-d" };
   if (gun <= 15) return { dot: "bg-amber", text: "text-amber" };
   return { dot: "bg-gray", text: "text-gray" };
+}
+
+/**
+ * WhatsApp / link önizlemesi (OG kartı) — birebir paylaşımın kalbi. Başlık ve görsel
+ * daireye özel olmazsa alıcı, linke tıklamadan hangi proje/daire/fiyat olduğunu göremez.
+ * Fiyat CANLI değerden basılır (DEĞİŞMEZ #2). Geçersiz token → generic OG'ye düşer
+ * (root layout + dosya-tabanlı opengraph-image). Kapak yoksa images verilmez → yine generic kart.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ emlakci: string; birim: string; token: string }>;
+}): Promise<Metadata> {
+  const { emlakci, birim, token } = await params;
+  if (!verifyShareToken(emlakci, birim, token)) return {};
+
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("birim")
+    .select(`
+      daire_no, net_m2, liste_fiyati, para_birimi, satilabilir,
+      proje:proje_id ( id, ad, il, ilce ),
+      tip:tip_id ( oda )
+    `)
+    .eq("id", birim)
+    .single();
+  if (!data) return {};
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const p = (data as any).proje;
+  const t = (data as any).tip;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+  if (!p) return {};
+
+  const psim = PARA_SIMGE[(data.para_birimi as string) ?? "TRY"] ?? "₺";
+  const fiyat = data.satilabilir && data.liste_fiyati != null ? `${fmt(Number(data.liste_fiyati))} ${psim}` : null;
+  const konum = [p?.ilce, p?.il].filter(Boolean).join(", ");
+  const baslik =
+    [p?.ad, data.daire_no ? `Daire ${data.daire_no}` : null, fiyat].filter(Boolean).join(" · ") || "Projedar";
+  const aciklama =
+    [t?.oda, data.net_m2 ? `${data.net_m2} m²` : null, konum, "Canlı stoktan, fiyat güncel"]
+      .filter(Boolean)
+      .join(" · ");
+
+  // Kapak fotoğrafı (public bucket) → og:image. Yoksa images vermeyiz; root generic kart devreye girer.
+  const { data: kapakRow } = await supabase
+    .from("proje_belge")
+    .select("url")
+    .eq("proje_id", p.id)
+    .eq("tip", "kapak")
+    .limit(1)
+    .maybeSingle();
+  const kapak = kapakRow?.url ?? null;
+
+  return {
+    title: baslik,
+    description: aciklama,
+    openGraph: {
+      title: baslik,
+      description: aciklama,
+      ...(kapak ? { images: [{ url: kapak }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: baslik,
+      description: aciklama,
+      ...(kapak ? { images: [kapak] } : {}),
+    },
+    // Birebir paylaşım mikrositesi kamuya açık ilan değil; arama motorunda listelenmesin.
+    robots: { index: false, follow: false },
+  };
 }
 
 export default async function PublicBirimPage({
