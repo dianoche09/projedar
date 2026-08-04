@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar — Logo & İkon Adayları</title>
+<style>
+  :root{
+    --navy:#10243a; --ink:#0d2438; --teal:#17998a; --teal-d:#0f7d70;
+    --green:#2fb36b; --amber:#d99a1a; --red:#d15a4e;
+    --soft:#f4f6f8; --cizgi:#e6ebf0; --gray:#5b6b7c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef2f5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  header{margin-bottom:8px}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0}
+  .sub{color:var(--gray);font-size:14px;margin-top:6px;max-width:70ch;line-height:1.6}
+  .not{margin-top:14px;font-size:12.5px;color:var(--gray);background:#fff;border:1px solid var(--cizgi);border-radius:12px;padding:12px 14px;line-height:1.6}
+  .not b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px}
+  @media(min-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  .card{background:#fff;border:1px solid var(--cizgi);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(16,36,58,.04)}
+  .card .head{display:flex;align-items:baseline;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--cizgi)}
+  .card .no{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:700;color:var(--teal-d);letter-spacing:.08em}
+  .card .ad{font-size:14px;font-weight:800;letter-spacing:-.01em}
+  .card .aciklama{font-size:12px;color:var(--gray);padding:0 18px 14px;line-height:1.55}
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .light,.dark{padding:26px 18px;display:flex;flex-direction:column;align-items:center;gap:18px;justify-content:center;min-height:150px}
+  .light{background:#fff}
+  .dark{background:var(--ink)}
+  .mark{display:flex;align-items:center;gap:8px}
+  /* wordmark */
+  .wm{font-weight:800;letter-spacing:-.02em;font-size:22px}
+  .wm .a{color:var(--teal)}
+  .light .wm{color:var(--navy)}
+  .dark .wm{color:#fff}
+  .dark .wm .a{color:#4fd0c0}
+  .fav{display:flex;gap:10px;align-items:center}
+  .fav .cip{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+  .dark .lbl{color:#8aa0b4}
+  .lbl{font-family:ui-monospace,monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#9aa8b6}
+  .row{display:flex;flex-direction:column;align-items:center;gap:9px}
+  svg{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Projedar — Logo &amp; İkon Adayları</h1>
+    <p class="sub">Yeni projelerin profesyonel satış ağı. Marka görsel dili: mimari kütle + canlı veri. İlan portalı gibi değil, jenerik SaaS gibi değil. Renkler: navy + teal aksan · sinyal yeşil/amber/kırmızı (müsait/opsiyon/satıldı). Her aday açık ve koyu zeminde, tam logo (kilit) ve ikon (favicon) olarak gösterilir.</p>
+    <p class="not"><b>Not:</b> Hepsi tek renkte (monokrom) de çalışır; ikonlar 16px favicon boyutunda okunaklı olacak şekilde sade tutuldu. Beğendiğin numaraları söyle, onu üründeki <code>Logo.tsx</code> + <code>icon.svg</code> olarak uygularım.</p>
+  </header>
+
+  <div class="grid">
+
+    <!-- 01 SİNYAL IZGARA (mevcut kimliğin rafine hali) -->
+    <div class="card">
+      <div class="head"><span class="ad">Sinyal Izgara</span><span class="no">01 · mevcut DNA</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <g fill="none" stroke="#10243a" stroke-width="2.4">
+                <rect x="2" y="2" width="7" height="7" rx="1.8"/><rect x="12.5" y="2" width="7" height="7" rx="1.8"/>
+                <rect x="2" y="12.5" width="7" height="7" rx="1.8"/><rect x="12.5" y="23" width="7" height="7" rx="1.8"/>
+                <rect x="23" y="12.5" width="7" height="7" rx="1.8"/><rect x="2" y="23" width="7" height="7" rx="1.8"/>
+              </g>
+              <rect x="23" y="2" width="7" height="7" rx="1.8" fill="#2fb36b"/>
+              <rect x="12.5" y="12.5" width="7" height="7" rx="1.8" fill="#d99a1a"/>
+              <rect x="23" y="23" width="7" height="7" rx="1.8" fill="#d15a4e"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon 16–26px</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><g fill="none" stroke="#10243a" stroke-width="3"><rect x="2" y="2" width="8" height="8" rx="2"/><rect x="2" y="22" width="8" height="8" rx="2"/><rect x="22" y="12" width="8" height="8" rx="2"/></g><rect x="22" y="2" width="8" height="8" rx="2" fill="#2fb36b"/><rect x="12" y="12" width="8" height="8" rx="2" fill="#d99a1a"/><rect x="12" y="22" width="8" height="8" rx="2" fill="#d15a4e"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <g fill="none" stroke="#7f93a6" stroke-width="2.4">
+                <rect x="2" y="2" width="7" height="7" rx="1.8"/><rect x="12.5" y="2" width="7" height="7" rx="1.8"/>
+                <rect x="2" y="12.5" width="7" height="7" rx="1.8"/><rect x="12.5" y="23" width="7" height="7" rx="1.8"/>
+                <rect x="23" y="12.5" width="7" height="7" rx="1.8"/><rect x="2" y="23" width="7" height="7" rx="1.8"/>
+              </g>
+              <rect x="23" y="2" width="7" height="7" rx="1.8" fill="#37d99a"/>
+              <rect x="12.5" y="12.5" width="7" height="7" rx="1.8" fill="#f0b429"/>
+              <rect x="23" y="23" width="7" height="7" rx="1.8" fill="#f0715f"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Mevcut markanın rafine hali. 3×3 ızgara = bağımsız bölümler; canlı sinyaller müsait/opsiyon/satıldı. En güvenli, en tanınır seçenek.</p>
+    </div>
+
+    <!-- 02 KULE KATLARI -->
+    <div class="card">
+      <div class="head"><span class="ad">Kule Katları</span><span class="no">02 · mimari</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <rect x="7" y="24" width="18" height="5" rx="1.6" fill="#10243a"/>
+              <rect x="9" y="17.5" width="14" height="5" rx="1.6" fill="#10243a"/>
+              <rect x="11" y="11" width="10" height="5" rx="1.6" fill="#17998a"/>
+              <rect x="13" y="5" width="6" height="4.5" rx="1.5" fill="#10243a"/>
+              <circle cx="16" cy="3" r="1.7" fill="#2fb36b"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><rect x="6" y="24" width="20" height="6" rx="2" fill="#10243a"/><rect x="8" y="16" width="16" height="6" rx="2" fill="#10243a"/><rect x="10" y="8" width="12" height="6" rx="2" fill="#17998a"/><circle cx="16" cy="4" r="2.4" fill="#2fb36b"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <rect x="7" y="24" width="18" height="5" rx="1.6" fill="#dbe4ec"/>
+              <rect x="9" y="17.5" width="14" height="5" rx="1.6" fill="#dbe4ec"/>
+              <rect x="11" y="11" width="10" height="5" rx="1.6" fill="#4fd0c0"/>
+              <rect x="13" y="5" width="6" height="4.5" rx="1.5" fill="#dbe4ec"/>
+              <circle cx="16" cy="3" r="1.7" fill="#37d99a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Yükselen kule / katlar. Tepedeki nabız = canlılık. "Bloklar yükselir" hero mesajıyla birebir. Güçlü mimari çağrışım.</p>
+    </div>
+
+    <!-- 03 D-MONOGRAM (BİNA) -->
+    <div class="card">
+      <div class="head"><span class="ad">D-Monogram</span><span class="no">03 · harf</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M6 4 h9 a11 11 0 0 1 0 24 H6 Z" fill="none" stroke="#10243a" stroke-width="3" stroke-linejoin="round"/>
+              <rect x="10.5" y="12" width="7" height="8" rx="1.5" fill="#17998a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M6 4 h9 a11 11 0 0 1 0 24 H6 Z" fill="#10243a"/><rect x="11" y="12" width="7" height="8" rx="1.6" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M6 4 h9 a11 11 0 0 1 0 24 H6 Z" fill="none" stroke="#dbe4ec" stroke-width="3" stroke-linejoin="round"/>
+              <rect x="10.5" y="12" width="7" height="8" rx="1.5" fill="#4fd0c0"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">"d" harfi + içinde aydınlanmış bir bağımsız bölüm. İsmi doğrudan işaret eder; kısa adı/uygulama ikonu için çok güçlü.</p>
+    </div>
+
+    <!-- 04 KALKAN HÜCRE -->
+    <div class="card">
+      <div class="head"><span class="ad">Kalkan-Hücre</span><span class="no">04 · güven</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 2 L28 6 V15 C28 23 22.5 28 16 30.5 C9.5 28 4 23 4 15 V6 Z" fill="none" stroke="#10243a" stroke-width="2.4" stroke-linejoin="round"/>
+              <rect x="11" y="11" width="4.5" height="4.5" rx="1" fill="#2fb36b"/>
+              <rect x="16.5" y="11" width="4.5" height="4.5" rx="1" fill="#10243a"/>
+              <rect x="11" y="16.5" width="4.5" height="4.5" rx="1" fill="#10243a"/>
+              <rect x="16.5" y="16.5" width="4.5" height="4.5" rx="1" fill="#d99a1a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M16 2 L28 6 V15 C28 23 22.5 28 16 30.5 C9.5 28 4 23 4 15 V6 Z" fill="#10243a"/><rect x="11" y="11" width="4.5" height="4.5" rx="1" fill="#37d99a"/><rect x="16.5" y="16.5" width="4.5" height="4.5" rx="1" fill="#f0b429"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 2 L28 6 V15 C28 23 22.5 28 16 30.5 C9.5 28 4 23 4 15 V6 Z" fill="none" stroke="#dbe4ec" stroke-width="2.4" stroke-linejoin="round"/>
+              <rect x="11" y="11" width="4.5" height="4.5" rx="1" fill="#37d99a"/>
+              <rect x="16.5" y="11" width="4.5" height="4.5" rx="1" fill="#dbe4ec"/>
+              <rect x="11" y="16.5" width="4.5" height="4.5" rx="1" fill="#dbe4ec"/>
+              <rect x="16.5" y="16.5" width="4.5" height="4.5" rx="1" fill="#f0b429"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Kalkan (çift-satış kalkanı, güven protokolü) + içinde canlı stok hücreleri. "Güvenli dağıtım" mesajını görselleştirir.</p>
+    </div>
+
+    <!-- 05 OPSİYON KİLİDİ -->
+    <div class="card">
+      <div class="head"><span class="ad">Opsiyon Kilidi</span><span class="no">05 · kilit</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M10 13 V9 a6 6 0 0 1 12 0 V13" fill="none" stroke="#10243a" stroke-width="2.6" stroke-linecap="round"/>
+              <rect x="6.5" y="13" width="19" height="15" rx="3.4" fill="#10243a"/>
+              <rect x="13.5" y="18.5" width="5" height="5" rx="1.2" fill="#d99a1a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M10 13 V9 a6 6 0 0 1 12 0 V13" fill="none" stroke="#10243a" stroke-width="3.4" stroke-linecap="round"/><rect x="6" y="13" width="20" height="15" rx="3.6" fill="#10243a"/><rect x="13" y="18" width="6" height="6" rx="1.5" fill="#f0b429"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M10 13 V9 a6 6 0 0 1 12 0 V13" fill="none" stroke="#dbe4ec" stroke-width="2.6" stroke-linecap="round"/>
+              <rect x="6.5" y="13" width="19" height="15" rx="3.4" fill="#dbe4ec"/>
+              <rect x="13.5" y="18.5" width="5" height="5" rx="1.2" fill="#d99a1a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Bağımsız bölüm bir kilide dönüşür; içindeki amber kare = opsiyon. "Bir daire opsiyonlanır, sistem korur" fikri. Ayırt edici.</p>
+    </div>
+
+    <!-- 06 AĞ DÜĞÜMÜ -->
+    <div class="card">
+      <div class="head"><span class="ad">Ağ Düğümü</span><span class="no">06 · ağ</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <line x1="9" y1="9" x2="23" y2="23" stroke="#10243a" stroke-width="2.2"/>
+              <line x1="23" y1="9" x2="9" y2="23" stroke="#c3ccd6" stroke-width="2.2"/>
+              <circle cx="9" cy="9" r="4.2" fill="#10243a"/>
+              <circle cx="23" cy="23" r="4.2" fill="#17998a"/>
+              <circle cx="23" cy="9" r="3.2" fill="none" stroke="#10243a" stroke-width="2.2"/>
+              <circle cx="9" cy="23" r="3.2" fill="none" stroke="#10243a" stroke-width="2.2"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><line x1="9" y1="9" x2="23" y2="23" stroke="#10243a" stroke-width="3"/><circle cx="9" cy="9" r="5" fill="#10243a"/><circle cx="23" cy="23" r="5" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <line x1="9" y1="9" x2="23" y2="23" stroke="#dbe4ec" stroke-width="2.2"/>
+              <line x1="23" y1="9" x2="9" y2="23" stroke="#3b4a5a" stroke-width="2.2"/>
+              <circle cx="9" cy="9" r="4.2" fill="#dbe4ec"/>
+              <circle cx="23" cy="23" r="4.2" fill="#4fd0c0"/>
+              <circle cx="23" cy="9" r="3.2" fill="none" stroke="#dbe4ec" stroke-width="2.2"/>
+              <circle cx="9" cy="23" r="3.2" fill="none" stroke="#dbe4ec" stroke-width="2.2"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Proje sahibi ↔ danışman düğümleri. "Ortak satış ağı" fikri saf haliyle. Teknoloji + iş birliği tonu.</p>
+    </div>
+
+    <!-- 07 TAHSİS AKIŞI -->
+    <div class="card">
+      <div class="head"><span class="ad">Tahsis Akışı</span><span class="no">07 · dağıtım</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 8 V13 M16 13 C16 18 8 17 8 24 M16 13 C16 20 16 20 16 24 M16 13 C16 18 24 17 24 24" fill="none" stroke="#10243a" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="16" cy="6" r="3.4" fill="#10243a"/>
+              <rect x="5" y="24" width="6" height="6" rx="1.5" fill="#2fb36b"/>
+              <rect x="13" y="24" width="6" height="6" rx="1.5" fill="#d99a1a"/>
+              <rect x="21" y="24" width="6" height="6" rx="1.5" fill="#17998a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M16 9 C16 16 8 17 8 23 M16 9 C16 16 24 17 24 23" fill="none" stroke="#10243a" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="7" r="4" fill="#10243a"/><circle cx="8" cy="24" r="4" fill="#37d99a"/><circle cx="24" cy="24" r="4" fill="#17998a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 8 V13 M16 13 C16 18 8 17 8 24 M16 13 C16 20 16 20 16 24 M16 13 C16 18 24 17 24 24" fill="none" stroke="#dbe4ec" stroke-width="2.2" stroke-linecap="round"/>
+              <circle cx="16" cy="6" r="3.4" fill="#dbe4ec"/>
+              <rect x="5" y="24" width="6" height="6" rx="1.5" fill="#37d99a"/>
+              <rect x="13" y="24" width="6" height="6" rx="1.5" fill="#f0b429"/>
+              <rect x="21" y="24" width="6" height="6" rx="1.5" fill="#4fd0c0"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Tek kaynaktan yetkili düğümlere kontrollü dağıtım (tahsis). Ürünün en özgün mekanizmasını anlatır.</p>
+    </div>
+
+    <!-- 08 İZOMETRİK BLOK -->
+    <div class="card">
+      <div class="head"><span class="ad">İzometrik Blok</span><span class="no">08 · kütle</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#17998a"/>
+              <path d="M4 10 L16 17 L16 30 L4 23 Z" fill="#10243a"/>
+              <path d="M28 10 L16 17 L16 30 L28 23 Z" fill="#1c3a55"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#37d99a"/><path d="M4 10 L16 17 L16 30 L4 23 Z" fill="#10243a"/><path d="M28 10 L16 17 L16 30 L28 23 Z" fill="#1c3a55"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 3 L28 10 L16 17 L4 10 Z" fill="#4fd0c0"/>
+              <path d="M4 10 L16 17 L16 30 L4 23 Z" fill="#dbe4ec"/>
+              <path d="M28 10 L16 17 L16 30 L28 23 Z" fill="#9fb2c2"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">3B mimari kütle / blok. Ağırlık ve inşa hissi verir. Emlak ilan sitesinden en uzak, "yapı" duran seçenek.</p>
+    </div>
+
+    <!-- 09 KULE + NABIZ -->
+    <div class="card">
+      <div class="head"><span class="ad">Canlı Kule</span><span class="no">09 · nabız</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <rect x="8" y="10" width="7.5" height="20" rx="1.5" fill="#10243a"/>
+              <rect x="17" y="6" width="7.5" height="24" rx="1.5" fill="#10243a"/>
+              <rect x="10" y="13" width="2.4" height="2.4" fill="#fff"/><rect x="10" y="18" width="2.4" height="2.4" fill="#fff"/>
+              <rect x="19" y="10" width="2.4" height="2.4" fill="#fff"/><rect x="19" y="15" width="2.4" height="2.4" fill="#fff"/><rect x="19" y="20" width="2.4" height="2.4" fill="#2fb36b"/>
+              <circle cx="20.7" cy="4" r="2.1" fill="#2fb36b"/>
+              <circle cx="20.7" cy="4" r="4.4" fill="none" stroke="#2fb36b" stroke-width="1.2" opacity=".45"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><rect x="7" y="11" width="8" height="19" rx="1.6" fill="#10243a"/><rect x="17" y="6" width="8" height="24" rx="1.6" fill="#10243a"/><circle cx="21" cy="4" r="3" fill="#2fb36b"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <rect x="8" y="10" width="7.5" height="20" rx="1.5" fill="#dbe4ec"/>
+              <rect x="17" y="6" width="7.5" height="24" rx="1.5" fill="#dbe4ec"/>
+              <rect x="10" y="13" width="2.4" height="2.4" fill="#10243a"/><rect x="10" y="18" width="2.4" height="2.4" fill="#10243a"/>
+              <rect x="19" y="10" width="2.4" height="2.4" fill="#10243a"/><rect x="19" y="15" width="2.4" height="2.4" fill="#10243a"/><rect x="19" y="20" width="2.4" height="2.4" fill="#2fb36b"/>
+              <circle cx="20.7" cy="4" r="2.1" fill="#37d99a"/>
+              <circle cx="20.7" cy="4" r="4.4" fill="none" stroke="#37d99a" stroke-width="1.2" opacity=".5"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">İkiz kule + pencerelerde canlı sinyal + tepede nabız. "Canlı proje bilgisi" en okunaklı biçimde. Sıcak, insanı çeken.</p>
+    </div>
+
+    <!-- 10 KONUM + DURUM -->
+    <div class="card">
+      <div class="head"><span class="ad">Konum + Durum</span><span class="no">10 · pin</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 2 C9.4 2 4 7.2 4 13.6 C4 22 16 30 16 30 C16 30 28 22 28 13.6 C28 7.2 22.6 2 16 2 Z" fill="#10243a"/>
+              <rect x="11.5" y="9.2" width="9" height="9" rx="2" fill="#17998a"/>
+              <circle cx="16" cy="13.7" r="1.9" fill="#fff"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="26" height="26" viewBox="0 0 32 32"><path d="M16 2 C9.4 2 4 7.2 4 13.6 C4 22 16 30 16 30 C16 30 28 22 28 13.6 C28 7.2 22.6 2 16 2 Z" fill="#10243a"/><rect x="11" y="9" width="10" height="10" rx="2" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="mark">
+            <svg width="34" height="34" viewBox="0 0 32 32">
+              <path d="M16 2 C9.4 2 4 7.2 4 13.6 C4 22 16 30 16 30 C16 30 28 22 28 13.6 C28 7.2 22.6 2 16 2 Z" fill="#dbe4ec"/>
+              <rect x="11.5" y="9.2" width="9" height="9" rx="2" fill="#17998a"/>
+              <circle cx="16" cy="13.7" r="1.9" fill="#10243a"/>
+            </svg>
+            <span class="wm">proje<span class="a">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Konum pini + içinde canlı durum karesi. Gayrimenkul + canlı veri birleşimi. Tanıdık ama sinyal renkli farkla.</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

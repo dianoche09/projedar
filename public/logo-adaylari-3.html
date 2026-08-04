@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar — Sonar İkon + Wordmark (10 varyasyon)</title>
+<style>
+  :root{--navy:#10243a;--ink:#0d2438;--teal:#17998a;--teal-l:#4fd0c0;--green:#2fb36b;--amber:#d99a1a;--red:#d15a4e;--cizgi:#e6ebf0;--gray:#5b6b7c}
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef2f5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-size:25px;font-weight:800;letter-spacing:-.02em;margin:0}
+  .sub{color:var(--gray);font-size:14px;margin-top:6px;max-width:76ch;line-height:1.6}
+  .not{margin-top:14px;font-size:12.5px;color:var(--gray);background:#fff;border:1px solid var(--cizgi);border-radius:12px;padding:12px 14px;line-height:1.6}
+  .not b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px}
+  .card{background:#fff;border:1px solid var(--cizgi);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(16,36,58,.04)}
+  .head{display:flex;align-items:baseline;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--cizgi)}
+  .no{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;color:#0f7d70;letter-spacing:.05em}
+  .ad{font-size:14px;font-weight:800}
+  .aciklama{font-size:12px;color:var(--gray);padding:12px 18px 15px;line-height:1.5}
+  .stage{display:grid;grid-template-columns:1fr 1fr}
+  .light,.dark{padding:26px 16px;display:flex;flex-direction:column;align-items:center;gap:16px;justify-content:center;min-height:140px}
+  .light{background:#fff}.dark{background:var(--ink)}
+  .lock{display:flex;align-items:center;gap:9px}
+  .lock.stack{flex-direction:column;gap:7px}
+  .lbl{font-family:ui-monospace,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#9aa8b6}
+  .dark .lbl{color:#7d92a6}
+  svg{display:block}
+  .wm{font-weight:800;letter-spacing:-.02em;color:var(--navy);line-height:1}
+  .dark .wm{color:#fff}
+  .wm .t{color:var(--teal)} .dark .wm .t{color:var(--teal-l)}
+  .ping{display:inline-block;width:.3em;height:.3em;border-radius:50%;background:var(--green);vertical-align:.55em;margin-left:.06em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Projedar — Sonar İkon + Wordmark <span style="color:var(--gray);font-weight:600;font-size:15px">· 10 varyasyon</span></h1>
+  <p class="sub">Sabit yön: <b>Sonar Blipleri ikonu</b> (radar halkaları + canlı stok blipleri: yeşil müsait / amber opsiyon / kırmızı satıldı) + <b>wordmark</b> (proje·dar iki tonlu ya da projedar + yeşil ping). Aşağıdaki 10 varyant yalnızca <b>boyut, oran, kompozisyon ve görünüm</b> farkı — doğru dengeyi seçmen için.</p>
+  <p class="not"><b>Bak:</b> her lockup nav-boyutunda (gerçek kullanım) + favicon. Numara söyle → <code>Logo.tsx</code> + <code>icon.svg</code> + PWA ikonları olur.</p>
+
+  <div class="grid">
+
+    <!-- 01 Denge · proje·dar -->
+    <div class="card">
+      <div class="head"><span class="ad">Denge</span><span class="no">01 · yatay · proje·dar</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#c3ccd6" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#dde3ea" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="2.6" fill="#2fb36b"/><circle cx="12" cy="13" r="2.6" fill="#d99a1a"/><circle cx="24" cy="29" r="2.6" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#3b4a5a" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#2a3a4a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/><circle cx="28.5" cy="15" r="2.6" fill="#37d99a"/><circle cx="12" cy="13" r="2.6" fill="#f0b429"/><circle cx="24" cy="29" r="2.6" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">Standart yatay denge: ikon ≈ wordmark yüksekliği. En dengeli, güvenli oran. İki tonlu proje·dar.</p>
+    </div>
+
+    <!-- 02 Ping wordmark -->
+    <div class="card">
+      <div class="head"><span class="ad">Ping</span><span class="no">02 · yatay · projedar•</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#c3ccd6" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#dde3ea" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="2.6" fill="#2fb36b"/><circle cx="12" cy="13" r="2.6" fill="#d99a1a"/><circle cx="24" cy="29" r="2.6" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:21px">projedar<span class="ping"></span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#3b4a5a" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#2a3a4a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/><circle cx="28.5" cy="15" r="2.6" fill="#37d99a"/><circle cx="12" cy="13" r="2.6" fill="#f0b429"/><circle cx="24" cy="29" r="2.6" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:21px">projedar<span class="ping"></span></span></div></div>
+      </div>
+      <p class="aciklama">Tek tonlu "projedar" + sondaki yeşil ping. İkon zaten renkli olduğundan wordmark sade kalıyor — daha modern, dengeli.</p>
+    </div>
+
+    <!-- 03 İkon-öncelikli -->
+    <div class="card">
+      <div class="head"><span class="ad">İkon-öncelikli</span><span class="no">03 · büyük ikon</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <svg width="42" height="42" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#c3ccd6" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#dde3ea" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="2.6" fill="#2fb36b"/><circle cx="12" cy="13" r="2.6" fill="#d99a1a"/><circle cx="24" cy="29" r="2.6" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:18px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock">
+          <svg width="42" height="42" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#3b4a5a" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#2a3a4a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/><circle cx="28.5" cy="15" r="2.6" fill="#37d99a"/><circle cx="12" cy="13" r="2.6" fill="#f0b429"/><circle cx="24" cy="29" r="2.6" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:18px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">İkon büyük, wordmark küçük — marka işaretini öne çıkarır. Ürün panelinde/uygulama üstünde güçlü durur.</p>
+    </div>
+
+    <!-- 04 Wordmark-öncelikli -->
+    <div class="card">
+      <div class="head"><span class="ad">Wordmark-öncelikli</span><span class="no">04 · küçük ikon</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock" style="gap:7px">
+          <svg width="23" height="23" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#c3ccd6" stroke-width="2"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#dde3ea" stroke-width="2"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="3" fill="#2fb36b"/><circle cx="12" cy="13" r="3" fill="#d99a1a"/><circle cx="24" cy="29" r="3" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:25px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock" style="gap:7px">
+          <svg width="23" height="23" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#3b4a5a" stroke-width="2"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#2a3a4a" stroke-width="2"/><circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:25px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">İsim baskın, ikon küçük aksan. Kelime markası önde — okunabilirlik yüksek, favicon ayrı taşır.</p>
+    </div>
+
+    <!-- 05 Dolu disk -->
+    <div class="card">
+      <div class="head"><span class="ad">Dolu Disk</span><span class="no">05 · negatif ikon</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#465768" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#fff"/><circle cx="28" cy="15" r="2.8" fill="#37d99a"/><circle cx="12" cy="14" r="2.8" fill="#f0b429"/><circle cx="24" cy="28.5" r="2.8" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#465768" stroke-width="2"/><circle cx="28" cy="15" r="3.2" fill="#37d99a"/><circle cx="12" cy="14" r="3.2" fill="#f0b429"/><circle cx="24" cy="28.5" r="3.2" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#1c3350"/><circle cx="20" cy="20" r="9" fill="none" stroke="#48607a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#fff"/><circle cx="28" cy="15" r="2.8" fill="#37d99a"/><circle cx="12" cy="14" r="2.8" fill="#f0b429"/><circle cx="24" cy="28.5" r="2.8" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">İkon dolu navy disk, blipler içinde parlıyor — gece radar ekranı hissi. Favicon'da en okunaklısı; app ikonu için ideal.</p>
+    </div>
+
+    <!-- 06 Dikey -->
+    <div class="card">
+      <div class="head"><span class="ad">Dikey</span><span class="no">06 · stacked</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock stack">
+          <svg width="34" height="34" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#c3ccd6" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#dde3ea" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="2.6" fill="#2fb36b"/><circle cx="12" cy="13" r="2.6" fill="#d99a1a"/><circle cx="24" cy="29" r="2.6" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:17px;letter-spacing:.02em">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock stack">
+          <svg width="34" height="34" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#3b4a5a" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#2a3a4a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/><circle cx="28.5" cy="15" r="2.6" fill="#37d99a"/><circle cx="12" cy="13" r="2.6" fill="#f0b429"/><circle cx="24" cy="29" r="2.6" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:17px;letter-spacing:.02em">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">İkon üstte, wordmark altta ortalı. Kare alanlar için (app store, avatar, kartvizit). Dengeli dikey kilit.</p>
+    </div>
+
+    <!-- 07 Monokrom -->
+    <div class="card">
+      <div class="head"><span class="ad">Monokrom</span><span class="no">07 · tek renk</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#aab4bf" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#c8d0d8" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#10243a"/><circle cx="28.5" cy="15" r="2.6" fill="#17998a"/><circle cx="12" cy="13" r="2.6" fill="#10243a"/><circle cx="24" cy="29" r="2.6" fill="#10243a"/></svg>
+          <span class="wm" style="font-size:21px;color:#10243a">projedar</span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#5a6b7c" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#fff"/><circle cx="12" cy="13" r="3" fill="#fff"/><circle cx="24" cy="29" r="3" fill="#37d99a"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock">
+          <svg width="30" height="30" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#46586a" stroke-width="1.8"/><circle cx="20" cy="20" r="15.5" fill="none" stroke="#33475a" stroke-width="1.8"/><circle cx="20" cy="20" r="1.8" fill="#fff"/><circle cx="28.5" cy="15" r="2.6" fill="#4fd0c0"/><circle cx="12" cy="13" r="2.6" fill="#fff"/><circle cx="24" cy="29" r="2.6" fill="#fff"/></svg>
+          <span class="wm" style="font-size:21px;color:#fff">projedar</span></div></div>
+      </div>
+      <p class="aciklama">Tek renk (navy + tek teal aksan blip). Fatura, mühür, gri baskı, tek-renk zorunlu yerler için. Sade ve kurumsal.</p>
+    </div>
+
+    <!-- 08 Çip (app lockup) -->
+    <div class="card">
+      <div class="head"><span class="ad">Çip</span><span class="no">08 · app lockup</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock">
+          <span style="display:inline-flex;padding:6px;border-radius:10px;background:#10243a"><svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg></span>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <span style="display:inline-flex;padding:5px;border-radius:9px;background:#10243a"><svg width="20" height="20" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2.4"/><circle cx="28.5" cy="15" r="3.2" fill="#37d99a"/><circle cx="12" cy="13" r="3.2" fill="#f0b429"/><circle cx="24" cy="29" r="3.2" fill="#f0715f"/><circle cx="20" cy="20" r="2.2" fill="#fff"/></svg></span>
+        </div>
+        <div class="dark"><div class="lock">
+          <span style="display:inline-flex;padding:6px;border-radius:10px;background:#1c3350"><svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="9" fill="none" stroke="#546c86" stroke-width="2"/><circle cx="28.5" cy="15" r="3" fill="#37d99a"/><circle cx="12" cy="13" r="3" fill="#f0b429"/><circle cx="24" cy="29" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg></span>
+          <span class="wm" style="font-size:21px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">İkon yuvarlak-köşe navy çip içinde — modern app kilidi. İkon her zeminde net kalır; ürün üst-barında çok temiz.</p>
+    </div>
+
+    <!-- 09 İnce & ferah -->
+    <div class="card">
+      <div class="head"><span class="ad">İnce & Ferah</span><span class="no">09 · zarif</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock" style="gap:11px">
+          <svg width="28" height="28" viewBox="0 0 40 40"><circle cx="20" cy="20" r="10" fill="none" stroke="#cfd7df" stroke-width="1.4"/><circle cx="20" cy="20" r="16" fill="none" stroke="#e3e8ee" stroke-width="1.4"/><circle cx="20" cy="20" r="1.6" fill="#10243a"/><circle cx="29" cy="14.5" r="2.4" fill="#2fb36b"/><circle cx="11" cy="14" r="2.4" fill="#d99a1a"/><circle cx="24" cy="29.5" r="2.4" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:20px;font-weight:600;letter-spacing:.04em">projedar<span class="ping"></span></span></div>
+          <div><span class="lbl">favicon</span></div>
+          <svg width="26" height="26" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="10" fill="none" stroke="#4a5a6a" stroke-width="1.8"/><circle cx="29" cy="14.5" r="3" fill="#37d99a"/><circle cx="11" cy="14" r="3" fill="#f0b429"/><circle cx="24" cy="29.5" r="3" fill="#f0715f"/><circle cx="20" cy="20" r="1.8" fill="#fff"/></svg>
+        </div>
+        <div class="dark"><div class="lock" style="gap:11px">
+          <svg width="28" height="28" viewBox="0 0 40 40"><circle cx="20" cy="20" r="10" fill="none" stroke="#3b4a5a" stroke-width="1.4"/><circle cx="20" cy="20" r="16" fill="none" stroke="#293848" stroke-width="1.4"/><circle cx="20" cy="20" r="1.6" fill="#dbe4ec"/><circle cx="29" cy="14.5" r="2.4" fill="#37d99a"/><circle cx="11" cy="14" r="2.4" fill="#f0b429"/><circle cx="24" cy="29.5" r="2.4" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:20px;font-weight:600;letter-spacing:.04em;color:#e6edf3">projedar<span class="ping"></span></span></div></div>
+      </div>
+      <p class="aciklama">İnce halkalar + hafif wordmark + ferah boşluk. Daha zarif/premium ton. Ping ile canlılık korunur.</p>
+    </div>
+
+    <!-- 10 Kompakt -->
+    <div class="card">
+      <div class="head"><span class="ad">Kompakt</span><span class="no">10 · sıkı · küçük ölçek</span></div>
+      <div class="stage">
+        <div class="light"><div class="lock" style="gap:7px">
+          <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="none" stroke="#c3ccd6" stroke-width="2.2"/><circle cx="20" cy="20" r="2" fill="#10243a"/><circle cx="30" cy="14" r="3.4" fill="#2fb36b"/><circle cx="12" cy="27" r="3.4" fill="#d15a4e"/></svg>
+          <span class="wm" style="font-size:19px">proje<span class="t">dar</span></span></div>
+          <div><span class="lbl">favicon 16px</span></div>
+          <svg width="18" height="18" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#10243a"/><circle cx="20" cy="20" r="10" fill="none" stroke="#5a6b7c" stroke-width="3"/><circle cx="30" cy="13" r="4.5" fill="#37d99a"/></svg>
+        </div>
+        <div class="dark"><div class="lock" style="gap:7px">
+          <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="none" stroke="#3b4a5a" stroke-width="2.2"/><circle cx="20" cy="20" r="2" fill="#dbe4ec"/><circle cx="30" cy="14" r="3.4" fill="#37d99a"/><circle cx="12" cy="27" r="3.4" fill="#f0715f"/></svg>
+          <span class="wm" style="font-size:19px">proje<span class="t">dar</span></span></div></div>
+      </div>
+      <p class="aciklama">Sadeleştirilmiş: 1 halka + 2 blip, daha kalın çizgi. 16px favicon'da bile net. Küçük ölçekte en okunaklı varyant.</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

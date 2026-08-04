@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar — 10 Farklı Logo Yönü (v2 · Radar)</title>
+<style>
+  :root{
+    --navy:#10243a; --ink:#0d2438; --teal:#17998a; --teal-d:#0f7d70; --teal-l:#4fd0c0;
+    --green:#2fb36b; --amber:#d99a1a; --red:#d15a4e;
+    --cizgi:#e6ebf0; --gray:#5b6b7c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef2f5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0}
+  .sub{color:var(--gray);font-size:14px;margin-top:6px;max-width:74ch;line-height:1.6}
+  .not{margin-top:14px;font-size:12.5px;color:var(--gray);background:#fff;border:1px solid var(--cizgi);border-radius:12px;padding:12px 14px;line-height:1.6}
+  .not b{color:var(--ink)}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:26px}
+  .card{background:#fff;border:1px solid var(--cizgi);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(16,36,58,.04)}
+  .head{display:flex;align-items:baseline;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--cizgi)}
+  .no{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:700;color:var(--teal-d);letter-spacing:.06em}
+  .ad{font-size:14px;font-weight:800;letter-spacing:-.01em}
+  .aciklama{font-size:12px;color:var(--gray);padding:12px 18px 15px;line-height:1.55}
+  .stage{display:grid;grid-template-columns:1fr 1fr}
+  .light,.dark{padding:24px 16px;display:flex;flex-direction:column;align-items:center;gap:16px;justify-content:center;min-height:150px}
+  .light{background:#fff}.dark{background:var(--ink)}
+  .lock{display:flex;align-items:center;gap:9px}
+  .lock.stack{flex-direction:column;gap:8px}
+  .lbl{font-family:ui-monospace,monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#9aa8b6}
+  .dark .lbl{color:#7d92a6}
+  svg{display:block}
+  /* wordmark tipografi varyantları */
+  .wm{font-weight:800;letter-spacing:-.02em;font-size:22px;color:var(--navy)}
+  .dark .wm{color:#fff}
+  .wm .t{color:var(--teal)} .dark .wm .t{color:var(--teal-l)}
+  .wm-caps{font-weight:800;letter-spacing:.18em;font-size:15px;text-transform:uppercase;color:var(--navy)}
+  .dark .wm-caps{color:#fff} .wm-caps .t{color:var(--teal)} .dark .wm-caps .t{color:var(--teal-l)}
+  .wm-thin{font-weight:600;letter-spacing:.01em;font-size:21px;color:var(--navy)}
+  .dark .wm-thin{color:#e6edf3} .wm-thin .t{color:var(--teal)} .dark .wm-thin .t{color:var(--teal-l)}
+  .wm-mono{font-family:ui-monospace,Menlo,monospace;font-weight:700;letter-spacing:-.01em;font-size:19px;color:var(--navy)}
+  .dark .wm-mono{color:#fff} .wm-mono .t{color:var(--teal)} .dark .wm-mono .t{color:var(--teal-l)}
+  .ping{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);vertical-align:super;margin-left:1px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Projedar — 10 Farklı Logo Yönü <span style="color:var(--gray);font-weight:600;font-size:15px">· v2</span></h1>
+  <p class="sub">İkili anlam: <b>-dar</b> (projeye sahip çıkan/satan profesyonel) + <b>Proje Radar</b> (yeni projeleri, fiyatı, opsiyonu, satışı anlık izleyen canlı radar). Bu set aynı şablonun varyasyonu değil — farklı <b>tip</b> (piktogram, monogram, amblem, salt-wordmark), farklı <b>kompozisyon</b> ve farklı <b>tipografi</b>. Radar teması ağırlıklı.</p>
+  <p class="not"><b>Kullanım:</b> her aday açık + koyu zeminde ve favicon boyutunda. Beğendiğin numara(lar)ı söyle; onu <code>Logo.tsx</code> + <code>icon.svg</code> + PWA ikonları olarak uygularım.</p>
+
+  <div class="grid">
+
+    <!-- 01 RADAR KADRANI -->
+    <div class="card">
+      <div class="head"><span class="ad">Radar Kadranı</span><span class="no">01 · piktogram · radar</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#10243a" stroke-width="2"/>
+              <circle cx="20" cy="20" r="9.5" fill="none" stroke="#c3ccd6" stroke-width="1.6"/>
+              <line x1="4" y1="20" x2="36" y2="20" stroke="#dbe1e8" stroke-width="1.2"/>
+              <line x1="20" y1="4" x2="20" y2="36" stroke="#dbe1e8" stroke-width="1.2"/>
+              <path d="M20 20 L20 4 A16 16 0 0 1 33.9 12 Z" fill="#17998a" opacity=".9"/>
+              <circle cx="27" cy="13" r="2.3" fill="#2fb36b"/>
+              <circle cx="20" cy="20" r="2" fill="#10243a"/>
+            </svg>
+            <span class="wm">proje<span class="t">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#10243a"/><path d="M20 20 L20 4 A16 16 0 0 1 33.9 12 Z" fill="#37d99a"/><circle cx="20" cy="20" r="2.4" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#dbe4ec" stroke-width="2"/>
+              <circle cx="20" cy="20" r="9.5" fill="none" stroke="#3b4a5a" stroke-width="1.6"/>
+              <line x1="4" y1="20" x2="36" y2="20" stroke="#2a3a4a" stroke-width="1.2"/>
+              <line x1="20" y1="4" x2="20" y2="36" stroke="#2a3a4a" stroke-width="1.2"/>
+              <path d="M20 20 L20 4 A16 16 0 0 1 33.9 12 Z" fill="#17998a"/>
+              <circle cx="27" cy="13" r="2.3" fill="#37d99a"/>
+              <circle cx="20" cy="20" r="2" fill="#dbe4ec"/>
+            </svg>
+            <span class="wm">proje<span class="t">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Klasik radar kadranı: sweep ışını + blip. "Canlı radar" anlamının en doğrudan, en akılda kalıcı ifadesi. Uygulama ikonu olarak çok güçlü.</p>
+    </div>
+
+    <!-- 02 YAYIN KULE (stacked, caps) -->
+    <div class="card">
+      <div class="head"><span class="ad">Yayın Kule</span><span class="no">02 · piktogram · mimari+radar</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock stack">
+            <svg width="40" height="40" viewBox="0 0 40 40">
+              <rect x="15" y="16" width="10" height="20" rx="1.6" fill="#10243a"/>
+              <rect x="17.5" y="20" width="2" height="2" fill="#fff"/><rect x="21" y="20" width="2" height="2" fill="#fff"/>
+              <rect x="17.5" y="25" width="2" height="2" fill="#fff"/><rect x="21" y="25" width="2" height="2" fill="#2fb36b"/>
+              <circle cx="20" cy="10" r="2.2" fill="#10243a"/>
+              <path d="M25 10 A5 5 0 0 1 25 10" fill="none"/>
+              <path d="M24.5 6.5 A6 6 0 0 1 24.5 13.5" fill="none" stroke="#17998a" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M28 4 A9.5 9.5 0 0 1 28 16" fill="none" stroke="#17998a" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+            </svg>
+            <span class="wm-caps">proje<span class="t">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><rect x="15" y="15" width="10" height="21" rx="2" fill="#10243a"/><circle cx="20" cy="9" r="3" fill="#2fb36b"/><path d="M27 5 A9 9 0 0 1 27 15" fill="none" stroke="#10243a" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock stack">
+            <svg width="40" height="40" viewBox="0 0 40 40">
+              <rect x="15" y="16" width="10" height="20" rx="1.6" fill="#dbe4ec"/>
+              <rect x="17.5" y="20" width="2" height="2" fill="#10243a"/><rect x="21" y="20" width="2" height="2" fill="#10243a"/>
+              <rect x="17.5" y="25" width="2" height="2" fill="#10243a"/><rect x="21" y="25" width="2" height="2" fill="#2fb36b"/>
+              <circle cx="20" cy="10" r="2.2" fill="#dbe4ec"/>
+              <path d="M24.5 6.5 A6 6 0 0 1 24.5 13.5" fill="none" stroke="#4fd0c0" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M28 4 A9.5 9.5 0 0 1 28 16" fill="none" stroke="#4fd0c0" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>
+            </svg>
+            <span class="wm-caps">proje<span class="t">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Kule yayın yapıyor — proje ağa "sinyal" gönderiyor. Mimari + radar birleşimi. Dikey (stacked) kompozisyon, letterspaced caps tipografi.</p>
+    </div>
+
+    <!-- 03 SALT WORDMARK (ping) -->
+    <div class="card">
+      <div class="head"><span class="ad">Ping Wordmark</span><span class="no">03 · salt tipografi</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock"><span class="wm" style="font-size:26px">proje<span class="t">dar</span><span class="ping"></span></span></div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" rx="9" fill="#10243a"/><text x="20" y="27" font-family="Arial" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">d</text><circle cx="30" cy="11" r="3.4" fill="#2fb36b"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock"><span class="wm" style="font-size:26px">proje<span class="t">dar</span><span class="ping"></span></span></div>
+        </div>
+      </div>
+      <p class="aciklama">İkon yok — saf kelime logosu. Sonundaki yeşil "ping" noktası canlılığı/radarı simgeler. En sade, en esnek; her yere sığar. İkon gerektiğinde "d" + ping.</p>
+    </div>
+
+    <!-- 04 ROZET Pd (amblem) -->
+    <div class="card">
+      <div class="head"><span class="ad">Rozet · Pd</span><span class="no">04 · amblem · monogram</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="38" height="38" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="17.5" fill="none" stroke="#10243a" stroke-width="2"/>
+              <path d="M20 6.5 A13.5 13.5 0 0 1 31.5 13" fill="none" stroke="#17998a" stroke-width="2.4" stroke-linecap="round"/>
+              <text x="20" y="26.5" font-family="Arial" font-size="17" font-weight="800" fill="#10243a" text-anchor="middle">Pd</text>
+            </svg>
+            <span class="wm-caps" style="letter-spacing:.22em">projedar</span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#10243a"/><path d="M20 6 A14 14 0 0 1 32 12.8" fill="none" stroke="#37d99a" stroke-width="2.6" stroke-linecap="round"/><text x="20" y="26.5" font-family="Arial" font-size="17" font-weight="800" fill="#fff" text-anchor="middle">Pd</text></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="38" height="38" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="17.5" fill="none" stroke="#dbe4ec" stroke-width="2"/>
+              <path d="M20 6.5 A13.5 13.5 0 0 1 31.5 13" fill="none" stroke="#4fd0c0" stroke-width="2.4" stroke-linecap="round"/>
+              <text x="20" y="26.5" font-family="Arial" font-size="17" font-weight="800" fill="#fff" text-anchor="middle">Pd</text>
+            </svg>
+            <span class="wm-caps" style="letter-spacing:.22em">projedar</span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Dairesel amblem: "Pd" monogramı + üstte radar taraması yayı. Kurumsal, mühür hissi. Damga/rozet olarak (yetki/güven) çok uygun.</p>
+    </div>
+
+    <!-- 05 SONAR BLİPLERİ -->
+    <div class="card">
+      <div class="head"><span class="ad">Sonar Blipleri</span><span class="no">05 · piktogram · veri+radar</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="4" fill="none" stroke="#10243a" stroke-width="2"/>
+              <circle cx="20" cy="20" r="10" fill="none" stroke="#c3ccd6" stroke-width="1.8"/>
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#dde3ea" stroke-width="1.8"/>
+              <circle cx="20" cy="20" r="1.8" fill="#10243a"/>
+              <circle cx="28.5" cy="16" r="2.6" fill="#2fb36b"/>
+              <circle cx="12" cy="12.5" r="2.6" fill="#d99a1a"/>
+              <circle cx="24" cy="29" r="2.6" fill="#d15a4e"/>
+            </svg>
+            <span class="wm-thin">projedar</span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#10243a"/><circle cx="20" cy="20" r="9" fill="none" stroke="#4a5a6a" stroke-width="2"/><circle cx="29" cy="15" r="3" fill="#37d99a"/><circle cx="20" cy="20" r="2" fill="#fff"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="4" fill="none" stroke="#dbe4ec" stroke-width="2"/>
+              <circle cx="20" cy="20" r="10" fill="none" stroke="#3b4a5a" stroke-width="1.8"/>
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#2a3a4a" stroke-width="1.8"/>
+              <circle cx="20" cy="20" r="1.8" fill="#dbe4ec"/>
+              <circle cx="28.5" cy="16" r="2.6" fill="#37d99a"/>
+              <circle cx="12" cy="12.5" r="2.6" fill="#f0b429"/>
+              <circle cx="24" cy="29" r="2.6" fill="#f0715f"/>
+            </svg>
+            <span class="wm-thin">projedar</span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Radar halkaları üstünde sinyal blipleri: yeşil/amber/kırmızı = müsait/opsiyon/satıldı. Radar + canlı stok verisini tek işarette birleştirir. İnce tipografi.</p>
+    </div>
+
+    <!-- 06 RADAR ÇANAK "d" -->
+    <div class="card">
+      <div class="head"><span class="ad">Radar Çanak · d</span><span class="no">06 · monogram (harf=marka)</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="40" height="40" viewBox="0 0 40 40">
+              <line x1="27" y1="6" x2="27" y2="34" stroke="#10243a" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M27 30 A11 11 0 1 1 27 15" fill="none" stroke="#10243a" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M9 22 a8 8 0 0 1 8 -8" fill="none" stroke="#17998a" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="17" cy="22.5" r="2.4" fill="#2fb36b"/>
+            </svg>
+            <span class="wm-thin" style="font-weight:700">projedar</span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" rx="9" fill="#10243a"/><line x1="27" y1="9" x2="27" y2="31" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><path d="M27 28 A9 9 0 1 1 27 15" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/><circle cx="18" cy="21.5" r="2.6" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="40" height="40" viewBox="0 0 40 40">
+              <line x1="27" y1="6" x2="27" y2="34" stroke="#dbe4ec" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M27 30 A11 11 0 1 1 27 15" fill="none" stroke="#dbe4ec" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M9 22 a8 8 0 0 1 8 -8" fill="none" stroke="#4fd0c0" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="17" cy="22.5" r="2.4" fill="#37d99a"/>
+            </svg>
+            <span class="wm-thin" style="font-weight:700">projedar</span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">"d" harfinin kâsesi bir radar çanağı — sinyal yayı + blip yayıyor. Harf doğrudan marka olur. Zeki, sahiplenilebilir lettermark.</p>
+    </div>
+
+    <!-- 07 SWEEP WEDGE (abstract) -->
+    <div class="card">
+      <div class="head"><span class="ad">Sweep</span><span class="no">07 · soyut · hareket</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16.5" fill="none" stroke="#dbe1e8" stroke-width="2.4"/>
+              <path d="M20 20 L36 20 A16 16 0 0 0 30.6 8 Z" fill="#10243a"/>
+              <path d="M20 20 L30.6 8 A16 16 0 0 0 20 3.5 Z" fill="#17998a"/>
+              <circle cx="20" cy="20" r="2.4" fill="#10243a"/>
+            </svg>
+            <span class="wm-mono">projedar</span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#eef2f5"/><path d="M20 20 L37 20 A17 17 0 0 0 31 7 Z" fill="#10243a"/><path d="M20 20 L31 7 A17 17 0 0 0 20 3 Z" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16.5" fill="none" stroke="#2a3a4a" stroke-width="2.4"/>
+              <path d="M20 20 L36 20 A16 16 0 0 0 30.6 8 Z" fill="#dbe4ec"/>
+              <path d="M20 20 L30.6 8 A16 16 0 0 0 20 3.5 Z" fill="#4fd0c0"/>
+              <circle cx="20" cy="20" r="2.4" fill="#dbe4ec"/>
+            </svg>
+            <span class="wm-mono">projedar</span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Dönen radar taraması, iki tonlu soyut kama. Hareket ve canlılık hissi; en modern/teknik yön. Mono tipografi ile veri-altyapısı tonu.</p>
+    </div>
+
+    <!-- 08 PLAN + PING -->
+    <div class="card">
+      <div class="head"><span class="ad">Plan + Ping</span><span class="no">08 · mimari plan · radar</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#dde3ea" stroke-width="1.6"/>
+              <circle cx="20" cy="20" r="10.5" fill="none" stroke="#c9d2db" stroke-width="1.6"/>
+              <rect x="14" y="14" width="12" height="12" rx="1.5" fill="#10243a"/>
+              <rect x="16.5" y="16.5" width="3" height="3" fill="#fff"/><rect x="20.5" y="16.5" width="3" height="3" fill="#2fb36b"/>
+              <rect x="16.5" y="20.5" width="3" height="3" fill="#fff"/><rect x="20.5" y="20.5" width="3" height="3" fill="#fff"/>
+            </svg>
+            <span class="wm">Proje<span class="t">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="#10243a" stroke-width="2"/><rect x="13" y="13" width="14" height="14" rx="2" fill="#10243a"/><rect x="21" y="16" width="3.5" height="3.5" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="36" height="36" viewBox="0 0 40 40">
+              <circle cx="20" cy="20" r="16" fill="none" stroke="#2a3a4a" stroke-width="1.6"/>
+              <circle cx="20" cy="20" r="10.5" fill="none" stroke="#38485a" stroke-width="1.6"/>
+              <rect x="14" y="14" width="12" height="12" rx="1.5" fill="#dbe4ec"/>
+              <rect x="16.5" y="16.5" width="3" height="3" fill="#10243a"/><rect x="20.5" y="16.5" width="3" height="3" fill="#2fb36b"/>
+              <rect x="16.5" y="20.5" width="3" height="3" fill="#10243a"/><rect x="20.5" y="20.5" width="3" height="3" fill="#10243a"/>
+            </svg>
+            <span class="wm">Proje<span class="t">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Kuşbakışı bina planı (bağımsız bölümler) radar halkalarının merkezinde. Mimari plan + izleme. Tek-kelime "Projedar" tipografisi.</p>
+    </div>
+
+    <!-- 09 SİNYAL DALGASI (integrated) -->
+    <div class="card">
+      <div class="head"><span class="ad">Sinyal Dalgası</span><span class="no">09 · entegre · canlı</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock" style="gap:6px">
+            <svg width="34" height="30" viewBox="0 0 40 34">
+              <path d="M2 20 H11 L15 8 L21 26 L25 15 L28 20 H38" fill="none" stroke="#10243a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="38" cy="20" r="2.8" fill="#2fb36b"/>
+            </svg>
+            <span class="wm-thin" style="font-weight:800">proje<span class="t">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="24" height="24" viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" rx="9" fill="#10243a"/><path d="M8 22 H15 L18 13 L23 27 L26 20 H32" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="20" r="2.6" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock" style="gap:6px">
+            <svg width="34" height="30" viewBox="0 0 40 34">
+              <path d="M2 20 H11 L15 8 L21 26 L25 15 L28 20 H38" fill="none" stroke="#dbe4ec" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="38" cy="20" r="2.8" fill="#37d99a"/>
+            </svg>
+            <span class="wm-thin" style="font-weight:800">proje<span class="t">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Radar/nabız dalgası — canlı hareketin işareti (fiyat/opsiyon/satış anlık değişir). Uçtaki yeşil nokta = son sinyal. Enerjik, "canlı bilgi" tonu.</p>
+    </div>
+
+    <!-- 10 PIN-RADAR -->
+    <div class="card">
+      <div class="head"><span class="ad">Pin-Radar</span><span class="no">10 · piktogram · konum+radar</span></div>
+      <div class="stage">
+        <div class="light">
+          <div class="lock">
+            <svg width="34" height="38" viewBox="0 0 34 40">
+              <path d="M17 2 C9 2 3 8 3 15.5 C3 25 17 38 17 38 C17 38 31 25 31 15.5 C31 8 25 2 17 2 Z" fill="#10243a"/>
+              <circle cx="17" cy="15" r="8" fill="none" stroke="#3f5064" stroke-width="1.4"/>
+              <circle cx="17" cy="15" r="4" fill="none" stroke="#6b7c90" stroke-width="1.4"/>
+              <circle cx="22.5" cy="11.5" r="2.4" fill="#2fb36b"/>
+              <circle cx="17" cy="15" r="1.4" fill="#fff"/>
+            </svg>
+            <span class="wm">proje<span class="t">dar</span></span>
+          </div>
+          <div class="row"><span class="lbl">favicon</span>
+            <svg width="22" height="24" viewBox="0 0 34 40"><path d="M17 2 C9 2 3 8 3 15.5 C3 25 17 38 17 38 C17 38 31 25 31 15.5 C31 8 25 2 17 2 Z" fill="#10243a"/><circle cx="17" cy="15" r="7" fill="none" stroke="#8090a2" stroke-width="1.8"/><circle cx="23" cy="10.5" r="3" fill="#37d99a"/></svg>
+          </div>
+        </div>
+        <div class="dark">
+          <div class="lock">
+            <svg width="34" height="38" viewBox="0 0 34 40">
+              <path d="M17 2 C9 2 3 8 3 15.5 C3 25 17 38 17 38 C17 38 31 25 31 15.5 C31 8 25 2 17 2 Z" fill="#dbe4ec"/>
+              <circle cx="17" cy="15" r="8" fill="none" stroke="#9fb0c0" stroke-width="1.4"/>
+              <circle cx="17" cy="15" r="4" fill="none" stroke="#7b8da0" stroke-width="1.4"/>
+              <circle cx="22.5" cy="11.5" r="2.4" fill="#2fb36b"/>
+              <circle cx="17" cy="15" r="1.4" fill="#10243a"/>
+            </svg>
+            <span class="wm">proje<span class="t">dar</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="aciklama">Konum pini + içinde radar taraması. Gayrimenkul (konum) + canlı izleme (radar) birleşimi. Sektörel + akılda kalıcı.</p>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
