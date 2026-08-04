@@ -280,6 +280,135 @@ export async function opsiyonBirakSessiz(
   return error ? { ok: false, mesaj: "Bırakılamadı" } : { ok: true, mesaj: "Opsiyon bırakıldı" };
 }
 
+/**
+ * Emlakçı kendi AKTİF opsiyonunun SONUCUNU işler (güven skoru + süreç kapanışı).
+ * - 'satildi': opsiyon satis_beklemede'ye alınır + sonuc='satildi' (müteahhit finalde 'satildi' yapar).
+ *   opsiyon_update RLS müteahhit-only → sahiplik doğrulandıktan sonra admin client (leadDurumGuncelle deseni, DEĞİŞMEZ #1 server-only).
+ * - 'vazgecildi': event yazılır (skor için kalıcı) sonra opsiyon silinir (emlakçı delete izinli) → daire serbest.
+ */
+export async function opsiyonSonuc(
+  birimId: string,
+  projeId: string,
+  sonuc: "satildi" | "vazgecildi",
+  gerekce = "",
+): Promise<{ ok: boolean; mesaj: string }> {
+  const b = uuid.safeParse(birimId);
+  const p = uuid.safeParse(projeId);
+  if (!b.success || !p.success) return { ok: false, mesaj: "Geçersiz istek" };
+  if (sonuc !== "satildi" && sonuc !== "vazgecildi") return { ok: false, mesaj: "Geçersiz sonuç" };
+  const gTemiz = gerekce.trim().slice(0, 280);
+  if (sonuc === "vazgecildi" && gTemiz === "") return { ok: false, mesaj: "Vazgeçme sebebi zorunlu" };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, mesaj: "Giriş gerekli" };
+
+  // Sahiplik: bu dairede benim aktif opsiyonum var mı? (RLS-select ile doğrula)
+  const { data: ops } = await supabase
+    .from("opsiyon")
+    .select("id")
+    .eq("birim_id", b.data)
+    .eq("satici_id", user.id)
+    .in("durum", ["opsiyonlu", "satis_beklemede"])
+    .maybeSingle();
+  if (!ops) return { ok: false, mesaj: "Bu dairede aktif opsiyonun yok" };
+
+  const bildir = async (baslik: string, govde: string) => {
+    try {
+      const admin = createAdminClient();
+      const { data: proje } = await admin.from("proje").select("ad, uretici_id").eq("id", p.data).single();
+      const { data: birim } = await admin.from("birim").select("daire_no").eq("id", b.data).single();
+      if (proje?.uretici_id) {
+        await bildirimYaz({
+          profile_id: proje.uretici_id as string,
+          tip: sonuc === "satildi" ? "onay" : "red",
+          baslik,
+          govde: `${proje.ad ?? "Proje"} · Daire ${birim?.daire_no ?? "?"} · ${govde}`,
+          link: "/uretici/opsiyonlar",
+        });
+      }
+    } catch (e) {
+      console.error("[opsiyonSonuc] bildirim hatası (yutuldu):", e);
+    }
+  };
+
+  if (sonuc === "vazgecildi") {
+    await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: p.data, birimId: b.data, payload: { eylem: "vazgecildi", gerekce: gTemiz } });
+    const { error } = await supabase.from("opsiyon").delete().eq("id", ops.id);
+    if (error) return { ok: false, mesaj: "İşlenemedi" };
+    await bildir("Opsiyondan vazgeçildi", `danışman vazgeçti (${gTemiz}), daire serbest`);
+    revalidatePath(`/havuz/proje/${p.data}`);
+    revalidatePath("/havuz");
+    revalidatePath("/havuz/opsiyonlarim");
+    return { ok: true, mesaj: "Vazgeçildi olarak işlendi — daire serbest" };
+  }
+
+  // satildi → satis_beklemede + sonuc (opsiyon_update müteahhit-only → admin client)
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("opsiyon")
+    .update({ durum: "satis_beklemede", sonuc: "satildi", sonuc_at: new Date().toISOString() })
+    .eq("id", ops.id);
+  if (error) return { ok: false, mesaj: "İşlenemedi" };
+  await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: p.data, birimId: b.data, payload: { eylem: "satisa_donustu" } });
+  await bildir("Satışa dönüştü — teyit bekliyor", "danışman satışa dönüştürdü, satışı teyit et");
+  revalidatePath(`/havuz/proje/${p.data}`);
+  revalidatePath("/havuz");
+  revalidatePath("/havuz/opsiyonlarim");
+  return { ok: true, mesaj: "Satışa dönüştürüldü — müteahhit teyidine düştü" };
+}
+
+/**
+ * Emlakçı kendi opsiyonunu BİR KEZ uzatır — müteahhit-tanımlı hak (uzatma_hakki) + süre (uzatma_gun).
+ * RPC opsiyon_uzat (SECURITY DEFINER): sahiplik + doğrulanmış + tek-uzatma + config kontrolü → kilit_bitis uzar.
+ */
+export async function opsiyonUzat(
+  birimId: string,
+  projeId: string,
+): Promise<{ ok: boolean; mesaj: string }> {
+  const b = uuid.safeParse(birimId);
+  const p = uuid.safeParse(projeId);
+  if (!b.success || !p.success) return { ok: false, mesaj: "Geçersiz istek" };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, mesaj: "Giriş gerekli" };
+
+  const { error } = await supabase.rpc("opsiyon_uzat", { p_birim: b.data });
+  if (error) {
+    console.error("[opsiyonUzat] RPC hatası:", error.code, error.message);
+    return { ok: false, mesaj: error.message.replace(/^.*?:\s*/, "").trim() || "Uzatılamadı" };
+  }
+
+  try {
+    const admin = createAdminClient();
+    const [{ data: proje }, { data: birim }, { data: ben }] = await Promise.all([
+      admin.from("proje").select("ad, uretici_id").eq("id", p.data).single(),
+      admin.from("birim").select("daire_no").eq("id", b.data).single(),
+      admin.from("profiles").select("ad").eq("id", user.id).single(),
+    ]);
+    if (proje?.uretici_id) {
+      await bildirimYaz({
+        profile_id: proje.uretici_id as string,
+        tip: "sistem",
+        baslik: "Opsiyon uzatıldı",
+        govde: `${ben?.ad ?? "Bir danışman"} · ${proje.ad ?? "Proje"} · Daire ${birim?.daire_no ?? "?"} opsiyonunu uzattı`,
+        link: "/uretici/opsiyonlar",
+      });
+    }
+  } catch (e) {
+    console.error("[opsiyonUzat] bildirim hatası (yutuldu):", e);
+  }
+
+  revalidatePath("/havuz/opsiyonlarim");
+  revalidatePath(`/havuz/proje/${p.data}`);
+  return { ok: true, mesaj: "Opsiyon uzatıldı" };
+}
+
 /** WhatsApp paylaşımı tıklanınca ANONİM paylaşım sinyali (Paylaştıklarım sayfası + Talep Radarı moat). */
 export async function paylasimKaydet(projeId: string, birimId?: string | null): Promise<void> {
   const p = uuid.safeParse(projeId);

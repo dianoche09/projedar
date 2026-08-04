@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { TalepGeriCekBtn } from "./TalepGeriCekBtn";
+import { OpsiyonSonucBtn } from "./OpsiyonSonucBtn";
 
 type TalepSatir = {
   id: string;
@@ -36,6 +37,11 @@ type OpsiyonSatir = {
   durum: BirimDurum;
   kilit_bitis: string | null;
   created_at: string;
+  dogrulandi: boolean | null;
+  dogrulama_bitis: string | null;
+  musteri_ad: string | null;
+  musteri_tel: string | null;
+  uzatildi: boolean | null;
   birim: {
     id: string;
     daire_no: string | null;
@@ -43,7 +49,7 @@ type OpsiyonSatir = {
     liste_fiyati: number | null;
     para_birimi: string | null;
     durum: BirimDurum;
-    proje: { id: string; ad: string; il: string | null; ilce: string | null } | null;
+    proje: { id: string; ad: string; il: string | null; ilce: string | null; opsiyon_ayar: { uzatma_hakki?: boolean } | null } | null;
     tip: { ad: string | null; oda: string | null } | null;
   } | null;
 };
@@ -58,7 +64,7 @@ export default async function Opsiyonlarim() {
   const { data } = await supabase
     .from("opsiyon")
     .select(
-      "id, durum, kilit_bitis, created_at, birim:birim_id(id, daire_no, kat, liste_fiyati, para_birimi, durum, proje:proje_id(id, ad, il, ilce), tip:tip_id(ad, oda))",
+      "id, durum, kilit_bitis, created_at, dogrulandi, dogrulama_bitis, musteri_ad, musteri_tel, uzatildi, birim:birim_id(id, daire_no, kat, liste_fiyati, para_birimi, durum, proje:proje_id(id, ad, il, ilce, opsiyon_ayar), tip:tip_id(ad, oda))",
     )
     .eq("satici_id", user?.id ?? "")
     .in("durum", ["opsiyonlu", "satis_beklemede"])
@@ -191,7 +197,8 @@ export default async function Opsiyonlarim() {
                 <tbody>
                   {liste.map((o) => {
                     const b = o.birim;
-                    const k = kalanSure(o.kilit_bitis);
+                    const gecici = o.dogrulandi === false;
+                    const k = kalanSure(gecici ? o.dogrulama_bitis : o.kilit_bitis);
                     const ps = PARA_SIMGE[b?.para_birimi ?? "TRY"] ?? "₺";
                     const renk = k.bitti ? "var(--color-red)" : k.acil ? "var(--color-amber)" : "var(--color-green)";
                     return (
@@ -207,6 +214,9 @@ export default async function Opsiyonlarim() {
                           ) : (
                             "—"
                           )}
+                          {o.musteri_ad ? (
+                            <span className="mt-0.5 block text-[11px] text-slate-400">Müşteri: {o.musteri_ad}</span>
+                          ) : null}
                         </td>
                         <td className="mono font-semibold">{b?.daire_no ?? "—"}{b?.kat != null ? ` · ${b.kat}. kat` : ""}</td>
                         <td className="text-ink-soft">{b?.tip?.oda ?? b?.tip?.ad ?? "—"}</td>
@@ -216,20 +226,26 @@ export default async function Opsiyonlarim() {
                         <td>
                           <span className="lead-pill" style={{ background: "var(--color-navy-soft)", color: renk }}>
                             <span className="freshdot" style={{ background: renk }} />
-                            {k.metin}
+                            {gecici ? `doğrulama · ${k.metin}` : k.metin}
                           </span>
                         </td>
                         <td>
                           <span className="durum d-opsiyon">
                             <span className="nokta" />
-                            {DURUM_ETIKET[o.durum]}
+                            {gecici ? "Doğrulama bekliyor" : DURUM_ETIKET[o.durum]}
                           </span>
                         </td>
                         <td>
                           {b?.proje ? (
-                            <Link href={`/havuz/proje/${b.proje.id}`} className="btn-action" style={{ minHeight: 36, fontSize: 12.5, padding: "0 12px" }}>
-                              İncele
-                            </Link>
+                            <OpsiyonSonucBtn
+                              birimId={b.id}
+                              projeId={b.proje.id}
+                              projeAd={b.proje.ad}
+                              daireNo={b.daire_no}
+                              musteriTel={o.musteri_tel}
+                              kesin={!gecici}
+                              uzatilabilir={b.proje.opsiyon_ayar?.uzatma_hakki !== false && o.uzatildi !== true}
+                            />
                           ) : null}
                         </td>
                       </tr>
@@ -244,11 +260,12 @@ export default async function Opsiyonlarim() {
           <div className="belir belir-2 space-y-3 md:hidden">
             {liste.map((o) => {
               const b = o.birim;
-              const k = kalanSure(o.kilit_bitis);
+              const gecici = o.dogrulandi === false;
+              const k = kalanSure(gecici ? o.dogrulama_bitis : o.kilit_bitis);
               const ps = PARA_SIMGE[b?.para_birimi ?? "TRY"] ?? "₺";
               const renk = k.bitti ? "var(--color-red)" : k.acil ? "var(--color-amber)" : "var(--color-green)";
-              const ic = (
-                <article className="kart kart-3d signal-top p-4" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
+              const ust = (
+                <>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="font-display text-[15px] font-bold leading-tight text-ink">{b?.proje?.ad ?? "—"}</p>
@@ -258,7 +275,7 @@ export default async function Opsiyonlarim() {
                     </div>
                     <span className="lead-pill flex-none" style={{ background: "var(--color-navy-soft)", color: renk }}>
                       <span className="freshdot" style={{ background: renk }} />
-                      {k.metin}
+                      {gecici ? `doğrulama · ${k.metin}` : k.metin}
                     </span>
                   </div>
                   <div className="mt-3 grid grid-cols-3 gap-2 border-t pt-3 text-[12px]" style={{ borderColor: "var(--cizgi)" }}>
@@ -277,14 +294,37 @@ export default async function Opsiyonlarim() {
                       </span>
                     </div>
                   </div>
-                </article>
+                  {o.musteri_ad ? (
+                    <p className="mt-2 text-[11.5px] text-ink-soft">
+                      <span className="text-slate-400">Müşteri:</span> {o.musteri_ad}
+                      {gecici ? <span className="text-slate-400"> · müteahhit doğrulaması bekliyor</span> : null}
+                    </p>
+                  ) : null}
+                </>
               );
-              return b?.proje ? (
-                <Link key={o.id} href={`/havuz/proje/${b.proje.id}`} className="block">
-                  {ic}
-                </Link>
-              ) : (
-                <div key={o.id}>{ic}</div>
+              return (
+                <article key={o.id} className="kart kart-3d signal-top p-4" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
+                  {b?.proje ? (
+                    <Link href={`/havuz/proje/${b.proje.id}`} className="block">
+                      {ust}
+                    </Link>
+                  ) : (
+                    ust
+                  )}
+                  {b?.proje ? (
+                    <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--cizgi)" }}>
+                      <OpsiyonSonucBtn
+                        birimId={b.id}
+                        projeId={b.proje.id}
+                        projeAd={b.proje.ad}
+                        daireNo={b.daire_no}
+                        musteriTel={o.musteri_tel}
+                        kesin={!gecici}
+                        uzatilabilir={b.proje.opsiyon_ayar?.uzatma_hakki !== false && o.uzatildi !== true}
+                      />
+                    </div>
+                  ) : null}
+                </article>
               );
             })}
           </div>

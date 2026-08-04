@@ -52,7 +52,7 @@ type TalepRaw = {
     durum: string;
     liste_fiyati: number | null;
     para_birimi: string | null;
-    proje: { id: string; ad: string } | null;
+    proje: { id: string; ad: string; opsiyon_ayar: { onay_gun?: number } | null } | null;
     blok: { ad: string | null } | null;
     tip: { ad: string | null; oda: string | null } | null;
   } | null;
@@ -91,7 +91,7 @@ export default async function UreticiOpsiyonlar() {
       supabase
         .from("opsiyon_talep")
         .select(
-          "id, created_at, talep_eden_id, birim:birim_id(id, daire_no, kat, durum, liste_fiyati, para_birimi, proje:proje_id(id, ad), blok:blok_id(ad), tip:tip_id(ad, oda))",
+          "id, created_at, talep_eden_id, birim:birim_id(id, daire_no, kat, durum, liste_fiyati, para_birimi, proje:proje_id(id, ad, opsiyon_ayar), blok:blok_id(ad), tip:tip_id(ad, oda))",
         )
         .eq("durum", "beklemede")
         .order("created_at", { ascending: true }),
@@ -273,7 +273,7 @@ export default async function UreticiOpsiyonlar() {
                         </a>
                       ) : null}
                     </div>
-                    <TalepKarar talepId={t.id} />
+                    <TalepKarar talepId={t.id} gun={b?.proje?.opsiyon_ayar?.onay_gun ?? 7} />
                   </div>
                 </li>
               );

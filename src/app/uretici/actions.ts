@@ -520,10 +520,11 @@ async function talepBildir(talepId: string, karar: "onay" | "red", gun?: number)
   }
 }
 
-export async function talepOnayla(talepId: string, gun = 7): Promise<{ ok: boolean; mesaj: string }> {
+export async function talepOnayla(talepId: string, gun?: number): Promise<{ ok: boolean; mesaj: string }> {
   if (!UUID_RE.test(talepId)) return { ok: false, mesaj: "Geçersiz talep" };
   const supabase = await createClient();
-  const { error } = await supabase.rpc("opsiyon_talep_onayla", { p_talep: talepId, p_gun: gun });
+  // p_gun null → RPC proje.opsiyon_ayar.onay_gun'dan (yoksa 7) çözer (tek doğru kaynak: config)
+  const { error } = await supabase.rpc("opsiyon_talep_onayla", { p_talep: talepId, p_gun: gun ?? null });
   if (!error) await talepBildir(talepId, "onay", gun);
   revalidatePath("/uretici/opsiyonlar");
   revalidatePath("/uretici/stok");
@@ -1219,8 +1220,13 @@ export async function projeOpsiyonAyar(formData: FormData) {
     yontem,
     dogrulama_saat: sinir(formData.get("dogrulama_saat"), 1, 72, 2),
     kilit_gun: sinir(formData.get("kilit_gun"), 1, 30, 3),
+    onay_gun: sinir(formData.get("onay_gun"), 1, 30, 7),
+    yanit_sla_saat: sinir(formData.get("yanit_sla_saat"), 6, 168, 48),
     kota: sinir(formData.get("kota"), 1, 20, 3),
     musteri_zorunlu: String(formData.get("musteri_zorunlu") ?? "") === "on",
+    hatirlatma_saat: sinir(formData.get("hatirlatma_saat"), 1, 48, 12),
+    uzatma_hakki: String(formData.get("uzatma_hakki") ?? "") === "on",
+    uzatma_gun: sinir(formData.get("uzatma_gun"), 1, 15, 2),
   };
   // Legacy opsiyon_yontemi kolonu senkron (eski okuyucular için): 'gecici'/'dogrudan'→'dogrudan', 'onay'→'talep_kod'.
   const legacy = yontem === "onay" ? "talep_kod" : "dogrudan";

@@ -202,8 +202,13 @@ export default async function ProjeKurulum({
             yontem?: string;
             dogrulama_saat?: number;
             kilit_gun?: number;
+            onay_gun?: number;
+            yanit_sla_saat?: number;
             kota?: number;
             musteri_zorunlu?: boolean;
+            hatirlatma_saat?: number;
+            uzatma_hakki?: boolean;
+            uzatma_gun?: number;
           };
           const seciliY = oa.yontem ?? (proje.opsiyon_yontemi === "talep_kod" ? "onay" : "gecici");
           return (
@@ -238,23 +243,49 @@ export default async function ProjeKurulum({
                 <label className="block text-[12px] font-bold text-ink-soft">
                   Doğrulama süresi (saat)
                   <input type="number" name="dogrulama_saat" min={1} max={72} defaultValue={oa.dogrulama_saat ?? 2} className={`${inpCls} mt-1`} />
-                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Geçici kilidin doğrulama beklerken açık kalacağı süre.</span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Geçici: kilit doğrulama beklerken açık kalacağı süre.</span>
                 </label>
                 <label className="block text-[12px] font-bold text-ink-soft">
                   Kesin kilit süresi (gün)
                   <input type="number" name="kilit_gun" min={1} max={30} defaultValue={oa.kilit_gun ?? 3} className={`${inpCls} mt-1`} />
-                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Sen doğruladıktan sonra opsiyonun geçerli olacağı süre.</span>
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Geçici: sen doğruladıktan sonra opsiyon süresi.</span>
                 </label>
                 <label className="block text-[12px] font-bold text-ink-soft">
                   Emlakçı opsiyon kotası
                   <input type="number" name="kota" min={1} max={20} defaultValue={oa.kota ?? 3} className={`${inpCls} mt-1`} />
                   <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Bir emlakçının aynı anda tutabileceği aktif opsiyon sayısı.</span>
                 </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Onaylı opsiyon süresi (gün)
+                  <input type="number" name="onay_gun" min={1} max={30} defaultValue={oa.onay_gun ?? 7} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Önce-onay: talebi onayladığında opsiyon süresi.</span>
+                </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Yanıt süresi / SLA (saat)
+                  <input type="number" name="yanit_sla_saat" min={6} max={168} defaultValue={oa.yanit_sla_saat ?? 48} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Talebe bu süre içinde yanıt vermelisin; aşılırsa güven skoruna yansır.</span>
+                </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Bitiş hatırlatması (saat kala)
+                  <input type="number" name="hatirlatma_saat" min={1} max={48} defaultValue={oa.hatirlatma_saat ?? 12} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Opsiyon bitişine bu kadar kala danışmana sistem hatırlatması gider.</span>
+                </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Uzatma süresi (gün)
+                  <input type="number" name="uzatma_gun" min={1} max={15} defaultValue={oa.uzatma_gun ?? 2} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Danışman opsiyonu bir kez bu kadar uzatabilir (uzatma açıksa).</span>
+                </label>
               </div>
-              <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
-                <input type="checkbox" name="musteri_zorunlu" defaultChecked={oa.musteri_zorunlu ?? true} className="size-4" />
-                Müşteri ad + telefon zorunlu (boş-opsiyon kalkanı)
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
+                  <input type="checkbox" name="musteri_zorunlu" defaultChecked={oa.musteri_zorunlu ?? true} className="size-4" />
+                  Müşteri ad + telefon zorunlu (boş-opsiyon kalkanı)
+                </label>
+                <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
+                  <input type="checkbox" name="uzatma_hakki" defaultChecked={oa.uzatma_hakki ?? true} className="size-4" />
+                  Danışman opsiyonu bir kez uzatabilsin (uzatma hakkı)
+                </label>
+              </div>
               <SubmitButton>Opsiyon disiplinini kaydet</SubmitButton>
             </form>
           );
