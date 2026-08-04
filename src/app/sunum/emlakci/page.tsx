@@ -1,13 +1,25 @@
 import type { Metadata } from "next";
 import {
   BadgeCheck,
+  Bell,
+  Camera,
   Clock,
+  ClipboardList,
+  CreditCard,
+  Database,
   FileX,
+  Filter,
+  History,
   Lock,
+  Map,
+  Megaphone,
   Percent,
   PhoneCall,
-  ShieldCheck,
+  Printer,
+  Smartphone,
+  Target,
   Ticket,
+  UserPlus,
   UserX,
 } from "lucide-react";
 import { DeckShell } from "@/components/sunum/DeckShell";
@@ -29,8 +41,9 @@ export const metadata: Metadata = {
   description: "Yüz yüze görüşme sunumu: canlı konut stoğu dağıtım ağı, emlakçı tarafı.",
 };
 
-/* 12 slayt: kapak, problem, çözüm, akış(demo), mikrosite, opsiyon-mesaj(görsel),
-   opsiyon-mekanizma, lead, tazelik, ücret, katılım, CTA. */
+/* 16 slayt — kapsamlı tur: kapak, problem, çözüm, akış(demo), bul(filtre+harita),
+   eşleştirme, mikrosite, kilit(görsel), opsiyon akışı, lead defteri, lansman radarı,
+   tazelik, cepte, ücret, katılım, CTA. */
 export default function EmlakciSunum() {
   const slides = [
     /* 1 · Kapak */
@@ -47,7 +60,7 @@ export default function EmlakciSunum() {
           <span className="nabiz size-2 rounded-full bg-[#3ddc8f]" /> canlı · şimdi güncellendi
         </span>
         <span className="mono rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold text-white/85 backdrop-blur-md">
-          temel üyelik ücretsiz
+          üyelik ücretsiz
         </span>
       </div>
       <p className="da da-5 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
@@ -93,7 +106,7 @@ export default function EmlakciSunum() {
         <ul className="space-y-4">
           <OnayMadde>Fiyat ve durum her an canlı; teyit turu yok.</OnayMadde>
           <OnayMadde>Yalnız sana tahsisli projeleri görürsün; havuz sade kalır.</OnayMadde>
-          <OnayMadde>Bölge, tip ve bütçeye göre filtrele; saniyeler içinde doğru daire.</OnayMadde>
+          <OnayMadde>Onlarca üreticinin sana açık stoğu tek ekranda; proje proje dosya kovalamazsın.</OnayMadde>
         </ul>
         <CanliBirimKart dipnot="Müşteriye giden linkte fiyat bu canlı değerden basılır." />
       </div>
@@ -115,36 +128,110 @@ export default function EmlakciSunum() {
       <KuleDemo />
     </Slayt>,
 
-    /* 5 · Mikrosite */
+    /* 5 · Bul: filtre + harita */
+    <Slayt
+      key="bul"
+      kicker="Bul"
+      baslik="Doğru daire üç dokunuş uzakta"
+      alt="Havuz sadece liste değil: filtre, harita ve bina kesiti aynı ekranda. Müşteri telefondayken doğru daireyi bulursun."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={Filter}
+          baslik="Akıllı filtreler"
+          metin="İl/ilçe, tip, bütçe, durum ve daire özellikleri (manzara, otopark, akıllı ev...) ile saniyede daralt."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Map}
+          baslik="Harita görünümü"
+          metin="Tahsisli projelerini haritada gör; müşteri 'şu bölgede ne var?' dediğinde cevap ekranda."
+        />
+        <MaddeKart
+          Ikon={Camera}
+          baslik="Bina kesiti"
+          metin="Blok ve kat kat renkli kesit: hangi cephe, hangi kat müsait, tek bakışta."
+        />
+      </div>
+    </Slayt>,
+
+    /* 6 · Müşteri eşleştirme */
+    <Slayt
+      key="eslestir"
+      kicker="Eşleştirme"
+      baslik="Müşterinin kriterini gir, sistem daireyi bulsun"
+      alt="Bütçe, tip, bölge, özellik: kriterleri girersin, havuzundaki en uygun daireler uyum sırasına dizilir. Müşteriye 'bakıp döneyim' demezsin."
+    >
+      <div className="grid gap-3 sm:grid-cols-2">
+        <MaddeKart
+          Ikon={Target}
+          baslik="Uyum skoruyla sıralı"
+          metin="Her aday daire kritere ne kadar uyduğuyla puanlanır; en güçlü üç seçenekle müşteriye dönersin."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Clock}
+          baslik="Telefon kapanmadan"
+          metin="Eşleştirme anlıktır: müşteri hattayken seçenekleri paylaşır, sıcağı sıcağına opsiyon alırsın."
+        />
+      </div>
+    </Slayt>,
+
+    /* 7 · Mikrosite */
     <Slayt
       key="mikrosite"
       kicker="Paylaşım"
       baslik="PDF gönderen kaybediyor"
-      alt="Senin gönderdiğin link her açılışta canlı fiyatı basar: üstte canlı stok rozeti, altta senin kartın ve WhatsApp butonun. Rakibin dosya atarken sen yaşayan sayfa atarsın."
+      alt="Senin gönderdiğin link her açılışta canlı fiyatı basar ve senin adınla açılır. İçinde satışı kapatan her şey:"
     >
-      <div className="kart mx-auto max-w-md overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
-        <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
-          <span className="taze t-0 text-[11px]">
-            <span className="nokta nabiz" /> Canlı stoktan alındı · 2 dk önce güncellendi
-          </span>
-          <OrnekRozet acik />
+      <div className="grid items-start gap-6 lg:grid-cols-[1fr_380px]">
+        <div className="grid gap-3">
+          <MaddeKart
+            Ikon={Camera}
+            baslik="Galeri, kat planı, proje künyesi"
+            metin="Görseller, kat planı, olanaklar ve imar bilgisi: müşterinin soracağı her şey sayfada."
+          />
+          <MaddeKart
+            Ikon={CreditCard}
+            baslik="Oynanabilir ödeme planı"
+            metin="Müşteri peşinatı kaydırır, taksit anında değişir; 'hesaplayıp dönerim' devri biter."
+            sinyal="#2fd3bc"
+          />
+          <MaddeKart
+            Ikon={UserPlus}
+            baslik="Formdan lead sana düşer"
+            metin="Sayfadaki formu dolduran müşteri senin lead'in olur; kimse araya giremez."
+          />
+          <MaddeKart
+            Ikon={Printer}
+            baslik="Yazdırmaya hazır"
+            metin="Aynı sayfa tek tuşla çıktı düzenine döner; masada kâğıt isteyen müşteri de tamam."
+          />
         </div>
-        <div className="px-4 py-4">
-          <p className="font-display text-lg font-extrabold tracking-tight text-ink">Çankaya Vadi · A-7-2</p>
-          <p className="mono mt-0.5 text-[11px] text-ink-soft">3+1 · 7. kat · Güney cephe · 142 m² net</p>
-          <p className="mono mt-3 text-[26px] font-semibold leading-none tracking-tight text-ink">₺8,45M</p>
-          <div className="mt-4 flex items-center justify-between gap-3 rounded-[13px] border border-[var(--cizgi)] bg-[var(--color-soft)] px-3.5 py-3">
-            <div>
-              <p className="text-[13px] font-bold text-ink">D. Aksoy</p>
-              <p className="mono text-[10.5px] text-ink-soft">Gayrimenkul danışmanı</p>
+        <div className="kart overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
+            <span className="taze t-0 text-[11px]">
+              <span className="nokta nabiz" /> Canlı stoktan alındı · 2 dk önce güncellendi
+            </span>
+            <OrnekRozet acik />
+          </div>
+          <div className="px-4 py-4">
+            <p className="font-display text-lg font-extrabold tracking-tight text-ink">Çankaya Vadi · A-7-2</p>
+            <p className="mono mt-0.5 text-[11px] text-ink-soft">3+1 · 7. kat · Güney cephe · 142 m² net</p>
+            <p className="mono mt-3 text-[26px] font-semibold leading-none tracking-tight text-ink">₺8,45M</p>
+            <div className="mt-4 flex items-center justify-between gap-3 rounded-[13px] border border-[var(--cizgi)] bg-[var(--color-soft)] px-3.5 py-3">
+              <div>
+                <p className="text-[13px] font-bold text-ink">D. Aksoy</p>
+                <p className="mono text-[10.5px] text-ink-soft">Gayrimenkul danışmanı</p>
+              </div>
+              <span className="btn-wa pointer-events-none h-10 min-h-0 px-4 text-[12.5px]">WhatsApp</span>
             </div>
-            <span className="btn-wa pointer-events-none h-10 min-h-0 px-4 text-[12.5px]">WhatsApp</span>
           </div>
         </div>
       </div>
     </Slayt>,
 
-    /* 6 · Opsiyon mesajı (görsel) */
+    /* 8 · Opsiyon mesajı (görsel) */
     <GorselSlayt
       key="kilit-mesaj"
       gorsel="/sunum/kule-cephe.jpg"
@@ -154,14 +241,19 @@ export default function EmlakciSunum() {
       alt="48 saat boyunca daire sana kilitli. Çift satış veritabanı seviyesinde engellidir; kimse daireyi altından alamaz."
     />,
 
-    /* 7 · Opsiyon mekanizması */
+    /* 9 · Opsiyon akışı */
     <Slayt key="kilit" orta kicker="Mekanizma" baslik="48 saat kimse dokunamaz">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MaddeKart
           Ikon={Lock}
           baslik="Anında kilit"
-          metin="Opsiyon aldığın an daire diğer tüm danışman ekranlarında kilitli görünür."
+          metin="Opsiyon doğduğu an daire tüm danışman ekranlarında kilitli görünür."
           sinyal="#e8b04b"
+        />
+        <MaddeKart
+          Ikon={ClipboardList}
+          baslik="Talep → onay"
+          metin="Projeye göre talep açarsın, üretici onaylar; ya da doğrudan opsiyon alırsın. Opsiyonlarım sayfasında hepsi takipte."
         />
         <MaddeKart
           Ikon={Clock}
@@ -169,31 +261,58 @@ export default function EmlakciSunum() {
           metin="Müşterinle rahat çalış; süre bitince daire kendiliğinden açılır."
         />
         <MaddeKart
-          Ikon={ShieldCheck}
+          Ikon={Database}
           baslik="DB seviyesinde kalkan"
           metin="Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz."
         />
       </div>
     </Slayt>,
 
-    /* 8 · Lead koruması */
+    /* 10 · Lead defteri */
     <Slayt
       key="lead"
       kicker="Emeğin kayıtlı"
       baslik="Müşterini kimse elinden alamaz"
-      alt="Müşterini platforma kaydedersin. Üretici o ismi veya telefonu sorguladığında ilk kaydın senin olduğunu görür: atlanırsan görünür olur."
+      alt="Müşterini kaydeder, durumunu takip edersin. Üretici o ismi sorguladığında ilk kaydın senin olduğunu görür: atlanırsan görünür olur."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_400px]">
         <ul className="space-y-4">
+          <OnayMadde>Lead defteri sende: müşteri, durum, not; süreç tek ekranda.</OnayMadde>
           <OnayMadde>Lead listen üreticiye akmaz; üretici yalnız tek tek sorgulayabilir.</OnayMadde>
-          <OnayMadde>Kaydın tarihiyle birlikte durur; kim önce getirdi tartışması biter.</OnayMadde>
-          <OnayMadde>Takip senin elinde: notlar, durum, süreç sende kalır.</OnayMadde>
+          <OnayMadde>Paylaştıkların da kayıtlı: hangi daireyi kime, ne zaman gönderdin, takibi kolay.</OnayMadde>
         </ul>
         <LeadSorguKart />
       </div>
     </Slayt>,
 
-    /* 9 · Tazelik */
+    /* 11 · Lansman Radarı */
+    <Slayt
+      key="lansman"
+      kicker="Fırsatlar"
+      baslik="Kampanya ayağına gelir"
+      alt="Tahsisli projelerinde yeni etap, kampanya veya fiyat aksiyonu olduğunda Lansman Radarı'na düşer; duyuruyu kaçırmaz, ilk arayan sen olursun."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={Megaphone}
+          baslik="Lansman Radarı"
+          metin="Sana açık projelerin duyuruları tek akışta; grup mesajı arasında kaybolmaz."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Bell}
+          baslik="Anlık bildirim"
+          metin="Fiyat değişti, yeni tahsis açıldı, opsiyonun onaylandı: panel ve e-posta ile anında haber."
+        />
+        <MaddeKart
+          Ikon={History}
+          baslik="Her şey izli"
+          metin="Opsiyonların, paylaşımların, lead'lerin: hepsi kendi sayfasında, hesap verilebilir."
+        />
+      </div>
+    </Slayt>,
+
+    /* 12 · Tazelik */
     <Slayt
       key="tazelik"
       kicker="Tazelik"
@@ -203,7 +322,35 @@ export default function EmlakciSunum() {
       <TazelikOlcek />
     </Slayt>,
 
-    /* 10 · Ücret */
+    /* 13 · Cepte */
+    <Slayt
+      key="cepte"
+      orta
+      kicker="Sahada"
+      baslik="Ofis değil, cep uygulaması"
+      alt="Kurulabilir mobil uygulama (PWA): havuz, paylaşım ve opsiyon telefonunda. Müşterinin karşısında, şantiye önünde, arabada; nerede satış varsa orada."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={Smartphone}
+          baslik="Telefona kurulur"
+          metin="Uygulama mağazası derdi yok; siteden telefona kur, uygulama gibi kullan."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Target}
+          baslik="Üç dokunuş"
+          metin="Bul, paylaş, opsiyon al: saha akışı üç dokunuşa göre tasarlandı."
+        />
+        <MaddeKart
+          Ikon={Bell}
+          baslik="Haber sana gelir"
+          metin="Takip ettiğin stokta hareket olunca bildirim düşer; ekran başında beklemezsin."
+        />
+      </div>
+    </Slayt>,
+
+    /* 14 · Ücret */
     <Slayt
       key="ucret"
       orta
@@ -231,7 +378,7 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 11 · Katılım */
+    /* 15 · Katılım */
     <Slayt
       key="katilim"
       kicker="Katılım"
@@ -247,13 +394,13 @@ export default function EmlakciSunum() {
       />
     </Slayt>,
 
-    /* 12 · Kapanış CTA */
+    /* 16 · Kapanış CTA */
     <GorselSlayt
       key="cta"
       gorsel="/sunum/sehir-panorama.jpg"
       kicker="Sonraki adım"
       baslik="İlk tahsisli projeni gör"
-      alt="Kayıt birkaç dakika sürer; temel üyelik ücretsizdir."
+      alt="Kayıt birkaç dakika sürer; üyelik ücretsizdir."
     >
       <p className="da da-4 mono mt-9 text-[15px] font-semibold tracking-wide text-[#2fd3bc]">projedar.com/kayit</p>
     </GorselSlayt>,

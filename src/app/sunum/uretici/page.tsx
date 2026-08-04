@@ -1,13 +1,26 @@
 import type { Metadata } from "next";
 import {
+  BadgeCheck,
+  Bell,
   Building2,
+  Camera,
   Clock,
+  CreditCard,
   Database,
   EyeOff,
   Handshake,
+  LayoutDashboard,
+  ListChecks,
+  Megaphone,
+  Printer,
   Radar,
   Rocket,
+  Search,
   ShieldCheck,
+  Smartphone,
+  Table2,
+  TrendingUp,
+  UserPlus,
 } from "lucide-react";
 import { DeckShell } from "@/components/sunum/DeckShell";
 import { Slayt } from "@/components/sunum/Slayt";
@@ -47,8 +60,9 @@ function ZamanSatir({ saat, metin, kirmizi = false }: { saat: string; metin: str
   );
 }
 
-/* 13 slayt: kapak, senaryo, çözüm, akış(demo), tahsis(demo), kilit-mesaj(görsel),
-   kilit-mekanizma, tazelik, kim-getirdi, talep radarı, konum, ilk gün, CTA. */
+/* 17 slayt — kapsamlı tur: kapak, senaryo, çözüm, akış(demo), kokpit, tahsis(demo),
+   kilit(görsel), opsiyon akışı, tazelik, mikrosite, ödeme+yatırım, lansman,
+   zekâ paketi, lead sorgu, ağ & güven, ilk gün, CTA. */
 export default function UreticiSunum() {
   const slides = [
     /* 1 · Kapak */
@@ -106,7 +120,7 @@ export default function UreticiSunum() {
           <OnayMadde>Tüm ağ üç renkle konuşur: müsait, opsiyon, satıldı. Yorum farkı yoktur.</OnayMadde>
           <OnayMadde>Sahada sizin yazdığınızdan başka rakam yoktur; markanız yanlış bilgiyle yıpranmaz.</OnayMadde>
         </ul>
-        <CanliBirimKart dipnot="Emlakçının paylaştığı linkte fiyat bu canlı değerden basılır." />
+        <CanliBirimKart dipnot="Danışmanın paylaştığı linkte fiyat bu canlı değerden basılır." />
       </div>
     </Slayt>,
 
@@ -126,7 +140,39 @@ export default function UreticiSunum() {
       <KuleDemo />
     </Slayt>,
 
-    /* 5 · Tahsis */
+    /* 5 · Kokpit */
+    <Slayt
+      key="kokpit"
+      kicker="Komuta merkezi"
+      baslik="Bütün proje tek ekranda nefes alır"
+      alt="Üretici kokpiti: taze stok, satış hızı, açık talepler ve canlı hareket akışı. Satış ofisine sormadan, günün fotoğrafı her an önünüzde."
+    >
+      <div className="grid gap-3 sm:grid-cols-2">
+        <MaddeKart
+          Ikon={LayoutDashboard}
+          baslik="Canlı KPI şeridi"
+          metin="Müsait, opsiyonda ve satılan birim; bugünkü hareket; ortalama tazelik. Anlık, yorumsuz."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Table2}
+          baslik="Tek canlı fiyat listesi"
+          metin="Tüm blokların bütün birimleri tek tabloda; filtrele, satıra tıkla, daireyi tek noktadan yönet."
+        />
+        <MaddeKart
+          Ikon={ListChecks}
+          baslik="Toplu güncelleme"
+          metin="Seçtiğiniz birimlerde fiyatı veya durumu tek işlemle değiştirin; blok blok dolaşmak yok."
+        />
+        <MaddeKart
+          Ikon={Building2}
+          baslik="Bina kesiti görünümü"
+          metin="Blok ve kat bazında renkli kesit: hangi katta ne kaldı, tek bakışta."
+        />
+      </div>
+    </Slayt>,
+
+    /* 6 · Tahsis */
     <Slayt
       key="tahsis"
       genis
@@ -137,7 +183,7 @@ export default function UreticiSunum() {
       <TahsisPaneli />
     </Slayt>,
 
-    /* 6 · Kilit mesajı (görsel) */
+    /* 7 · Kilit mesajı (görsel) */
     <GorselSlayt
       key="kilit-mesaj"
       gorsel="/sunum/kule-cephe.jpg"
@@ -147,29 +193,39 @@ export default function UreticiSunum() {
       alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satış yapısal olarak imkânsızdır."
     />,
 
-    /* 7 · Kilit mekanizması */
-    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Kilit uygulamada değil, veritabanında">
-      <div className="grid gap-3 sm:grid-cols-3">
+    /* 8 · Opsiyon akışı */
+    <Slayt
+      key="opsiyon-akis"
+      kicker="Opsiyon akışı"
+      baslik="Son söz her zaman sizde"
+      alt="Kilit veritabanında yaşar; süreç ise sizin kurallarınızla işler."
+    >
+      <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
-          Ikon={Database}
-          baslik="Kilit en dipte"
-          metin="Aktif opsiyon veritabanı kuralıyla teklenir; yazılım hatası bile ikinci opsiyonu yazamaz."
+          Ikon={ListChecks}
+          baslik="Talep → onay kuyruğu"
+          metin="Danışman opsiyon talebi açar, panelinizdeki kuyruğa düşer; siz onaylayınca kilit doğar. Doğrudan opsiyon da tanımlanabilir."
           sinyal="#e8b04b"
         />
         <MaddeKart
           Ikon={Clock}
-          baslik="48 saat net süre"
-          metin="Opsiyon alan danışman rahat çalışır; süre bitince daire kendiliğinden açılır."
+          baslik="48 saat, sonra otomatik"
+          metin="Süre bitince daire kendiliğinden müsaite döner; unutulan kilit, bekleyen stok kalmaz."
+        />
+        <MaddeKart
+          Ikon={Database}
+          baslik="Kilit en dipte"
+          metin="Aktif opsiyon veritabanı kuralıyla teklenir; yazılım hatası bile ikinci opsiyonu yazamaz."
         />
         <MaddeKart
           Ikon={ShieldCheck}
-          baslik="Herkes aynı anda görür"
-          metin="Kilitlenen daire her danışman ekranında o saniye kilitli görünür."
+          baslik="Kendi satışınız da içeride"
+          metin="Satış ofisinizin sattığı daire ile ağın sattığı daire aynı durum makinesinde; çakışma ihtimali yok."
         />
       </div>
     </Slayt>,
 
-    /* 8 · Fiyat senkron + tazelik */
+    /* 9 · Tazelik */
     <Slayt
       key="tazelik"
       kicker="Tazelik"
@@ -183,7 +239,124 @@ export default function UreticiSunum() {
       </p>
     </Slayt>,
 
-    /* 9 · Kim-getirdi görünürlüğü */
+    /* 10 · Mikrosite */
+    <Slayt
+      key="mikrosite"
+      kicker="Satış yüzü"
+      baslik="Her dairenin kendi canlı satış sayfası"
+      alt="Danışmanın müşteriye gönderdiği link bir broşür değil, projenizin canlı vitrini. İçinde satışı kapatan her şey var:"
+    >
+      <div className="grid gap-3 sm:grid-cols-2">
+        <MaddeKart
+          Ikon={Camera}
+          baslik="Galeri, kat planı, künye"
+          metin="Proje görselleri, kat planı, ada/parsel ve imar bilgisi, malzeme ve donatılar: kurumsal ve eksiksiz."
+        />
+        <MaddeKart
+          Ikon={CreditCard}
+          baslik="Etkileşimli ödeme planı"
+          metin="Müşteri peşinatı kaydırır, taksit anında yeniden hesaplanır; pazarlık masaya hazır gelir."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={UserPlus}
+          baslik="Sayfadan lead düşer"
+          metin="İlgilenen müşteri formu doldurur; talep doğrudan paylaşan danışmana düşer, satış zinciri kopmaz."
+        />
+        <MaddeKart
+          Ikon={Printer}
+          baslik="Gerekirse kâğıda da"
+          metin="Aynı sayfa yazdırmaya hazır düzene döner; masaya çıktı isteyen müşteri de boş dönmez."
+        />
+      </div>
+    </Slayt>,
+
+    /* 11 · Ödeme planı + yatırım verisi */
+    <Slayt
+      key="odeme"
+      kicker="Satış objesi"
+      baslik="Fiyat değil, satın alma planı satarsınız"
+      alt="Her birimin fiyatının yanında yapılandırılmış ödeme planı ve yatırım verisi durur; danışman rakam uydurmaz, sizin planınızı anlatır."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={CreditCard}
+          baslik="Yapılandırılmış plan"
+          metin="Peşinat yüzdesi, taksit sayısı, ara ödemeler: birim kaydında tanımlı, her yerde aynı."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={TrendingUp}
+          baslik="Yatırım verisi"
+          metin="Kira getirisi ve amortisman süresi gibi alanlar; yatırımcı alıcıya konuşan sayılar."
+        />
+        <MaddeKart
+          Ikon={Search}
+          baslik="Filtrelenebilir öznitelikler"
+          metin="Daire içi, sosyal alan, ulaşım, manzara: yapılandırılmış özellikler; danışman doğru daireyi saniyede bulur."
+        />
+      </div>
+    </Slayt>,
+
+    /* 12 · Lansman & duyuru */
+    <Slayt
+      key="lansman"
+      kicker="Lansman"
+      baslik="Duyuruyu bir kez yapın, bütün ağ duysun"
+      alt="Yeni etap, kampanya veya fiyat aksiyonu: tek duyuru girersiniz, tahsisli her danışmanın Lansman Radarı'na aynı anda düşer."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={Megaphone}
+          baslik="Lansman duyurusu"
+          metin="Kampanyayı panelden yayınlarsınız; telefon zinciri kurmadan bütün ağ aynı mesajı alır."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Bell}
+          baslik="Anlık bildirim"
+          metin="Fiyat, tahsis, opsiyon ve lead hareketleri panel ve e-posta bildirimiyle anında taraflara gider."
+        />
+        <MaddeKart
+          Ikon={Smartphone}
+          baslik="Cepte çalışır"
+          metin="Kurulabilir mobil uygulama (PWA): danışman sahada, siz yoldayken bile ağ elinizin altında."
+        />
+      </div>
+    </Slayt>,
+
+    /* 13 · Zekâ paketi */
+    <Slayt
+      key="zeka"
+      kicker="Veri"
+      baslik="Hangi daire satar? Tahmin değil, sinyal."
+      alt="Her görüntüleme, paylaşım ve opsiyon iz bırakır. Şerefiye ve fiyat kararını his değil, kendi projenizin verisi versin."
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="deck-kart signal-top p-5 text-left" style={{ "--_sig": "#2fd3bc" } as React.CSSProperties}>
+          <div className="flex items-start justify-between gap-2">
+            <p className="mono text-[10px] font-bold uppercase tracking-[0.1em] text-white/60">Talep Radarı</p>
+            <OrnekRozet />
+          </div>
+          <p className="mt-2.5 text-[14px] font-semibold leading-relaxed text-white">
+            A Blok 7. kat 3+1 daireler son 7 günde %42 daha fazla görüntülendi.
+          </p>
+          <p className="deck-soft mt-2 text-[12px]">Hangi tip ilgi görüyor, hangi stok eriyor: sinyalden okursunuz.</p>
+        </div>
+        <MaddeKart
+          Ikon={TrendingUp}
+          baslik="Dinamik fiyat önerisi"
+          metin="Talep sinyali benzer birimlerle kıyaslanır, sistem fiyat önerir. Karar ve onay her zaman sizde; kendiliğinden fiyat değişmez."
+        />
+        <MaddeKart
+          Ikon={Radar}
+          baslik="Raporlar"
+          metin="Görüntülemeden satışa dönüşüm hunisi, en aktif danışmanlar, proje performansı: dönem raporu tek tıkla."
+        />
+      </div>
+    </Slayt>,
+
+    /* 14 · Lead sorgu */
     <Slayt
       key="lead"
       kicker="Şeffaflık"
@@ -200,40 +373,25 @@ export default function UreticiSunum() {
       </div>
     </Slayt>,
 
-    /* 10 · Talep Radarı */
+    /* 15 · Ağ & güven */
     <Slayt
-      key="radar"
-      kicker="Veri"
-      baslik="Hangi daire satar? Tahmin değil, sinyal."
-      alt="Her görüntüleme, paylaşım ve opsiyon iz bırakır. Şerefiye ve fiyat kararını his değil, kendi projenizin verisi versin."
+      key="ag-guven"
+      kicker="Ağ & güven"
+      baslik="Belgeli ağ, davetle büyür"
+      alt="İlan yok, komisyon yok, tahsis var. Ağın her üyesi belgeli, her proje doğrulanmış."
     >
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="deck-kart signal-top p-5 text-left" style={{ "--_sig": "#2fd3bc" } as React.CSSProperties}>
-          <div className="flex items-start justify-between gap-2">
-            <p className="mono text-[10px] font-bold uppercase tracking-[0.1em] text-white/60">İçgörü</p>
-            <OrnekRozet />
-          </div>
-          <p className="mt-2.5 text-[15px] font-semibold leading-relaxed text-white">
-            A Blok 7. kat 3+1 daireler son 7 günde diğer tiplere göre %42 daha fazla görüntülendi.
-          </p>
-          <p className="deck-soft mt-2 text-[12.5px]">Şerefiye ve fiyat kararına doğrudan girdi.</p>
-        </div>
-        <div className="deck-kart signal-top p-5 text-left" style={{ "--_sig": "#2fd3bc" } as React.CSSProperties}>
-          <div className="flex items-start justify-between gap-2">
-            <p className="mono text-[10px] font-bold uppercase tracking-[0.1em] text-white/60">İçgörü</p>
-            <OrnekRozet />
-          </div>
-          <p className="mt-2.5 text-[15px] font-semibold leading-relaxed text-white">
-            En çok paylaşılan: B Blok 2+1. En çok opsiyonlanan: A Blok 3+1.
-          </p>
-          <p className="deck-soft mt-2 text-[12.5px]">Hangi stoğun eridiğini tablodan değil sinyalden okursunuz.</p>
-        </div>
-      </div>
-    </Slayt>,
-
-    /* 11 · Komisyonsuz + kapalı devre */
-    <Slayt key="konum" orta kicker="Konum" baslik="İlan yok. Komisyon yok. Tahsis var.">
-      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={UserPlus}
+          baslik="Kendi ağınızı davet edin"
+          metin="Çalıştığınız ofisleri ve danışmanları davet linkiyle içeri alırsınız; ağınız ilk günden hazır gelir."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={BadgeCheck}
+          baslik="Belgeli danışmanlar"
+          metin="Her danışman mesleki yeterlilik belgesi ve vergi levhasıyla doğrulanır; belgesiz kimse stoğunuzu göremez."
+        />
         <MaddeKart
           Ikon={Handshake}
           baslik="Komisyona dokunmayız"
@@ -242,17 +400,12 @@ export default function UreticiSunum() {
         <MaddeKart
           Ikon={EyeOff}
           baslik="Kapalı devre"
-          metin="Son kullanıcıya açık ilan yok; stoğu yalnız tahsis verdiğiniz danışmanlar görür."
-        />
-        <MaddeKart
-          Ikon={Building2}
-          baslik="Kontrol üreticide"
-          metin="Fiyat, görünürlük ve dağıtım her an sizin elinizde; dilediğinizde daraltırsınız."
+          metin="Son kullanıcıya açık ilan yok; stoğu yalnız tahsis verdiğiniz danışmanlar görür. Doğrulanmış rozetiniz her paylaşımda markanızı taşır."
         />
       </div>
     </Slayt>,
 
-    /* 12 · İlk gün (görsel) */
+    /* 16 · İlk gün (görsel) */
     <GorselSlayt
       key="ilk-gun"
       gorsel="/sunum/konut-aksam.jpg"
@@ -276,7 +429,7 @@ export default function UreticiSunum() {
       </div>
     </GorselSlayt>,
 
-    /* 13 · Sonraki adım */
+    /* 17 · Sonraki adım */
     <GorselSlayt
       key="cta"
       gorsel="/sunum/vinc-siluet.jpg"

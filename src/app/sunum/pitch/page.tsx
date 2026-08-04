@@ -299,12 +299,12 @@ export default function PitchDeck() {
         <MaddeKart
           Ikon={Building2}
           baslik="Üretici kokpiti"
-          metin="Proje ve stok yönetimi, granüler tahsis, fiyat güncelleme, talep radarı, lead sorgusu."
+          metin="Stok ve toplu fiyat yönetimi, granüler tahsis, opsiyon onay kuyruğu, lansman duyuruları, talep radarı, dinamik fiyat önerisi, raporlar, lead sorgusu, danışman daveti."
         />
         <MaddeKart
           Ikon={Users}
           baslik="Danışman yüzeyi"
-          metin="Tahsisli canlı havuz, filtre ve harita, WhatsApp paylaşımı, opsiyon, canlı mikrosite."
+          metin="Tahsisli canlı havuz (filtre + harita + kesit), müşteri eşleştirme, WhatsApp paylaşımı, opsiyon, lead defteri, lansman radarı, canlı mikrosite (ödeme planı + lead formu)."
         />
         <MaddeKart
           Ikon={ShieldCheck}
