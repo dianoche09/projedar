@@ -2,7 +2,9 @@ import { ImageResponse } from "next/og";
 
 // Dosya-tabanlı OG görseli: tüm route'lara otomatik uygulanır (sayfalar kendi
 // openGraph.images'ini tanımlamadığı sürece). Twitter kartı da og:image'e düşer.
-export const runtime = "edge";
+// Node runtime: next/og edge bundle'ı (satori + resvg WASM) Vercel Hobby'nin
+// 1 MB Edge Function limitini aşıp build'i kırıyordu. Mikrosite OG de node.
+export const runtime = "nodejs";
 export const alt = "Projedar — Canlı Konut Stoğu Dağıtım Ağı";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
