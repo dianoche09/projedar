@@ -67,14 +67,16 @@ export default function UreticiSunumV2() {
       </p>
     </GorselSlayt>,
 
-    /* 2 · Nedir */
-    <Slayt
+    /* 2 · Nedir (teknoloji görsel zemin) */
+    <GorselSlayt
       key="nedir"
+      gorsel="/sunum/veri-bina.jpg"
+      hiza="sol"
       kicker="Bir bakışta"
       baslik="Projedar nedir?"
-      alt="İnşaat firmalarıyla gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir konut stoğu ağı. Siz stoğu yönetirsiniz; ağ her zaman sizin belirlediğiniz güncel veriyle satar."
+      alt="İnşaat firmalarıyla gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan, yalnızca yetkili üyelere açık bir konut stoğu ağı. Siz stoğu yönetirsiniz; ağ her zaman sizin belirlediğiniz güncel veriyle satar."
     >
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Zap}
           baslik="Canlı veri"
@@ -97,7 +99,7 @@ export default function UreticiSunumV2() {
           metin="Hangi danışman hangi projeyi, bloğu, hatta daireyi görür: karar proje sahibinin."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 3 · Sorun (görsel zemin) */
     <GorselSlayt
@@ -208,7 +210,7 @@ export default function UreticiSunumV2() {
       <p className="mono mb-3 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Deneyin: bir daireye dokunun, opsiyon kilidini test edin
       </p>
-      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi" kucult zemin="acik">
         <KuleDemo />
       </EkranKart>
     </Slayt>,
@@ -219,9 +221,9 @@ export default function UreticiSunumV2() {
       genis
       kicker="Özellik · Tahsis"
       baslik="Kim neyi görür? Siz seçersiniz"
-      alt="Projedar kapalı bir ağdır. Hangi ofisin veya danışmanın hangi projeye, bloğa, daire tipine, hatta tek tek dairelere erişeceğini siz tanımlarsınız; münhasırlık ve kontenjan gibi koşulları da tahsisle belirlersiniz. Yetki anında verilir, anında kaldırılır."
+      alt="Stoğunuz herkese değil, seçtiklerinize açılır. Hangi ofisin veya danışmanın hangi projeye, bloğa, daire tipine, hatta tek tek dairelere erişeceğini siz tanımlarsınız; münhasırlık ve kontenjan gibi koşulları da tahsisle belirlersiniz. Yetki anında verilir, anında kaldırılır."
     >
-      <EkranKart url="projedar.com/uretici/tahsis">
+      <EkranKart url="projedar.com/uretici/tahsis" kucult zemin="acik">
         <TahsisPaneli />
       </EkranKart>
     </Slayt>,
@@ -309,7 +311,7 @@ export default function UreticiSunumV2() {
       baslik="Tek proje aracı değil, ağ"
       alt="Her yeni proje haritaya bir kütle, her yeni danışman bir erişim noktası ekler. Bir danışmanın üstüne gelin: yalnız ona tahsisli hat parlar."
     >
-      <EkranKart url="projedar.com">
+      <EkranKart url="projedar.com" kucult zemin="acik">
         <AgDiyagrami />
       </EkranKart>
     </Slayt>,
@@ -370,7 +372,7 @@ export default function UreticiSunumV2() {
     </Slayt>,
 
     /* 15 · Güven */
-    <Slayt key="guven" kicker="Güven" baslik="Kapalı ağ: ilan sitesi değil, iş ağı">
+    <Slayt key="guven" kicker="Güven" baslik="İlan sitesi değil, üyelere özel iş ağı">
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={EyeOff}
@@ -406,7 +408,7 @@ export default function UreticiSunumV2() {
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Gavel}
-          baslik="Kapalı devre: ilan değil, tahsis"
+          baslik="İlan değil, tahsis"
           metin="Projedar'da halka açık ilan yoktur. Bilgi yalnız yetkili danışmana tahsisle, müşteriye birebir linkle ulaşır."
           sinyal="#2fd3bc"
         />
@@ -428,7 +430,7 @@ export default function UreticiSunumV2() {
       <div className="grid gap-3 sm:grid-cols-2">
         <SoruKart
           soru="Stoğumuz internete açılıyor mu?"
-          cevap="Hayır. Projedar kapalı bir ağdır; verinizi yalnızca yetkilendirdiğiniz danışmanlar görür, halka açık ilan yayınlanmaz."
+          cevap="Hayır. Stoğunuz halka açık değildir; verinizi yalnızca yetkilendirdiğiniz danışmanlar görür, açık ilan yayınlanmaz."
         />
         <SoruKart
           soru="Mevcut satış ekibimiz ne olacak?"

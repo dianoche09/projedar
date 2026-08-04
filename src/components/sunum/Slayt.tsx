@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { markali } from "@/components/sunum/parcalar";
 
 /** Koyu tema içerik slaytı: kicker + başlık + alt metin + içerik (kademeli giriş). */
 export function Slayt({
@@ -26,12 +27,12 @@ export function Slayt({
         ) : null}
         {baslik ? (
           <h2 className="da da-2 font-display mt-3 text-3xl font-extrabold leading-[1.06] tracking-tight text-white sm:text-[52px]">
-            {baslik}
+            {markali(baslik)}
           </h2>
         ) : null}
         {alt ? (
           <p className={`da da-3 deck-soft mt-5 max-w-2xl text-[15px] leading-relaxed sm:text-lg ${orta ? "mx-auto" : ""}`}>
-            {alt}
+            {markali(alt)}
           </p>
         ) : null}
         {children ? <div className="da da-4 mt-8">{children}</div> : null}

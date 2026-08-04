@@ -63,14 +63,16 @@ export default function EmlakciSunumV2() {
       </p>
     </GorselSlayt>,
 
-    /* 2 · Nedir */
-    <Slayt
+    /* 2 · Nedir (teknoloji görsel zemin) */
+    <GorselSlayt
       key="nedir"
+      gorsel="/sunum/tech-arayuz.jpg"
+      hiza="sol"
       kicker="Bir bakışta"
       baslik="Projedar nedir?"
-      alt="İnşaat firmalarıyla gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan kapalı bir konut stoğu ağı. Sen müşterini getirirsin; Projedar sana her an doğru ürün bilgisini ve opsiyon güvencesini sağlar."
+      alt="İnşaat firmalarıyla gayrimenkul danışmanlarını canlı ve doğru veriyle buluşturan, yalnızca yetkili danışmanlara açık bir konut stoğu ağı. Sen müşterini getirirsin; Projedar sana her an doğru ürün bilgisini ve opsiyon güvencesini sağlar."
     >
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Zap}
           baslik="Canlı veri"
@@ -93,7 +95,7 @@ export default function EmlakciSunumV2() {
           metin="Sana açılan stok rakibinin ekranında yok; içeride olmak gerçek bir avantaj."
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 3 · Sorun (görsel zemin) */
     <GorselSlayt
@@ -225,7 +227,7 @@ export default function EmlakciSunumV2() {
       <p className="mono mb-3 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Dene: bir daireye dokun, opsiyon kilidini test et
       </p>
-      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi" kucult zemin="acik">
         <KuleDemo />
       </EkranKart>
     </Slayt>,
@@ -362,11 +364,11 @@ export default function EmlakciSunumV2() {
     </Slayt>,
 
     /* 14 · Ayrıcalık */
-    <Slayt key="ayricalik" kicker="Ayrıcalık" baslik="Kapalı ağın içinde olmak">
+    <Slayt key="ayricalik" kicker="Ayrıcalık" baslik="Yetkili ağın içinde olmak">
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Lock}
-          baslik="Herkese açık değil"
+          baslik="Yalnız yetkililere açık"
           metin="Projedar bir ilan sitesi değildir; stoklara yalnızca yetkili danışmanlar erişir. İçeride olmak bir ayrıcalıktır."
           sinyal="#2fd3bc"
         />
@@ -399,7 +401,7 @@ export default function EmlakciSunumV2() {
         <MaddeKart
           Ikon={Gavel}
           baslik="Projedar linki ilan değildir"
-          metin="Müşterine gönderdiğin sayfa halka açık ilan değil, sana tahsisli birebir sunumdur; kapalı devrede dolaşır."
+          metin="Müşterine gönderdiğin sayfa halka açık ilan değil, sana tahsisli birebir sunumdur; yalnız yetkili ağ içinde dolaşır."
           sinyal="#2fd3bc"
         />
         <MaddeKart

@@ -57,7 +57,7 @@ export default function GtmSunum() {
       key="ilke"
       kicker="Kuruluş ilkesi"
       baslik="Boş ağ ölür. Önce stok gelir."
-      alt="İki taraflı pazaryerlerinin mezarlığı boş ağlarla doludur: danışmanı davet edip gösterecek stok bulamayan her kapalı ağ denemesi söndü. Sıralamamız bu yüzden nettir."
+      alt="İki taraflı pazaryerlerinin mezarlığı boş ağlarla doludur: danışmanı davet edip gösterecek stok bulamayan her davetli ağ denemesi söndü. Sıralamamız bu yüzden nettir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
@@ -254,7 +254,7 @@ export default function GtmSunum() {
         />
         <MaddeKart
           Ikon={ShieldCheck}
-          baslik="Kapalı devre çıkış yolu"
+          baslik="Tahsisli paylaşım çıkış yolu"
           metin="'İlan yok, tahsis var': birebir canlı sayfa paylaşımı ilan rejiminin dışında konumlanır. Satış görüşmesinde en güçlü argümanlardan biri."
           sinyal="#2fd3bc"
         />

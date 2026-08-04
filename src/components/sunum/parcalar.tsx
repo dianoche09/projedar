@@ -4,6 +4,22 @@ import type { LucideIcon } from "lucide-react";
 import { CheckCircle2, Search } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
+/** Marka yazımı: metindeki "Projedar" logo formatında basılır (proje + yeşil "dar"). */
+export function markali(v: ReactNode): ReactNode {
+  if (typeof v !== "string" || !v.includes("Projedar")) return v;
+  const parcalar = v.split("Projedar");
+  return parcalar.map((p, i) => (
+    <span key={i}>
+      {i > 0 ? (
+        <span className="font-display font-extrabold tracking-tight">
+          proje<span className="text-[#2fd3bc]">dar</span>
+        </span>
+      ) : null}
+      {p}
+    </span>
+  ));
+}
+
 /** "örnek" işaret rozeti: örnek veri gerçek veriyle karışmasın (koyu zemin). */
 export function OrnekRozet({ acik = false }: { acik?: boolean }) {
   return acik ? (
@@ -57,11 +73,11 @@ export function GorselSlayt({
           <p className="da da-1 mono text-[11px] font-bold uppercase tracking-[0.22em] text-[#2fd3bc]">{kicker}</p>
         ) : null}
         <h1 className="da da-2 font-display mt-4 text-4xl font-extrabold leading-[1.04] tracking-tight text-white sm:text-[64px]">
-          {baslik}
+          {markali(baslik)}
         </h1>
         {alt ? (
           <p className={`da da-3 mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-xl ${orta ? "" : ""}`}>
-            {alt}
+            {markali(alt)}
           </p>
         ) : null}
         {children}
@@ -76,16 +92,30 @@ export function AlintiSlayt({ metin, alt }: { metin: ReactNode; alt?: string }) 
     <div className="flex min-h-full w-full items-center justify-center px-6 pb-24 pt-20">
       <div className="max-w-4xl text-center">
         <p className="da da-1 font-display text-3xl font-extrabold leading-[1.18] text-white sm:text-[44px]">
-          &ldquo;{metin}&rdquo;
+          &ldquo;{markali(metin)}&rdquo;
         </p>
-        {alt ? <p className="da da-2 deck-soft mx-auto mt-7 max-w-2xl text-[15px] leading-relaxed sm:text-lg">{alt}</p> : null}
+        {alt ? (
+          <p className="da da-2 deck-soft mx-auto mt-7 max-w-2xl text-[15px] leading-relaxed sm:text-lg">{markali(alt)}</p>
+        ) : null}
       </div>
     </div>
   );
 }
 
-/** SaaS katalog görünümü: tarayıcı çerçevesi içinde ürün ekranı/bileşeni. */
-export function EkranKart({ url = "projedar.com", children }: { url?: string; children: ReactNode }) {
+/** SaaS katalog görünümü: tarayıcı çerçevesi içinde ürün ekranı/bileşeni.
+ *  kucult: yüksek demoları slayta sığdırır (zoom) · zemin="acik": açık zeminli
+ *  ürün grafikleri (AgDiyagrami vb.) doğru renklerle basılır. */
+export function EkranKart({
+  url = "projedar.com",
+  kucult = false,
+  zemin = "koyu",
+  children,
+}: {
+  url?: string;
+  kucult?: boolean;
+  zemin?: "koyu" | "acik";
+  children: ReactNode;
+}) {
   return (
     <div className="overflow-hidden rounded-2xl border border-white/12 bg-[#0b1c2e] shadow-[0_26px_90px_rgba(0,0,0,0.55)]">
       <div className="flex items-center gap-3 border-b border-white/10 bg-white/5 px-4 py-2.5">
@@ -99,7 +129,12 @@ export function EkranKart({ url = "projedar.com", children }: { url?: string; ch
         </span>
         <span className="w-12 flex-none" aria-hidden />
       </div>
-      <div className="p-3 sm:p-4">{children}</div>
+      <div
+        className={`p-3 sm:p-4 ${zemin === "acik" ? "bg-[#eef1f6]" : ""}`}
+        style={kucult ? ({ zoom: 0.74 } as React.CSSProperties) : undefined}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -134,7 +169,7 @@ export function FarkTablosu({
           {eski.map((m) => (
             <li key={m} className="flex items-start gap-2.5">
               <span className="mono flex-none text-[13px] font-bold text-[#e07a6e]">✕</span>
-              <span className="deck-soft text-[13.5px] leading-relaxed">{m}</span>
+              <span className="deck-soft text-[13.5px] leading-relaxed">{markali(m)}</span>
             </li>
           ))}
         </ul>
@@ -145,7 +180,7 @@ export function FarkTablosu({
           {yeni.map((m) => (
             <li key={m} className="flex items-start gap-2.5">
               <span className="mono flex-none text-[13px] font-bold text-[#2fd3bc]">✓</span>
-              <span className="text-[13.5px] leading-relaxed text-white/90">{m}</span>
+              <span className="text-[13.5px] leading-relaxed text-white/90">{markali(m)}</span>
             </li>
           ))}
         </ul>
@@ -158,8 +193,8 @@ export function FarkTablosu({
 export function SoruKart({ soru, cevap }: { soru: string; cevap: string }) {
   return (
     <div className="deck-kart p-5 text-left">
-      <p className="text-[15px] font-bold leading-snug text-white">{soru}</p>
-      <p className="deck-soft mt-2 text-[13px] leading-relaxed">{cevap}</p>
+      <p className="text-[15px] font-bold leading-snug text-white">{markali(soru)}</p>
+      <p className="deck-soft mt-2 text-[13px] leading-relaxed">{markali(cevap)}</p>
     </div>
   );
 }
@@ -236,9 +271,11 @@ export function MaddeKart({
       className={`deck-kart p-5 text-left ${sinyal ? "signal-top" : ""}`}
       style={sinyal ? ({ "--_sig": sinyal } as CSSProperties) : undefined}
     >
-      <Ikon size={20} strokeWidth={1.9} className="text-[#2fd3bc]" />
-      <h3 className="mt-3 text-[15px] font-bold text-white">{baslik}</h3>
-      <p className="deck-soft mt-1.5 text-[13px] leading-relaxed">{metin}</p>
+      <span className="deck-ikon">
+        <Ikon size={20} strokeWidth={1.9} />
+      </span>
+      <h3 className="mt-3.5 text-[15px] font-bold text-white">{markali(baslik)}</h3>
+      <p className="deck-soft mt-1.5 text-[13px] leading-relaxed">{markali(metin)}</p>
     </div>
   );
 }
@@ -250,9 +287,9 @@ export function AdimSirasi({ adimlar }: { adimlar: { baslik: string; metin: stri
     <ol className={`grid gap-3 text-left sm:grid-cols-2 ${kolon}`}>
       {adimlar.map((a, i) => (
         <li key={a.baslik} className="deck-kart p-5">
-          <span className="mono text-[11px] font-bold text-[#2fd3bc]">{String(i + 1).padStart(2, "0")}</span>
-          <h3 className="mt-2 text-[15px] font-bold text-white">{a.baslik}</h3>
-          <p className="deck-soft mt-1.5 text-[13px] leading-relaxed">{a.metin}</p>
+          <span className="deck-ikon mono !h-9 !w-9 text-[13px] font-bold">{String(i + 1).padStart(2, "0")}</span>
+          <h3 className="mt-3 text-[15px] font-bold text-white">{markali(a.baslik)}</h3>
+          <p className="deck-soft mt-1.5 text-[13px] leading-relaxed">{markali(a.metin)}</p>
         </li>
       ))}
     </ol>
@@ -263,8 +300,12 @@ export function AdimSirasi({ adimlar }: { adimlar: { baslik: string; metin: stri
 export function OnayMadde({ children }: { children: ReactNode }) {
   return (
     <li className="flex items-start gap-3">
-      <CheckCircle2 size={19} strokeWidth={2} className="mt-0.5 flex-none text-[#2fd3bc]" />
-      <span className="text-[15px] leading-relaxed text-white/90">{children}</span>
+      <CheckCircle2
+        size={19}
+        strokeWidth={2}
+        className="mt-0.5 flex-none text-[#2fd3bc] drop-shadow-[0_0_8px_rgba(47,211,188,0.55)]"
+      />
+      <span className="text-[15px] leading-relaxed text-white/90">{markali(children)}</span>
     </li>
   );
 }
@@ -282,11 +323,11 @@ export function DevSayi({
   renk?: string;
 }) {
   return (
-    <div className="deck-kart p-6 text-left">
-      <p className="deck-dev text-[40px] sm:text-[52px]" style={{ color: renk }}>
+    <div className="deck-kart min-w-0 p-5 text-left sm:p-6">
+      <p className="deck-dev break-words text-[30px] sm:text-[36px] lg:text-[42px]" style={{ color: renk }}>
         {deger}
       </p>
-      <p className="mt-2.5 text-[13.5px] font-semibold leading-snug text-white/90">{etiket}</p>
+      <p className="mt-2.5 text-[13.5px] font-semibold leading-snug text-white/90">{markali(etiket)}</p>
       {kaynak ? <p className="deck-faint mono mt-1.5 text-[10px] uppercase tracking-wider">{kaynak}</p> : null}
     </div>
   );

@@ -31,7 +31,6 @@ import {
   MaddeKart,
   OnayMadde,
 } from "@/components/sunum/parcalar";
-import { AgDiyagrami } from "@/components/landing/AgDiyagrami";
 import { KuleDemo } from "@/components/landing/KuleDemo";
 
 export const metadata: Metadata = {
@@ -106,7 +105,7 @@ export default function PitchV2() {
       logo
       kicker="Projedar · Yatırımcı sunumu"
       baslik="Yeni konut projeleri için tahsisli canlı satış ağı"
-      alt="Projedar, inşaat firmalarının konut stoğunu yetkili danışman ağına canlı veriyle dağıtan kapalı B2B ağdır. İlan portalı değil: gayrimenkulün güven protokolü."
+      alt="Projedar, inşaat firmalarının konut stoğunu yetkili danışman ağına canlı veriyle dağıtan, yalnızca yetkili üyelere açık B2B ağdır. İlan portalı değil: gayrimenkulün güven protokolü."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Bloklar yükselir. Stok erir.
@@ -156,6 +155,7 @@ export default function PitchV2() {
     /* 4 · Pazar */
     <Slayt
       key="pazar"
+      genis
       kicker="Pazar"
       baslik="Büyük ve büyüyen bir pazar"
     >
@@ -175,7 +175,7 @@ export default function PitchV2() {
       key="cozum"
       genis
       kicker="Çözüm"
-      baslik="Kapalı, canlı konut stoğu ağı"
+      baslik="Üyelere özel canlı konut stoğu ağı"
       alt="İnşaat firmaları stoğunu Projedar'da yönetir; yetkilendirdikleri danışmanlar her an güncel fiyat ve stokla satar. Müşteriye ulaşan her bilgi, tek kaynaktan beslenen birebir linktir."
     >
       <AkisSema
@@ -192,9 +192,9 @@ export default function PitchV2() {
       </ul>
     </Slayt>,
 
-    /* 6 · Ürün */
-    <Slayt key="urun" kicker="Ürün" baslik="Fark yaratan dört yetenek">
-      <div className="grid gap-3 sm:grid-cols-2">
+    /* 6 · Ürün (teknoloji görsel zemin) */
+    <GorselSlayt key="urun" gorsel="/sunum/veri-bina.jpg" hiza="sol" kicker="Ürün" baslik="Fark yaratan dört yetenek">
+      <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Zap}
           baslik="Canlı veri"
@@ -220,14 +220,14 @@ export default function PitchV2() {
           sinyal="#2fd3bc"
         />
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 7 · Canlı demo */
     <Slayt key="demo" genis kicker="Ürün · Canlı demo" baslik="Slayt değil, çalışan ürün">
       <p className="deck-soft -mt-3 mb-5 text-[14px]">
         Bu bir görsel değil: aşağıdaki bina kesiti etkileşimli. Bir daireye dokunun, opsiyon kilidini deneyin.
       </p>
-      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi">
+      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi" kucult zemin="acik">
         <KuleDemo />
       </EkranKart>
     </Slayt>,
@@ -236,7 +236,7 @@ export default function PitchV2() {
     <Slayt
       key="is-modeli"
       kicker="İş modeli"
-      baslik="Üretici öder, danışman ücretsiz"
+      baslik="Danışmana ücretsiz; gelirimiz yazılım anlaşmasından"
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
@@ -276,11 +276,6 @@ export default function PitchV2() {
           { baslik: "Daha güçlü çekim", metin: "Sonuç gören üreticiler yeni projeleri ağa getirir; döngü yeniden başlar." },
         ]}
       />
-      <div className="mt-6">
-        <EkranKart url="projedar.com">
-          <AgDiyagrami />
-        </EkranKart>
-      </div>
     </Slayt>,
 
     /* 10 · Rekabet */
@@ -316,7 +311,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Gavel}
           baslik="Regülasyon kalkanı"
-          metin="Yeni EİDS ilan düzenlemesi açık paylaşımı zorlaştırırken kapalı devre tahsis modeli kapsam dışı; mevzuat modeli koruyor."
+          metin="Yeni EİDS ilan düzenlemesi açık paylaşımı zorlaştırırken tahsisli birebir paylaşım modeli kapsam dışı; mevzuat modeli koruyor."
         />
       </div>
     </Slayt>,
@@ -333,7 +328,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Gavel}
           baslik="Regülasyon rüzgârı"
-          metin="Şubat 2026 EİDS düzenlemesi açık ilan paylaşımını zorlaştırdı; kapalı devre tahsisli dağıtım tam bu boşluğa oturuyor."
+          metin="Şubat 2026 EİDS düzenlemesi açık ilan paylaşımını zorlaştırdı; tahsisli birebir dağıtım tam bu boşluğa oturuyor."
         />
         <MaddeKart
           Ikon={MessageCircle}

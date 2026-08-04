@@ -126,7 +126,7 @@ export default function UreticiSunum() {
       key="nedir"
       kicker="Bir bakışta"
       baslik="Projedar nedir?"
-      alt="İnşaat firmalarını ve yetkili danışmanları canlı, doğru veriyle buluşturan kapalı konut stoğu ağı. Siz stoğu yönetirsiniz; ağ her zaman sizin belirlediğiniz güncel veriyle satar."
+      alt="İnşaat firmalarını ve yetkili danışmanları canlı, doğru veriyle buluşturan, yalnızca yetkili üyelere açık konut stoğu ağı. Siz stoğu yönetirsiniz; ağ her zaman sizin belirlediğiniz güncel veriyle satar."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
@@ -183,7 +183,9 @@ export default function UreticiSunum() {
       <p className="mono mb-3 mt-8 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Deneyin: bir daireye dokunun, opsiyon kilidini test edin
       </p>
-      <KuleDemo />
+      <div style={{ zoom: 0.78 } as React.CSSProperties}>
+        <KuleDemo />
+      </div>
     </Slayt>,
 
     /* 5 · Kokpit */
@@ -480,7 +482,7 @@ export default function UreticiSunum() {
         />
         <MaddeKart
           Ikon={EyeOff}
-          baslik="Kapalı devre"
+          baslik="Açık ilana kapalı"
           metin="Son kullanıcıya açık ilan yok; stoğu yalnız tahsis verdiğiniz danışmanlar görür. Doğrulanmış rozetiniz her paylaşımda markanızı taşır."
         />
       </div>

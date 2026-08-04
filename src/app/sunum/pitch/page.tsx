@@ -63,7 +63,7 @@ export default function PitchDeck() {
       logo
       kicker="Projedar · Pitch deck"
       baslik="Yeni konut satışının canlı altyapısı"
-      alt="Çok-müteahhitli, üretici-kontrollü, tahsisli canlı stok dağıtım ağı. Komisyonsuz. Kapalı devre."
+      alt="Çok-müteahhitli, üretici-kontrollü, tahsisli canlı stok dağıtım ağı. Komisyonsuz; yalnızca yetkili danışmanlara açık."
     >
       <p className="da da-4 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
         ok tuşları veya kaydırma ile ilerleyin
@@ -151,12 +151,15 @@ export default function PitchDeck() {
       <p className="deck-soft -mt-3 mb-5 text-[14px]">
         Bu bir görsel değil: aşağıdaki bina kesiti etkileşimli. Bir daireye dokunun, opsiyon kilidini deneyin.
       </p>
-      <KuleDemo />
+      <div style={{ zoom: 0.78 } as React.CSSProperties}>
+        <KuleDemo />
+      </div>
     </Slayt>,
 
     /* 6 · Pazar */
     <Slayt
       key="pazar"
+      genis
       kicker="Pazar"
       baslik="Rekor kıran bir pazarın koordinasyon katmanı"
       alt="Konut satışı 2025'te tüm zamanların rekorunu kırdı. Biz konutun kendisini değil, her ilk el satışın arkasındaki koordinasyonu ürünleştiriyoruz."
@@ -179,7 +182,7 @@ export default function PitchDeck() {
         <MaddeKart
           Ikon={Gavel}
           baslik="Regülasyon: EİDS"
-          metin="Şubat 2026'dan beri açık ilan sıkı yetki belgesi rejiminde; kural dışı sosyal medya paylaşımının cezası ilan başına 286.206 TL. Kapalı devre 'ilan yok, tahsis var' modeli regülasyonun doğru tarafında."
+          metin="Şubat 2026'dan beri açık ilan sıkı yetki belgesi rejiminde; kural dışı sosyal medya paylaşımının cezası ilan başına 286.206 TL. 'İlan yok, tahsis var' modeli regülasyonun doğru tarafında."
           sinyal="#2fd3bc"
         />
         <MaddeKart
@@ -205,7 +208,7 @@ export default function PitchDeck() {
     <Slayt
       key="is-modeli"
       kicker="İş modeli"
-      baslik="Ödeyen müteahhit, büyüten emlakçı"
+      baslik="Gelir üreticiden, büyüme danışman ağından"
       alt="İlke değişmez: komisyona dokunmuyoruz. Yazılım, erişim ve veriden gelir."
     >
       <div className="grid gap-3 sm:grid-cols-3">

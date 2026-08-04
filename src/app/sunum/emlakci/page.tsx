@@ -139,7 +139,9 @@ export default function EmlakciSunum() {
       <p className="mono mb-3 mt-8 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Dene: bir daireye dokun, opsiyon kilidini test et
       </p>
-      <KuleDemo />
+      <div style={{ zoom: 0.78 } as React.CSSProperties}>
+        <KuleDemo />
+      </div>
     </Slayt>,
 
     /* 5 · Bul: filtre + harita */
@@ -368,7 +370,7 @@ export default function EmlakciSunum() {
     <Slayt
       key="ayricalik"
       kicker="Ayrıcalık"
-      baslik="Kapalı ağın içinde olmak"
+      baslik="Yetkili ağın içinde olmak"
       alt="Projedar bir ilan sitesi değildir; stoklara yalnız yetkili danışmanlar erişir. İçeride olmak bir ayrıcalıktır ve bu ayrıcalık çalışır:"
     >
       <div className="grid gap-3 sm:grid-cols-3">
