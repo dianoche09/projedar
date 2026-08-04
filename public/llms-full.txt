@@ -1,0 +1,151 @@
+# Projedar (Tam İçerik)
+
+> Proje sahipleri ile gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı bir B2B konut stoğu dağıtım ağı. İlan portalı değildir. Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; gayrimenkul danışmanı canlı ağdaki tahsisli projeleri doğru fiyatla müşterisine paylaşır. Komisyon yok; danışmana başlangıçta ücretsiz.
+
+Bu dosya, AI arama motorlarının ve asistanların Projedar'ı tam anlaması için hazırlanmış kapsamlı içerik dökümüdür. Kısa özet için /llms.txt.
+
+## Hakkında
+
+Projedar, Türkiye'de yeni konut projelerinin satış ve dağıtımındaki temel sorunu çözer: dağınık, eski ve kontrolsüz bilgi. Bir konut projesinin fiyatı, hangi dairenin satılık, hangisinin opsiyonda olduğu bilgisi genelde Excel dosyaları, eski PDF'ler ve WhatsApp mesajları arasında kaybolur. Sonuç: yanlış fiyat, eksik bilgi, çift satış ve güven kaybı.
+
+Projedar bunu "tek doğru kaynak" ilkesiyle çözer. Fiyat ve durum yalnız tek bir birim kaydında tutulur; hiçbir yerde kopyalanmaz. Bir gayrimenkul danışmanı bir daireyi müşterisine paylaştığında, fiyat o anki canlı değerden basılır. Bir daire opsiyona alındığında, çift-satış kalkanı veritabanı seviyesinde kilitler. Her veride "X önce" tazelik damgası bulunur; bilgi eskidikçe rozet renk değiştirir.
+
+- Website: https://projedar.com
+- Platform: Web + PWA (mobil-önce, telefona kurulabilir, çevrimdışına dayanıklı)
+- Kategori: Proptech / B2B konut stoğu dağıtım ağı
+- Model: Kapalı-devre, davetli ve doğrulanmış B2B ağ. Son kullanıcıya açık ilan yok; paylaşım birebir/WhatsApp.
+- Fiyatlandırma: Komisyon alınmaz. Gayrimenkul danışmanı için başlangıçta tamamen ücretsiz. Gelir modeli müteahhit tarafında sabit yıllık anlaşmadır (satıştan pay değil).
+- Kapsam: Türkiye
+
+## Nasıl Çalışır (dört adım)
+
+1. Proje sahibi stoğunu yükler. Proje, blok ve daireler tek noktaya alınır; fiyat ve durum tek doğru kaynakta toplanır.
+2. Canlı satış ağına açılır. Yetkili danışmanlar ağdaki projeleri canlı görür. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açar (tahsis).
+3. Danışman müşterisine paylaşır. Danışman kendine açık daireleri tek dokunuşla iletir; fiyat o anki canlı değerden basılır.
+4. Opsiyon ve satış kapanır. Daire opsiyona kilitlenir; çift-satış kalkanı çakışmayı engeller. Satışta stok anında güncellenir.
+
+## Ana Sayfalar
+
+- Ana sayfa (https://projedar.com/): canlı satış ağı tanıtımı, canlı portföy, nasıl çalışır, SSS.
+- Müteahhitler için (https://projedar.com/muteahhit): envanter kontrolü, tahsis paneli, çift satış kalkanı, komisyonsuz model, model karşılaştırması.
+- Danışmanlar için (https://projedar.com/emlakci): tahsisli canlı ağ, WhatsApp birebir paylaşım, opsiyon kilidi, komisyonun tamamı danışmanda, başlangıçta ücretsiz.
+- Güven Protokolü (https://projedar.com/guven): altı teminatın teknik dayanağı, EİDS konumlandırması (ilan değil tahsis), KVKK çizgisi, doğrulama.
+- Kullanım Koşulları (https://projedar.com/kullanim-kosullari)
+- Gizlilik (https://projedar.com/gizlilik)
+- KVKK Aydınlatma (https://projedar.com/kvkk-aydinlatma)
+
+## Roller ve Kime Ne Sağlar
+
+Proje sahibi (konut projesi geliştiren müteahhit):
+- Yüzlerce danışmana tek noktadan ulaşır; herkes anında doğru fiyatı görür.
+- Markası yanlış bilgiyle yıpranmaz; eski fiyat dolaşımda kalmaz.
+- Kime ne açık olduğunu kendi belirler; istediği daireleri yalnız seçtiği danışmanlara açar.
+- Satışı canlı izler; hangi daire ilgi görüyor, ne zaman opsiyonlandı.
+
+Gayrimenkul danışmanı (emlakçı):
+- Kendisine tahsisli projeleri tek canlı ağda görür; dağınık Excel, eski PDF, WhatsApp yok.
+- Her zaman canlı fiyat; eski fiyatla müşteri önünde zor durumda kalmaz.
+- Tek dokunuşla paylaşır; fiyat o anki canlı değerden basılır.
+- Kazancın tamamı danışmanda; komisyondan pay alınmaz; başlangıçta tamamen ücretsiz.
+
+Ofis / franchise:
+- Ekip erişimini ve portföyünü tek yerden yönetir.
+
+## Temel Özellikler
+
+Tek doğru kaynak:
+- Fiyat ve durum yalnız birim kaydında tutulur, hiçbir yerde kopyalanmaz.
+- Paylaşımda fiyat o anki canlı değerden basılır; eski fiyat dolaşıma giremez.
+
+Canlı stok ve durum:
+- Her daire üç sinyalden biriyle işaretlidir: müsait (yeşil), opsiyon (amber), satıldı (kırmızı).
+- Bina kesiti, tablo ve mini-panel görünümleriyle tüm stok tek ekranda canlı.
+
+Granüler tahsis:
+- Proje sahibi tahsisi daire seviyesinde yönetir: tüm proje, tek blok ya da seçili daireler belirlediği danışman ve ofislere açılır.
+
+Çift-satış kalkanı:
+- Aktif opsiyon veritabanı seviyesinde benzersiz kilitle korunur; aynı daireye ikinci opsiyon teknik olarak imkânsızdır.
+
+Görünür tazelik:
+- Her güncelleme zaman damgalıdır; "X önce" rozeti bilgi eskidikçe renk değiştirir (0-24 saat yeşil, 1-7 gün teal, 7-15 gün amber, 15 gün üstü gri).
+
+Canlı komuta merkezi:
+- Bir daire opsiyonlandığında, fiyat değiştiğinde veya satış kapandığında herkes aynı anda görür.
+
+## Güven Protokolü (altı teminat)
+
+1. Çift satış imkânsız: söz veya operasyon değil, veritabanı kuralı. Aktif opsiyon DB seviyesinde kilitlenir.
+2. Tek doğru veri: fiyat ve durum tek kayıtta; paylaşımda canlı değerden basılır, eski fiyat dolaşamaz.
+3. Tahsisli görünürlük: kimin neyi göreceğini proje sahibi belirler; görünürlük satır (daire) seviyesinde.
+4. Komisyon yok: satıştan pay alınmaz; müteahhit tarafında sabit yıllık anlaşma.
+5. Kapalı devre: son kullanıcıya açık ilan yayını yoktur; paylaşım birebir/WhatsApp.
+6. Doğrulanmış ağ: üretici doğrulama rozetiyle yayınlanır; danışman mesleki yetki belgesi doğrulanana kadar yalnız demo içerik görür.
+
+## Model Karşılaştırması (ilan portalı / stok CRM / Projedar)
+
+Komisyon:
+- İlan portalı: satıştan pay alır.
+- Stok CRM: lisans + modül ücreti.
+- Projedar: sıfır komisyon, sabit yıllık anlaşma.
+
+Stok kontrolü:
+- İlan portalı: ortak havuz; kim neyi görüyor belirsiz.
+- Stok CRM: kendi ekibinle sınırlı, dağıtım ağı yok.
+- Projedar: tahsis sende; kime, hangi fiyat, ne kadar.
+
+Çift-satış garantisi:
+- İlan portalı: söze ve operasyona bağlı.
+- Stok CRM: uygulama katmanında, delinebilir.
+- Projedar: veritabanı kilidi, yapısal olarak imkânsız.
+
+Tazelik:
+- İlan portalı: ilan girildiği günde kalır.
+- Stok CRM: elle güncelleme, eskime görünmez.
+- Projedar: her kayıtta "X önce"; eskiyen veri görünür.
+
+Kapalı devre:
+- İlan portalı: herkese açık ilan.
+- Stok CRM: kapalı ama dağıtım ağı yok.
+- Projedar: kapalı devre + tahsisli danışman ağı.
+
+## Müteahhitler için Sık Sorulan Sorular
+
+- Projedar satıştan komisyon alıyor mu? Hayır. Hiçbir satıştan pay alınmaz; gelir modeli sabit yıllık anlaşmadır. Ne kadar satılırsa satılsın maliyet değişmez.
+- Stok ve fiyat kontrolü kimde? Tamamen proje sahibinde. Fiyat ve durum yalnız birim kaydında tutulur; paylaşımda o anki canlı değerden basılır.
+- Çift satış nasıl engelleniyor? Uygulama sözüyle değil, veritabanı kuralıyla. Aktif opsiyon DB seviyesinde benzersiz kilitle korunur.
+- Hangi danışmanlar stoğu görür? Yalnız proje sahibinin tahsis ettikleri. Tahsis daire seviyesindedir.
+- Bu bir ilan portalı mı, EİDS'e takılır mı? İlan portalı değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız tahsisli danışmanların kapalı havuzunda görünür.
+- Başlamak için ne gerekiyor? Bir görüşme. Stok ve fiyat yapısı tek doğru kaynağa alınır; tahsis kuralları proje sahibi tarafından belirlenir. İlk dönemde kurulum concierge desteğiyle yapılır.
+
+## Danışmanlar için Sık Sorulan Sorular
+
+- Danışman için ücretli mi? Başlangıçta tamamen ücretsizdir ve hiçbir satıştan komisyon alınmaz.
+- Danışman hangi projeleri görür? Canlı ağdaki tahsisli projeleri. Proje sahibi isterse belirli daireleri yalnız seçtiği danışmanlara özel açar.
+- Fiyatlar nasıl güncel kalıyor? Fiyat yalnız birim kaydında tutulur; paylaşımda o anki canlı değerden basıldığı için eski fiyat dolaşıma giremez.
+- Aynı daireyi iki danışman satabilir mi? Hayır. Aktif opsiyon veritabanı seviyesinde kilitlenir (çift-satış kalkanı).
+- Nasıl paylaşırım? Tek dokunuşla, birebir link veya WhatsApp ile. Paylaşım kartı daireye özeldir: proje, daire, canlı fiyat ve durum önizlemede görünür.
+
+## Genel Sık Sorulan Sorular
+
+- Projedar bir ilan portalı mı? Hayır. Kapalı bir B2B ağdır; son kullanıcıya açık ilan yoktur, paylaşım birebir/WhatsApp ile yapılır.
+- Ağa kimler girebiliyor? Ağ davetli ve doğrulanmıştır. Üretici doğrulama rozetiyle yayınlanır; danışman mesleki yetki belgesi doğrulanana kadar yalnız demo içerik görür.
+- Mobilde çalışır mı? Evet. Mobil-önce bir PWA'dır; telefona kurulabilir, sahada hızlı ve çevrimdışına dayanıklı çalışır.
+
+## Farklılaştırıcılar (dağınık portal / Excel / WhatsApp yerine)
+
+- İlan portalı değil, kapalı B2B güven protokolü.
+- Fiyat tek kaynakta; üç farklı yerde üç farklı fiyat olmaz.
+- Çift-satış veritabanı seviyesinde engellenir.
+- Tazelik her zaman görünür; eskiyen veri belli olur.
+- Tahsis proje sahibinde; kimin neyi gördüğünü proje sahibi belirler.
+
+## Yasal ve Uyumluluk
+
+- Komisyon: Projedar satışa aracılık yapmaz ve satıştan komisyon almaz.
+- İlan yasağı: Kapalı-devre, davetli bir B2B altyapısıdır; son kullanıcıya açık ilan yayınlamaz.
+- Para birimi: konut fiyatları Türk Lirası ile tutulur.
+
+## Yasal Uyarı
+
+Projedar satışa aracılık yapmaz ve satıştan komisyon almaz. Kapalı-devre, davetli bir B2B altyapısıdır. Son kullanıcıya açık ilan yayınlamaz. Bu içerik bilgilendirme amaçlıdır.
