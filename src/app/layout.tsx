@@ -22,9 +22,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://projedar.com"),
+  // Sayfalar kendi tam başlığını yönetiyor (bazıları "… | Projedar" ile bitiyor);
+  // bu yüzden template kullanmıyoruz — çift "Projedar" olmasın.
   title: "Projedar — Canlı Konut Stoğu Dağıtım Ağı",
   description:
     "Çok-müteahhitli, üretici-kontrollü canlı konut stoğu dağıtım ağı. Tek doğru kaynak, granüler tahsis, çift-satış kalkanı, görünür tazelik.",
+  applicationName: "Projedar",
   manifest: "/manifest.json",
   appleWebApp: { capable: true, statusBarStyle: "default", title: "Projedar" },
   icons: {
@@ -34,6 +38,22 @@ export const metadata: Metadata = {
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
     apple: "/apple-touch-icon.png",
+  },
+  // Site geneli sosyal paylaşım varsayılanları; sayfalar kendi başlık/açıklamasıyla
+  // bunu genişletir. Görsel /opengraph-image (dosya-tabanlı) ile otomatik gelir.
+  openGraph: {
+    type: "website",
+    siteName: "Projedar",
+    locale: "tr_TR",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
 };
 
