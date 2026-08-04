@@ -1,14 +1,14 @@
 # Rakip & Referans Analizi — Global PropTech (Geliştirici Satış Platformları)
-### ProjePazar açısından dürüst değerlendirme · 13 Haziran 2026
+### Projedar açısından dürüst değerlendirme · 13 Haziran 2026
 İncelenenler: Flatter (HU), DomusHub, Relata (IN), UnitAtlas, Kords (MENA), Nexprop (IN/UAE).
 
 ---
 
 ## 1. En kritik bulgu (önce bunu oku)
-**Bu kategori yeni değil — küresel ve olgunlaşıyor.** "Tek doğru kaynak stok + çift-satış kilidi + emlakçı/broker kabini + komisyon + ödeme planı + link'le interaktif teklif" artık **standart** (DomusHub, Kords, Nexprop, Relata bunları zaten satıyor). ProjePazar bunları "icat ettik" diye konumlamamalı.
+**Bu kategori yeni değil — küresel ve olgunlaşıyor.** "Tek doğru kaynak stok + çift-satış kilidi + emlakçı/broker kabini + komisyon + ödeme planı + link'le interaktif teklif" artık **standart** (DomusHub, Kords, Nexprop, Relata bunları zaten satıyor). Projedar bunları "icat ettik" diye konumlamamalı.
 
-**Ama ProjePazar'ın hâlâ sahip olduğu beyaz alan net:**
-1. **Çok-müteahhitli canlı havuz / ağ** — incelenenlerin neredeyse tamamı **tek-geliştiriciye** SaaS (her geliştirici kendi stoğu + kendi broker'ı). Kords dev↔broker bağlıyor ama yine tek-kiracı. ProjePazar'ın "birçok müteahhit, tek paylaşımlı canlı havuz + granüler tahsis + güven protokolü" yapısı farklı.
+**Ama Projedar'ın hâlâ sahip olduğu beyaz alan net:**
+1. **Çok-müteahhitli canlı havuz / ağ** — incelenenlerin neredeyse tamamı **tek-geliştiriciye** SaaS (her geliştirici kendi stoğu + kendi broker'ı). Kords dev↔broker bağlıyor ama yine tek-kiracı. Projedar'ın "birçok müteahhit, tek paylaşımlı canlı havuz + granüler tahsis + güven protokolü" yapısı farklı.
 2. **Türkiye'ye özel:** kat karşılığı / arsa payı (satılamaz) ayrımı, KKTC koçanı, Türkçe-önce, ve **WhatsApp deep-link + concierge ile dijitalleşmemiş küçük müteahhit (Ü2).** Bu yabancı araçların hiçbiri sahadaki küçük Türk müteahhitine hitap etmiyor.
 3. **Radikal basitlik + concierge** — rakipler dijitalleşmiş geliştirici için self-serve/kurumsal SaaS; küçük müteahhit onların müşterisi değil.
 
@@ -17,7 +17,7 @@
 ---
 
 ## 2. Oyuncu profilleri
-**DomusHub** — "Sales OS for off-plan developers." 4 kabin: Developer Hub / Sales Cabinet / Agent Cabinet / Buyer Portal. Poligon-haritalı masterplan, real-time stok, booking timer + auto-expire, stage/milestone ödeme planı + auto-invoice, **eşik-tabanlı komisyon (birim üstünde satır-içi)**, çoklu döviz/canlı kur, **5 dil (EN·RU·TR·TH·ID)**, link'le interaktif teklif (PDF yok), buyer portal + inşaat güncellemeleri. Pazar: MENA·SEA·CIS (Dubai, Georgia, Cyprus, **Turkey**, Thailand, Indonesia). "CRM'ini değiştirme, yanına otur." Fiyat: **$250–500/ay** (sınırsız kullanıcı). 5.000+ birim. → **En ProjePazar'a benzer + en olgun.**
+**DomusHub** — "Sales OS for off-plan developers." 4 kabin: Developer Hub / Sales Cabinet / Agent Cabinet / Buyer Portal. Poligon-haritalı masterplan, real-time stok, booking timer + auto-expire, stage/milestone ödeme planı + auto-invoice, **eşik-tabanlı komisyon (birim üstünde satır-içi)**, çoklu döviz/canlı kur, **5 dil (EN·RU·TR·TH·ID)**, link'le interaktif teklif (PDF yok), buyer portal + inşaat güncellemeleri. Pazar: MENA·SEA·CIS (Dubai, Georgia, Cyprus, **Turkey**, Thailand, Indonesia). "CRM'ini değiştirme, yanına otur." Fiyat: **$250–500/ay** (sınırsız kullanıcı). 5.000+ birim. → **En Projedar'a benzer + en olgun.**
 
 **Kords (kords.ai, MENA/Mısır, Arapça)** — "Real Estate OS for rapid project sales." **Geliştiricileri ve broker'ları birleştiren** birleşik platform; stoğu broker ağına anında dağıt, **precision matching** (alıcı eşleştirme), EOI→RSV→Deal hattı, AI asistan "Perry", web/mobil, Excel import. → **"Geliştirici→broker ağı" tezi bize en yakın olan**; ama MENA/Arapça, tek-kiracı.
 
@@ -32,7 +32,7 @@
 ---
 
 ## 3. Karşılaştırma (özellik × oyuncu)
-| Özellik | DomusHub | Kords | Nexprop | Relata | Flatter | UnitAtlas | **ProjePazar** |
+| Özellik | DomusHub | Kords | Nexprop | Relata | Flatter | UnitAtlas | **Projedar** |
 |---|---|---|---|---|---|---|---|
 | Tek-doğru-kaynak stok | ✅ | ✅ | ✅ | ✅ | ✅(seçici) | ✅ | ✅ |
 | Çift-satış kilidi (DB) | ✅ | ~ | ~ | ✅ | — | — | ✅ |
@@ -52,11 +52,11 @@
 
 ---
 
-## 4. İki alt-kategori — ProjePazar nerede duruyor
+## 4. İki alt-kategori — Projedar nerede duruyor
 - **A) Geliştirici Satış OS'u (tek-kiracı SaaS):** DomusHub, Kords, Nexprop, Relata. Bir geliştiriciye kendi stoğu + kendi broker'ı + booking + ödeme + komisyon + portal. **Gelir: geliştiriciye SaaS.**
 - **B) Görselleştirme/seçici katmanı:** Flatter, UnitAtlas. Geliştirici sitesine gömülen interaktif birim seçici + müsaitlik + analytics.
 
-**ProjePazar bunların ikisi de değil — üçüncü tip:** **çok-taraflı dağıtım ağı** (birçok müteahhit → kontrollü tahsis → paylaşımlı emlakçı havuzu) + Türkiye-özel + WhatsApp-önce. Bu, A'daki tekil silolardan ve B'deki sunum katmanından ayrışır. (Topli'nin "açık pazaryeri"nden de "üretici-kontrolü" ile ayrışıyorduk — bkz. strateji dokümanı Bölüm 2.6/22.)
+**Projedar bunların ikisi de değil — üçüncü tip:** **çok-taraflı dağıtım ağı** (birçok müteahhit → kontrollü tahsis → paylaşımlı emlakçı havuzu) + Türkiye-özel + WhatsApp-önce. Bu, A'daki tekil silolardan ve B'deki sunum katmanından ayrışır. (Topli'nin "açık pazaryeri"nden de "üretici-kontrolü" ile ayrışıyorduk — bkz. strateji dokümanı Bölüm 2.6/22.)
 
 ---
 
@@ -79,7 +79,7 @@
 ---
 
 ## 7. Konum keskinleştirme (öneri)
-ProjePazar'ı **"geliştirici satış OS'u"** olarak konumlama — o kalabalık ve olgun. Konum:
+Projedar'ı **"geliştirici satış OS'u"** olarak konumlama — o kalabalık ve olgun. Konum:
 > **"Türkiye'nin (ve Türkiye'den satılan yurtdışı projelerin) çok-müteahhitli, üretici-kontrollü, WhatsApp-önce canlı dağıtım ağı — gayrimenkulün güven protokolü."**
 
 Kazanma sırası değişmedi: **ağ likiditesi (Closed Deal Club) + Türkiye-özel + WhatsApp/concierge wedge + güven protokolü (Lead Protection, Tazelik Sigortası).** Rakiplerin olgun özellik setini "icat etme"; kanıtlanmışları (link-teklif, ödeme planı, buyer portal, AI scoring) **Faz 2'de hızla benimse**, çekirdekte ağ + dağıtım + Türkiye'de ayrış.

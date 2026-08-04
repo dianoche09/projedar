@@ -1,4 +1,4 @@
-# ProjePazar — Proje Özeti & Pain-Point Haritası
+# Projedar — Proje Özeti & Pain-Point Haritası
 ### (Farklı AI araçlarıyla doğrulama/değerlendirme için hazırlanmış bağımsız brief)
 
 > Bu belge tek başına yeterlidir; başka bir AI'a olduğu gibi yapıştırılabilir. Sonunda "doğrulama soruları" bölümü var.
@@ -112,4 +112,4 @@ Bu brief'i bir AI'a verip şunları sor:
 10. Vizyon (gayrimenkul "Bloomberg"i + finansal katman) gerçekçi mi, yoksa odağı dağıtır mı?
 
 ---
-*ProjePazar · projepazar.com · Berrak Güven*
+*Projedar · projedar.com · Berrak Güven*

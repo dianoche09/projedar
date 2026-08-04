@@ -1,5 +1,5 @@
--- ProjePazar — Seed (MVP demo verisi)
--- NOT: Gerçek stok değil; test/demo. Tüm auth kullanıcıları parola: ProjePazar123!
+-- Projedar — Seed (MVP demo verisi)
+-- NOT: Gerçek stok değil; test/demo. Tüm auth kullanıcıları parola: Projedar123!
 -- RLS testini mümkün kılar: A Blok herkese açık, B Blok yalnız Demo ofisine tahsisli.
 
 create extension if not exists pgcrypto;
@@ -13,10 +13,10 @@ insert into auth.users (
   created_at, updated_at, confirmation_token, email_change,
   email_change_token_new, recovery_token
 ) values
-  ('00000000-0000-0000-0000-000000000000','11111111-1111-1111-1111-111111111111','authenticated','authenticated','uretici@projepazar.test',crypt('ProjePazar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Demo Üretici Sahibi"}',now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000000','22222222-2222-2222-2222-222222222222','authenticated','authenticated','emlakci1@projepazar.test',crypt('ProjePazar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı Bir"}',now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000000','33333333-3333-3333-3333-333333333333','authenticated','authenticated','emlakci2@projepazar.test',crypt('ProjePazar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı İki"}',now(),now(),'','','',''),
-  ('00000000-0000-0000-0000-000000000000','44444444-4444-4444-4444-444444444444','authenticated','authenticated','emlakci3@projepazar.test',crypt('ProjePazar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı Üç (ofissiz)"}',now(),now(),'','','','')
+  ('00000000-0000-0000-0000-000000000000','11111111-1111-1111-1111-111111111111','authenticated','authenticated','uretici@projedar.test',crypt('Projedar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Demo Üretici Sahibi"}',now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000000','22222222-2222-2222-2222-222222222222','authenticated','authenticated','emlakci1@projedar.test',crypt('Projedar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı Bir"}',now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000000','33333333-3333-3333-3333-333333333333','authenticated','authenticated','emlakci2@projedar.test',crypt('Projedar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı İki"}',now(),now(),'','','',''),
+  ('00000000-0000-0000-0000-000000000000','44444444-4444-4444-4444-444444444444','authenticated','authenticated','emlakci3@projedar.test',crypt('Projedar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Emlakçı Üç (ofissiz)"}',now(),now(),'','','','')
 on conflict (id) do nothing;
 
 -- E-posta ile giriş için identities (bazı Supabase sürümleri zorunlu)
@@ -132,7 +132,7 @@ insert into auth.users (
   created_at, updated_at, confirmation_token, email_change,
   email_change_token_new, recovery_token
 ) values
-  ('00000000-0000-0000-0000-000000000000','a0000000-0000-0000-0000-000000000001','authenticated','authenticated','admin@projepazar.test',crypt('ProjePazar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"ProjePazar Admin"}',now(),now(),'','','','')
+  ('00000000-0000-0000-0000-000000000000','a0000000-0000-0000-0000-000000000001','authenticated','authenticated','admin@projedar.test',crypt('Projedar123!',gen_salt('bf')),now(),'{"provider":"email","providers":["email"]}','{"ad":"Projedar Admin"}',now(),now(),'','','','')
 on conflict (id) do nothing;
 
 insert into auth.identities (provider_id, user_id, identity_data, provider, created_at, updated_at, last_sign_in_at)
@@ -140,7 +140,7 @@ select u.id::text, u.id, jsonb_build_object('sub', u.id::text, 'email', u.email)
 from auth.users u where u.id = 'a0000000-0000-0000-0000-000000000001'
 on conflict do nothing;
 
-update profiles set rol='admin', ad='ProjePazar Admin' where id='a0000000-0000-0000-0000-000000000001';
+update profiles set rol='admin', ad='Projedar Admin' where id='a0000000-0000-0000-0000-000000000001';
 
 -- NOT: Üyelik paketleri (tip/fiyat/kota) — ofis/üretici/emlakçı — TAMAMEN admin panelinden
 -- tanımlanır. Seed'de hardcode fiyat/tip YOK (uydurma fiyat girilmez).

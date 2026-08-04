@@ -25,7 +25,7 @@ PropTech kurumsal **LTV $20.000–100.000**; müteahhit bu banda yakın. Müteah
 
 ---
 
-## ProjePazar'a Etki → Aksiyon
+## Projedar'a Etki → Aksiyon
 - **ŞİMDİ (referans):** Müteahhit anlaşma çapası: yıllık **150–600K TL** bandı + birim/proje ölçeği. Admin'de manuel anlaşmaya girdi.
 - **Ağ-bağlı kademe fikri:** tahsisli aktif danışman sayısı arttıkça müteahhit üst kademeye → ağ etkisini gelire bağlar. (İleride paket mantığına yedirilebilir.)
 - **SONRAKİ FAZ:** 3 kademe (Başlangıç/Profesyonel/Kurumsal), orta paket cazip. `abonelik_paketi` tablosu hazır.

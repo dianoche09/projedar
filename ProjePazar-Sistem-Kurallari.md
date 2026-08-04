@@ -1,4 +1,4 @@
-# ProjePazar — SİSTEM KURALLARI (DEĞİŞMEZ YAPI TAŞI)
+# Projedar — SİSTEM KURALLARI (DEĞİŞMEZ YAPI TAŞI)
 
 > Bu dosya, tüm proje dokümanlarının (35 sayfalık Ürün Analizi docx · Devir Dokümanı · Ekranlar.html · Marka Panosu · Özet-Brief · Rakip Analizleri · Yurtdışı Raporu · Tasarım Ruhu) damıtılmış, **bağlayıcı** özüdür.
 >
@@ -140,4 +140,4 @@ Her özellik tek testten geçer: **"canlı stok + üretici-kontrolü + güven pr
 Next.js (App Router, TS strict) + Tailwind v4 + **Supabase** (PostgreSQL + Auth + Realtime + Storage + **RLS**) + **Vercel** (serverless + cron) + **PWA** (mobil-önce). AI = Claude API (Faz 2 parse/içerik). WhatsApp Cloud API (hibrit). Multi-tenant baştan (uretici_id izolasyonu). Gerçek-zaman "nice to have" (cron + DB kilidi yeterli). Para: `para_birimi` ile (MVP TRY; usd_endeksli alan dursun, hesaplama Faz 2).
 
 ---
-*ProjePazar · Berrak Güven · Sistem Kuralları — tüm dokümanların bağlayıcı özü. Değiştirmeden önce dokümanlarla doğrula.*
+*Projedar · Berrak Güven · Sistem Kuralları — tüm dokümanların bağlayıcı özü. Değiştirmeden önce dokümanlarla doğrula.*

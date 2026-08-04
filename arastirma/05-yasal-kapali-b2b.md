@@ -8,7 +8,7 @@
 ---
 
 ## Özet (en aksiyonlu rapor)
-- **KVKK:** Lead'i toplayan **danışman/ofis = veri sorumlusu**; ProjePazar depolama sağladığı için **veri işleyen** → her danışmanla **Veri İşleyen Sözleşmesi** + token'lı forma **aydınlatma metni linki** ZORUNLU. (KVKK 2024-25'te sert: 16.350 kuruluşa ~504M TL ceza; VERBİS + 5 gün ihlal bildirimi.)
+- **KVKK:** Lead'i toplayan **danışman/ofis = veri sorumlusu**; Projedar depolama sağladığı için **veri işleyen** → her danışmanla **Veri İşleyen Sözleşmesi** + token'lı forma **aydınlatma metni linki** ZORUNLU. (KVKK 2024-25'te sert: 16.350 kuruluşa ~504M TL ceza; VERBİS + 5 gün ihlal bildirimi.)
 - **Döviz (DOĞRULANDI):** TR-yerleşik arası konut sözleşmesinde döviz/endeks **yasak, 2026'da sürüyor**. USD alanı **yalnız bilgi amaçlı**, sözleşme **TL**. İstisna: **yabancı vatandaş alıcı** döviz kullanabilir.
 - **EİDS (DOĞRULANDI):** Token'lı kapalı sayfa "ilan" sayılma olasılığı düşük + **off-plan (kat irtifakı yok) muaf**. Risk: danışman linki **sosyal medyaya açarsa** kamuya-açık ilan olur → kullanım politikası.
 - **Yetkilendirme:** Müteahhit kendi konutunu satarken yetki belgesi gerekmez; **danışman gerekir**. Yönetmelik m.15 yazılı **yetkilendirme sözleşmesi** önerilir.
@@ -29,7 +29,7 @@
 
 ---
 
-## ProjePazar'a Etki → Aksiyon
+## Projedar'a Etki → Aksiyon
 
 ### 🔴 Kod/uyum (yapılacak)
 - **KVKK-1:** Token'lı lead formunda **aydınlatma = bilgilendirme (linkli), açık rıza = AYRI + boş checkbox** — KVKK İlke Kararı **2026/347**: birleşik tek-kutu geçersiz. ✅ uygulandı + `/kvkk-aydinlatma` sayfası.

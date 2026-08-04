@@ -1,6 +1,6 @@
-# ProjePazar — Rakip Analizi & "En İyi Yapı" Reçetesi
+# Projedar — Rakip Analizi & "En İyi Yapı" Reçetesi
 
-> **Amaç:** ProjePazar'ı kategorisinin en iyisi yapacak yapıyı (sayfa mimarisi, içerik, tasarım, iş modeli konumlaması) global + ulusal rakipleri inceleyerek bulmak.
+> **Amaç:** Projedar'ı kategorisinin en iyisi yapacak yapıyı (sayfa mimarisi, içerik, tasarım, iş modeli konumlaması) global + ulusal rakipleri inceleyerek bulmak.
 > **Kaynak:** 2026-07-24 derin araştırma (deep-research: 5 açı, 21 kaynak, 25 iddia çekişmeli doğrulama) + 7 paralel teardown ajanı (14 rakip, sayfa/içerik/tasarım) + canlı site doğrulaması.
 > **Bağlayıcı bağlam:** `ProjePazar-Sistem-Kurallari.md` (DEĞİŞMEZLER), `CLAUDE.md`, memory `tasarim-dili.md`. Bu doküman rakip kanıtı + öneri sunar; DEĞİŞMEZLERİ ezmez.
 
@@ -8,7 +8,7 @@
 
 ## 0. Yönetici Özeti — Tek Cümle + 2×2 Çerçeve
 
-**Bulgu:** ProjePazar'ın dört tanımlayıcı mekanizmasının HEPSİNİ birleştiren rakip yok (ne dünyada ne TR). Bu dörtlü:
+**Bulgu:** Projedar'ın dört tanımlayıcı mekanizmasının HEPSİNİ birleştiren rakip yok (ne dünyada ne TR). Bu dörtlü:
 1. Çok-müteahhitli **tek canlı ortak havuz**
 2. Emlakçı-bazlı **tahsis-kısıtlı görünürlük** (RLS)
 3. **DB-seviyesi çift-satış kalkanı**
@@ -21,7 +21,7 @@ Bütün rakipler tek bir eksende ayrışıyor: **stoğu kim kontrol eder × eri�
                 ┌──────────────────────────┬────────────────────────────────┐
  Stoğu MÜTEAHHİT│ New Home Buddy (Texas)    │ Avesdo, Konutmatik, Novo, Alnair│
  kontrol eder   │ BuildersUpdate, Buildify  │  → HEPSİ TEK-müteahhit / tek-marka│
-                │ Topli, Connject           │  ◆ ProjePazar = ÇOK-müteahhit +   │
+                │ Topli, Connject           │  ◆ Projedar = ÇOK-müteahhit +   │
                 │                           │    KOMİSYONSUZ + DB çift-satış → BOŞ│
                 ├──────────────────────────┼────────────────────────────────┤
  Stoğu EMLAKÇI  │ RE-OS (MLS/PPS)           │ EmlakKanal (kapalı acente havuzu)│
@@ -30,7 +30,7 @@ Bütün rakipler tek bir eksende ayrışıyor: **stoğu kim kontrol eder × eri�
         (Lasso/Code5 = tek-firma iç CRM; Entera = müteahhit→YATIRIMCI, agent'ı devre dışı bırakır)
 ```
 
-**Boş hücre = ProjePazar'ın yeri:** müteahhit-kontrollü + tahsisli + **çok-müteahhitli** + **komisyonsuz**.
+**Boş hücre = Projedar'ın yeri:** müteahhit-kontrollü + tahsisli + **çok-müteahhitli** + **komisyonsuz**.
 
 > ⚠️ **Revizyon (2026-07-24 ikinci doğrulama turu):** "Çift-satış kalkanı hiçbir rakipte yok" iddiası yumuşatıldı. **DomusHub** (domushub.io — DOĞRULANDI, gerçek ürün; MENA+SEA+CIS, sitesinde TR dili var, $250-500/ay açık fiyat) pazarlamasında birebir *"Instant unit locking via online deposit payment. Zero risk of double bookings."* diyor; **ECI LotVue** kredi kartıyla online lot kilitleme satıyor. İkisinde de kilit **ödemeye** bağlı; bizde kilit **veritabanının kendisinde** (unique partial index) ve opsiyon parasız. Doğru iddia: **"DB-seviyesi, ödemesiz kilit hiçbir rakipte yok"** — ama "zero double-booking" MESAJ alanı işgal edilmeye başlandı; bu mesajı sahiplenmek ertelenemez. Ayrıca **Konutmatik'in dış acenteye KOTALI STOK TAHSİSİ üründe zaten var** (bkz. 2.4 revizyonu) → "tahsisli stok" tek başına farklılaştırıcı değil; savunulabilir kombinasyon = **çok-müteahhitli ağ + bağımsız emlakçı tarafı + komisyonsuz + DB-kilidi**.
 
@@ -130,7 +130,7 @@ Bütün rakipler tek bir eksende ayrışıyor: **stoğu kim kontrol eder × eri�
 - **Gelir:** saf **success-fee** (danışman bedava, satışta komisyondan Topli küçük pay, geliştiriciden). Satışı Topli'ye kaydetmek zorunlu (bağımlılık).
 - **Sosyal kanıt:** yoğun basın (Cumhuriyet, DHA, egirişim) + tanınmış müteahhit logoları (**DAP, Sinpaş, Nurol, İhlas, Fuzul, Artaş…**) + 5 isimli referans.
 - **Tasarım:** açık/ferah beyaz + navy **#1B2A4A**, SVG illüstrasyon, timeline infografik, partner-logo şeridi. Vibe: **global, sade, "network/pazaryeri" güven.**
-- **Ders:** Emlakçı vaadi neredeyse aynı; **tek zayıfları komisyon** → *"kazancın %100'ü senin, biz stoğun/anlaşmanın arasına hiç girmiyoruz."* **Müteahhit kontrolü Topli'de YOK** (stok havuza atılır, 10k danışmana savrulur) → müteahhide *"Topli'de kontrolü kaybediyorsun; ProjePazar'da kime/hangi fiyata/ne kadar açacağını SEN belirliyorsun."* **AL:** PR + tanınmış müteahhit logo duvarı + çok-dil (en az EN paylaşım linki). **Kaçın:** "10.000 danışman" hacim-övünme dili — biz kontrol+güven+hız diyoruz.
+- **Ders:** Emlakçı vaadi neredeyse aynı; **tek zayıfları komisyon** → *"kazancın %100'ü senin, biz stoğun/anlaşmanın arasına hiç girmiyoruz."* **Müteahhit kontrolü Topli'de YOK** (stok havuza atılır, 10k danışmana savrulur) → müteahhide *"Topli'de kontrolü kaybediyorsun; Projedar'da kime/hangi fiyata/ne kadar açacağını SEN belirliyorsun."* **AL:** PR + tanınmış müteahhit logo duvarı + çok-dil (en az EN paylaşım linki). **Kaçın:** "10.000 danışman" hacim-övünme dili — biz kontrol+güven+hız diyoruz.
 
 ### 2.3 RE-OS — re-os.com · *en güçlü TR oyuncu (emlakçı tarafı)*
 - **Ne:** "Gayrimenkul Global Pazarlama Platformu" — emlak CRM + MLS + emlakçı↔emlakçı portföy paylaşımı (PPS) + 80+ portala tek-tık.
@@ -151,7 +151,7 @@ Bütün rakipler tek bir eksende ayrışıyor: **stoğu kim kontrol eder × eri�
 - **Sosyal kanıt (çok güçlü):** Artaş, Taşyapı, Bilgili, Ege Yapı, **Torunlar GYO**, Teknik Yapı, Dap, Ferko + uluslararası (Bağdat, Ritz-Carlton, Riyad).
 - **Fiyat:** yok — enterprise/proje-bazlı, "Görüşme Talep Et."
 - **Tasarım (style.css'ten doğrulandı):** slate **#0f172a/#1e293b** + rose accent **#f43f5e** · **sinyal renkleri BİZİMLE BİREBİR:** yeşil #22c55e müsait / amber #f59e0b opsiyon / kırmızı #ef4444 satıldı · SF Pro + Caveat · bespoke koyu-tema, bölüm-numaralı, canlı feed mockup. Vibe: **karanlık, sinematik, ürün-önce (Linear/Vercel), RE-OS'tan bir kuşak ileri.**
-- **Ders:** **En önemli:** Konutmatik bizim tasarım+feature DNA'mızın aynısını kullanıyor → "Canlı Proje Satış Komuta Merkezi" dilimiz doğru; **ama tema aksanını ayrıştır** (onlar rose; biz farklı marka rengi seç, taklit görünme). **Boşluk = wedge'imiz:** Konutmatik **tek-müteahhit**, izole; **çok-müteahhitli, emlakçının tek havuzdan yalnız kendine tahsisliyi gördüğü ağ YOK.** Konum: *"Konutmatik = tek projenin dijital ofisi; ProjePazar = tüm projelerin dağıtım ağı."* **RİSK:** komisyon/indirim + acente yönetimi zaten var; çok-müteahhit havuza kayarsa doğrudan rakip → network-effect + komisyonsuz hendeğini erken kaz.
+- **Ders:** **En önemli:** Konutmatik bizim tasarım+feature DNA'mızın aynısını kullanıyor → "Canlı Proje Satış Komuta Merkezi" dilimiz doğru; **ama tema aksanını ayrıştır** (onlar rose; biz farklı marka rengi seç, taklit görünme). **Boşluk = wedge'imiz:** Konutmatik **tek-müteahhit**, izole; **çok-müteahhitli, emlakçının tek havuzdan yalnız kendine tahsisliyi gördüğü ağ YOK.** Konum: *"Konutmatik = tek projenin dijital ofisi; Projedar = tüm projelerin dağıtım ağı."* **RİSK:** komisyon/indirim + acente yönetimi zaten var; çok-müteahhit havuza kayarsa doğrudan rakip → network-effect + komisyonsuz hendeğini erken kaz.
 
 ### 2.5 Code5 PrismCRM — code5.com.tr · *bitişik: tek-firma iç CRM*
 - **Ne:** Proje satış firmalarına özel CRM (2004'ten). **Satış ofislerini merkeze entegre eder** (tek-geliştirici iç sistem).
@@ -208,7 +208,7 @@ Bütün rakipler tek bir eksende ayrışıyor: **stoğu kim kontrol eder × eri�
 - **Koyu "komuta merkezi / terminal":** Avesdo (#0C1D2B+cyan), Entera (charcoal+cyan), Novo (navy+neon), **Konutmatik (slate+rose)**, Alnair (grid/dashboard). → **Ciddi, veri-güveni, premium.**
 - **Açık/sıcak "network-pazaryeri":** Topli (beyaz+navy), Connject (krem+turuncu), NHB (mor+emoji), RE-OS (mavi+sarı, şablon). → **Yaklaşılabilir ama daha az "operasyonel güven."**
 
-**ProjePazar kararı (memory `tasarim-dili.md` ile uyumlu):** Koyu-değil ama **"Spatial açık" + veri-yoğun komuta merkezi** kutbundayız (Bloomberg+Linear). Konutmatik ve Avesdo bu yönün canlı kanıtı — **doğru yoldayız.** Kritik: **Konutmatik'in rose'undan ve genel slate-koyu klişesinden ayrış** — bizim "Spatial açık" zemin (#eef1f6) + navy/teal + sinyal renkleri (yeşil/amber/kırmızı) zaten farklılaştırıcı. Sinyal renkleri = statü dili (herkeste var ama bizde tutarlı sistem). **Kaçın:** RE-OS/Code5 Bootstrap-şablon hissi + NHB emoji-şirinliği.
+**Projedar kararı (memory `tasarim-dili.md` ile uyumlu):** Koyu-değil ama **"Spatial açık" + veri-yoğun komuta merkezi** kutbundayız (Bloomberg+Linear). Konutmatik ve Avesdo bu yönün canlı kanıtı — **doğru yoldayız.** Kritik: **Konutmatik'in rose'undan ve genel slate-koyu klişesinden ayrış** — bizim "Spatial açık" zemin (#eef1f6) + navy/teal + sinyal renkleri (yeşil/amber/kırmızı) zaten farklılaştırıcı. Sinyal renkleri = statü dili (herkeste var ama bizde tutarlı sistem). **Kaçın:** RE-OS/Code5 Bootstrap-şablon hissi + NHB emoji-şirinliği.
 
 ---
 

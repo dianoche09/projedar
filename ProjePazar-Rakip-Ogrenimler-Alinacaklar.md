@@ -1,5 +1,5 @@
 # 8 Oyuncu Analizi — Almamız Gerekenler
-### ProjePazar · rakip/referans sentezi ve aksiyon listesi · 13 Haziran 2026
+### Projedar · rakip/referans sentezi ve aksiyon listesi · 13 Haziran 2026
 İncelenen 8: **Tapuva (TR/İstanbul), EDAP (TR/Ankara), DomusHub, Kords (MENA), Nexprop (IN/UAE), Relata (IN), Flatter (HU), UnitAtlas.** Sayfaları gezildi; DomusHub/EDAP/Tapuva'da ürün ekranları (landing içi mockup + ekran görselleri) incelendi.
 
 ---

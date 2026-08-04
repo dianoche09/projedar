@@ -43,7 +43,7 @@ Orta ölçekli (100–499 birim) ve büyük (500+) müteahhit = en güçlü uyum
 
 ---
 
-## ProjePazar'a Etki → Aksiyon
+## Projedar'a Etki → Aksiyon
 - **Validasyon (kod yok):** opsiyon kilidi, canlı tek-kaynak fiyat, tahsis, kokpit "kim opsiyonladı" — hepsi belgelenen 4 acıyı doğrudan karşılıyor. Konsept doğrulandı.
 - **GTM/Onboarding:** Ü2 **concierge** ("Excel'ini al, biz girelim") + tek-proje ücretsiz pilot → Sistem Kuralları Bölüm 9 (SIMPLE/concierge) ile birebir. `tasks` memory'ye GTM hipotezi.
 - **Politika (B1 ile birlikte):** Landing/onboarding mesajı: "gayri resmi WhatsApp/sosyal medya kapanıyor — doğrulanmış kapalı ağ." Sosyal medya yasağı = pazarlama kaldıracı.

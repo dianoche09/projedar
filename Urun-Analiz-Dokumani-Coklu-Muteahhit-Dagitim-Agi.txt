@@ -690,16 +690,16 @@ Emlakçı: artan dolandırıcılıkla müşteri güvenini kazanma zorlaşıyor �
 Erken kapsamda kalsın: stok+fiyat (tek doğru), granüler tahsis, opsiyon kilidi, WhatsApp paylaşım + 2-dokunuş, Lead Protection (temel), Tazelik Sigortası, basit lead takibi/dağıtımı, arsa sahibi salt-okunur.
 MVP sonrası: Paylaşım Stüdyosu (premium), kat karşılığı detaylı pay-raporu, ileri finansal (döviz/şerefiye motoru), fiyat/talep zekası, Bölüm 26.1'deki ileri “killer” paneller (fiyat sapma alarmı, emlakçı skoru, tahsilat radar, satılabilirlik skoru). Bunlar veri olgunlaşınca güçlenir.
 Konum cümlesi (kalıcı)
-“ProjePazar bir emlak yazılımı değil; gayrimenkul sektörünün güven protokolüdür. Bu sistemde olmayan satış kaybeder.”
+“Projedar bir emlak yazılımı değil; gayrimenkul sektörünün güven protokolüdür. Bu sistemde olmayan satış kaybeder.”
 
 28. Yürütme Dokunuşları — Vibecoding Öncesi Son Tur
 Dördüncü değerlendirme, mimariyi kodlamaya geçmeden önce yürütme riskini azaltacak beş somut kararı netleştirdi. Bu bölüm doğrudan devir paketine (build girdisi) beslenir.
 28.1 Arsa sahibi = Truva Atı (viral büyüme kaldıracı)
 Salt-okunur erişim (Bölüm 27.2) yetmez; arsa sahibini büyüme kaldıracına çevir. Ankara'da arsa sahibi genelde yaşça büyük, “müteahhit benim dairelerimi arkamdan ucuza mı eritiyor?” şüphesiyle yaşar. Pay Bildirimi: müteahhit bir daireyi sattığında/opsiyonladığında arsa sahibine otomatik WhatsApp gider — “Sayın Ahmet Yılmaz, hak sahipliğiniz olan 12 no'lu daire X Ofis tarafından 5.2M TL'ye opsiyonlandı.” Bu şeffaflığı gören arsa sahibi bir sonraki arsasını yine bu sistemi kullanan müteahhide verir → platform, müteahhit için arsa bulma aşamasında bir güven-satışı kancası olur.
 28.2 Topli defansı — “Mülkiyet ve Hak Koruma”
-Emlakçı pragmatiktir: “bana kim müşteri/portföy getirirse oradayım.” Topli açık pazaryeridir; emlakçı portföyü ve daireyi herkese açık gördüğü için sürekli by-pass edilme korkusu yaşar. GTM vurgumuz “mülkiyet ve hak koruma” olmalı ve Lead Protection (Bölüm 27.3) pazarlamanın en önüne çıkmalı: ProjePazar'da müşteri sisteme işlendiği an emlakçı hukuki bir zırh kuşanır.
+Emlakçı pragmatiktir: “bana kim müşteri/portföy getirirse oradayım.” Topli açık pazaryeridir; emlakçı portföyü ve daireyi herkese açık gördüğü için sürekli by-pass edilme korkusu yaşar. GTM vurgumuz “mülkiyet ve hak koruma” olmalı ve Lead Protection (Bölüm 27.3) pazarlamanın en önüne çıkmalı: Projedar'da müşteri sisteme işlendiği an emlakçı hukuki bir zırh kuşanır.
 Topli (açık pazaryeri)
-ProjePazar (güven protokolü)
+Projedar (güven protokolü)
 “Herkes herkese satsın; başarırsan komisyondan pay alırım.”
 “Müteahhit kime yetki verirse o satsın; komisyona dokunmam, fiyatı ve müşteriyi kilitlerim.”
 28.3 WhatsApp maliyet — Hibrit bot tasarımı

@@ -7,7 +7,7 @@
 ---
 
 ## Özet
-Geliştirici-kontrollü **kapalı B2B dağıtım** olgun bir proptech segmenti (Hindistan/BAE/Fransa/ABD); TR'de boşluk. İncelenen modellerin **çoğu özelliği ProjePazar'da ZATEN VAR** — bu güçlü bir validasyon. 2-3 yeni fikir not edildi.
+Geliştirici-kontrollü **kapalı B2B dağıtım** olgun bir proptech segmenti (Hindistan/BAE/Fransa/ABD); TR'de boşluk. İncelenen modellerin **çoğu özelliği Projedar'da ZATEN VAR** — bu güçlü bir validasyon. 2-3 yeni fikir not edildi.
 
 ---
 
@@ -22,7 +22,7 @@ Geliştirici-kontrollü **kapalı B2B dağıtım** olgun bir proptech segmenti (
 
 ---
 
-## ProjePazar karşılaştırması
+## Projedar karşılaştırması
 
 | Pattern | Bizde durum |
 |---|---|
@@ -42,7 +42,7 @@ Geliştirici-kontrollü **kapalı B2B dağıtım** olgun bir proptech segmenti (
 
 ---
 
-## ProjePazar'a Etki → Aksiyon
+## Projedar'a Etki → Aksiyon
 - **Asıl çıktı = VALİDASYON:** mimari çekirdeğimiz (DB kilit + tahsis + canlı senkron + tazelik) global olgun modellerle **aynı hat**. Yanlış bir şey yapmıyoruz.
 - **Opsiyonel iyileştirmeler:** yukarıdaki 3 fikir — hiçbiri MVP-blocker değil; 2 (içerik değiştirilemezliği) düşük-efor, 3 (AI uyarı) Faz 2.
 

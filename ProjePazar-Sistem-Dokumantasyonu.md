@@ -1,4 +1,4 @@
-# ProjePazar : Sistem Dokümantasyonu (Kod Doğrulanmış)
+# Projedar : Sistem Dokümantasyonu (Kod Doğrulanmış)
 
 > **Üretim tarihi:** 2026-07-26
 > **Kaynak:** Repo'nun tam koddan taranması (45 sayfa, 7 API route, 19 tablo, 13 migration, 30 component, 15 lib modülü) + bağlayıcı dokümanlar (`ProjePazar-Sistem-Kurallari.md`, `ProjePazar-Devir-Dokumani.md`) + 170 commit geçmişi.
@@ -8,7 +8,7 @@
 
 ## 1. Ürün özü (tek paragraf)
 
-ProjePazar, çok müteahhitli, üretici kontrollü, **canlı bir konut stoğu dağıtım ağıdır**. Üretici (müteahhit) stoğunu, fiyatını, dağıtımını ve lead'ini tek noktadan yönetir; emlakçı yalnız kendine **tahsis edilmiş** projeleri tek canlı havuzdan görür, tek tıkla paylaşır ve lead toplar. Ortada **tek doğru kaynak** durur: bir fiyat/durum değişince tüm yetkili emlakçılara anında yansır. Konumlanma: "en hızlı satış yapılan ağ" ve gayrimenkulün **güven protokolü**. Tekil CRM değil, açık pazaryeri değil, ilan portalı değil, broker değil: saf satış altyapısı, komisyona dokunmaz.
+Projedar, çok müteahhitli, üretici kontrollü, **canlı bir konut stoğu dağıtım ağıdır**. Üretici (müteahhit) stoğunu, fiyatını, dağıtımını ve lead'ini tek noktadan yönetir; emlakçı yalnız kendine **tahsis edilmiş** projeleri tek canlı havuzdan görür, tek tıkla paylaşır ve lead toplar. Ortada **tek doğru kaynak** durur: bir fiyat/durum değişince tüm yetkili emlakçılara anında yansır. Konumlanma: "en hızlı satış yapılan ağ" ve gayrimenkulün **güven protokolü**. Tekil CRM değil, açık pazaryeri değil, ilan portalı değil, broker değil: saf satış altyapısı, komisyona dokunmaz.
 
 **Çekirdek değer:** "Bu daire hâlâ satılık mı, fiyatı ne?" sorusuna her an %100 doğru cevap.
 **Asıl moat:** üretici kontrolü (granüler tahsis) + veri yerçekimi (events Faz 1'den birikir, geçmişe doldurulamaz).
@@ -374,7 +374,7 @@ paylaşım/görüntüleme/lead/opsiyon → events (append-only)
 | 5 | ~~`/hesap-bekliyor` WhatsApp linkinde çift-encode (`%2520`)~~ | Kozmetik | ✅ **Düzeltildi** (2026-07-27, `%2520`→`%20`) |
 | 6 | `leadler`/`paylastiklarim` limit-100 dışında hacim koruması yok | Büyümede | 🟢 |
 | 7 | `supabase-schema.sql` 13 migration'ı merge etmemiş | Tek-dosya deploy eksik kalır | 🟡 |
-| 8 | ~~`projepazar-sistem/` untracked çöp klasör~~ | Secret commit riski | ✅ **Çözülmüş.** `.gitignore:42`'de ignore ediliyor (`f1a6311`) |
+| 8 | ~~`projedar-sistem/` untracked çöp klasör~~ | Secret commit riski | ✅ **Çözülmüş.** `.gitignore:42`'de ignore ediliyor (`f1a6311`) |
 
 ---
 
@@ -401,4 +401,4 @@ WhatsApp serbest-metin AI parse · Paylaşım Stüdyosu premium · ödeme planı
 
 ---
 
-*ProjePazar · Berrak Güven · Kod-doğrulanmış sistem dokümantasyonu · 2026-07-26. Bağlayıcı kaynak: `ProjePazar-Sistem-Kurallari.md`. Build sırası: `ProjePazar-Devir-Dokumani.md` Bölüm 16.*
+*Projedar · Berrak Güven · Kod-doğrulanmış sistem dokümantasyonu · 2026-07-26. Bağlayıcı kaynak: `ProjePazar-Sistem-Kurallari.md`. Build sırası: `ProjePazar-Devir-Dokumani.md` Bölüm 16.*

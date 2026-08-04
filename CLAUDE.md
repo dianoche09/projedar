@@ -1,4 +1,4 @@
-# CLAUDE.md — ProjePazar repo kuralları
+# CLAUDE.md — Projedar repo kuralları
 
 Bu dosya Claude Code'un her oturumda okuduğu kalıcı kurallardır.
 

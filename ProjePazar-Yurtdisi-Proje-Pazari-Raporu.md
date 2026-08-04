@@ -1,7 +1,7 @@
 # Yurtdışı Proje Satışı — Pazar Araştırması (Türkiye)
-### ProjePazar için fırsat değerlendirmesi · 13 Haziran 2026
+### Projedar için fırsat değerlendirmesi · 13 Haziran 2026
 
-> Türkiye'den yurtdışı konut projeleri satan oyuncular, en çok satılan ülkeler, alıcı motivasyonları ve bunların ProjePazar'a nasıl eklenebileceği. Rakamlar haber/sektör kaynaklarından; mertebe (büyüklük sırası) güvenilir, kesin tutarlar yaklaşık.
+> Türkiye'den yurtdışı konut projeleri satan oyuncular, en çok satılan ülkeler, alıcı motivasyonları ve bunların Projedar'a nasıl eklenebileceği. Rakamlar haber/sektör kaynaklarından; mertebe (büyüklük sırası) güvenilir, kesin tutarlar yaklaşık.
 
 ---
 
@@ -11,7 +11,7 @@
 - **İlk sıradaki rotalar:** Dubai · Yunanistan · ABD (Miami) · KKTC (Kuzey Kıbrıs) · İspanya · Portekiz · İngiltere · Macaristan & Balkanlar.
 - **Miami yükselişte:** Türkiye, Miami'de yeni proje alan 73 ülke arasında ilk kez **5. sıraya** çıktı (~%4 pay).
 - **Asıl itici güçler:** döviz bazlı kira getirisi, hızlı amortisman (Dubai 12–15 yıl, Miami 8–10 yıl; İstanbul 20–30 yıl), **Golden Visa / oturum / vatandaşlık**, AB serbest dolaşım, vize sorunu ve döviz koruması.
-- **ProjePazar için:** Bu segment ProjePazar'ın çekirdek modeline (tek doğru kaynak + tahsis + canlı stok) çok uygun — çünkü yurtdışı proje bilgisi Türkiye'de daha da **dağınık, eski ve asimetrik**. TR'deki bir "master acente" stoğu içeri alır, alt-emlakçılara tahsis eder. Faz 2 için güçlü bir genişleme.
+- **Projedar için:** Bu segment Projedar'ın çekirdek modeline (tek doğru kaynak + tahsis + canlı stok) çok uygun — çünkü yurtdışı proje bilgisi Türkiye'de daha da **dağınık, eski ve asimetrik**. TR'deki bir "master acente" stoğu içeri alır, alt-emlakçılara tahsis eder. Faz 2 için güçlü bir genişleme.
 
 ---
 
@@ -51,7 +51,7 @@ Trend: vize zorluğu + yüksek yurt içi amortisman süresi + döviz koruma aray
 | **Sera Group** | Dubai | Dubai'de lüks proje |
 | Golden Visa danışmanlıkları (Get Golden Visa, EAGVS vb.) | Yunanistan/Portekiz/İspanya | Oturum/vatandaşlık + GM paketleri |
 
-**Yapı:** Genelde bir **Türkiye merkezli "master acente"** yabancı geliştiricinin stoğunu alıp Türk yatırımcıya/alt-emlakçıya satıyor. Bu, ProjePazar'ın **üretici→tahsis→emlakçı** modeline birebir oturuyor (burada "üretici" rolünü yabancı geliştirici **veya** onun TR master acentesi üstlenir).
+**Yapı:** Genelde bir **Türkiye merkezli "master acente"** yabancı geliştiricinin stoğunu alıp Türk yatırımcıya/alt-emlakçıya satıyor. Bu, Projedar'ın **üretici→tahsis→emlakçı** modeline birebir oturuyor (burada "üretici" rolünü yabancı geliştirici **veya** onun TR master acentesi üstlenir).
 
 ---
 
@@ -64,7 +64,7 @@ Trend: vize zorluğu + yüksek yurt içi amortisman süresi + döviz koruma aray
 
 ---
 
-## 6. ProjePazar için anlam — nasıl ekleriz?
+## 6. Projedar için anlam — nasıl ekleriz?
 Bu segment çekirdek tezi **güçlendirir**: yurtdışı proje bilgisi Türkiye'de daha da dağınık, eski ve asimetrik → "tek doğru bilgi + canlı stok + tahsis" değeri burada daha da yüksek.
 
 **Veri modeli eklemeleri (mevcut yapıyı bozmadan):**

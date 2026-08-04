@@ -1,4 +1,4 @@
-# 00 — Araştırma Sentezi: ProjePazar'da Ne Değişiyor
+# 00 — Araştırma Sentezi: Projedar'da Ne Değişiyor
 
 > 7 araştırma raporunun (01–07) damıtılmış aksiyon listesi. Tarih: 2026-06-18.
 > **Tek cümle:** Araştırma ~%90 **VALİDASYON** — mimari/kararlar doğru çıktı. Gerçek yeni iş azdır.

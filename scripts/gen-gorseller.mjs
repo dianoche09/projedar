@@ -1,4 +1,4 @@
-// ProjePazar görsel üretim — fal.ai FLUX. .env.local'den anahtarı kendi okur (yazdırmaz).
+// Projedar görsel üretim — fal.ai FLUX. .env.local'den anahtarı kendi okur (yazdırmaz).
 // Çalıştır:  node scripts/gen-gorseller.mjs
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";

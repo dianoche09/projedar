@@ -1,4 +1,4 @@
-// ProjePazar — 6-7 PROJE seed (çok müteahhit, ticari alan, farklı kat planı). Demo. "En son temizleriz."
+// Projedar — 6-7 PROJE seed (çok müteahhit, ticari alan, farklı kat planı). Demo. "En son temizleriz."
 // node scripts/seed-projeler.mjs
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync, existsSync } from "node:fs";

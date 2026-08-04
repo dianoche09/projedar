@@ -1,20 +1,20 @@
-# ProjePazar — Tasarım Ruhu
+# Projedar — Tasarım Ruhu
 
 ## Hareketin adı: **Berrak Güven** (Clear Trust)
 
-> Bir gayrimenkul satış ağının tek vaadi şudur: *bu bilgi doğru.* Tasarım ruhu da bu tek cümleden doğar. Süsleme değil, berraklık. Gürültü değil, sinyal. ProjePazar'ın görselliği, "tek doğru bilgi"yi gözle görülür bir his hâline getirir.
+> Bir gayrimenkul satış ağının tek vaadi şudur: *bu bilgi doğru.* Tasarım ruhu da bu tek cümleden doğar. Süsleme değil, berraklık. Gürültü değil, sinyal. Projedar'ın görselliği, "tek doğru bilgi"yi gözle görülür bir his hâline getirir.
 
 ---
 
 ## Felsefe
 
-**Berraklık bir ahlaktır.** ProjePazar, dağınık, eski ve kontrolsüz bilginin yerine tek doğru kaynağı koyar. Bu yüzden tasarım da netliği bir estetik değil, bir dürüstlük olarak benimser. Bol beyaz alan, hizalı ızgara, sakin tipografi — hepsi "saklayacak bir şeyimiz yok, her şey ortada" der. Her piksel, kullanıcının "bu daire hâlâ satılık mı?" sorusuna duyduğu güveni pekiştirmek için vardır.
+**Berraklık bir ahlaktır.** Projedar, dağınık, eski ve kontrolsüz bilginin yerine tek doğru kaynağı koyar. Bu yüzden tasarım da netliği bir estetik değil, bir dürüstlük olarak benimser. Bol beyaz alan, hizalı ızgara, sakin tipografi — hepsi "saklayacak bir şeyimiz yok, her şey ortada" der. Her piksel, kullanıcının "bu daire hâlâ satılık mı?" sorusuna duyduğu güveni pekiştirmek için vardır.
 
 **Sinyal, gürültüyü yener.** Markanın kalbinde üç renkli bir sinyal sistemi durur: yeşil (müsait/canlı), amber (opsiyon), kırmızı (satıldı). Bu üç renk dekoratif değil, işlevseldir — ürünün birim ızgarasından doğar ve markanın imzası olur. Canlı yeşil, tazeliğin rengidir; bir nabız gibi atar. Tasarım, dikkati her zaman bu sinyale yönlendirir; geri kalan her şey sessiz zemindir.
 
 **Güven, lacivertin sükûnetidir.** Ana renk derin bir lacivterdir: kurumsal ama soğuk değil, ağırbaşlı ama erişilemez değil. Teal, ona modern bir berraklık katar. Zemin, hafif sıcak bir kırık beyazdır — çünkü ürün yalnız kurumsal müteahhide değil, telefonla iş yapan geleneksel danışmana da seslenir. Güven hem profesyonele güç, hem de yeni başlayana sıcaklık vaat eder.
 
-**İki yüz, tek ruh.** ProjePazar'ın iki modu vardır: aşırı basit (geleneksel kullanıcı) ve profesyonel (güçlü panel). Tasarım bu ikiliği renk ve tipografide tek bir ailede tutar — basit yüz az eleman, çok nefes; pro yüz aynı sistemin yoğunlaşmış hâli. Hiçbir yüz ötekine yabancı görünmez.
+**İki yüz, tek ruh.** Projedar'ın iki modu vardır: aşırı basit (geleneksel kullanıcı) ve profesyonel (güçlü panel). Tasarım bu ikiliği renk ve tipografide tek bir ailede tutar — basit yüz az eleman, çok nefes; pro yüz aynı sistemin yoğunlaşmış hâli. Hiçbir yüz ötekine yabancı görünmez.
 
 **Izgara, dürüstlüğün iskeletidir.** Her şey bir modüler ızgaraya oturur — tıpkı bir binanın blok×kat×daire düzeni gibi. Kartlar, çipler, tazelik damgaları aynı ritimle tekrar eder. Bu tekrar, ustalıkla kalibre edilmiş bir düzen hissi yaratır: rastgele değil, ölçülmüş; aceleyle değil, özenle kurulmuş.
 
@@ -52,4 +52,4 @@
 
 ---
 
-*Berrak Güven — ProjePazar görsel kimliği. projepazar.com*
+*Berrak Güven — Projedar görsel kimliği. projedar.com*

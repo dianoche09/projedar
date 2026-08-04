@@ -3,7 +3,7 @@
 > **Kaynak:** Perplexity (Deep Research) çıktısı, işlenmiş + doğrulanmış.
 > **Tarih:** 2026-06-18 · **Durum:** Doğrulandı (EİDS tarihi düzeltildi).
 > **Bağlayıcı referans:** [ProjePazar-Sistem-Kurallari.md](../ProjePazar-Sistem-Kurallari.md) — Bölüm 0 (ürün özü), 5 (kaçınılmazlık), 10 (kapsam disiplini).
-> **Not:** Bu dosya gerekçe/kaynak arşividir. Repoda yapılacak somut değişiklikler en altta "ProjePazar'a Etkisi → Aksiyon".
+> **Not:** Bu dosya gerekçe/kaynak arşividir. Repoda yapılacak somut değişiklikler en altta "Projedar'a Etkisi → Aksiyon".
 
 ---
 
@@ -13,7 +13,7 @@
 - **En yakın rakip: Topli.io** (Kasım 2025 İstanbul'a girdi) — ama **komisyon modeli** (satış başına pay). Bizim wedge: **komisyona dokunmama** + **emlakçıya bedava erişim**. Erken gelir = müteahhitle birebir **anlaşma** (abonelik/ofis kademesi sonraki faz).
 - **Kavramsal ikiz: Relata (Hindistan)** — geliştirici-kontrollü canlı envanter + broker ağı. Türkiye'de **yok**. Biz "Türkiye'ye özel Relata" konumuna oynayabiliriz.
 - İlan portalları (Sahibinden, Hepsiemlak, Zingat, Emlakjet) **farklı katman** — müteahhide stok sahipliği vermez. Hepsiemlak yönetimi birinci-el açığını **kendi kabul ediyor**.
-- **Düzenleyici (DÜZELTİLMİŞ + KAPSAM):** EİDS yetki doğrulaması satılık konutta **1 Şub 2026**'da yürürlüğe girdi (Perplexity "1 Oca 2025" demişti — yanlış; o tarih yalnız kiralık). **ANCAK** EİDS **ilan platformlarını** bağlar; ProjePazar **kapalı-devre B2B**'dir (son kullanıcıya açık ilan YOK; emlakçı tahsisli birimi auth arkasında görür, WhatsApp deep-link ile birebir paylaşır) → EİDS bizi **doğrudan bağlamaz**. Tek gri alan: public proje microsite (`public_slug`) hukuken "ilan" sayılır mı → **Prompt 3 (yasal)** netleştirecek, blocker değil.
+- **Düzenleyici (DÜZELTİLMİŞ + KAPSAM):** EİDS yetki doğrulaması satılık konutta **1 Şub 2026**'da yürürlüğe girdi (Perplexity "1 Oca 2025" demişti — yanlış; o tarih yalnız kiralık). **ANCAK** EİDS **ilan platformlarını** bağlar; Projedar **kapalı-devre B2B**'dir (son kullanıcıya açık ilan YOK; emlakçı tahsisli birimi auth arkasında görür, WhatsApp deep-link ile birebir paylaşır) → EİDS bizi **doğrudan bağlamaz**. Tek gri alan: public proje microsite (`public_slug`) hukuken "ilan" sayılır mı → **Prompt 3 (yasal)** netleştirecek, blocker değil.
 
 ---
 
@@ -46,7 +46,7 @@
 | Tapu.com | Online marketplace | Banka/şirket envanteri | İşlem komisyonu | ❌ | ❌ | ❌ | Yok |
 | Akıllı Satış Ofisi | Müteahhit CRM | Konut üreticisi | SaaS | ✅ (içeride) | ⚠️ kısmi | ❌ dış kanal yok | Orta |
 | BrokersApp/CRMx/Emsis | Emlakçı CRM | Emlak ofisi | Aylık abonelik (3K–30K TL) | ❌ | ❌ | ❌ | Düşük (veri kaynağı katmanı) |
-| **ProjePazar** | **B2B stok altyapısı** | **Müteahhit (erken) → Ofis (sonra)** | **Müteahhit anlaşma; emlakçı bedava** | **✅ üretici kontrolü** | **✅ canlı/tek kaynak** | **✅ granüler tahsis** | — |
+| **Projedar** | **B2B stok altyapısı** | **Müteahhit (erken) → Ofis (sonra)** | **Müteahhit anlaşma; emlakçı bedava** | **✅ üretici kontrolü** | **✅ canlı/tek kaynak** | **✅ granüler tahsis** | — |
 
 ---
 
@@ -60,7 +60,7 @@
 
 ---
 
-## ProjePazar'a Etkisi → Aksiyon Listesi
+## Projedar'a Etkisi → Aksiyon Listesi
 
 > Kapsam testi (Bölüm 10): her madde "canlı stok + üretici-kontrolü + güven + dağıtımı güçlendiriyor mu?" filtresinden geçti.
 

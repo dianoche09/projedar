@@ -7,13 +7,13 @@
 ---
 
 ## Özet
-Dört sorunun tek kök nedeni: **müteahhit↔danışman arasında ortak, gerçek-zamanlı, yetkili veri katmanı yok.** ProjePazar'ın mevcut mekanizmaları bunları doğrudan karşılıyor.
+Dört sorunun tek kök nedeni: **müteahhit↔danışman arasında ortak, gerçek-zamanlı, yetkili veri katmanı yok.** Projedar'ın mevcut mekanizmaları bunları doğrudan karşılıyor.
 
 ---
 
-## Bulgular → ProjePazar karşılığı
+## Bulgular → Projedar karşılığı
 
-| Sorun | Hukuki çerçeve (doğrulanmalı) | ProjePazar çözümü | Durum |
+| Sorun | Hukuki çerçeve (doğrulanmalı) | Projedar çözümü | Durum |
 |---|---|---|---|
 | **(a) Çift satış** | Topraktan satışta tapu yok → aynı bağımsız bölüm 2 kişiye: tazminat + **TCK 158/1-f** nitelikli dolandırıcılık; Yargıtay 15. HD önceliği sözleşme tarihine göre — ama **sonradan** mahkemede çözülüyor | **Opsiyon/rezervasyon kilidi + DB unique partial index** (önceden, sistematik önleme) | ✅ Kodda var |
 | **(b) Eski fiyat** | Gecikmeli PDF/Excel → TBK dürüstlük kuralı, danışman tazminat riski | **Canlı tek-kaynak fiyat senkronu** (paylaşımda canlı değerden basılır) | ✅ Kodda var |
@@ -26,11 +26,11 @@ Dört sorunun tek kök nedeni: **müteahhit↔danışman arasında ortak, gerçe
 ## En iyi pratik (global)
 - **MHub (Malezya):** 350.000+ rezervasyonda **sıfır çift satış** — merkezi rezervasyon kilidi modeli.
 - **Hindistan (RERA), ABD geliştiricileri:** "broker/client registration" formunu **sahiplik garantisi değil, ŞEFFAFLIK aracı** olarak kullanıyor — zaman damgalı müşteri kaydı.
-- **ProjePazar uyumu:** Bizim yeni **lead-sorgu** (müteahhit ad/telefon sorgular → ilk kaydeden danışman) = tam bu "registration as transparency" deseni. Kararla (garanti yok, görünürlük var) birebir örtüşüyor.
+- **Projedar uyumu:** Bizim yeni **lead-sorgu** (müteahhit ad/telefon sorgular → ilk kaydeden danışman) = tam bu "registration as transparency" deseni. Kararla (garanti yok, görünürlük var) birebir örtüşüyor.
 
 ---
 
-## ProjePazar'a Etki → Aksiyon
+## Projedar'a Etki → Aksiyon
 - **Validasyon:** opsiyon kilidi + canlı senkron + lead-sorgu = literatürün önerdiği üç mekanizma. Yeni eklenen lead-sorgu, global best-practice ile aynı çerçevede — doğru karar.
 - **Aksiyon yok (kod hazır).** Yalnız: hukuki atıflar (TCK 158/1-f, Yargıtay 15.HD, TBK 520-525) pazarlama/satış materyalinde kullanılacaksa **birincil kaynaktan teyit** edilmeli.
 

@@ -1,4 +1,4 @@
-// ProjePazar — ZENGİN DEMO VERİ seed (service-role, canlı DB). "En son temizleriz."
+// Projedar — ZENGİN DEMO VERİ seed (service-role, canlı DB). "En son temizleriz."
 // Çalıştır:  node scripts/seed-demo.mjs
 // Mevcut projeleri zenginleştirir: künye/kira/oturum/golden-vize + ödeme planı + medya
 // (fal.ai görselleri) + mahal + tahsis + görüntüleme/paylaşım/opsiyon event'leri.

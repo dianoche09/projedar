@@ -1,4 +1,4 @@
-# ProjePazar — Geliştirme Devir Dokümanı (Handoff)
+# Projedar — Geliştirme Devir Dokümanı (Handoff)
 **Sürüm:** Build v1 · Strateji dokümanı v6'ya dayanır · 13 Haziran 2026
 **Amaç:** Bu dosyayı doğrudan IDE'ye (Cursor / Windsurf + Claude Code) ver. Tek başına yeterlidir; ürünün ne olduğu, MVP kapsamı, mimari, veri modeli (SQL + RLS), akışlar, ekranlar, marka, env değişkenleri ve PR-PR build sırası burada.
 
@@ -18,7 +18,7 @@ Bu handoff "Build v1" fotoğrafıdır; aşağıdaki 3 nokta o günden bu yana de
 ---
 
 ## 0. Özet (1 paragraf)
-ProjePazar, çok-müteahhitli, üretici-kontrollü, **canlı bir konut stoğu dağıtım ağıdır**. Üretici (müteahhit) stoğunu/fiyatını/dağıtımını tek noktadan yönetir; emlakçı yalnız kendisine **tahsis edilmiş** projeleri tek canlı havuzdan görür, tek tıkla paylaşır ve lead toplar. Tek bir doğru kaynak ortada durur; bir değişiklik tüm yetkili emlakçılara anında yansır. Konum: **"en hızlı satış yapılan ağ" / gayrimenkulün güven protokolü** — tekil CRM değil, açık pazaryeri (Topli) değil, broker değil. Saf altyapı, komisyona dokunmaz.
+Projedar, çok-müteahhitli, üretici-kontrollü, **canlı bir konut stoğu dağıtım ağıdır**. Üretici (müteahhit) stoğunu/fiyatını/dağıtımını tek noktadan yönetir; emlakçı yalnız kendisine **tahsis edilmiş** projeleri tek canlı havuzdan görür, tek tıkla paylaşır ve lead toplar. Tek bir doğru kaynak ortada durur; bir değişiklik tüm yetkili emlakçılara anında yansır. Konum: **"en hızlı satış yapılan ağ" / gayrimenkulün güven protokolü** — tekil CRM değil, açık pazaryeri (Topli) değil, broker değil. Saf altyapı, komisyona dokunmaz.
 
 **Değişmez çekirdek (asla bozma):** tek doğru kaynak · üretici kontrolü (granüler tahsis) · opsiyon kilidi ile çift-satış engeli · görünür tazelik · RLS ile veri izolasyonu.
 
@@ -219,7 +219,7 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=          # sadece server/cron
 # App
-NEXT_PUBLIC_APP_URL=https://app.projepazar.com
+NEXT_PUBLIC_APP_URL=https://app.projedar.com
 LEAD_SHARE_SECRET=                  # imzalı link token üretimi
 # WhatsApp (Faz 2 / sadece teyit şablonu)
 WHATSAPP_PHONE_NUMBER_ID=
@@ -407,4 +407,4 @@ Berrak Güven tasarım tokenları. Bittiğinde kabul kriterini ve sonraki PR'ı 
 ```
 
 ---
-*ProjePazar · projepazar.com · Berrak Güven · Devir Dokümanı (Build v1)*
+*Projedar · projedar.com · Berrak Güven · Devir Dokümanı (Build v1)*

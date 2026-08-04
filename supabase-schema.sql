@@ -1,4 +1,4 @@
--- ProjePazar — Supabase şema + RLS (MVP)
+-- Projedar — Supabase şema + RLS (MVP)
 -- Uygula: supabase migration / MCP apply_migration. RLS her tabloda açık.
 -- NOT: WhatsApp serbest-metin yazma YOK (Faz 2). Stok girişi panel/concierge.
 --
