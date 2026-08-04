@@ -8,19 +8,46 @@ const SITE = "https://projedar.com";
  */
 export default function robots(): MetadataRoute.Robots {
   const gizli = ["/havuz", "/uretici", "/admin", "/api", "/hesap-bekliyor", "/p/", "/tasarim", "/login", "/kayit"];
+  // GEO görünürlüğü: AI arama/asistan crawler'ları landing içeriğini okuyabilsin.
   const aiCrawlers = [
+    // OpenAI
     "GPTBot",
     "OAI-SearchBot",
     "ChatGPT-User",
+    // Anthropic
     "ClaudeBot",
     "Claude-Web",
+    "Claude-SearchBot",
     "anthropic-ai",
+    // Perplexity
     "PerplexityBot",
+    "Perplexity-User",
+    // Google (AI / Gemini / Vertex)
     "Google-Extended",
+    "GoogleOther",
+    "Google-CloudVertexBot",
+    // Apple
+    "Applebot",
     "Applebot-Extended",
+    // Amazon
     "Amazonbot",
+    // ByteDance
     "Bytespider",
+    // Common Crawl (birçok LLM eğitim kaynağı)
     "CCBot",
+    // Meta AI
+    "Meta-ExternalAgent",
+    "FacebookBot",
+    // Diğer AI arama / asistan
+    "cohere-ai",
+    "Diffbot",
+    "PhindBot",
+    "YouBot",
+    "DuckAssistBot",
+    "PetalBot",
+    "Bravebot",
+    "ImagesiftBot",
+    "Timpibot",
   ];
 
   return {
