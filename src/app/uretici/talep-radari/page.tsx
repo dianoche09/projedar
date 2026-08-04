@@ -52,7 +52,9 @@ export default async function UreticiTalepRadari() {
       .select("tip, proje_id, birim_id, profile_id, payload, created_at")
       .gte("created_at", altmisGunOnce)
       .order("created_at", { ascending: false })
-      .limit(6000),
+      // desc+limit en YENİ satırları verir → kesilirse EN ESKİ haftalar düşer, trend/delta
+      // büyüme yönünde yanlı görünür. Sınır güvenli üst değerde; hacim büyürse SQL agregasyona geç.
+      .limit(20000),
     supabase.from("tahsis").select("proje_id, hedef_tip, hedef_id, munhasir, bitis"),
   ]);
 
@@ -118,7 +120,8 @@ export default async function UreticiTalepRadari() {
       const admin = createAdminClient();
       const { data: prof } = await admin.from("profiles").select("id, ad").in("id", danTop.map((d) => d[0]));
       danAd = new Map((prof ?? []).map((p) => [p.id as string, p.ad as string | null]));
-    } catch {
+    } catch (e) {
+      console.error("Danışman isim çözümü hatası:", e);
       danAd = new Map();
     }
   }
@@ -192,7 +195,8 @@ export default async function UreticiTalepRadari() {
       const admin = createAdminClient();
       const { data: prof } = await admin.from("profiles").select("id, ad").in("id", tahsisPerf.map((t) => t.hedef_id));
       tahsisAd = new Map((prof ?? []).map((p) => [p.id as string, p.ad as string | null]));
-    } catch {
+    } catch (e) {
+      console.error("Tahsis isim çözümü hatası:", e);
       tahsisAd = new Map();
     }
   }

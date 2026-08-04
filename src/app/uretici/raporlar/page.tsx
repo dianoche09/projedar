@@ -63,10 +63,11 @@ export default async function Raporlar() {
 
   // — FİYAT HAREKETLERİ (90g) — DB trigger 'fiyat' event'lerinden (birim_fiyat_log) —
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
+  const projeIds = new Set(projeAd.keys()); // kod-scope: events RLS'e güvenme (talep-radari deseni)
   type FiyatPayload = { eski?: number; yeni?: number; pct?: number; daire_no?: string | null; para_birimi?: string | null };
   type FiyatRaw = { proje_id: string | null; payload: FiyatPayload | null; created_at: string };
   const fiyatlar = ((fiyatRaw ?? []) as FiyatRaw[])
-    .filter((f) => f.payload && typeof f.payload.pct === "number")
+    .filter((f) => f.proje_id && projeIds.has(f.proje_id) && f.payload && typeof f.payload.pct === "number")
     .map((f) => ({
       proje_id: f.proje_id,
       pct: f.payload!.pct as number,
@@ -133,7 +134,7 @@ export default async function Raporlar() {
             </div>
             {kalanMusait > 0 && tukenisAy != null ? (
               <p className="mt-1 text-xs text-gray">
-                {kalanMusait} müsait birim · aylık {aylikHiz.toFixed(1)} birim hız
+                {kalanMusait} satılabilir müsait birim · aylık {aylikHiz.toFixed(1)} birim hız
               </p>
             ) : null}
 
