@@ -23,11 +23,12 @@ type BirimRaw = { proje_id: string; durum: string; son_guncelleme: string | null
 
 const OLAY_ETIKET: Record<string, string> = {
   paylasim: "Paylaşım", goruntuleme: "Görüntüleme", lead: "Lead", favori: "Favori",
-  satis: "Satış", opsiyon: "Opsiyon talebi", durum: "Durum değişimi",
+  satis: "Satış", opsiyon: "Opsiyon talebi", durum: "Durum değişimi", fiyat: "Fiyat değişimi",
 };
 const OLAY_RENK: Record<string, string> = {
   satis: "var(--color-red)", opsiyon: "var(--color-amber)", lead: "var(--color-green)", favori: "var(--color-red)",
   paylasim: "var(--color-navy)", goruntuleme: "var(--color-ink-soft)", durum: "var(--color-ink-soft)",
+  fiyat: "var(--color-teal)",
 };
 const KANAL_ETIKET: Record<string, string> = {
   mikrosite: "Mikrosite", "proje karti": "Proje kartı", manuel: "Manuel", diğer: "Diğer",

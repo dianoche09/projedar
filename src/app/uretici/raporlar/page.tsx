@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { YiginBar } from "@/components/ui/Grafik";
+import { paraKisa } from "@/lib/stok";
+import { zamanOnce } from "@/lib/types";
 
 const C = { green: "#2FB36B", amber: "#E3A12C", red: "#D15A4E" };
 
@@ -24,9 +26,17 @@ export default async function Raporlar() {
   const supabase = await createClient();
   // YALNIZ stok verisi. Lead verisi raporlanmaz (sorgu-only model: müteahhit emlakçının
   // lead havuzunu toplu göremez — tek görünüm /uretici/lead-sorgu bireysel sorgusudur).
-  const [{ data: birimler }, { data: tipler }] = await Promise.all([
+  const [{ data: birimler }, { data: tipler }, { data: projeler }, { data: fiyatRaw }] = await Promise.all([
     supabase.from("birim").select("tip_id, durum, satilabilir, son_guncelleme"),
     supabase.from("daire_tipi").select("id, oda, ad"),
+    supabase.from("proje").select("id, ad"),
+    supabase
+      .from("events")
+      .select("proje_id, payload, created_at")
+      .eq("tip", "fiyat")
+      .gte("created_at", gunOnce(90))
+      .order("created_at", { ascending: false })
+      .limit(500),
   ]);
 
   const B = birimler ?? [];
@@ -50,6 +60,25 @@ export default async function Raporlar() {
   const aylikHiz = satilan90 / 3; // son 90 gün ortalaması (gürültüyü yumuşatır)
   const tukenisAy = aylikHiz > 0 ? Math.ceil(kalanMusait / aylikHiz) : null;
   const absorpsiyonOran = satilabilirB.length ? Math.round((satilan30 / satilabilirB.length) * 100) : 0;
+
+  // — FİYAT HAREKETLERİ (90g) — DB trigger 'fiyat' event'lerinden (birim_fiyat_log) —
+  const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
+  type FiyatPayload = { eski?: number; yeni?: number; pct?: number; daire_no?: string | null; para_birimi?: string | null };
+  type FiyatRaw = { proje_id: string | null; payload: FiyatPayload | null; created_at: string };
+  const fiyatlar = ((fiyatRaw ?? []) as FiyatRaw[])
+    .filter((f) => f.payload && typeof f.payload.pct === "number")
+    .map((f) => ({
+      proje_id: f.proje_id,
+      pct: f.payload!.pct as number,
+      eski: typeof f.payload!.eski === "number" ? (f.payload!.eski as number) : null,
+      yeni: typeof f.payload!.yeni === "number" ? (f.payload!.yeni as number) : null,
+      daire_no: f.payload!.daire_no ?? null,
+      para: f.payload!.para_birimi ?? "TRY",
+      created_at: f.created_at,
+    }));
+  const zamSay = fiyatlar.filter((f) => f.pct > 0).length;
+  const indirimSay = fiyatlar.filter((f) => f.pct < 0).length;
+  const ortPct = fiyatlar.length ? fiyatlar.reduce((t, f) => t + f.pct, 0) / fiyatlar.length : 0;
 
   // Oda (tip) bazlı performans — tüm projeler
   const tipMap = new Map((tipler ?? []).map((t) => [t.id, t]));
@@ -150,6 +179,54 @@ export default async function Raporlar() {
           </div>
         )}
       </section>
+
+      {/* FİYAT HAREKETLERİ */}
+      {fiyatlar.length > 0 ? (
+        <section className="rounded-2xl border border-hair bg-card p-5 shadow-card sm:p-6">
+          <h2 className="font-display text-sm font-semibold text-ink">Fiyat Hareketleri · 90g</h2>
+          <p className="mt-0.5 text-xs text-gray">Son 90 günde fiyat değişimleri · zam, indirim ve ortalama yön.</p>
+
+          <div className="mt-4 grid grid-cols-3 gap-3">
+            <Stat etiket="Değişim" deger={String(fiyatlar.length)} alt="90 günde" />
+            <Stat etiket="Zam" deger={String(zamSay)} alt="artış" />
+            <Stat etiket="İndirim" deger={String(indirimSay)} alt="düşüş" />
+          </div>
+          <p className="mt-2 text-xs text-gray">
+            Ortalama yön:{" "}
+            <span className={`font-mono font-semibold ${ortPct >= 0 ? "text-teal-d" : "text-red"}`}>
+              {ortPct >= 0 ? "+" : ""}%{ortPct.toFixed(1)}
+            </span>
+          </p>
+
+          <ul className="mt-4 divide-y divide-hair">
+            {fiyatlar.slice(0, 6).map((f, i) => {
+              const up = f.pct >= 0;
+              return (
+                <li key={i} className="flex items-center gap-3 py-2.5 text-sm">
+                  <span
+                    className="size-[7px] shrink-0 rounded-full"
+                    style={{ background: up ? "var(--color-teal)" : "var(--color-red)" }}
+                    aria-hidden
+                  />
+                  <span className="min-w-0 flex-1 truncate text-ink">
+                    {projeAd.get(f.proje_id ?? "") ?? "—"}
+                    {f.daire_no ? <span className="text-gray"> · {f.daire_no}</span> : null}
+                  </span>
+                  <span className="shrink-0 font-mono text-xs tabular-nums text-gray">
+                    {f.eski != null ? paraKisa(f.eski, f.para) : "—"} → {f.yeni != null ? paraKisa(f.yeni, f.para) : "—"}
+                  </span>
+                  <span
+                    className={`w-16 shrink-0 text-right font-mono text-xs font-semibold tabular-nums ${up ? "text-teal-d" : "text-red"}`}
+                  >
+                    {up ? "+" : ""}%{f.pct}
+                  </span>
+                  <span className="hidden w-20 shrink-0 text-right text-xs text-gray sm:block">{zamanOnce(f.created_at)}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 }
