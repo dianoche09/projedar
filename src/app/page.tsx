@@ -135,6 +135,35 @@ function jsonLd() {
     "@graph": [
       { "@type": "Organization", "@id": `${SITE}/#org`, name: "Projedar", url: SITE, logo: `${SITE}/icon-512.png`, description: "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı B2B konut stoğu ağı." },
       { "@type": "WebSite", "@id": `${SITE}/#website`, url: SITE, name: "Projedar", inLanguage: "tr-TR", publisher: { "@id": `${SITE}/#org` } },
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${SITE}/#app`,
+        name: "Projedar",
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Web, iOS, Android (PWA)",
+        description: "Çok-müteahhitli, üretici-kontrollü canlı konut stoğu dağıtım ağı. Tek doğru kaynak, granüler tahsis, çift-satış kalkanı, görünür tazelik.",
+        publisher: { "@id": `${SITE}/#org` },
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY", description: "Gayrimenkul danışmanı için başlangıçta ücretsiz; komisyon yok." },
+      },
+      {
+        "@type": "Service",
+        "@id": `${SITE}/#service`,
+        name: "Canlı Konut Stoğu Dağıtım Ağı",
+        serviceType: "Yeni konut projeleri için tahsisli canlı satış ve dağıtım ağı",
+        provider: { "@id": `${SITE}/#org` },
+        areaServed: { "@type": "Country", name: "Türkiye" },
+        description: "Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; yetkili gayrimenkul danışmanları tahsisli projeleri tek canlı ağda görür ve paylaşır. Komisyon yok.",
+        audience: [
+          { "@type": "Audience", audienceType: "Müteahhit / konut projesi geliştiren firma" },
+          { "@type": "Audience", audienceType: "Gayrimenkul danışmanı ve ofisi" },
+        ],
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "@id": `${SITE}/#nav`,
+        name: ["Müteahhitler için", "Danışmanlar için", "Güven Protokolü"],
+        url: [`${SITE}/muteahhit`, `${SITE}/emlakci`, `${SITE}/guven`],
+      },
       { "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: SSS.map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
     ],
   };
