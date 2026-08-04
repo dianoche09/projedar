@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { panelYolu } from "@/lib/roller";
+import { cikisYap } from "@/app/(auth)/login/actions";
 import { Logo } from "@/components/Logo";
 import { Sayaclar } from "@/components/Sayaclar";
 import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
@@ -146,10 +146,11 @@ export default async function Home() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Landing herkese açık — giriş yapmış kullanıcı YÖNLENDİRİLMEZ; header'da "Panele git" gösterilir.
+  let panelHref: string | null = null;
   if (user) {
     const { data } = await supabase.from("profiles").select("rol, durum").eq("id", user.id).single();
-    if (data && data.durum !== "aktif") redirect("/hesap-bekliyor");
-    redirect(panelYolu(data?.rol));
+    panelHref = data && data.durum !== "aktif" ? "/hesap-bekliyor" : panelYolu(data?.rol);
   }
 
   return (
@@ -166,8 +167,17 @@ export default async function Home() {
             ))}
           </div>
           <div className="flex items-center gap-2.5">
-            <span className="hidden sm:block"><Link href="/login" className="btn-ghost">Giriş yap</Link></span>
-            <MagneticButton href="/kayit" className="btn-action">Ücretsiz başla</MagneticButton>
+            {panelHref ? (
+              <>
+                <span className="hidden sm:block"><form action={cikisYap}><button type="submit" className="btn-ghost">Çıkış</button></form></span>
+                <MagneticButton href={panelHref} className="btn-action">Panele git</MagneticButton>
+              </>
+            ) : (
+              <>
+                <span className="hidden sm:block"><Link href="/login" className="btn-ghost">Giriş yap</Link></span>
+                <MagneticButton href="/kayit" className="btn-action">Ücretsiz başla</MagneticButton>
+              </>
+            )}
           </div>
         </nav>
       </header>
