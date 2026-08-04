@@ -57,8 +57,8 @@ export default function UreticiSunum() {
       gorsel="/sunum/santiye-gece.jpg"
       logo
       kicker="Projedar · Üretici sunumu"
-      baslik="Satışın komuta merkezi"
-      alt="Canlı stok. Tahsisli dağıtım. Kilitli opsiyon. Kontrol baştan sona sizde."
+      baslik="Bloklar yükselir. Stok erir."
+      alt="Yeni projelerin profesyonel satış ağı: canlı stok, tahsisli dağıtım, kilitli opsiyon. Kontrol baştan sona sizde."
     >
       <div className="da da-4 mt-8 flex flex-wrap items-center justify-center gap-3">
         <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-semibold text-[#3ddc8f] backdrop-blur-md">
@@ -97,14 +97,14 @@ export default function UreticiSunum() {
     <Slayt
       key="cozum"
       kicker="Çözüm"
-      baslik="Fiyatın tek sahibi var: siz"
-      alt="Fiyat ve durum yalnız tek yerde yaşar. Her paylaşım, her ekran o canlı değerden beslenir; sahada sizin yazdığınızdan başka rakam yoktur."
+      baslik="Fiyat kopyalanmaz. Link bir penceredir."
+      alt="Liste kaynağından koptuğu an yaşlanmaya başlar. Burada kopacak liste yok: fiyat ve durum tek kayıtta yaşar, paylaşılan her link o kayda açılan bir penceredir."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_360px]">
         <ul className="space-y-4">
-          <OnayMadde>Rakamı değiştirirsiniz; tüm ağ aynı saniye yeni fiyatı görür.</OnayMadde>
-          <OnayMadde>Üç renk, sıfır tereddüt: müsait, opsiyon, satıldı.</OnayMadde>
-          <OnayMadde>Kopya yok: paylaşılan link her açılışta canlı değeri basar.</OnayMadde>
+          <OnayMadde>Link her açılışta canlı kayıttan okur; eski fiyat dolaşacak kopya bulamaz.</OnayMadde>
+          <OnayMadde>Tüm ağ üç renkle konuşur: müsait, opsiyon, satıldı. Yorum farkı yoktur.</OnayMadde>
+          <OnayMadde>Sahada sizin yazdığınızdan başka rakam yoktur; markanız yanlış bilgiyle yıpranmaz.</OnayMadde>
         </ul>
         <CanliBirimKart dipnot="Emlakçının paylaştığı linkte fiyat bu canlı değerden basılır." />
       </div>
@@ -131,8 +131,8 @@ export default function UreticiSunum() {
       key="tahsis"
       genis
       kicker="Kontrol"
-      baslik="Stok sizin. Kimin göreceği de."
-      alt="Tüm ağ, seçili ofisler, tek danışman veya 7 günlük özel tahsis: görünürlüğü siz çizersiniz. Kapsam dışındaki daire kimseye görünmez."
+      baslik="Yetki bir ayar değil, kapıdır"
+      alt="Tüm ağ, seçili ofisler, tek danışman veya 7 günlük özel tahsis: kapıları siz açarsınız. Kapalı kapının arkasındaki danışman, projenin varlığını bile görmez."
     >
       <TahsisPaneli />
     </Slayt>,
@@ -143,12 +143,12 @@ export default function UreticiSunum() {
       gorsel="/sunum/kule-cephe.jpg"
       hiza="sol"
       kicker="Güven"
-      baslik="Çift satış yapısal olarak imkânsız"
-      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz."
+      baslik="Opsiyon bir söz değil. Kilittir."
+      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satış yapısal olarak imkânsızdır."
     />,
 
     /* 7 · Kilit mekanizması */
-    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Söz değil: veritabanı kuralı">
+    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Kilit uygulamada değil, veritabanında">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Database}
@@ -173,8 +173,8 @@ export default function UreticiSunum() {
     <Slayt
       key="tazelik"
       kicker="Tazelik"
-      baslik="Zam yaptınız. Ağ saniyeler içinde güncel."
-      alt="Her birimin yanında son güncelleme yaşar. Eskiyen veri gizlenmez; rozet rengiyle kendini ele verir."
+      baslik="Eski veri bu ağda saklanamaz"
+      alt="Her birimin yanında son güncelleme yaşar: 'canlı · 2 dk önce'. Eskiyen veri gizlenmez, rozet rengiyle kendini ele verir; müşteri karşısında kimse 41 günlük dosya konuşmaz."
     >
       <TazelikOlcek />
       <p className="deck-kart deck-soft mt-5 px-5 py-4 text-[13.5px] leading-relaxed">
@@ -205,7 +205,7 @@ export default function UreticiSunum() {
       key="radar"
       kicker="Veri"
       baslik="Hangi daire satar? Tahmin değil, sinyal."
-      alt="Her görüntüleme, paylaşım ve opsiyon iz bırakır. Şerefiye ve zam kararını his değil, kendi projenizin verisi versin."
+      alt="Her görüntüleme, paylaşım ve opsiyon iz bırakır. Şerefiye ve fiyat kararını his değil, kendi projenizin verisi versin."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="deck-kart signal-top p-5 text-left" style={{ "--_sig": "#2fd3bc" } as React.CSSProperties}>

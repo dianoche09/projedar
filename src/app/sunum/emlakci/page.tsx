@@ -208,8 +208,8 @@ export default function EmlakciSunum() {
       key="ucret"
       orta
       kicker="Ücret"
-      baslik="Temel üyelik ücretsiz. Komisyon kesintisi yok."
-      alt="Gelirimizi üreticiyle yaptığımız anlaşmadan alırız. Senin kazandığın komisyon tamamen senindir."
+      baslik="Kazancın %100'ü sende"
+      alt="Üyelik ücretsiz, komisyondan pay almayız. Gelirimizi proje sahibiyle yaptığımız anlaşmadan alırız; senin kazandığın komisyon tamamen senindir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
