@@ -9,12 +9,14 @@ export type OlayTip =
   | "opsiyon"
   | "satis"
   | "durum"
+  | "fiyat" // birim.liste_fiyati değişimi (DB trigger: birim_fiyat_log)
   | "paylasim"
   | "goruntuleme"
   | "lead"
   | "onay" // admin: hesap onay/red/durum
   | "dogrulama" // admin: üretici güven rozeti
   | "abonelik" // admin: paket atama
+  | "katalog" // emlakçı: müşteri kataloğu üretti (proje + birim listesi payload)
   | "favori"; // mikrosite: müşteri favoriledi (anonim sinyal)
 
 export type OlayGirdi = {
