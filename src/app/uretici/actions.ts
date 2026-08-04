@@ -1094,3 +1094,29 @@ export async function mahalSil(formData: FormData) {
   await supabase.from("mahal").delete().eq("id", id.data);
   revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
 }
+
+/** Üretici kurumsal profili (şirket sayfası). Owner RLS: sahip_id = auth.uid(). uretici.profil jsonb. */
+export async function ureticiProfilGuncelle(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+  const metin = (v: FormDataEntryValue | null) => {
+    const s = String(v ?? "").trim();
+    return s === "" ? null : s;
+  };
+  const profil = {
+    logo_url: metin(formData.get("logo_url")),
+    kurulus_yili: metin(formData.get("kurulus_yili")),
+    hakkinda: metin(formData.get("hakkinda")),
+    web: metin(formData.get("web")),
+    il: metin(formData.get("il")),
+    ilce: metin(formData.get("ilce")),
+    telefon: metin(formData.get("telefon")),
+  };
+  const { error } = await supabase.from("uretici").update({ profil }).eq("sahip_id", user.id);
+  if (error) hataya("/uretici/ayarlar", error.message);
+  revalidatePath("/uretici/ayarlar");
+  basariya("/uretici/ayarlar", formData, "Firma profili güncellendi");
+}

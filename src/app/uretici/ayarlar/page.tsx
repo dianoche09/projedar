@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { ureticiProfilGuncelle } from "@/app/uretici/actions";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 
 /* =========================================================
    AYARLAR — profil + üretici firma bilgisi (salt-okunur özet).
@@ -31,12 +33,15 @@ export default async function UreticiAyarlar() {
   // Üreticinin firması (sahip_id = oturum). Admin görünümünde olmayabilir → graceful.
   const { data: firma } = await supabase
     .from("uretici")
-    .select("ad, vergi_no, dogrulanmis, created_at")
+    .select("ad, vergi_no, dogrulanmis, created_at, profil")
     .eq("sahip_id", user?.id ?? "")
     .maybeSingle();
 
   const ad = profil?.ad ?? user?.email ?? "—";
   const dogrulanmis = firma?.dogrulanmis ?? false;
+  const fp = ((firma?.profil ?? {}) as Record<string, string | null>) ?? {};
+  const inpCls =
+    "w-full rounded-lg border border-[var(--cizgi)] bg-soft px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
@@ -134,6 +139,32 @@ export default async function UreticiAyarlar() {
             </p>
           )}
         </section>
+
+        {/* FİRMA PROFİLİ (şirket sayfası — tahsisli emlakçıya üretici kartında görünür) */}
+        {firma ? (
+          <section className="kart p-5">
+            <div className="mb-1 flex items-center gap-2">
+              <svg width="17" height="17" className="text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 21V8l9-5 9 5v13" />
+                <path d="M9 21v-6h6v6" />
+              </svg>
+              <h2 className="font-display text-[15px] font-bold text-ink">Firma Profili</h2>
+            </div>
+            <p className="mb-3 text-[12px] text-[var(--ink-faint)]">
+              Bu bilgiler, projelerini tahsis ettiğin emlakçılara üretici kartında gösterilir.
+            </p>
+            <form action={ureticiProfilGuncelle} className="grid gap-2.5 sm:grid-cols-2">
+              <input name="logo_url" defaultValue={fp.logo_url ?? ""} placeholder="Logo URL (https://...)" className={inpCls} />
+              <input name="web" defaultValue={fp.web ?? ""} placeholder="Web sitesi (https://...)" className={inpCls} />
+              <input name="kurulus_yili" defaultValue={fp.kurulus_yili ?? ""} placeholder="Kuruluş yılı (ör. 1996)" className={inpCls} />
+              <input name="telefon" defaultValue={fp.telefon ?? ""} placeholder="Telefon" className={inpCls} />
+              <input name="il" defaultValue={fp.il ?? ""} placeholder="İl" className={inpCls} />
+              <input name="ilce" defaultValue={fp.ilce ?? ""} placeholder="İlçe" className={inpCls} />
+              <textarea name="hakkinda" defaultValue={fp.hakkinda ?? ""} placeholder="Firma hakkında (kısa kurumsal tanıtım)" rows={4} className={`${inpCls} sm:col-span-2`} />
+              <div className="sm:col-span-2"><SubmitButton>Firma profilini kaydet</SubmitButton></div>
+            </form>
+          </section>
+        ) : null}
 
         {/* HIZLI ERİŞİM */}
         <section className="kart p-5">

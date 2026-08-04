@@ -71,6 +71,14 @@ export default async function HavuzProjeDetay({
   const tipListe = (tipler ?? []) as Tip[];
   const kunye = (proje.kunye ?? {}) as Record<string, unknown>;
 
+  // Üretici kurumsal profili (RLS: uretici_emlakci_select — tahsisli projenin üreticisi görünür).
+  const { data: uretici } = await supabase
+    .from("uretici")
+    .select("ad, dogrulanmis, profil")
+    .eq("id", proje.uretici_id)
+    .maybeSingle();
+  const up = (uretici?.profil ?? {}) as Record<string, string | null>;
+
   const kapakBelge = belgeler.find((b) => b.tip === "kapak")?.url ?? null;
   const kapak = projeKapak(kapakBelge, proje.id);
   const fotolar = belgeler.filter((b) => b.tip === "foto" && b.url);
@@ -329,6 +337,43 @@ export default async function HavuzProjeDetay({
                 </div>
               </a>
             ))}
+          </div>
+        </div>
+      ) : null}
+
+      {/* ===== ÜRETİCİ (şirket kartı) ===== */}
+      {uretici ? (
+        <div className="kart mt-5 p-5 sm:p-6">
+          <BolumBaslik>Üretici</BolumBaslik>
+          <div className="mt-4 flex items-start gap-4">
+            {up.logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={up.logo_url} alt={uretici.ad ?? "Üretici"} className="size-14 flex-none rounded-xl border border-hair bg-white object-contain p-1" />
+            ) : null}
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-display text-[16px] font-bold text-ink">{uretici.ad ?? "—"}</h3>
+                {uretici.dogrulanmis ? <span className="rozet bg-teal-soft text-teal-d">✓ Doğrulanmış</span> : null}
+              </div>
+              {up.kurulus_yili || up.il || up.ilce ? (
+                <p className="mt-0.5 text-[12.5px] text-[var(--ink-faint)]">
+                  {[up.kurulus_yili ? `Kuruluş ${up.kurulus_yili}` : null, [up.il, up.ilce].filter(Boolean).join(" / ") || null]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              ) : null}
+              {up.hakkinda ? <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{up.hakkinda}</p> : null}
+              {up.web || up.telefon ? (
+                <div className="mt-2 flex flex-wrap gap-3 text-[12.5px]">
+                  {up.web ? (
+                    <a href={up.web} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-d hover:underline">
+                      Web sitesi →
+                    </a>
+                  ) : null}
+                  {up.telefon ? <a href={`tel:${up.telefon}`} className="text-ink-soft hover:underline">{up.telefon}</a> : null}
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       ) : null}
