@@ -77,6 +77,14 @@ function jsonLd() {
           "Çift satış veritabanı seviyesinde imkânsız, görünürlük satır seviyesinde tahsisli, komisyon yok, kapalı devre paylaşım. Projedar güven protokolünün teknik ve yapısal dayanakları.",
       },
       {
+        "@type": "BreadcrumbList",
+        "@id": `${SITE}/guven#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Ana sayfa", item: SITE },
+          { "@type": "ListItem", position: 2, name: "Güven Protokolü", item: `${SITE}/guven` },
+        ],
+      },
+      {
         "@type": "FAQPage",
         "@id": `${SITE}/guven#sss`,
         mainEntity: SSS.map((q) => ({

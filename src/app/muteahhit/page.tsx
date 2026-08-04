@@ -135,6 +135,14 @@ function jsonLd() {
           "Geliştirici firmalar için tahsisli canlı proje satış ağı: stok, fiyat ve tahsis tek noktadan; çift satış veritabanı seviyesinde imkânsız; komisyonsuz model.",
       },
       {
+        "@type": "BreadcrumbList",
+        "@id": `${SITE}/muteahhit#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Ana sayfa", item: SITE },
+          { "@type": "ListItem", position: 2, name: "Müteahhitler için", item: `${SITE}/muteahhit` },
+        ],
+      },
+      {
         "@type": "FAQPage",
         "@id": `${SITE}/muteahhit#sss`,
         mainEntity: SSS.map((q) => ({
