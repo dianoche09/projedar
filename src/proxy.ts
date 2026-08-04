@@ -14,7 +14,10 @@ export const config = {
      * - api: API rotaları kendi auth'unu yönetir (cron = CRON_SECRET, lead = public). Middleware
      *   /login'e yönlendirmesin → yoksa /api/cron 307 olur, hiç çalışmaz.
      * - statik/PWA: _next/static, _next/image, favicon, sw.js, manifest, ikon/görsel uzantıları.
+     * - SEO/metadata: robots.txt, sitemap.xml, opengraph-image, twitter-image. Bunlar anonim
+     *   crawler'lar (Googlebot/GPTBot vb.) tarafından çekilir; /login'e yönlendirilirse
+     *   robots+sitemap+OG görseli arama motorlarına görünmez olur.
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json|robots.txt|sitemap.xml|opengraph-image|twitter-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
