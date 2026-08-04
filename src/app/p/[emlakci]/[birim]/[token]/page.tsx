@@ -85,30 +85,14 @@ export async function generateMetadata({
       .filter(Boolean)
       .join(" · ");
 
-  // Kapak fotoğrafı (public bucket) → og:image. Yoksa images vermeyiz; root generic kart devreye girer.
-  const { data: kapakRow } = await supabase
-    .from("proje_belge")
-    .select("url")
-    .eq("proje_id", p.id)
-    .eq("tip", "kapak")
-    .limit(1)
-    .maybeSingle();
-  const kapak = kapakRow?.url ?? null;
-
+  // Görsel: og:image / twitter:image burada VERİLMEZ — kardeş opengraph-image.tsx
+  // (dosya-tabanlı dinamik kart) devreye girer ve daireye özel proje+daire+fiyat+durum
+  // kartını üretir. Böylece her paylaşımda alıcı, linke tıklamadan ne olduğunu görür.
   return {
     title: baslik,
     description: aciklama,
-    openGraph: {
-      title: baslik,
-      description: aciklama,
-      ...(kapak ? { images: [{ url: kapak }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: baslik,
-      description: aciklama,
-      ...(kapak ? { images: [kapak] } : {}),
-    },
+    openGraph: { title: baslik, description: aciklama },
+    twitter: { card: "summary_large_image", title: baslik, description: aciklama },
     // Birebir paylaşım mikrositesi kamuya açık ilan değil; arama motorunda listelenmesin.
     robots: { index: false, follow: false },
   };
