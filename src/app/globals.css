@@ -928,3 +928,39 @@ a:focus-visible,
   .deck-slayt .da { opacity: 1; animation: none !important; }
   .deck-slayt .kenburns { animation: none !important; }
 }
+
+/* Deck → PDF: her slayt bir yatay sayfa; kontrol barları gizli, animasyonlar düz. */
+@page deck {
+  size: A4 landscape;
+  margin: 0;
+}
+@media print {
+  .deck-zemin {
+    height: auto !important;
+    overflow: visible !important;
+    background: #0a1f33 !important;
+  }
+  .deck-zemin > header,
+  .deck-zemin > footer {
+    display: none !important;
+  }
+  .deck-slayt {
+    page: deck;
+    position: relative !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+    overflow: visible !important;
+    min-height: 100vh;
+    break-after: page;
+    break-inside: avoid;
+  }
+  .deck-slayt .da {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .deck-slayt .kenburns {
+    animation: none !important;
+  }
+}

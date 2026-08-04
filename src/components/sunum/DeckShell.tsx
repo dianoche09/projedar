@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
 /**
@@ -63,8 +63,19 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
         <span className="pointer-events-auto">
           <Logo size={26} wordmark acik />
         </span>
-        <span className="mono rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80 backdrop-blur-md">
-          {baslik}
+        <span className="pointer-events-auto flex items-center gap-2">
+          <span className="mono rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/80 backdrop-blur-md">
+            {baslik}
+          </span>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            aria-label="PDF olarak yazdır"
+            title="PDF olarak yazdır"
+            className="flex size-9 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white/80 backdrop-blur-md transition-colors hover:bg-white/20 hover:text-white"
+          >
+            <Printer size={15} strokeWidth={2} />
+          </button>
         </span>
       </header>
 
