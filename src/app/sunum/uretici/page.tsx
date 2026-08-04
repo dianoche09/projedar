@@ -7,11 +7,14 @@ import {
   Clock,
   CreditCard,
   Database,
+  Eye,
   EyeOff,
   Handshake,
   LayoutDashboard,
+  Layers,
   ListChecks,
   Megaphone,
+  Percent,
   Printer,
   Radar,
   Rocket,
@@ -21,11 +24,14 @@ import {
   Table2,
   TrendingUp,
   UserPlus,
+  Users,
+  Zap,
 } from "lucide-react";
 import { DeckShell } from "@/components/sunum/DeckShell";
 import { Slayt } from "@/components/sunum/Slayt";
 import {
   AdimSirasi,
+  AlintiSlayt,
   CanliBirimKart,
   GorselSlayt,
   LeadSorguKart,
@@ -60,9 +66,10 @@ function ZamanSatir({ saat, metin, kirmizi = false }: { saat: string; metin: str
   );
 }
 
-/* 17 slayt — kapsamlı tur: kapak, senaryo, çözüm, akış(demo), kokpit, tahsis(demo),
-   kilit(görsel), opsiyon akışı, tazelik, mikrosite, ödeme+yatırım, lansman,
-   zekâ paketi, lead sorgu, ağ & güven, ilk gün, CTA. */
+/* 21 slayt — kapsamlı tur: kapak, senaryo, alıntı, nedir, çözüm, akış(demo), kokpit,
+   tahsis(demo), kilit(görsel), opsiyon akışı, tazelik, mikrosite, ödeme+türler,
+   lansman, zekâ paketi, lead sorgu, danışman-neden, ağ & güven, kazanç özeti,
+   ilk gün, CTA. */
 export default function UreticiSunum() {
   const slides = [
     /* 1 · Kapak */
@@ -105,6 +112,45 @@ export default function UreticiSunum() {
       <p className="font-display mt-7 text-[22px] font-bold leading-snug text-white sm:text-[28px]">
         Sorun ekibiniz değil. <span className="text-[#2fd3bc]">Kopyalanabilen liste.</span>
       </p>
+    </Slayt>,
+
+    /* 3 · Alıntı vuruşu */
+    <AlintiSlayt
+      key="alinti"
+      metin="Sahada dolaşan her eski fiyat listesi, projenizin kârından eksilir."
+      alt="Yanlış fiyatla açılan görüşme ya satışı düşürür ya güveni. İkisinin de faturası proje sahibine kesilir."
+    />,
+
+    /* 4 · Bir bakışta */
+    <Slayt
+      key="nedir"
+      kicker="Bir bakışta"
+      baslik="Projedar nedir?"
+      alt="İnşaat firmalarını ve yetkili danışmanları canlı, doğru veriyle buluşturan kapalı konut stoğu ağı. Siz stoğu yönetirsiniz; ağ her zaman sizin belirlediğiniz güncel veriyle satar."
+    >
+      <div className="grid gap-3 sm:grid-cols-2">
+        <MaddeKart
+          Ikon={Zap}
+          baslik="Canlı veri"
+          metin="Fiyat veya durum değişikliği tüm ağa anında yayılır; kimse eski bilgiyle çalışamaz."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Database}
+          baslik="Tek kaynak"
+          metin="Paylaşılan link her açılışta güncel değeri basar; kopyalanan PDF'ler tarihe karışır."
+        />
+        <MaddeKart
+          Ikon={ShieldCheck}
+          baslik="Opsiyon kilidi"
+          metin="Opsiyonlanan birim veritabanı seviyesinde kilitlenir; çift satış imkânsızlaşır."
+        />
+        <MaddeKart
+          Ikon={Layers}
+          baslik="Kontrollü erişim"
+          metin="Hangi danışman hangi projeyi, bloğu, daireyi görür: karar her zaman proje sahibinin."
+        />
+      </div>
     </Slayt>,
 
     /* 3 · Çözüm özü */
@@ -271,14 +317,14 @@ export default function UreticiSunum() {
       </div>
     </Slayt>,
 
-    /* 11 · Ödeme planı + yatırım verisi */
+    /* 13 · Ödeme planı + yatırım verisi + Türkiye gerçekleri */
     <Slayt
       key="odeme"
       kicker="Satış objesi"
       baslik="Fiyat değil, satın alma planı satarsınız"
       alt="Her birimin fiyatının yanında yapılandırılmış ödeme planı ve yatırım verisi durur; danışman rakam uydurmaz, sizin planınızı anlatır."
     >
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={CreditCard}
           baslik="Yapılandırılmış plan"
@@ -292,8 +338,13 @@ export default function UreticiSunum() {
         />
         <MaddeKart
           Ikon={Search}
-          baslik="Filtrelenebilir öznitelikler"
-          metin="Daire içi, sosyal alan, ulaşım, manzara: yapılandırılmış özellikler; danışman doğru daireyi saniyede bulur."
+          baslik="Konut, ticari, depo, otopark"
+          metin="Her birim türü tek sistemde; dükkan ve ofisi ayrı bir danışman grubuna tahsis edebilirsiniz."
+        />
+        <MaddeKart
+          Ikon={Building2}
+          baslik="Kat karşılığı netliği"
+          metin="Arsa sahibi payı etiketlidir: havuzda görünür ama satışa kapalıdır. Pay karışıklığı ve anlaşmazlık biter."
         />
       </div>
     </Slayt>,
@@ -373,7 +424,37 @@ export default function UreticiSunum() {
       </div>
     </Slayt>,
 
-    /* 15 · Ağ & güven */
+    /* 16 · Ağın gücü: danışman motivasyonu */
+    <Slayt
+      key="danisman-neden"
+      kicker="Ağın gücü"
+      baslik="Danışman bu ağda neden satar?"
+      alt="Bir ağ, danışmanı kadar güçlüdür. Katılım güçlü, çünkü danışman için giriş bariyeri sıfır:"
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={BadgeCheck}
+          baslik="Üyelik ücretsiz"
+          metin="Giriş bariyeri yok; ağ hızla büyür, stoğunuz gerçekten satan danışmanlara ulaşır."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Percent}
+          baslik="Komisyon kesintisi yok"
+          metin="Danışmanın kazancından pay alınmaz; tam motivasyonla sizin projenizi satar."
+        />
+        <MaddeKart
+          Ikon={Zap}
+          baslik="Canlı veri avantajı"
+          metin="Müşterisine her an doğru bilgi verir: masada fiyat tutar, satış iptal olmaz."
+        />
+      </div>
+      <p className="deck-kart mt-4 px-5 py-4 text-[14px] font-semibold leading-relaxed text-white/90">
+        Sonuç: stoğunuz, satmaya istekli ve doğru bilgiyle donanmış bir ağda dolaşır.
+      </p>
+    </Slayt>,
+
+    /* 17 · Ağ & güven */
     <Slayt
       key="ag-guven"
       kicker="Ağ & güven"
@@ -405,7 +486,34 @@ export default function UreticiSunum() {
       </div>
     </Slayt>,
 
-    /* 16 · İlk gün (görsel) */
+    /* 18 · Kazanç özeti */
+    <Slayt key="kazanc" orta kicker="Özet" baslik="Projedar size ne kazandırır?">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <MaddeKart
+          Ikon={TrendingUp}
+          baslik="Fiyat disiplini"
+          metin="Sahada tek doğru fiyat konuşulur; zam ve kampanya kontrollü, eş zamanlı uygulanır."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={ShieldCheck}
+          baslik="Çift satış koruması"
+          metin="Opsiyon kilidi kapora çakışmalarını ve mağduriyet krizlerini sistemsel olarak engeller."
+        />
+        <MaddeKart
+          Ikon={Users}
+          baslik="Yaşayan satış ağı"
+          metin="Stoğunuz doğru danışmanlarda, güncel veriyle dolaşır; satış temposu düşmez."
+        />
+        <MaddeKart
+          Ikon={Eye}
+          baslik="Tam görünürlük"
+          metin="Hangi danışman aktif, hangi birim ilgi görüyor: hepsi panelinizde."
+        />
+      </div>
+    </Slayt>,
+
+    /* 19 · İlk gün (görsel) */
     <GorselSlayt
       key="ilk-gun"
       gorsel="/sunum/konut-aksam.jpg"
@@ -418,7 +526,7 @@ export default function UreticiSunum() {
         <MaddeKart
           Ikon={Rocket}
           baslik="Aynı gün yayın"
-          metin="Stok ve tahsisleri concierge ekibimiz sizinle birlikte girer; ekibinize kurulum yükü binmez."
+          metin="Stok ve tahsisleri concierge ekibimiz sizinle birlikte girer; mevcut Excel listeniz doğrudan içe aktarılır."
           sinyal="#2fd3bc"
         />
         <MaddeKart

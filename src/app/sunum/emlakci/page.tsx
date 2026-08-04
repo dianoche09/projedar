@@ -21,11 +21,13 @@ import {
   Ticket,
   UserPlus,
   UserX,
+  Wallet,
 } from "lucide-react";
 import { DeckShell } from "@/components/sunum/DeckShell";
 import { Slayt } from "@/components/sunum/Slayt";
 import {
   AdimSirasi,
+  AlintiSlayt,
   CanliBirimKart,
   GorselSlayt,
   LeadSorguKart,
@@ -75,7 +77,7 @@ export default function EmlakciSunum() {
       baslik={<>&ldquo;Bu daire hâlâ satılık mı?&rdquo;</>}
       alt="Müşteri karşısında en pahalı şey eskiyen bilgidir."
     >
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={FileX}
           baslik="Eskiyen PDF listeler"
@@ -87,6 +89,11 @@ export default function EmlakciSunum() {
           metin="Her daire için müteahhidi arayıp sormak zaman ve fırsat kaybettirir."
         />
         <MaddeKart
+          Ikon={Wallet}
+          baslik="Aracılık maliyetleri"
+          metin="Portföye erişmek için üyelikler, ilan paketleri, kesintiler: kazanç daha satmadan erir."
+        />
+        <MaddeKart
           Ikon={UserX}
           baslik="Güven kaybı"
           metin="Satıldı çıkan daire veya eski fiyat, müşteriyi bir daha geri getirmez."
@@ -94,6 +101,13 @@ export default function EmlakciSunum() {
         />
       </div>
     </Slayt>,
+
+    /* 3 · Alıntı vuruşu */
+    <AlintiSlayt
+      key="alinti"
+      metin="Müşterine dünün fiyatını söylediğin an, güven biter."
+      alt="Proje satışında danışmanın en değerli sermayesi doğru bilgidir. Projedar bu sermayeyi her an cebinde tutar."
+    />,
 
     /* 3 · Çözüm */
     <Slayt
@@ -104,7 +118,7 @@ export default function EmlakciSunum() {
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_360px]">
         <ul className="space-y-4">
-          <OnayMadde>Fiyat ve durum her an canlı; teyit turu yok.</OnayMadde>
+          <OnayMadde>Fiyat ve durum her an canlı: masada fiyat tutar, satış iptal olmaz.</OnayMadde>
           <OnayMadde>Yalnız sana tahsisli projeleri görürsün; havuz sade kalır.</OnayMadde>
           <OnayMadde>Onlarca üreticinin sana açık stoğu tek ekranda; proje proje dosya kovalamazsın.</OnayMadde>
         </ul>
@@ -350,7 +364,34 @@ export default function EmlakciSunum() {
       </div>
     </Slayt>,
 
-    /* 14 · Ücret */
+    /* 15 · Ayrıcalık */
+    <Slayt
+      key="ayricalik"
+      kicker="Ayrıcalık"
+      baslik="Kapalı ağın içinde olmak"
+      alt="Projedar bir ilan sitesi değildir; stoklara yalnız yetkili danışmanlar erişir. İçeride olmak bir ayrıcalıktır ve bu ayrıcalık çalışır:"
+    >
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart
+          Ikon={Lock}
+          baslik="Herkes giremez"
+          metin="Sana tahsisli stok rakibinin ekranında yok; elindeki portföy gerçekten senin avantajın."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={Target}
+          baslik="Aktifliğin görünür"
+          metin="Paylaşım ve opsiyon hareketin üreticinin ekranında; iyi çalışan danışmana yeni tahsislerin kapısı açılır."
+        />
+        <MaddeKart
+          Ikon={UserPlus}
+          baslik="Üreticiyle doğrudan ilişki"
+          metin="Tahsis, üreticinin sana güveninin göstergesi; platform bu ilişkiyi görünür ve kalıcı kılar."
+        />
+      </div>
+    </Slayt>,
+
+    /* 16 · Ücret */
     <Slayt
       key="ucret"
       orta
@@ -358,7 +399,7 @@ export default function EmlakciSunum() {
       baslik="Kazancın %100'ü sende"
       alt="Üyelik ücretsiz, komisyondan pay almayız. Gelirimizi proje sahibiyle yaptığımız anlaşmadan alırız; senin kazandığın komisyon tamamen senindir."
     >
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MaddeKart
           Ikon={BadgeCheck}
           baslik="Üyelik ücretsiz"
@@ -374,6 +415,11 @@ export default function EmlakciSunum() {
           Ikon={Ticket}
           baslik="İlan ücreti yok"
           metin="İlan vermezsin; müşterinle birebir canlı sayfa paylaşırsın."
+        />
+        <MaddeKart
+          Ikon={ClipboardList}
+          baslik="Koşullar baştan net"
+          metin="Her projenin komisyon koşulu üreticiyle arandaki anlaşmayla baştan bellidir; sürpriz yok."
         />
       </div>
     </Slayt>,

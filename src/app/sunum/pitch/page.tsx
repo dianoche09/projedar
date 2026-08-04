@@ -14,6 +14,7 @@ import {
   Radar,
   Rocket,
   ShieldCheck,
+  TrendingUp,
   Users,
   Zap,
 } from "lucide-react";
@@ -160,10 +161,11 @@ export default function PitchDeck() {
       baslik="Rekor kıran bir pazarın koordinasyon katmanı"
       alt="Konut satışı 2025'te tüm zamanların rekorunu kırdı. Biz konutun kendisini değil, her ilk el satışın arkasındaki koordinasyonu ürünleştiriyoruz."
     >
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <DevSayi deger="1,69M" etiket="Toplam konut satışı, 2025 (+%14,3)" kaynak="TÜİK" />
         <DevSayi deger="540.786" etiket="İlk el (yeni konut) satışı, 2025 (+%11,6)" kaynak="TÜİK" renk="#2fd3bc" />
         <DevSayi deger="%32" etiket="İlk elin toplam satış içindeki payı" kaynak="TÜİK" />
+        <DevSayi deger="+%49,3" etiket="İpotekli satışlarda yıllık artış: canlanan talep" kaynak="TÜİK" />
       </div>
       <p className="deck-kart deck-soft mt-4 px-5 py-4 text-[13.5px] leading-relaxed">
         Giriş pazarı Ankara: 2025&apos;te 152.534 konut satışıyla Türkiye&apos;nin ikinci büyük pazarı; İstanbul (280.262)
@@ -172,8 +174,8 @@ export default function PitchDeck() {
     </Slayt>,
 
     /* 7 · Neden şimdi */
-    <Slayt key="neden-simdi" kicker="Neden şimdi" baslik="Üç dalga aynı anda kırılıyor">
-      <div className="grid gap-3 sm:grid-cols-3">
+    <Slayt key="neden-simdi" kicker="Neden şimdi" baslik="Dört dalga aynı anda kırılıyor">
+      <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
           Ikon={Gavel}
           baslik="Regülasyon: EİDS"
@@ -189,6 +191,12 @@ export default function PitchDeck() {
           Ikon={MessageCircle}
           baslik="Saha WhatsApp'ta yaşıyor"
           metin="Emlakçının iş akışı zaten mobil ve WhatsApp-native; ürün bu alışkanlığın üstüne kurulu, alışkanlık değiştirmiyor."
+        />
+        <MaddeKart
+          Ikon={TrendingUp}
+          baslik="Fiyat oynaklığı"
+          metin="Yüksek enflasyon ortamında proje fiyatları ayda birkaç kez güncelleniyor; 'güncel veri' hiç olmadığı kadar kritik ve hiç olmadığı kadar kırılgan."
+          sinyal="#2fd3bc"
         />
       </div>
     </Slayt>,
@@ -344,7 +352,7 @@ export default function PitchDeck() {
       gorsel="/sunum/ag-isiklari.jpg"
       kicker="Vizyon"
       baslik="Gayrimenkulün güven protokolü"
-      alt="Her yeni konut satışı bu altyapıdan aksın: canlı stok, doğrulanmış taraflar, ölçülen talep. Üstünde biriken veri, Türkiye'nin yeni konut piyasasının fiyat ve talep zekâsına dönüşür."
+      alt="Hedef net: Türkiye'de satılan her yeni konut bu ağ üzerinden satılsın. Canlı stok, doğrulanmış taraflar, ölçülen talep; üstünde biriken veri, yeni konut piyasasının fiyat ve talep zekâsına dönüşür."
     />,
 
     /* 14 · Kapanış */

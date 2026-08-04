@@ -70,6 +70,20 @@ export function GorselSlayt({
   );
 }
 
+/** Tam ekran alıntı/vuruş slaytı: tek büyük cümle + opsiyonel alt satır. */
+export function AlintiSlayt({ metin, alt }: { metin: ReactNode; alt?: string }) {
+  return (
+    <div className="flex min-h-full w-full items-center justify-center px-6 pb-24 pt-20">
+      <div className="max-w-4xl text-center">
+        <p className="da da-1 font-display text-3xl font-extrabold leading-[1.18] text-white sm:text-[44px]">
+          &ldquo;{metin}&rdquo;
+        </p>
+        {alt ? <p className="da da-2 deck-soft mx-auto mt-7 max-w-2xl text-[15px] leading-relaxed sm:text-lg">{alt}</p> : null}
+      </div>
+    </div>
+  );
+}
+
 /** İkonlu madde kartı (koyu cam); sinyal verilirse üstte 4px renk şeridi. */
 export function MaddeKart({
   Ikon,
