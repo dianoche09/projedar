@@ -201,6 +201,33 @@ export default async function UreticiTalepRadari() {
     }
   }
 
+  // — FİYAT KARARININ ETKİSİ (ilgi sinyali, nedensellik DEĞİL) —
+  // Her fiyat değişiminin ±7 gününde aynı projedeki görüntüleme toplamı. Yalnız 7-53 gün
+  // önceki değişimler (her iki 7g pencere de 60g fetch içinde tam). new Date(iso) argümanlı = pure.
+  const YEDI_MS = 7 * 86_400_000;
+  const g53 = gunOnce(53);
+  const gorMs = new Map<string, number[]>();
+  for (const e of events)
+    if (e.tip === "goruntuleme" && e.proje_id) {
+      const arr = gorMs.get(e.proje_id) ?? [];
+      arr.push(new Date(e.created_at).getTime());
+      gorMs.set(e.proje_id, arr);
+    }
+  let fiyatOnce = 0;
+  let fiyatSonra = 0;
+  let fiyatDegisimSay = 0;
+  for (const e of events) {
+    if (e.tip !== "fiyat" || !e.proje_id || e.created_at < g53 || e.created_at > yediGunOnce) continue;
+    const t = new Date(e.created_at).getTime();
+    for (const g of gorMs.get(e.proje_id) ?? []) {
+      if (g >= t - YEDI_MS && g < t) fiyatOnce++;
+      else if (g >= t && g < t + YEDI_MS) fiyatSonra++;
+    }
+    fiyatDegisimSay++;
+  }
+  const fiyatEtkiPct =
+    fiyatDegisimSay > 0 && fiyatOnce > 0 ? Math.round(((fiyatSonra - fiyatOnce) / fiyatOnce) * 100) : null;
+
   return (
     <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
       <header className="belir mb-5">
@@ -342,6 +369,35 @@ export default async function UreticiTalepRadari() {
                       <span className="w-16 shrink-0 text-right mono text-[11.5px] text-ink-soft">{n} · %{Math.round((n / kanalToplam) * 100)}</span>
                     </div>
                   ))}
+                </div>
+              </section>
+            ) : null}
+
+            {/* FİYAT KARARININ ETKİSİ */}
+            {fiyatDegisimSay > 0 ? (
+              <section className="kart p-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-[15px] font-bold text-ink">Fiyat Kararının Etkisi</h2>
+                  <span className="mono text-[11px] text-[var(--ink-faint)]">{fiyatDegisimSay} değişim</span>
+                </div>
+                <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
+                  Fiyat değişimlerinin ±7 gününde proje görüntülenmesi. İlgi sinyali, kesin neden değil.
+                </p>
+                <div className="mt-3 flex items-baseline gap-2">
+                  {fiyatEtkiPct != null ? (
+                    <>
+                      <span className={`mono text-[30px] font-semibold leading-none ${fiyatEtkiPct >= 0 ? "text-teal-d" : "text-red"}`}>
+                        {fiyatEtkiPct >= 0 ? "+" : ""}%{Math.abs(fiyatEtkiPct)}
+                      </span>
+                      <span className="text-[12.5px] text-ink-soft">değişim sonrası ilgi (7g önce → 7g sonra)</span>
+                    </>
+                  ) : (
+                    <span className="text-[13px] font-semibold text-ink-soft">Veri yetersiz (değişim öncesi görüntüleme yok)</span>
+                  )}
+                </div>
+                <div className="mt-3 flex gap-6 text-[12px] text-ink-soft">
+                  <span className="mono">önce: {fiyatOnce}</span>
+                  <span className="mono">sonra: {fiyatSonra}</span>
                 </div>
               </section>
             ) : null}
