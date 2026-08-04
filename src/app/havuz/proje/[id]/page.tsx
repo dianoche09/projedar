@@ -9,6 +9,7 @@ import { projeKapak } from "@/lib/gorsel";
 import { generateShareToken } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
+import { GuvenRozeti } from "@/components/GuvenRozeti";
 import { KatalogSecici, type SeciBirim } from "./KatalogSecici";
 
 type Belge = { id: string; tip: string | null; ad: string | null; url: string | null };
@@ -79,6 +80,9 @@ export default async function HavuzProjeDetay({
     .eq("id", proje.uretici_id)
     .maybeSingle();
   const up = (uretici?.profil ?? {}) as Record<string, string | null>;
+  // Müteahhit güven skoru (karşılıklı görünürlük — emlakçı kimle çalıştığını görür)
+  const { data: mSkorRaw } = await supabase.rpc("muteahhit_skor", { p_uretici: proje.uretici_id });
+  const mSkor = (mSkorRaw ?? null) as { skor: number | null; yanit_oran?: number; sla_oran?: number; dogrulama_oran?: number; tazelik_oran?: number } | null;
 
   const kapakBelge = belgeler.find((b) => b.tip === "kapak")?.url ?? null;
   const kapak = projeKapak(kapakBelge, proje.id);
@@ -369,6 +373,14 @@ export default async function HavuzProjeDetay({
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="font-display text-[16px] font-bold text-ink">{uretici.ad ?? "—"}</h3>
                 {uretici.dogrulanmis ? <span className="rozet bg-teal-soft text-teal-d">✓ Doğrulanmış</span> : null}
+                <GuvenRozeti
+                  skor={mSkor?.skor ?? null}
+                  ipucu={
+                    mSkor?.skor != null
+                      ? `Yanıt %${mSkor.yanit_oran} · SLA %${mSkor.sla_oran} · doğrulama %${mSkor.dogrulama_oran} · tazelik %${mSkor.tazelik_oran}`
+                      : "Yeterli işlem geçmişi yok"
+                  }
+                />
               </div>
               {up.kurulus_yili || up.il || up.ilce ? (
                 <p className="mt-0.5 text-[12.5px] text-[var(--ink-faint)]">

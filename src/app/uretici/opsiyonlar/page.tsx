@@ -5,6 +5,7 @@ import { paraKisa, tazelik, DURUM_AD, DURUM_SINIF, kova } from "@/lib/stok";
 import { zamanOnce } from "@/lib/types";
 import { TalepKarar } from "./TalepKarar";
 import { OpsiyonKarar } from "./OpsiyonKarar";
+import { GuvenRozeti } from "@/components/GuvenRozeti";
 
 /* =========================================================
    OPSİYONLAR — bekleyen talepler (onay kuyruğu) + aktif opsiyon/satış (üretici).
@@ -107,19 +108,26 @@ export default async function UreticiOpsiyonlar() {
   ];
   let profMap = new Map<string, { ad: string | null; telefon: string | null; ofis_id: string | null }>();
   let ofisMap = new Map<string, string | null>();
+  const skorMap = new Map<string, number | null>();
   if (sahipIds.length) {
     const admin = createAdminClient();
-    const [{ data: prof }, { data: ofisler }] = await Promise.all([
+    const [{ data: prof }, { data: ofisler }, ...skorlar] = await Promise.all([
       admin.from("profiles").select("id, ad, telefon, ofis_id").in("id", sahipIds),
       admin.from("ofis").select("id, ad, marka"),
+      // Emlakçı güven skoru (karşılıklı görünürlük — müteahhit danışmanın güvenilirliğini görür)
+      ...sahipIds.map((id) => admin.rpc("emlakci_skor", { p_profil: id })),
     ]);
     profMap = new Map((prof ?? []).map((p) => [p.id as string, { ad: p.ad as string | null, telefon: p.telefon as string | null, ofis_id: p.ofis_id as string | null }]));
     ofisMap = new Map((ofisler ?? []).map((o) => [o.id as string, ((o.ad as string | null) ?? (o.marka as string | null)) || null]));
+    sahipIds.forEach((id, i) => {
+      const r = skorlar[i]?.data as { skor: number | null } | null;
+      skorMap.set(id, r?.skor ?? null);
+    });
   }
   const sahip = (id: string) => {
     const p = profMap.get(id);
     if (!p) return null;
-    return { ad: p.ad ?? "Danışman", ofis: p.ofis_id ? ofisMap.get(p.ofis_id) ?? null : null, tel: p.telefon ?? null };
+    return { ad: p.ad ?? "Danışman", ofis: p.ofis_id ? ofisMap.get(p.ofis_id) ?? null : null, tel: p.telefon ?? null, skor: skorMap.get(id) ?? null };
   };
 
   const blokAd = new Map((bloklar ?? []).map((b) => [b.id, b.ad as string | null]));
@@ -213,7 +221,10 @@ export default async function UreticiOpsiyonlar() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</div>
+                      <div className="flex items-center justify-end gap-1.5">
+                        <span className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</span>
+                        <GuvenRozeti skor={s?.skor ?? null} boyut="xs" ipucu="Danışman güven skoru: dönüşüm vs israf" />
+                      </div>
                       {s?.ofis ? <div className="text-[11px] text-[var(--ink-faint)]">{s.ofis}</div> : null}
                       {s?.tel ? (
                         <a href={`tel:${s.tel}`} className="text-[11px] font-medium text-teal hover:underline">
@@ -265,7 +276,10 @@ export default async function UreticiOpsiyonlar() {
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="text-right">
-                      <div className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</div>
+                      <div className="flex items-center justify-end gap-1.5">
+                        <span className="text-[12.5px] font-semibold text-ink">{s?.ad ?? "Danışman"}</span>
+                        <GuvenRozeti skor={s?.skor ?? null} boyut="xs" ipucu="Danışman güven skoru: dönüşüm vs israf" />
+                      </div>
                       {s?.ofis ? <div className="text-[11px] text-[var(--ink-faint)]">{s.ofis}</div> : null}
                       {s?.tel ? (
                         <a href={`tel:${s.tel}`} className="text-[11px] font-medium text-teal hover:underline">
@@ -368,7 +382,10 @@ export default async function UreticiOpsiyonlar() {
                       <td>
                         {s ? (
                           <div className="leading-tight">
-                            <div className="text-[12px] font-semibold text-ink">{s.ad}</div>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[12px] font-semibold text-ink">{s.ad}</span>
+                              <GuvenRozeti skor={s.skor} boyut="xs" ipucu="Danışman güven skoru: dönüşüm vs israf" />
+                            </div>
                             {s.ofis ? <div className="text-[11px] text-[var(--ink-faint)]">{s.ofis}</div> : null}
                             {s.tel ? (
                               <a href={`tel:${s.tel}`} className="text-[11px] font-medium text-teal hover:underline">
