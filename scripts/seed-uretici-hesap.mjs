@@ -1,5 +1,7 @@
 // 3 ayrı ÜRETİCİ LOGIN hesabı aç (Mar771/Deniz/Akkent) + profiles + uretici.sahip_id bağla.
 // Demo: her müteahhit kendi panelini görsün. node scripts/seed-uretici-hesap.mjs
+// NOT: Tüm test login'lerinin (admin/uretici/emlakci) tek kaynağı: scripts/test-hesaplar.mjs.
+// Bu script yalnız uretici2/3/4'ü + uretici.sahip_id bağını kurar (vergi_no eşleşmesi burada).
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -22,11 +24,11 @@ const KEY = env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY || env.SER
 if (!URL || !KEY) { console.error("HATA: SUPABASE URL/SERVICE_ROLE yok."); process.exit(1); }
 const sb = createClient(URL, KEY, { auth: { persistSession: false } });
 
-const SIFRE = "ProjePazar123!";
+const SIFRE = "Projedar123!";
 const HESAPLAR = [
-  { vergi_no: "1234567801", email: "uretici2@projepazar.test", ad: "Mar771 İnşaat" },
-  { vergi_no: "1234567802", email: "uretici3@projepazar.test", ad: "Deniz Yapı A.Ş." },
-  { vergi_no: "1234567803", email: "uretici4@projepazar.test", ad: "Akkent Construction" },
+  { vergi_no: "1234567801", email: "uretici2@projedar.test", ad: "Mar771 İnşaat" },
+  { vergi_no: "1234567802", email: "uretici3@projedar.test", ad: "Deniz Yapı A.Ş." },
+  { vergi_no: "1234567803", email: "uretici4@projedar.test", ad: "Akkent Construction" },
 ];
 
 async function kullaniciBul(email) {
