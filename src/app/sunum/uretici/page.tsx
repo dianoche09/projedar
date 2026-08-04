@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
 import {
-  AlertTriangle,
   Building2,
   Clock,
-  Copy,
   Database,
   EyeOff,
-  FileSpreadsheet,
   Handshake,
-  PhoneCall,
   Radar,
   Rocket,
   ShieldCheck,
@@ -33,8 +29,26 @@ export const metadata: Metadata = {
   description: "Yüz yüze görüşme sunumu: canlı konut stoğu dağıtım ağı, üretici tarafı.",
 };
 
-/* 13 slayt: kapak, problem, çözüm, akış(demo), tahsis(demo), kilit-mesaj(görsel),
-   kilit-mekanizma, tazelik, kim-getirdi, talep radarı, konum, kurucu, CTA. */
+/** Senaryo zaman çizelgesi satırı: mono saat + olay. */
+function ZamanSatir({ saat, metin, kirmizi = false }: { saat: string; metin: string; kirmizi?: boolean }) {
+  return (
+    <div
+      className={`deck-kart flex items-center gap-4 px-5 py-3.5 text-left ${
+        kirmizi ? "border-[#e07a6e]/60 bg-[rgba(224,122,110,0.1)]" : ""
+      }`}
+    >
+      <span className={`mono w-24 flex-none text-[12px] font-bold ${kirmizi ? "text-[#e07a6e]" : "text-[#2fd3bc]"}`}>
+        {saat}
+      </span>
+      <span className={`text-[14.5px] font-medium leading-snug ${kirmizi ? "text-[#ffb3a8]" : "text-white/90"}`}>
+        {metin}
+      </span>
+    </div>
+  );
+}
+
+/* 13 slayt: kapak, senaryo, çözüm, akış(demo), tahsis(demo), kilit-mesaj(görsel),
+   kilit-mekanizma, tazelik, kim-getirdi, talep radarı, konum, ilk gün, CTA. */
 export default function UreticiSunum() {
   const slides = [
     /* 1 · Kapak */
@@ -43,8 +57,8 @@ export default function UreticiSunum() {
       gorsel="/sunum/santiye-gece.jpg"
       logo
       kicker="Projedar · Üretici sunumu"
-      baslik="Canlı konut stoğu dağıtım ağı"
-      alt="Stok, fiyat ve dağıtım tek noktadan. Kontrol tamamen üreticide."
+      baslik="Satışın komuta merkezi"
+      alt="Canlı stok. Tahsisli dağıtım. Kilitli opsiyon. Kontrol baştan sona sizde."
     >
       <div className="da da-4 mt-8 flex flex-wrap items-center justify-center gap-3">
         <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-semibold text-[#3ddc8f] backdrop-blur-md">
@@ -61,36 +75,22 @@ export default function UreticiSunum() {
       </p>
     </GorselSlayt>,
 
-    /* 2 · Problem */
+    /* 2 · Senaryo: 72 saat */
     <Slayt
-      key="problem"
-      kicker="Bugünkü durum"
-      baslik="Fiyat listeniz şu an kaç kopya?"
-      alt="Liste paylaşıldığı anda kontrolünüzden çıkar. Satış sahada sürerken bilgi dünkü dosyada kalır."
+      key="senaryo"
+      kicker="Tanıdık gelecek"
+      baslik="Perşembe 17:40. Zam kararı aldınız."
+      alt="Sonraki 72 saatte sahada neler oluyor?"
     >
-      <div className="grid gap-3 sm:grid-cols-2">
-        <MaddeKart
-          Ikon={FileSpreadsheet}
-          baslik="Excel ve PDF dakikada eskir"
-          metin="Fiyatı güncellediğiniz anda sahadaki hiçbir kopya artık güncel değildir."
-        />
-        <MaddeKart
-          Ikon={Copy}
-          baslik="Kaç kopya dolaşıyor, bilinmez"
-          metin="Hangi emlakçıda hangi sürüm var, kimse söyleyemez."
-        />
-        <MaddeKart
-          Ikon={PhoneCall}
-          baslik="Eski fiyatla pazarlık"
-          metin="Müşteri eski listeyle gelir; aradaki fark masada tartışma yaratır."
-        />
-        <MaddeKart
-          Ikon={AlertTriangle}
-          baslik="Çift satış riski"
-          metin="Aynı daireye iki ayrı kapora: telafisi zor bir güven krizi."
-          sinyal="#e07a6e"
-        />
+      <div className="grid gap-2.5">
+        <ZamanSatir saat="Per 17:41" metin="Yeni fiyat listesi Excel'de hazırlandı." />
+        <ZamanSatir saat="Per 18:05" metin="PDF beş WhatsApp grubuna gönderildi. Artık kimde olduğunu bilmiyorsunuz." />
+        <ZamanSatir saat="Cum 11:00" metin="İki ofis müşteriye hâlâ eski listeden teklif veriyor." />
+        <ZamanSatir saat="Cmt 14:20" metin="Aynı daireye ikinci kapora alındı. Telefonlar susmuyor." kirmizi />
       </div>
+      <p className="font-display mt-7 text-[22px] font-bold leading-snug text-white sm:text-[28px]">
+        Sorun ekibiniz değil. <span className="text-[#2fd3bc]">Kopyalanabilen liste.</span>
+      </p>
     </Slayt>,
 
     /* 3 · Çözüm özü */
@@ -98,13 +98,13 @@ export default function UreticiSunum() {
       key="cozum"
       kicker="Çözüm"
       baslik="Fiyatın tek sahibi var: siz"
-      alt="Fiyat ve durum yalnız tek yerde tutulur. Her paylaşım, her ekran o canlı değerden beslenir; sahada sizin yazdığınızdan başka rakam yoktur."
+      alt="Fiyat ve durum yalnız tek yerde yaşar. Her paylaşım, her ekran o canlı değerden beslenir; sahada sizin yazdığınızdan başka rakam yoktur."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_360px]">
         <ul className="space-y-4">
-          <OnayMadde>Fiyatı siz güncellersiniz, tüm ağ anında aynı değeri görür.</OnayMadde>
-          <OnayMadde>Durum üç renkte netleşir: müsait, opsiyon, satıldı.</OnayMadde>
-          <OnayMadde>Kopya yoktur: paylaşılan link her açıldığında canlı değeri basar.</OnayMadde>
+          <OnayMadde>Rakamı değiştirirsiniz; tüm ağ aynı saniye yeni fiyatı görür.</OnayMadde>
+          <OnayMadde>Üç renk, sıfır tereddüt: müsait, opsiyon, satıldı.</OnayMadde>
+          <OnayMadde>Kopya yok: paylaşılan link her açılışta canlı değeri basar.</OnayMadde>
         </ul>
         <CanliBirimKart dipnot="Emlakçının paylaştığı linkte fiyat bu canlı değerden basılır." />
       </div>
@@ -131,8 +131,8 @@ export default function UreticiSunum() {
       key="tahsis"
       genis
       kicker="Kontrol"
-      baslik="Herkes her şeyi görmek zorunda değil"
-      alt="Görünürlük tahsisle tanımlanır: tüm ağ, seçili ofisler, tek danışman veya süreli özel tahsis. Kapsam dışındaki birim herkese kapalıdır."
+      baslik="Stok sizin. Kimin göreceği de."
+      alt="Tüm ağ, seçili ofisler, tek danışman veya 7 günlük özel tahsis: görünürlüğü siz çizersiniz. Kapsam dışındaki daire kimseye görünmez."
     >
       <TahsisPaneli />
     </Slayt>,
@@ -144,27 +144,27 @@ export default function UreticiSunum() {
       hiza="sol"
       kicker="Güven"
       baslik="Çift satış yapısal olarak imkânsız"
-      alt="Kilit uygulama ekranında değil, veritabanının kendisinde. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz."
+      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz."
     />,
 
     /* 7 · Kilit mekanizması */
-    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Kilit nasıl çalışır?">
+    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Söz değil: veritabanı kuralı">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Database}
-          baslik="Kilit DB seviyesinde"
+          baslik="Kilit en dipte"
           metin="Aktif opsiyon veritabanı kuralıyla teklenir; yazılım hatası bile ikinci opsiyonu yazamaz."
           sinyal="#e8b04b"
         />
         <MaddeKart
           Ikon={Clock}
-          baslik="48 saat opsiyon"
-          metin="Opsiyon alan danışmana net süre tanır; süre bitince daire kendiliğinden açılır."
+          baslik="48 saat net süre"
+          metin="Opsiyon alan danışman rahat çalışır; süre bitince daire kendiliğinden açılır."
         />
         <MaddeKart
           Ikon={ShieldCheck}
-          baslik="Tüm ağ aynı anda görür"
-          metin="Kilitlenen daire her danışman ekranında anında kilitli görünür."
+          baslik="Herkes aynı anda görür"
+          metin="Kilitlenen daire her danışman ekranında o saniye kilitli görünür."
         />
       </div>
     </Slayt>,
@@ -174,12 +174,12 @@ export default function UreticiSunum() {
       key="tazelik"
       kicker="Tazelik"
       baslik="Zam yaptınız. Ağ saniyeler içinde güncel."
-      alt="Her birimin yanında son güncelleme yaşar. Eskiyen veri gizlenmez; rozet rengiyle kendini belli eder."
+      alt="Her birimin yanında son güncelleme yaşar. Eskiyen veri gizlenmez; rozet rengiyle kendini ele verir."
     >
       <TazelikOlcek />
       <p className="deck-kart deck-soft mt-5 px-5 py-4 text-[13.5px] leading-relaxed">
-        15 gün hareketsiz kalan projede tazelik sigortası devreye girer: size tek dokunuşlu teyit gider,
-        cevapsız kalırsa rozet uyarıya döner. Ağ hiçbir zaman eski veriyle konuşmaz.
+        15 gün hareketsiz proje mi? Tazelik sigortası devreye girer: size tek dokunuşlu teyit gider, cevapsız
+        kalırsa rozet uyarıya döner. Bu ağda kimse eski veriyle konuşamaz.
       </p>
     </Slayt>,
 
@@ -187,13 +187,13 @@ export default function UreticiSunum() {
     <Slayt
       key="lead"
       kicker="Şeffaflık"
-      baslik="Bu müşteri kimin? Sorgulayın, görün."
-      alt="Danışman müşterisini platformda kaydeder. Satış ofisinize gelen bir ismi veya telefonu sorguladığınızda, o müşterinin ilk kimin kaydı olduğunu görürsünüz."
+      baslik={<>&ldquo;Bu müşteri benim&rdquo; kavgası bitiyor</>}
+      alt="Danışman müşterisini kaydeder. Satış ofisinize gelen ismi veya telefonu sorgularsınız: ilk kimin kaydı, hangi tarihte, anında ekranda."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_400px]">
         <ul className="space-y-4">
           <OnayMadde>Danışman atlanırsa görünür olur; emek kayıt altındadır.</OnayMadde>
-          <OnayMadde>Platform lead dağıtmaz, sahiplik garantisi vermez; yalnız kaydı şeffaf gösterir.</OnayMadde>
+          <OnayMadde>Platform lead dağıtmaz, garanti vermez; yalnız kaydı şeffaf gösterir.</OnayMadde>
           <OnayMadde>Lead listesi size akmaz; yalnız sorguladığınız ismin sonucunu görürsünüz.</OnayMadde>
         </ul>
         <LeadSorguKart />
@@ -204,8 +204,8 @@ export default function UreticiSunum() {
     <Slayt
       key="radar"
       kicker="Veri"
-      baslik="Talep Radarı: ağ ne söylüyor?"
-      alt="Her görüntüleme, paylaşım ve opsiyon sinyal üretir. Bu veri projenizde birikir ve fiyat kararlarınızı besler."
+      baslik="Hangi daire satar? Tahmin değil, sinyal."
+      alt="Her görüntüleme, paylaşım ve opsiyon iz bırakır. Şerefiye ve zam kararını his değil, kendi projenizin verisi versin."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="deck-kart signal-top p-5 text-left" style={{ "--_sig": "#2fd3bc" } as React.CSSProperties}>
@@ -226,13 +226,13 @@ export default function UreticiSunum() {
           <p className="mt-2.5 text-[15px] font-semibold leading-relaxed text-white">
             En çok paylaşılan: B Blok 2+1. En çok opsiyonlanan: A Blok 3+1.
           </p>
-          <p className="deck-soft mt-2 text-[12.5px]">Hangi stoğun eridiğini tahminden değil sinyalden okursunuz.</p>
+          <p className="deck-soft mt-2 text-[12.5px]">Hangi stoğun eridiğini tablodan değil sinyalden okursunuz.</p>
         </div>
       </div>
     </Slayt>,
 
     /* 11 · Komisyonsuz + kapalı devre */
-    <Slayt key="konum" orta kicker="Konum" baslik="İlan yok, komisyon yok. Tahsis var.">
+    <Slayt key="konum" orta kicker="Konum" baslik="İlan yok. Komisyon yok. Tahsis var.">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Handshake}
@@ -281,8 +281,8 @@ export default function UreticiSunum() {
       key="cta"
       gorsel="/sunum/vinc-siluet.jpg"
       kicker="Sonraki adım"
-      baslik="Kurulumu biz yapıyoruz"
-      alt="Ekibinizin panel öğrenmesi gerekmez: stok girişini ve tahsis kurulumunu concierge ekibimiz sizinle birlikte yapar."
+      baslik="Bir proje verin. Gerisini izleyin."
+      alt="Ekibinizin panel öğrenmesi gerekmez: kurulumu biz yapar, ağı birlikte çalıştırırız."
     >
       <div className="da da-4 mt-8 w-full">
         <AdimSirasi

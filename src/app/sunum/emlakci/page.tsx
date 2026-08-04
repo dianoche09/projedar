@@ -39,8 +39,8 @@ export default function EmlakciSunum() {
       gorsel="/sunum/konut-aksam.jpg"
       logo
       kicker="Projedar · Danışman sunumu"
-      baslik="Sana tahsisli projeler. Tek canlı havuz."
-      alt="Yeni konut projelerini her an güncel fiyat ve durumla paylaş. Temel üyelik ücretsiz."
+      baslik="Sana tahsisli stok. Herkes göremez."
+      alt="Yeni konut projelerini canlı fiyatla, kendi adınla, dakikalar içinde paylaş. Üyelik ücretsiz."
     >
       <div className="da da-4 mt-8 flex flex-wrap items-center justify-center gap-3">
         <span className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[12.5px] font-semibold text-[#3ddc8f] backdrop-blur-md">
@@ -119,8 +119,8 @@ export default function EmlakciSunum() {
     <Slayt
       key="mikrosite"
       kicker="Paylaşım"
-      baslik="PDF değil: yaşayan satış sayfası"
-      alt="Gönderdiğin link her açıldığında canlı fiyatı basar. Üstte canlı stok rozeti, altta senin kartın ve WhatsApp butonun."
+      baslik="PDF gönderen kaybediyor"
+      alt="Senin gönderdiğin link her açılışta canlı fiyatı basar: üstte canlı stok rozeti, altta senin kartın ve WhatsApp butonun. Rakibin dosya atarken sen yaşayan sayfa atarsın."
     >
       <div className="kart mx-auto max-w-md overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
         <div className="flex items-center justify-between gap-2 border-b border-[var(--cizgi)] bg-[var(--color-soft)] px-4 py-3">
@@ -155,7 +155,7 @@ export default function EmlakciSunum() {
     />,
 
     /* 7 · Opsiyon mekanizması */
-    <Slayt key="kilit" orta kicker="Mekanizma" baslik="Kilit nasıl çalışır?">
+    <Slayt key="kilit" orta kicker="Mekanizma" baslik="48 saat kimse dokunamaz">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Lock}
@@ -180,7 +180,7 @@ export default function EmlakciSunum() {
     <Slayt
       key="lead"
       kicker="Emeğin kayıtlı"
-      baslik="Müşterin kayıtla korunur"
+      baslik="Müşterini kimse elinden alamaz"
       alt="Müşterini platforma kaydedersin. Üretici o ismi veya telefonu sorguladığında ilk kaydın senin olduğunu görür: atlanırsan görünür olur."
     >
       <div className="grid items-center gap-8 lg:grid-cols-[1fr_400px]">
@@ -197,8 +197,8 @@ export default function EmlakciSunum() {
     <Slayt
       key="tazelik"
       kicker="Tazelik"
-      baslik="Hep günceli paylaşırsın"
-      alt="Rozet yeşilse veri canlıdır. Eskiyen veri gizlenmez; sen bir daha eski fiyatla yakalanmazsın."
+      baslik="Bir daha eski fiyatla yakalanmazsın"
+      alt="Rozet yeşilse veri canlıdır. Eskiyen veri gizlenmez, rengiyle kendini ele verir; müşteri karşısında hep en güncel rakam sende."
     >
       <TazelikOlcek />
     </Slayt>,
@@ -235,8 +235,8 @@ export default function EmlakciSunum() {
     <Slayt
       key="katilim"
       kicker="Katılım"
-      baslik="Doğrulanmış danışmanlar ağı"
-      alt="Bu ağda herkes belgelidir: üreticiler de danışmanlar da doğrulanır. Rozetin, müşterine ve üreticiye güven verir."
+      baslik="Belgeni yükle, ağa gir"
+      alt="Bu ağda herkes belgelidir: üreticiler de danışmanlar da doğrulanır. Doğrulanmış rozeti müşterine ve üreticiye tek bakışta güven verir."
     >
       <AdimSirasi
         adimlar={[

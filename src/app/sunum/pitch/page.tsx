@@ -292,8 +292,8 @@ export default function PitchDeck() {
     <Slayt
       key="durum"
       kicker="Ürün durumu"
-      baslik="MVP canlı, lansman öncesi"
-      alt="Fikir aşaması değil: ürün uçtan uca çalışıyor, ilk müteahhit anlaşmaları için sahadayız."
+      baslik="Fikir aşaması değil: sistem çalışıyor"
+      alt="Ürün uçtan uca canlı; bu sunumdaki demo da üründen geliyor. İlk müteahhit anlaşmaları için sahadayız."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart
