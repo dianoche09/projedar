@@ -1037,4 +1037,9 @@ a:focus-visible,
   .deck-slayt .kenburns {
     animation: none !important;
   }
+  /* ekrana-sığdırma zoom'u baskıda sıfırlanır (sayfalama zaten var) */
+  .deck-slayt > :first-child {
+    zoom: 1 !important;
+    min-height: 0 !important;
+  }
 }

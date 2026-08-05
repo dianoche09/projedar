@@ -13,8 +13,40 @@ import { Logo } from "@/components/Logo";
 export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNode[] }) {
   const [aktif, setAktif] = useState(0);
   const son = slides.length - 1;
+  const kokRef = useRef<HTMLDivElement>(null);
 
   const git = useCallback((n: number) => setAktif(Math.min(son, Math.max(0, n))), [son]);
+
+  /* Otomatik sığdırma: içerik ekrandan uzunsa slayt küçültülür → hiçbir slaytta scroll kalmaz. */
+  const sigdir = useCallback(() => {
+    const kok = kokRef.current;
+    if (!kok || window.matchMedia("print").matches) return;
+    kok.querySelectorAll<HTMLElement>(":scope > section.deck-slayt").forEach((sec) => {
+      const icerik = sec.firstElementChild as HTMLElement | null;
+      if (!icerik) return;
+      icerik.style.zoom = "1";
+      icerik.style.minHeight = "";
+      const oran = sec.clientHeight / sec.scrollHeight;
+      if (oran < 0.995) {
+        const z = Math.max(0.55, oran * 0.985);
+        icerik.style.zoom = String(z);
+        icerik.style.minHeight = `${Math.round(sec.clientHeight / z)}px`;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    sigdir();
+    // font ve demo bileşenleri geç boyutlanabilir: gecikmeli ikinci/üçüncü ölçüm
+    const t1 = setTimeout(sigdir, 350);
+    const t2 = setTimeout(sigdir, 1200);
+    window.addEventListener("resize", sigdir);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener("resize", sigdir);
+    };
+  }, [sigdir]);
 
   useEffect(() => {
     const tusla = (e: KeyboardEvent) => {
@@ -44,6 +76,7 @@ export function DeckShell({ baslik, slides }: { baslik: string; slides: ReactNod
 
   return (
     <div
+      ref={kokRef}
       className="deck-zemin relative h-dvh w-full select-none overflow-hidden"
       onTouchStart={(e) => {
         dokunus.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
