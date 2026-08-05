@@ -7,7 +7,7 @@ import { slugify } from "./slug";
  * Görsel yoksa null → sayfa koyu gradyan hero'ya düşer.
  */
 const TEMA_GORSELLER: Record<string, string> = {
-  // örn: "ankara-cankaya": "/gorseller/tema/ankara-cankaya.webp",
+  "ankara-cankaya": "/gorseller/tema/ankara-cankaya.jpg",
 };
 
 export function temaGorsel(il?: string | null, ilce?: string | null): string | null {
