@@ -76,7 +76,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   try {
     const supabase = createAdminClient();
     const { data } = await supabase.from("proje").select("ad, il, ilce, mahalle").eq("public_slug", slug).maybeSingle();
-    proje = data as typeof proje;
+    proje = data as { ad: string; il: string | null; ilce: string | null; mahalle: string | null } | null;
   } catch {
     proje = null;
   }
