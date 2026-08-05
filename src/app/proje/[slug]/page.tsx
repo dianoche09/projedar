@@ -8,7 +8,6 @@ import { kayitYaz } from "@/lib/events";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { Logo } from "@/components/Logo";
-import { Reveal } from "@/components/Reveal";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
@@ -264,22 +263,22 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
       {/* ============ NEDİR (varyant giriş) ============ */}
       <section className="relative px-5 py-16 sm:px-6 sm:py-20">
-        <Reveal className="mx-auto w-full max-w-3xl">
+        <div className="mx-auto w-full max-w-3xl">
           <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
             <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Bu sayfa nedir</p>
             <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.giris}</p>
             <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.surec}</p>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* ============ KÜNYE + İNŞAAT + YATIRIM ============ */}
       <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto w-full max-w-6xl">
-          <Reveal><BolumBaslik etiket="Proje bilgisi" baslik="Künye, inşaat ve daire yapısı" alt="Fiyat ve canlı stok bu sayfada gösterilmez; onlar yalnız ağdaki yetkili danışmanlara açılır." /></Reveal>
+          <div><BolumBaslik etiket="Proje bilgisi" baslik="Künye, inşaat ve daire yapısı" alt="Fiyat ve canlı stok bu sayfada gösterilmez; onlar yalnız ağdaki yetkili danışmanlara açılır." /></div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {/* İnşaat durumu */}
-            <Reveal className="lg:col-span-1">
+            <div className="lg:col-span-1">
               <div className="kart kart-3d flex h-full flex-col p-6">
                 <h3 className="font-display text-base font-bold text-ink">İnşaat durumu</h3>
                 <div className="mt-4 flex items-center justify-between text-sm"><span className="font-medium text-ink">{asama}</span><span className="font-mono font-semibold text-teal-d">%{ilerleme}</span></div>
@@ -287,9 +286,9 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                 {teslim ? <p className="mt-4 flex items-center gap-1.5 font-mono text-xs text-ink-soft"><CalendarClock size={13} /> Tahmini teslim: <span className="text-ink">{teslim}</span></p> : null}
                 {kiraGetirisi != null ? <p className="mt-2 flex items-center gap-1.5 font-mono text-xs text-teal-d"><TrendingUp size={13} /> %{kiraGetirisi} yıllık kira getirisi</p> : null}
               </div>
-            </Reveal>
+            </div>
             {/* Künye */}
-            <Reveal delay={80} className="lg:col-span-2">
+            <div className="lg:col-span-2">
               <div className="kart kart-3d h-full p-6">
                 <h3 className="font-display text-base font-bold text-ink">Proje künyesi</h3>
                 {kunyeSatir.length ? (
@@ -300,7 +299,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                   </div>
                 ) : <p className="mt-4 text-sm text-ink-soft">Künye bilgisi ağa eklendikçe zenginleşir.</p>}
               </div>
-            </Reveal>
+            </div>
           </div>
         </div>
       </section>
@@ -308,12 +307,12 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {/* ============ PROJE HAKKINDA (kunye.aciklama, varsa) ============ */}
       {aciklama ? (
         <section className="px-5 py-16 sm:px-6">
-          <Reveal className="mx-auto w-full max-w-3xl">
+          <div className="mx-auto w-full max-w-3xl">
             <div className="kart p-7 sm:p-9">
               <h2 className="font-display text-xl font-bold tracking-tight text-ink">Proje hakkında</h2>
               <p className="mt-4 whitespace-pre-line text-pretty text-[15px] leading-relaxed text-ink-soft">{aciklama}</p>
             </div>
-          </Reveal>
+          </div>
         </section>
       ) : null}
 
@@ -321,8 +320,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {ozellikVarMi(ozellikler) || malzeme.length ? (
         <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-5xl">
-            <Reveal><BolumBaslik etiket="Olanaklar" baslik="Proje özellikleri" /></Reveal>
-            <Reveal delay={80} className="mt-10">
+            <div><BolumBaslik etiket="Olanaklar" baslik="Proje özellikleri" /></div>
+            <div className="mt-10">
               <div className="kart p-7">
                 <OzellikGoster ozellikler={ozellikler} />
                 {malzeme.length ? (
@@ -332,7 +331,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                   </div>
                 ) : null}
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
       ) : null}
@@ -341,12 +340,12 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {p.lat != null && p.lng != null ? (
         <section className="px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-5xl">
-            <Reveal><BolumBaslik etiket="Konum" baslik={konum || "Proje konumu"} /></Reveal>
-            <Reveal delay={80} className="mt-10">
+            <div><BolumBaslik etiket="Konum" baslik={konum || "Proje konumu"} /></div>
+            <div className="mt-10">
               <div className="kart overflow-hidden p-0">
                 <iframe src={`https://www.openstreetmap.org/export/embed.html?bbox=${Number(p.lng) - 0.008}%2C${Number(p.lat) - 0.005}%2C${Number(p.lng) + 0.008}%2C${Number(p.lat) + 0.005}&layer=mapnik&marker=${p.lat}%2C${p.lng}`} title={`${p.ad} konumu`} className="h-72 w-full" loading="lazy" />
               </div>
-            </Reveal>
+            </div>
           </div>
         </section>
       ) : null}
@@ -354,15 +353,15 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {/* ============ B2B SÜREÇ (danışman / müteahhit) ============ */}
       <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto w-full max-w-6xl">
-          <Reveal><BolumBaslik etiket="Bu projeyle çalış" baslik="Danışman mısın, müteahhit mi?" alt="Projedar kapalı bir B2B ağdır. Fiyat ve stok yalnız yetkili danışmanlara canlı açılır; bu sayfa son kullanıcıya ilan sunmaz." /></Reveal>
-          <Reveal delay={80} className="mt-12"><B2BCta slug={slug} projeAd={p.ad} /></Reveal>
+          <div><BolumBaslik etiket="Bu projeyle çalış" baslik="Danışman mısın, müteahhit mi?" alt="Projedar kapalı bir B2B ağdır. Fiyat ve stok yalnız yetkili danışmanlara canlı açılır; bu sayfa son kullanıcıya ilan sunmaz." /></div>
+          <div className="mt-12"><B2BCta slug={slug} projeAd={p.ad} /></div>
         </div>
       </section>
 
       {/* ============ MÜTEAHHİT KARTI (varsa) ============ */}
       {u?.ad ? (
         <section className="px-5 py-16 sm:px-6">
-          <Reveal className="mx-auto w-full max-w-3xl">
+          <div className="mx-auto w-full max-w-3xl">
             <div className="kart signal-top p-7" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
               <div className="flex items-start gap-4">
                 <span className="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[rgba(19,49,75,0.08)]" aria-hidden><Building2 size={24} strokeWidth={1.6} color="var(--color-navy)" /></span>
@@ -374,7 +373,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                 </div>
               </div>
             </div>
-          </Reveal>
+          </div>
         </section>
       ) : null}
 
@@ -382,17 +381,17 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {veri.benzer.length ? (
         <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-6xl">
-            <Reveal><BolumBaslik etiket="Ağdaki diğer projeler" baslik={p.ilce ? `${p.ilce} ve çevresinden` : "İlgili projeler"} /></Reveal>
+            <div><BolumBaslik etiket="Ağdaki diğer projeler" baslik={p.ilce ? `${p.ilce} ve çevresinden` : "İlgili projeler"} /></div>
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {veri.benzer.map((b, i) => (
-                <Reveal key={b.public_slug} delay={i * 60}>
+              {veri.benzer.map((b) => (
+                <div key={b.public_slug}>
                   <Link href={`/proje/${b.public_slug}`} className="kart kart-3d group flex h-full flex-col p-5">
                     <div className="flex items-center justify-between"><span className="rounded-md bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-d">{ASAMA_ETIKET[b.asama as InsaatAsama] ?? "Proje"}</span><ChevronRight size={16} className="text-ink-soft transition-transform group-hover:translate-x-0.5" /></div>
                     <h3 className="mt-3 font-display text-base font-bold tracking-tight text-ink">{b.ad}</h3>
                     <p className="mt-1 text-xs text-ink-soft">{[b.ilce, b.il].filter(Boolean).join(", ")}</p>
                     {b.odaTipleri.length ? <p className="mt-3 font-mono text-[11px] text-ink-soft">{b.odaTipleri.join(" · ")}</p> : null}
                   </Link>
-                </Reveal>
+                </div>
               ))}
             </div>
           </div>
@@ -402,15 +401,15 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {/* ============ GÖRÜNÜR FAQ ============ */}
       <section className="px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto w-full max-w-3xl">
-          <Reveal><BolumBaslik etiket="Sık sorulanlar" baslik="Bu proje ve Projedar hakkında" /></Reveal>
+          <div><BolumBaslik etiket="Sık sorulanlar" baslik="Bu proje ve Projedar hakkında" /></div>
           <div className="mt-10 flex flex-col gap-3">
-            {sss.map((q, i) => (
-              <Reveal key={q.s} delay={i * 50}>
+            {sss.map((q) => (
+              <div key={q.s}>
                 <details className="sss-item kart p-0 hover:-translate-y-0.5">
                   <summary className="flex items-center justify-between gap-4 px-5 py-4 font-display text-[15px] font-semibold text-ink">{q.s}<span className="ok flex-none text-teal" aria-hidden>▾</span></summary>
                   <p className="px-5 pb-5 text-sm leading-relaxed text-ink-soft">{q.c}</p>
                 </details>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
@@ -418,7 +417,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
       {/* ============ KAPANIŞ CTA (komuta) ============ */}
       <section className="px-5 pb-24 pt-4 sm:px-6">
-        <Reveal>
+        <div>
           <div className="komuta relative mx-auto w-full max-w-5xl overflow-hidden rounded-[26px]">
             <div className="komuta-grid absolute inset-0" aria-hidden />
             <div className="relative px-6 py-14 text-center sm:px-10">
@@ -433,7 +432,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
               </div>
             </div>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* ============ FOOTER ============ */}
