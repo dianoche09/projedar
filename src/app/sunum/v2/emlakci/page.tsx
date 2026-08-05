@@ -59,9 +59,6 @@ export default function EmlakciSunumV2() {
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Bloklar yükselir. Stok erir.
       </p>
-      <p className="da da-5 mono mt-8 text-[10px] uppercase tracking-[0.18em] text-white/50">
-        ok tuşları veya kaydırma ile ilerleyin
-      </p>
     </GorselSlayt>,
 
     /* 2 · Nedir (teknoloji görsel zemin) */

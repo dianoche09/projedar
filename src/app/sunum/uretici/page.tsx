@@ -91,9 +91,6 @@ export default function UreticiSunum() {
           <span className="inline-flex items-center gap-1.5"><span className="size-2 rounded-full bg-[#e07a6e]" /> satıldı</span>
         </span>
       </div>
-      <p className="da da-5 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
-        ok tuşları veya kaydırma ile ilerleyin
-      </p>
     </GorselSlayt>,
 
     /* 2 · Senaryo: 72 saat */

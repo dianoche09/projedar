@@ -47,9 +47,6 @@ export default function GtmSunum() {
       baslik="Ağı nasıl kuruyoruz"
       alt="Arz önce, güven önce, tek şehirde yoğunluk. Pitch deck'in saha planı."
     >
-      <p className="da da-4 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
-        ok tuşları veya kaydırma ile ilerleyin
-      </p>
     </GorselSlayt>,
 
     /* 2 · İlke: arz önce */

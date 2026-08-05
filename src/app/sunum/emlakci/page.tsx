@@ -65,9 +65,6 @@ export default function EmlakciSunum() {
           üyelik ücretsiz
         </span>
       </div>
-      <p className="da da-5 mono mt-12 text-[10px] uppercase tracking-[0.18em] text-white/50">
-        ok tuşları veya kaydırma ile ilerleyin
-      </p>
     </GorselSlayt>,
 
     /* 2 · Problem */
