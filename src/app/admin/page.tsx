@@ -508,6 +508,49 @@ export default async function AdminPanel() {
         </div>
       </section>
 
+      {/* ── SUNUMLAR · SATIŞ ARAÇLARI ── */}
+      <section className="belir belir-5">
+        <div className="kart signal-top p-5" style={{ ["--_sig" as string]: C.navy }}>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="font-display text-base font-semibold text-ink">Sunumlar · Satış Araçları</h2>
+            <span className="mono text-[11px] text-gray">gizli linkler · sunum içinde sağ üstten PDF alınır</span>
+          </div>
+          <div className="grid gap-2.5 sm:grid-cols-3">
+            {[
+              { ad: "Üretici Sunumu", alt: "proje sahipleri · v2 · 30 slayt", url: "/sunum/v2/uretici" },
+              { ad: "Danışman Sunumu", alt: "gayrimenkul danışmanları · v2 · 19 slayt", url: "/sunum/v2/emlakci" },
+              { ad: "Yatırımcı Sunumu", alt: "pitch deck · v2 · 15 slayt", url: "/sunum/v2/pitch" },
+            ].map((s) => (
+              <a
+                key={s.url}
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group rounded-2xl border border-hair bg-[var(--color-soft)] px-4 py-3.5 transition-all hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[var(--golge-1)]"
+              >
+                <p className="text-[14px] font-bold text-ink">
+                  {s.ad} <span className="text-teal-d transition-transform group-hover:translate-x-0.5">→</span>
+                </p>
+                <p className="mono mt-0.5 text-[11px] text-ink-soft">{s.alt}</p>
+              </a>
+            ))}
+          </div>
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px]">
+            <span className="text-gray">Arşiv:</span>
+            {[
+              ["v1 Üretici", "/sunum/uretici"],
+              ["v1 Danışman", "/sunum/emlakci"],
+              ["v1 Pitch", "/sunum/pitch"],
+              ["Go-to-Market", "/sunum/gtm"],
+            ].map(([ad, url]) => (
+              <a key={url} href={url} target="_blank" rel="noreferrer" className="font-semibold text-teal-d hover:underline">
+                {ad}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <footer className="flex flex-wrap items-center justify-between gap-2 px-1 pt-1 text-[11.5px] text-gray">
         <span>Projedar Admin Konsolu · Platform İşletmecisi paneli</span>
         <span className="mono">Bu panel stok/birim/bina kesiti görmez; gelir · hesap · doğrulama · denetim odaklıdır.</span>
