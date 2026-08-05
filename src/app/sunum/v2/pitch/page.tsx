@@ -180,14 +180,14 @@ export default function PitchV2() {
     >
       <AkisSema
         dugumler={[
-          { baslik: "İnşaat firmaları", alt: "Stok + fiyat + yetki" },
-          { baslik: "PROJEDAR", alt: "Canlı senkron ağ", vurgu: true },
-          { baslik: "Danışmanlar → Alıcı", alt: "Birebir link paylaşımı" },
+          { baslik: "İnşaat firmaları", alt: "Stok + fiyat + yetki", gorsel: "bina" },
+          { baslik: "PROJEDAR", alt: "Canlı senkron ağ", vurgu: true, gorsel: "logo" },
+          { baslik: "Danışmanlar → Alıcı", alt: "Birebir link paylaşımı", gorsel: "danisman" },
         ]}
       />
       <ul className="mt-6 grid gap-3 sm:grid-cols-3">
         <OnayMadde>Canlı veri: değişiklik anında tüm ağda.</OnayMadde>
-        <OnayMadde>Opsiyon kilidi: çift satış imkânsız.</OnayMadde>
+        <OnayMadde>Opsiyon kilidi çift satışın önüne geçer.</OnayMadde>
         <OnayMadde>Kontrollü erişim: yetki üreticide.</OnayMadde>
       </ul>
     </Slayt>,
@@ -210,7 +210,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Database}
           baslik="Opsiyon kilidi"
-          metin="Opsiyonlanan daire veritabanı seviyesinde kilitlenir; çift satış yapısal olarak imkânsızdır."
+          metin="Opsiyonlanan daire veritabanı seviyesinde kilitlenir; çift satışın önüne yapısal olarak geçilir."
           sinyal="#2fd3bc"
         />
         <MaddeKart
@@ -269,6 +269,7 @@ export default function PitchV2() {
       baslik="Kendi kendini büyüten döngü"
     >
       <AdimSirasi
+        akisli
         adimlar={[
           { baslik: "Daha çok proje", metin: "Üreticiler stoğunu ağa taşır." },
           { baslik: "Daha çok danışman", metin: "Zengin portföy danışman çeker; katılım ücretsiz." },

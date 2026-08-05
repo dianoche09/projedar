@@ -143,7 +143,7 @@ export default function UreticiSunum() {
         <MaddeKart
           Ikon={ShieldCheck}
           baslik="Opsiyon kilidi"
-          metin="Opsiyonlanan birim veritabanı seviyesinde kilitlenir; çift satış imkânsızlaşır."
+          metin="Opsiyonlanan birim veritabanı seviyesinde kilitlenir; çift satış çakışmalarının önüne geçilir."
         />
         <MaddeKart
           Ikon={Layers}
@@ -238,7 +238,7 @@ export default function UreticiSunum() {
       hiza="sol"
       kicker="Güven"
       baslik="Opsiyon bir söz değil. Kilittir."
-      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satış yapısal olarak imkânsızdır."
+      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satışın önüne yapısal olarak geçilir."
     />,
 
     /* 8 · Opsiyon akışı */

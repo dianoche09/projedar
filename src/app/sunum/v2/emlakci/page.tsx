@@ -9,6 +9,7 @@ import {
   Flag,
   Gavel,
   Lock,
+  Megaphone,
   MessageCircle,
   PhoneCall,
   Percent,
@@ -87,7 +88,7 @@ export default function EmlakciSunumV2() {
         <MaddeKart
           Ikon={Lock}
           baslik="Opsiyon kilidi"
-          metin="Opsiyonladığın daire veritabanı seviyesinde sana kilitlenir; çift satış yapısal olarak imkânsızdır."
+          metin="Opsiyonladığın daire veritabanı seviyesinde sana kilitlenir; çift satışın önüne yapısal olarak geçilir."
         />
         <MaddeKart
           Ikon={ShieldCheck}
@@ -147,9 +148,9 @@ export default function EmlakciSunumV2() {
     >
       <AkisSema
         dugumler={[
-          { baslik: "Proje sahipleri", alt: "Canlı stok + fiyat" },
-          { baslik: "PROJEDAR", alt: "Yetkili erişim + kilit", vurgu: true },
-          { baslik: "Sen → Müşterin", alt: "Birebir link paylaşımı" },
+          { baslik: "Proje sahipleri", alt: "Canlı stok + fiyat", gorsel: "bina" },
+          { baslik: "PROJEDAR", alt: "Yetkili erişim + kilit", vurgu: true, gorsel: "logo" },
+          { baslik: "Sen → Müşterin", alt: "Birebir link paylaşımı", gorsel: "danisman" },
         ]}
       />
       <ul className="mt-6 grid gap-3 sm:grid-cols-3">
@@ -159,24 +160,25 @@ export default function EmlakciSunumV2() {
       </ul>
     </Slayt>,
 
-    /* 6 · Canlı veri */
-    <Slayt
+    /* 6 · Canlı veri (görsel zemin) */
+    <GorselSlayt
       key="canli-veri"
+      gorsel="/sunum/satis-ofisi.jpg"
+      hiza="sol"
       kicker="Özellik · Canlı veri"
       baslik="Her an satış ofisi kadar güncel"
-      alt="Üretici fiyat güncellediğinde veya bir daire satıldığında bilgi aynı saniye ekranına yansır. Teyit telefonu, 'bir sorayım' beklemesi, eski listeyle çalışma derdi biter."
     >
-      <div className="grid items-center gap-8 lg:grid-cols-[1fr_380px]">
+      <div className="da da-3 mt-7 grid w-full items-center gap-8 lg:grid-cols-[1fr_400px]">
         <ul className="space-y-4">
-          <OnayMadde>Fiyat ve stok her an güncel.</OnayMadde>
-          <OnayMadde>Tazelik damgası: bilgin kanıtlı, müşteriye kanıtıyla konuşursun.</OnayMadde>
+          <OnayMadde>Üretici fiyat güncellediğinde bilgi aynı saniye ekranına yansır; teyit telefonu biter.</OnayMadde>
+          <OnayMadde>Tazelik damgası bilgini kanıtlar: &ldquo;2 dk önce güncellendi&rdquo; gibi.</OnayMadde>
           <OnayMadde>Satılan daire anında kapanır; boşuna pazarlamazsın.</OnayMadde>
         </ul>
         <EkranKart url="projedar.com/havuz">
           <FiyatListesiMock />
         </EkranKart>
       </div>
-    </Slayt>,
+    </GorselSlayt>,
 
     /* 7 · Tek kaynak: adınla canlı sayfa */
     <Slayt
@@ -266,6 +268,7 @@ export default function EmlakciSunumV2() {
     /* 10 · Nasıl çalışır */
     <Slayt key="nasil" kicker="Nasıl çalışır" baslik="Kayıttan satışa dört adım">
       <AdimSirasi
+        akisli
         adimlar={[
           { baslik: "Ücretsiz kaydol", metin: "Ofis veya bireysel danışman olarak başvur; profilin oluşsun." },
           { baslik: "Yetki al", metin: "Proje sahipleri seni yetkilendirsin; erişimin anında açılsın." },
@@ -360,6 +363,22 @@ export default function EmlakciSunumV2() {
           baslik="Müşteri kataloğu"
           metin="Seçtiğin daireleri tek tıkla şık bir fiyat listesine dönüştür; katalogdaki her fiyat canlı basılır."
         />
+        <MaddeKart
+          Ikon={Target}
+          baslik="Müşteri eşleştirme"
+          metin="Müşterinin kriterini gir; havuzundaki en uygun daireler uyum skoruyla sıralansın."
+          sinyal="#2fd3bc"
+        />
+        <MaddeKart
+          Ikon={ClipboardList}
+          baslik="Lead defteri"
+          metin="Müşterini kaydet, durumunu takip et; 'ilk kaydeden' izi emeğini korur."
+        />
+        <MaddeKart
+          Ikon={Megaphone}
+          baslik="Lansman Radarı"
+          metin="Tahsisli projelerinin kampanya ve etap duyuruları tek akışta; fırsatı kaçırmazsın."
+        />
       </div>
     </Slayt>,
 
@@ -449,6 +468,7 @@ export default function EmlakciSunumV2() {
     >
       <div className="da da-3 mt-8 w-full">
         <AdimSirasi
+          akisli
           adimlar={[
             { baslik: "Talep geldi", metin: "Müşterin yeni projede 3+1 arıyor; yetkili olduğun projeleri açıyorsun." },
             { baslik: "Link gönderdin", metin: "Uygun dairenin linkini WhatsApp'tan paylaştın; müşteri güncel fiyatı gördü." },

@@ -893,6 +893,50 @@ a:focus-visible,
     0 18px 50px rgba(2, 10, 18, 0.55),
     0 0 36px rgba(47, 211, 188, 0.14);
 }
+/* veri akışı hattı: akan kesikli çizgi + kayan sinyal noktası (adım slaytları) */
+@keyframes akisKay {
+  to { background-position: 22px 0; }
+}
+.deck-akis {
+  background: repeating-linear-gradient(90deg, rgba(47, 211, 188, 0.65) 0 11px, transparent 11px 22px);
+  animation: akisKay 0.9s linear infinite;
+  box-shadow: 0 0 12px rgba(47, 211, 188, 0.35);
+  border-radius: 2px;
+}
+@keyframes akisNokta {
+  0% { left: 3%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 96%; opacity: 0; }
+}
+.deck-akis-nokta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2fd3bc;
+  box-shadow: 0 0 14px rgba(47, 211, 188, 0.9);
+  animation: akisNokta 2.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-akis, .deck-akis-nokta, .deck-ping { animation: none !important; }
+}
+
+/* marka düğümü ping halkası (akış şeması ortası) */
+@keyframes deckPing {
+  0% { transform: scale(0.7); opacity: 0.85; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.deck-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid rgba(47, 211, 188, 0.6);
+  animation: deckPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
 /* ışıltılı ikon çipi */
 .deck-ikon {
   display: inline-flex;

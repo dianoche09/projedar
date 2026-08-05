@@ -20,7 +20,7 @@ export function Slayt({
   children?: ReactNode;
 }) {
   return (
-    <div className="flex min-h-full w-full items-center justify-center px-5 pb-24 pt-20 sm:px-10">
+    <div className="flex min-h-full w-full items-center justify-center px-5 pb-20 pt-14 sm:px-10">
       <div className={`w-full ${genis ? "max-w-6xl" : "max-w-4xl"} ${orta ? "text-center" : ""}`}>
         {kicker ? (
           <p className="da da-1 mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#2fd3bc]">{kicker}</p>

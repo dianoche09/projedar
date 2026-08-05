@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- tam ekran sinematik arkaplan, statik public görsel */
 import type { CSSProperties, ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { CheckCircle2, Search } from "lucide-react";
+import { Building2, CheckCircle2, MessageCircle, Search } from "lucide-react";
 import { Logo } from "@/components/Logo";
 
 /** Marka yazımı: metindeki "Projedar" logo formatında basılır (proje + yeşil "dar"). */
@@ -55,7 +55,7 @@ export function GorselSlayt({
 }) {
   const orta = hiza === "orta";
   return (
-    <div className="relative flex min-h-full w-full items-center overflow-hidden px-6 pb-24 pt-20 sm:px-12">
+    <div className="relative flex min-h-full w-full items-center overflow-hidden px-6 pb-20 pt-14 sm:px-12">
       <div className={`deck-gorsel ${orta ? "" : "sol"}`} aria-hidden>
         <img src={gorsel} alt="" className="kenburns" />
       </div>
@@ -131,7 +131,7 @@ export function EkranKart({
       </div>
       <div
         className={`p-3 sm:p-4 ${zemin === "acik" ? "bg-[#eef1f6]" : ""}`}
-        style={kucult ? ({ zoom: 0.74 } as React.CSSProperties) : undefined}
+        style={kucult ? ({ zoom: 0.62 } as React.CSSProperties) : undefined}
       >
         {children}
       </div>
@@ -143,7 +143,7 @@ export function EkranKart({
 export function GorselKart({ src, oran = "aspect-[4/3]" }: { src: string; oran?: string }) {
   return (
     <div className={`overflow-hidden rounded-2xl border border-white/12 shadow-[0_20px_70px_rgba(0,0,0,0.5)] ${oran}`}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {}
       <img src={src} alt="" className="h-full w-full object-cover" />
     </div>
   );
@@ -189,6 +189,24 @@ export function FarkTablosu({
   );
 }
 
+/** Senaryo zaman çizelgesi satırı: mono saat + olay (72 saat senaryo slaytı). */
+export function ZamanSatir({ saat, metin, kirmizi = false }: { saat: string; metin: string; kirmizi?: boolean }) {
+  return (
+    <div
+      className={`deck-kart flex items-center gap-4 px-5 py-3.5 text-left ${
+        kirmizi ? "border-[#e07a6e]/60 bg-[rgba(224,122,110,0.1)]" : ""
+      }`}
+    >
+      <span className={`mono w-24 flex-none text-[12px] font-bold ${kirmizi ? "text-[#e07a6e]" : "text-[#2fd3bc]"}`}>
+        {saat}
+      </span>
+      <span className={`text-[14.5px] font-medium leading-snug ${kirmizi ? "text-[#ffb3a8]" : "text-white/90"}`}>
+        {metin}
+      </span>
+    </div>
+  );
+}
+
 /** Soru-cevap kartı (SSS slaytları). */
 export function SoruKart({ soru, cevap }: { soru: string; cevap: string }) {
   return (
@@ -199,8 +217,12 @@ export function SoruKart({ soru, cevap }: { soru: string; cevap: string }) {
   );
 }
 
-/** Yatay akış şeması: Proje sahibi → PROJEDAR → Danışman → Müşteri. */
-export function AkisSema({ dugumler }: { dugumler: { baslik: string; alt: string; vurgu?: boolean }[] }) {
+/** Yatay akış şeması: bina ikonlu üretici → animasyonlu projedar logosu → danışman avatarları. */
+export function AkisSema({
+  dugumler,
+}: {
+  dugumler: { baslik: string; alt: string; vurgu?: boolean; gorsel?: "bina" | "danisman" | "logo" }[];
+}) {
   return (
     <div className="flex flex-col items-stretch gap-2.5 text-left lg:flex-row lg:items-stretch">
       {dugumler.map((d, i) => (
@@ -213,12 +235,53 @@ export function AkisSema({ dugumler }: { dugumler: { baslik: string; alt: string
           <div
             className={`flex-1 rounded-2xl border p-4 sm:p-5 ${
               d.vurgu
-                ? "border-[#2fd3bc] bg-[rgba(47,211,188,0.12)] shadow-[0_0_40px_rgba(47,211,188,0.15)]"
+                ? "border-[#2fd3bc] bg-[rgba(47,211,188,0.12)] shadow-[0_0_40px_rgba(47,211,188,0.18)]"
                 : "deck-kart"
             }`}
           >
-            <p className={`text-[14.5px] font-bold ${d.vurgu ? "text-[#2fd3bc]" : "text-white"}`}>{d.baslik}</p>
-            <p className={`mt-1 text-[12px] leading-relaxed ${d.vurgu ? "text-white/90" : "deck-soft"}`}>{d.alt}</p>
+            {d.gorsel === "logo" ? (
+              <div className="flex items-center gap-3.5">
+                <span className="relative inline-flex flex-none">
+                  <span className="deck-ping" aria-hidden />
+                  <span className="deck-ping" style={{ animationDelay: "0.7s" }} aria-hidden />
+                  <Logo size={42} acik />
+                </span>
+                <div>
+                  <p className="font-display text-[21px] font-extrabold leading-none tracking-tight text-white">
+                    proje<span className="text-[#2fd3bc]">dar</span>
+                  </p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-white/90">{d.alt}</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="mb-3 flex items-center gap-1.5" aria-hidden>
+                  {d.gorsel === "bina" ? (
+                    <>
+                      <span className="deck-ikon !h-9 !w-9"><Building2 size={17} strokeWidth={1.9} /></span>
+                      <span className="deck-ikon !h-9 !w-9 opacity-80"><Building2 size={15} strokeWidth={1.9} /></span>
+                      <span className="deck-ikon !h-9 !w-9 opacity-60"><Building2 size={13} strokeWidth={1.9} /></span>
+                    </>
+                  ) : null}
+                  {d.gorsel === "danisman" ? (
+                    <>
+                      {["AY", "DA", "MK"].map((ad, j) => (
+                        <span
+                          key={ad}
+                          className="mono -ml-1 flex size-9 items-center justify-center rounded-full border border-white/25 bg-white/12 text-[10px] font-bold text-white/90 first:ml-0"
+                          style={{ zIndex: 3 - j }}
+                        >
+                          {ad}
+                        </span>
+                      ))}
+                      <span className="deck-ikon !h-9 !w-9 -ml-1"><MessageCircle size={16} strokeWidth={1.9} /></span>
+                    </>
+                  ) : null}
+                </div>
+                <p className="text-[14.5px] font-bold text-white">{markali(d.baslik)}</p>
+                <p className="deck-soft mt-1 text-[12px] leading-relaxed">{d.alt}</p>
+              </>
+            )}
           </div>
         </div>
       ))}
@@ -226,12 +289,13 @@ export function AkisSema({ dugumler }: { dugumler: { baslik: string; alt: string
   );
 }
 
-/** Mini canlı fiyat listesi mock'u (üç satır + tazelik etiketi). */
+/** Canlı fiyat listesi mock'u: KPI şeridi + stok barı + durum/tazelik rozetli satırlar. */
 export function FiyatListesiMock() {
   const satirlar = [
-    { kod: "A-04 · 2+1", fiyat: "₺4.850.000", taze: "güncel", yeni: false },
-    { kod: "A-07 · 3+1", fiyat: "₺6.320.000", taze: "az önce", yeni: true },
-    { kod: "A-11 · 3+1", fiyat: "₺6.480.000", taze: "güncel", yeni: false },
+    { kod: "A-04 · 2+1", fiyat: "₺4.850.000", taze: "güncel", yeni: false, renk: "#2fb36b" },
+    { kod: "A-07 · 3+1", fiyat: "₺6.320.000", taze: "az önce", yeni: true, renk: "#2fb36b" },
+    { kod: "A-09 · 3+1", fiyat: "₺6.410.000", taze: "güncel", yeni: false, renk: "#e3a12c" },
+    { kod: "A-11 · 4+1", fiyat: "₺8.150.000", taze: "güncel", yeni: false, renk: "#d15a4e" },
   ];
   return (
     <div className="kart overflow-hidden p-0 text-left shadow-[0_18px_60px_rgba(0,0,0,0.5)]">
@@ -239,11 +303,26 @@ export function FiyatListesiMock() {
         <span className="font-display text-[14px] font-bold text-ink">Vadi Konakları · A Blok</span>
         <OrnekRozet acik />
       </div>
+      <div className="border-b border-[var(--cizgi)] px-4 py-3">
+        <div className="mono flex items-center gap-3.5 text-[11px] text-ink-soft">
+          <span className="inline-flex items-center gap-1.5"><span className="size-2 rounded-full bg-green" /> 25 müsait</span>
+          <span className="inline-flex items-center gap-1.5"><span className="size-2 rounded-full bg-amber" /> 7 opsiyon</span>
+          <span className="inline-flex items-center gap-1.5"><span className="size-2 rounded-full bg-red" /> 6 satıldı</span>
+        </div>
+        <div className="stokbar mt-2.5">
+          <span style={{ width: "66%", background: "#2fb36b" }} />
+          <span style={{ width: "18%", background: "#e3a12c" }} />
+          <span style={{ width: "16%", background: "#d15a4e" }} />
+        </div>
+      </div>
       <div>
         {satirlar.map((s) => (
-          <div key={s.kod} className="flex items-center justify-between gap-3 border-b border-[var(--cizgi)] px-4 py-3 last:border-b-0">
-            <span className="mono text-[12px] font-semibold text-ink">{s.kod}</span>
-            <span className="mono text-[14px] font-semibold text-ink">{s.fiyat}</span>
+          <div key={s.kod} className="flex items-center justify-between gap-3 border-b border-[var(--cizgi)] px-4 py-2.5 last:border-b-0">
+            <span className="mono flex items-center gap-2 text-[12px] font-semibold text-ink">
+              <span className="size-2 flex-none rounded-[3px]" style={{ background: s.renk }} aria-hidden />
+              {s.kod}
+            </span>
+            <span className="mono text-[13.5px] font-semibold text-ink">{s.fiyat}</span>
             <span className={`taze ${s.yeni ? "t-0" : "t-7"} text-[10.5px]`}>
               <span className={`nokta ${s.yeni ? "nabiz" : ""}`} /> {s.taze}
             </span>
@@ -280,10 +359,30 @@ export function MaddeKart({
   );
 }
 
-/** Numaralı adım dizisi (koyu cam kartlar). */
-export function AdimSirasi({ adimlar }: { adimlar: { baslik: string; metin: string }[] }) {
+/** Numaralı adım dizisi (koyu cam kartlar); akisli=true → üstte animasyonlu veri akışı hattı. */
+export function AdimSirasi({
+  adimlar,
+  akisli = false,
+}: {
+  adimlar: { baslik: string; metin: string }[];
+  akisli?: boolean;
+}) {
   const kolon = adimlar.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3";
   return (
+    <div>
+      {akisli ? (
+        <div className="relative mb-5 hidden lg:block" aria-hidden>
+          <div className="deck-akis absolute inset-x-10 top-1/2 h-[2px] -translate-y-1/2" />
+          <span className="deck-akis-nokta" />
+          <div className={`relative grid gap-3 ${kolon}`}>
+            {adimlar.map((a) => (
+              <span key={a.baslik} className="mx-auto flex size-5 items-center justify-center rounded-full border border-[#2fd3bc]/50 bg-[#0a1f33]">
+                <span className="size-2.5 rounded-full bg-[#2fd3bc] shadow-[0_0_10px_rgba(47,211,188,0.9)]" />
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
     <ol className={`grid gap-3 text-left sm:grid-cols-2 ${kolon}`}>
       {adimlar.map((a, i) => (
         <li key={a.baslik} className="deck-kart p-5">
@@ -293,6 +392,7 @@ export function AdimSirasi({ adimlar }: { adimlar: { baslik: string; metin: stri
         </li>
       ))}
     </ol>
+    </div>
   );
 }
 
