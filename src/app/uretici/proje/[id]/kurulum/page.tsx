@@ -209,6 +209,8 @@ export default async function ProjeKurulum({
             hatirlatma_saat?: number;
             uzatma_hakki?: boolean;
             uzatma_gun?: number;
+            dusuk_skor_kota?: boolean;
+            dusuk_skor_esik?: number;
           };
           const seciliY = oa.yontem ?? (proje.opsiyon_yontemi === "talep_kod" ? "onay" : "gecici");
           return (
@@ -275,6 +277,11 @@ export default async function ProjeKurulum({
                   <input type="number" name="uzatma_gun" min={1} max={15} defaultValue={oa.uzatma_gun ?? 2} className={`${inpCls} mt-1`} />
                   <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Danışman opsiyonu bir kez bu kadar uzatabilir (uzatma açıksa).</span>
                 </label>
+                <label className="block text-[12px] font-bold text-ink-soft">
+                  Düşük skor eşiği
+                  <input type="number" name="dusuk_skor_esik" min={10} max={70} defaultValue={oa.dusuk_skor_esik ?? 40} className={`${inpCls} mt-1`} />
+                  <span className="mt-0.5 block text-[10.5px] font-medium text-ink-faint">Güven skoru bunun altındaki danışman aynı anda 1 opsiyon tutar.</span>
+                </label>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
@@ -284,6 +291,10 @@ export default async function ProjeKurulum({
                 <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
                   <input type="checkbox" name="uzatma_hakki" defaultChecked={oa.uzatma_hakki ?? true} className="size-4" />
                   Danışman opsiyonu bir kez uzatabilsin (uzatma hakkı)
+                </label>
+                <label className="flex items-center gap-2 text-[13px] font-bold text-ink">
+                  <input type="checkbox" name="dusuk_skor_kota" defaultChecked={oa.dusuk_skor_kota ?? true} className="size-4" />
+                  Düşük güven skorlu danışmanın kotasını daralt (boş opsiyon disiplini)
                 </label>
               </div>
               <SubmitButton>Opsiyon disiplinini kaydet</SubmitButton>

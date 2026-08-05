@@ -22,6 +22,7 @@ alter table proje add column if not exists opsiyon_ayar jsonb;
 create or replace function opsiyon_al_gecici(p_birim uuid, p_ad text, p_tel text, p_gerekce text default null)
   returns uuid language plpgsql security definer set search_path=public as $$
 declare v_proje uuid; v_ayar jsonb; v_yontem text; v_kota int; v_zorunlu bool; v_dgs int; v_aktif int; v_ops uuid;
+        v_skor int; v_esik int; v_daralt bool; v_dusuk bool := false;
 begin
   select b.proje_id into v_proje from birim b where b.id=p_birim and b.durum='musait' and b.satilabilir=true
     and emlakci_birim_gorebilir(b.id,b.proje_id,b.blok_id,b.tip_id,b.kat,b.tur::text);
@@ -32,8 +33,18 @@ begin
   v_zorunlu := coalesce((v_ayar->>'musteri_zorunlu')::bool, true);
   if v_zorunlu and (coalesce(btrim(p_ad),'')='' or coalesce(btrim(p_tel),'')='') then raise exception 'Musteri ad ve telefon zorunlu'; end if;
   v_kota := coalesce((v_ayar->>'kota')::int, 3);
+  -- Düşük güven skoru → sıkı kota (aynı anda 1). Boş-opsiyon disiplini; müteahhit-ayarlı eşik + toggle.
+  v_daralt := coalesce((v_ayar->>'dusuk_skor_kota')::bool, true);
+  v_esik := coalesce((v_ayar->>'dusuk_skor_esik')::int, 40);
+  if v_daralt then
+    select (emlakci_skor(auth.uid())->>'skor')::int into v_skor;
+    if v_skor is not null and v_skor < v_esik then v_kota := 1; v_dusuk := true; end if;
+  end if;
   select count(*) into v_aktif from opsiyon where satici_id=auth.uid() and durum in ('opsiyonlu','satis_beklemede');
-  if v_aktif >= v_kota then raise exception 'Aktif opsiyon kotan doldu (%)', v_kota; end if;
+  if v_aktif >= v_kota then
+    if v_dusuk then raise exception 'Guven skorun dusuk — ayni anda en fazla 1 opsiyon tutabilirsin. Sonuclandirdikca skorun yukselir.';
+    else raise exception 'Aktif opsiyon kotan doldu (%)', v_kota; end if;
+  end if;
   v_dgs := coalesce((v_ayar->>'dogrulama_saat')::int, 2);
   insert into opsiyon (birim_id,satici_id,yontem,durum,dogrulandi,dogrulama_bitis,musteri_ad,musteri_tel,gerekce)
     values (p_birim,auth.uid(),'dogrudan','opsiyonlu',false,now()+(v_dgs||' hours')::interval,btrim(p_ad),btrim(p_tel),p_gerekce)

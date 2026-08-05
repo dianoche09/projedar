@@ -43,6 +43,7 @@ returns jsonb language sql stable security definer set search_path=public as $$
   ),
   ge as (
     select count(*) filter (where payload->>'eylem'='gecici') baslatilan,
+      count(*) filter (where payload->>'eylem'='dogrulandi') dogrulandi,
       count(*) filter (where payload->>'eylem'='dogrulama_sure_doldu') dusen
     from events where tip='opsiyon' and proje_id in (select id from pr)
   ),
@@ -54,7 +55,7 @@ returns jsonb language sql stable security definer set search_path=public as $$
     select
       case when ta.ttop>0 then ta.yanit::numeric/ta.ttop end as c_yanit,
       case when ta.yanit>0 then ta.sla_ici::numeric/ta.yanit end as c_sla,
-      case when ge.baslatilan>0 then 1 - ge.dusen::numeric/ge.baslatilan end as c_dogr,
+      case when (ge.dogrulandi + ge.dusen) > 0 then ge.dogrulandi::numeric/(ge.dogrulandi + ge.dusen) end as c_dogr,
       case when tz.tum>0 then tz.tazel/tz.tum end as c_tazelik,
       ta.ttop as talep_sayisi, ge.baslatilan as gecici_sayisi
     from ta, ge, tz

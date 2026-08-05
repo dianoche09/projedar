@@ -543,16 +543,16 @@ export async function talepReddet(talepId: string): Promise<{ ok: boolean; mesaj
 
 // ── GEÇİCİ opsiyon (yöntem 'gecici'): emlakçı anında kilitledi (dogrulandi=false); müteahhit KESİNLEŞTİRİR/REDDEDER. ──
 
-/** Geçici opsiyon sahibi emlakçıya doğrulama/red bildirimi (best-effort). */
-async function opsiyonBildir(opsiyonId: string, karar: "dogrula" | "reddet"): Promise<void> {
+/** Geçici opsiyon sahibi emlakçıya doğrulama/red bildirimi (best-effort). birim/proje id döner (skor izi için). */
+async function opsiyonBildir(opsiyonId: string, karar: "dogrula" | "reddet"): Promise<{ birim_id: string; proje_id: string } | null> {
   try {
     const admin = createAdminClient();
     const { data: ops } = await admin
       .from("opsiyon")
-      .select("satici_id, birim:birim_id(daire_no, proje:proje_id(ad))")
+      .select("satici_id, birim_id, birim:birim_id(daire_no, proje:proje_id(id, ad))")
       .eq("id", opsiyonId)
       .single();
-    if (!ops?.satici_id) return;
+    if (!ops?.satici_id) return null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const birim = ops.birim as any;
     const daire = birim?.daire_no ?? "?";
@@ -564,16 +564,24 @@ async function opsiyonBildir(opsiyonId: string, karar: "dogrula" | "reddet"): Pr
       govde: karar === "dogrula" ? `${projeAd} · Daire ${daire} · kesin opsiyon` : `${projeAd} · Daire ${daire} · daire serbest`,
       link: "/havuz/opsiyonlarim",
     });
+    return birim?.proje?.id ? { birim_id: ops.birim_id as string, proje_id: birim.proje.id as string } : null;
   } catch {
-    /* best-effort */
+    return null;
   }
 }
 
 export async function opsiyonDogrula(opsiyonId: string): Promise<{ ok: boolean; mesaj: string }> {
   if (!UUID_RE.test(opsiyonId)) return { ok: false, mesaj: "Geçersiz opsiyon" };
   const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const { error } = await supabase.rpc("opsiyon_dogrula", { p_ops: opsiyonId });
-  if (!error) await opsiyonBildir(opsiyonId, "dogrula");
+  if (!error) {
+    const iz = await opsiyonBildir(opsiyonId, "dogrula");
+    // Skor izi: müteahhit doğrulama sorumluluğu (muteahhit_skor bu event'i proje bazında kullanır)
+    if (iz && user) await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: iz.proje_id, birimId: iz.birim_id, payload: { eylem: "dogrulandi" } });
+  }
   revalidatePath("/uretici/opsiyonlar");
   revalidatePath("/uretici/stok");
   revalidatePath("/uretici");
@@ -583,9 +591,13 @@ export async function opsiyonDogrula(opsiyonId: string): Promise<{ ok: boolean; 
 export async function opsiyonReddet(opsiyonId: string): Promise<{ ok: boolean; mesaj: string }> {
   if (!UUID_RE.test(opsiyonId)) return { ok: false, mesaj: "Geçersiz opsiyon" };
   const supabase = await createClient();
-  // Bildirim reddetmeden ÖNCE (silinince satici_id okunamaz)
-  await opsiyonBildir(opsiyonId, "reddet");
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  // Bildirim + iz reddetmeden ÖNCE (silinince satici_id/birim okunamaz)
+  const iz = await opsiyonBildir(opsiyonId, "reddet");
   const { error } = await supabase.rpc("opsiyon_reddet", { p_ops: opsiyonId });
+  if (!error && iz && user) await kayitYaz({ tip: "opsiyon", profileId: user.id, projeId: iz.proje_id, birimId: iz.birim_id, payload: { eylem: "reddedildi" } });
   revalidatePath("/uretici/opsiyonlar");
   revalidatePath("/uretici/stok");
   revalidatePath("/uretici");
@@ -1227,6 +1239,8 @@ export async function projeOpsiyonAyar(formData: FormData) {
     hatirlatma_saat: sinir(formData.get("hatirlatma_saat"), 1, 48, 12),
     uzatma_hakki: String(formData.get("uzatma_hakki") ?? "") === "on",
     uzatma_gun: sinir(formData.get("uzatma_gun"), 1, 15, 2),
+    dusuk_skor_kota: String(formData.get("dusuk_skor_kota") ?? "") === "on",
+    dusuk_skor_esik: sinir(formData.get("dusuk_skor_esik"), 10, 70, 40),
   };
   // Legacy opsiyon_yontemi kolonu senkron (eski okuyucular için): 'gecici'/'dogrudan'→'dogrudan', 'onay'→'talep_kod'.
   const legacy = yontem === "onay" ? "talep_kod" : "dogrudan";
