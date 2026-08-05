@@ -103,16 +103,103 @@ export async function belgeKarar(formData: FormData): Promise<void> {
   const profileId = String(formData.get("profile_id"));
   const karar = String(formData.get("karar"));
   if (!zUuid.safeParse(profileId).success || (karar !== "onay" && karar !== "red")) {
-    redirect("/admin/dogrulama?hata=" + encodeURIComponent("Geçersiz istek"));
+    redirect("/admin/basvurular?hata=" + encodeURIComponent("Geçersiz istek"));
   }
   const yeni = karar === "onay" ? "dogrulandi" : "red";
   const supabase = await createClient();
   await supabase.from("kullanici_belge").update({ durum: yeni }).eq("profile_id", profileId).eq("durum", "beklemede");
   await supabase.from("profiles").update({ belge_durumu: yeni }).eq("id", profileId);
   await kayitYaz({ tip: "dogrulama", profileId: adminId, payload: { hedef: profileId, karar: yeni } });
-  revalidatePath("/admin/dogrulama");
+  revalidatePath("/admin/basvurular");
   revalidatePath("/admin");
-  redirect(`/admin/dogrulama?mesaj=${encodeURIComponent(karar === "onay" ? "Danışman doğrulandı" : "Belgeler reddedildi")}`);
+  redirect(`/admin/basvurular?mesaj=${encodeURIComponent(karar === "onay" ? "Danışman doğrulandı" : "Belgeler reddedildi")}`);
+}
+
+// ── Başvuru dosyası: tek başvuranın tüm detayı (service-role yalnız sunucuda, DEĞİŞMEZ #1) ──
+export type DosyaBelge = { tip: string; imzali: string | null; durum: string; ai_sonuc: unknown; created_at: string };
+export type DosyaOlay = { id: string; tip: string; payload: unknown; created_at: string };
+export type DosyaVeri = {
+  id: string;
+  ad: string | null;
+  telefon: string | null;
+  talep_rol: string | null;
+  rol: string | null;
+  durum: string | null;
+  belge_durumu: string | null;
+  ofis_id: string | null;
+  il: string | null;
+  ilce: string | null;
+  kayit_meta: Record<string, unknown> | null;
+  profil_detay: Record<string, unknown> | null;
+  created_at: string;
+  belgeler: DosyaBelge[];
+  olaylar: DosyaOlay[];
+};
+
+/** Tek başvuranın tam dosyasını çeker (profil_detay + KYC belge + ai_sonuc + iz). */
+export async function getDosya(id: string): Promise<{ ok: true; veri: DosyaVeri } | { ok: false; hata: string }> {
+  await adminGuard();
+  if (!zUuid.safeParse(id).success) return { ok: false, hata: "Geçersiz başvuru" };
+
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return { ok: false, hata: "Service-role anahtarı tanımlı değil" };
+  }
+
+  const { data: p, error } = await admin
+    .from("profiles")
+    .select("id, ad, telefon, talep_rol, rol, durum, belge_durumu, ofis_id, il, ilce, kayit_meta, profil_detay, created_at")
+    .eq("id", id)
+    .maybeSingle();
+  if (error || !p) return { ok: false, hata: "Başvuru bulunamadı" };
+
+  const { data: belgeRaw } = await admin
+    .from("kullanici_belge")
+    .select("tip, url, durum, ai_sonuc, created_at")
+    .eq("profile_id", id)
+    .order("created_at", { ascending: true });
+
+  const belgeler: DosyaBelge[] = [];
+  for (const b of belgeRaw ?? []) {
+    const { data: signed } = await admin.storage.from("kyc-belge").createSignedUrl(b.url as string, 3600);
+    belgeler.push({
+      tip: b.tip as string,
+      imzali: signed?.signedUrl ?? null,
+      durum: b.durum as string,
+      ai_sonuc: b.ai_sonuc,
+      created_at: b.created_at as string,
+    });
+  }
+
+  const { data: olayRaw } = await admin
+    .from("events")
+    .select("id, tip, payload, created_at")
+    .eq("profile_id", id)
+    .order("created_at", { ascending: false })
+    .limit(12);
+
+  return {
+    ok: true,
+    veri: {
+      id: p.id as string,
+      ad: p.ad as string | null,
+      telefon: p.telefon as string | null,
+      talep_rol: p.talep_rol as string | null,
+      rol: p.rol as string | null,
+      durum: p.durum as string | null,
+      belge_durumu: p.belge_durumu as string | null,
+      ofis_id: p.ofis_id as string | null,
+      il: p.il as string | null,
+      ilce: p.ilce as string | null,
+      kayit_meta: (p.kayit_meta ?? null) as Record<string, unknown> | null,
+      profil_detay: (p.profil_detay ?? null) as Record<string, unknown> | null,
+      created_at: p.created_at as string,
+      belgeler,
+      olaylar: (olayRaw ?? []) as DosyaOlay[],
+    },
+  };
 }
 
 // ── Üyelik paketi CRUD (tip/fiyat/kota %100 admin-kontrollü; üç hedef) ──
@@ -217,6 +304,7 @@ export async function kullaniciOnayla(formData: FormData) {
     .eq("id", parsed.data.kullanici_id);
   await kayitYaz({ tip: "onay", profileId: adminId, payload: { kullanici_id: parsed.data.kullanici_id, rol: parsed.data.rol, eylem: "onay" } });
   revalidatePath("/admin");
+  revalidatePath("/admin/basvurular");
 }
 
 /** Bekleyen kaydı reddet → durum=pasif (soft; iz kalır, silinmez). */
@@ -228,6 +316,7 @@ export async function kullaniciReddet(formData: FormData) {
   await supabase.from("profiles").update({ durum: "pasif" }).eq("id", id.data);
   await kayitYaz({ tip: "onay", profileId: adminId, payload: { kullanici_id: id.data, eylem: "red" } });
   revalidatePath("/admin");
+  revalidatePath("/admin/basvurular");
 }
 
 /** Hesap durumu değiştir (aktif/pasif/askıya/arşiv) — kullanıcı yaşam döngüsü. */
