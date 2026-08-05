@@ -194,7 +194,7 @@ export default async function AdminPanel() {
       {bekleyenSay > 0 || dogrulanmamisSay > 0 ? (
         <div className="flex flex-wrap gap-3">
           {bekleyenSay > 0 ? (
-            <Link href="/admin/onay" className="inline-flex items-center gap-2 rounded-xl border border-amber/30 bg-amber-soft px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:border-amber">
+            <Link href="/admin/basvurular" className="inline-flex items-center gap-2 rounded-xl border border-amber/30 bg-amber-soft px-3.5 py-2 text-sm font-medium text-ink transition-colors hover:border-amber">
               <span className="rounded-full bg-amber px-2 py-0.5 font-mono text-xs text-white">{bekleyenSay}</span>
               kayıt onayı bekliyor →
             </Link>
@@ -231,7 +231,7 @@ export default async function AdminPanel() {
           <p className="mono mt-3 text-[34px] font-semibold leading-none tracking-tight text-amber">{bekleyenSay}</p>
           <p className="mt-2 text-xs text-gray">kayıt onayını bekliyor</p>
           {bekleyenSay > 0 ? (
-            <Link href="/admin/onay" className="mt-2.5 inline-flex rozet bg-amber-soft text-amber">Aksiyon gerekli →</Link>
+            <Link href="/admin/basvurular" className="mt-2.5 inline-flex rozet bg-amber-soft text-amber">Aksiyon gerekli →</Link>
           ) : (
             <span className="mt-2.5 inline-flex rozet bg-green-soft text-teal-d">Kuyruk temiz ✓</span>
           )}
@@ -303,7 +303,7 @@ export default async function AdminPanel() {
               <h2 className="font-display text-base font-semibold text-ink">Onay Kuyruğu</h2>
               {bekleyenSay > 0 ? <span className="rozet mono bg-amber-soft text-amber">{bekleyenSay} bekleyen</span> : null}
             </div>
-            <Link href="/admin/onay" className="text-[12.5px] font-semibold text-teal-d hover:underline">Tümünü gör →</Link>
+            <Link href="/admin/basvurular" className="text-[12.5px] font-semibold text-teal-d hover:underline">Tümünü gör →</Link>
           </div>
           {bekleyenSay > 0 ? (
             <div className="overflow-x-auto">

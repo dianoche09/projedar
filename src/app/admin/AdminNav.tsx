@@ -20,14 +20,9 @@ const YONETIM: NavItem[] = [
     ikon: ic(<><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></>),
   },
   {
-    href: "/admin/onay",
-    etiket: "Onay Kuyruğu",
-    ikon: ic(<><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>),
-  },
-  {
-    href: "/admin/dogrulama",
-    etiket: "Belge Doğrulama",
-    ikon: ic(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 15l2 2 4-4" /></>),
+    href: "/admin/basvurular",
+    etiket: "Başvurular",
+    ikon: ic(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 13l2 2 4-4" /></>),
   },
   {
     href: "/admin/kullanicilar",
@@ -82,8 +77,9 @@ export function AdminNav({ mobil = false, onayBekleyen = 0, belgeBekleyen = 0 }:
             }`}
           >
             {n.etiket}
-            {n.href === "/admin/onay" && onayBekleyen > 0 ? <span className="ml-1.5 font-mono text-xs">{onayBekleyen}</span> : null}
-            {n.href === "/admin/dogrulama" && belgeBekleyen > 0 ? <span className="ml-1.5 font-mono text-xs">{belgeBekleyen}</span> : null}
+            {n.href === "/admin/basvurular" && onayBekleyen + belgeBekleyen > 0 ? (
+              <span className="ml-1.5 font-mono text-xs">{onayBekleyen + belgeBekleyen}</span>
+            ) : null}
           </Link>
         ))}
         {PANELLER.map((n) => (
@@ -101,14 +97,9 @@ export function AdminNav({ mobil = false, onayBekleyen = 0, belgeBekleyen = 0 }:
         <Link key={n.href} href={n.href} className={`nav-item ${aktif(n.href, n.tam) ? "active" : ""}`}>
           {n.ikon}
           {n.etiket}
-          {n.href === "/admin/onay" && onayBekleyen > 0 ? (
+          {n.href === "/admin/basvurular" && onayBekleyen + belgeBekleyen > 0 ? (
             <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-md bg-amber-soft px-1.5 font-mono text-[11px] font-bold text-amber">
-              {onayBekleyen}
-            </span>
-          ) : null}
-          {n.href === "/admin/dogrulama" && belgeBekleyen > 0 ? (
-            <span className="ml-auto inline-flex h-5 min-w-5 items-center justify-center rounded-md bg-amber-soft px-1.5 font-mono text-[11px] font-bold text-amber">
-              {belgeBekleyen}
+              {onayBekleyen + belgeBekleyen}
             </span>
           ) : null}
         </Link>
