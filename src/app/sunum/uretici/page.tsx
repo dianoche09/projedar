@@ -282,8 +282,8 @@ export default function UreticiSunum() {
     >
       <TazelikOlcek />
       <p className="deck-kart deck-soft mt-5 px-5 py-4 text-[13.5px] leading-relaxed">
-        15 gün hareketsiz proje mi? Tazelik sigortası devreye girer: size tek dokunuşlu teyit gider, cevapsız
-        kalırsa rozet uyarıya döner. Bu ağda kimse eski veriyle konuşamaz.
+        15 gün hareketsiz kalan birim tazelik sigortasıyla otomatik işaretlenir; rozeti uyarıya döner ve siz
+        güncelleyene kadar öyle kalır. Bu ağda kimse eski veriyle konuşamaz.
       </p>
     </Slayt>,
 
