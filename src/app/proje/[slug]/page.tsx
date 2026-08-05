@@ -9,6 +9,7 @@ import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { Logo } from "@/components/Logo";
 import { B2BCta } from "@/components/seo/B2BCta";
+import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
@@ -225,6 +226,9 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
           </div>
         </nav>
       </header>
+
+      {/* ============ PROJEDAR TANITIM BANNER (her sayfanın başı) ============ */}
+      <ProjedarBanner />
 
       {/* ============ HERO ============ */}
       <section className="relative isolate overflow-hidden bg-ink text-white">
