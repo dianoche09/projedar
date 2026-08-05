@@ -9,10 +9,10 @@
 /build
 next-env.d.ts
 
-# env (secrets) — .env.example COMMIT edilir, gerisi ASLA
+# env (secrets) — .env.example COMMIT edilir, gerisi ASLA (.bak/.local vb. dahil hepsi)
 .env
-.env*.local
-.env.local
+.env.*
+!.env.example
 
 # claude code — proje settings.json COMMIT, local (token) ASLA
 .claude/settings.local.json
