@@ -353,8 +353,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {/* ============ B2B SÜREÇ (danışman / müteahhit) ============ */}
       <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto w-full max-w-6xl">
-          <div><BolumBaslik etiket="Bu projeyle çalış" baslik="Danışman mısın, müteahhit mi?" alt="Projedar kapalı bir B2B ağdır. Fiyat ve stok yalnız yetkili danışmanlara canlı açılır; bu sayfa son kullanıcıya ilan sunmaz." /></div>
-          <div className="mt-12"><B2BCta slug={slug} projeAd={p.ad} /></div>
+          <div><BolumBaslik etiket="Projedar ağı" baslik="Danışman mısın, müteahhit mi?" alt="Projedar, yeni konut projeleri için tahsisli canlı satış ağıdır. Fiyat ve stok yalnız yetkili danışmanlara açılır; bu sayfa son kullanıcıya ilan sunmaz." /></div>
+          <div className="mt-12"><B2BCta /></div>
         </div>
       </section>
 
@@ -424,11 +424,11 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
               <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs">
                 {["Komisyon yok", "Tahsisli görünürlük", "Canlı fiyat"].map((t) => (<span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>))}
               </div>
-              <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">{p.ad}, doğru satış ağında.</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Bu projeyi ağda satmak istiyorsan danışman olarak katıl; projeyi sen yönetiyorsan ağa ekle.</p>
+              <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Yeni konut projeleri, doğru satış ağında.</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Gayrimenkul danışmanıysan Projedar ağına ücretsiz katıl, yeni projeleri komisyonsuz sat; müteahhitsen projeni ekle, tek panelden yönet.</p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link href={`/kayit?rol=emlakci&proje=${encodeURIComponent(slug)}`} className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)] sm:min-h-[44px] sm:w-auto">Danışman olarak katıl</Link>
-                <Link href={`/kayit?rol=uretici&talep=proje&slug=${encodeURIComponent(slug)}`} className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Projeni ağa ekle</Link>
+                <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)] sm:min-h-[44px] sm:w-auto">Danışman olarak katıl</Link>
+                <Link href="/kayit?rol=uretici&kaynak=proje-seo" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Projeni ağa ekle</Link>
               </div>
             </div>
           </div>
