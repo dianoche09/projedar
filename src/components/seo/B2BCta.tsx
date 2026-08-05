@@ -48,7 +48,7 @@ export function B2BCta() {
           <Building2 size={22} strokeWidth={1.75} color="var(--color-navy)" />
         </span>
         <p className="mt-4 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Müteahhit veya proje sahibi misin?</p>
-        <h3 className="mt-1 font-display text-xl font-bold tracking-tight text-ink">Projeni Projedar'a ekle</h3>
+        <h3 className="mt-1 font-display text-xl font-bold tracking-tight text-ink">Projeni Projedar ağına ekle</h3>
         <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
           Yeni konut projeni ağa ekle; stoğunu, fiyatını ve kimin göreceğini tek panelden yönet, yüzlerce yetkili danışmana tek noktadan ulaş.
         </p>
