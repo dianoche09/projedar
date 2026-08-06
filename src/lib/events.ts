@@ -20,7 +20,8 @@ export type OlayTip =
   | "favori" // mikrosite: müşteri favoriledi (anonim sinyal)
   | "dalga" // üretici: birimleri dalga olarak planladı (satisa_acilis atandı)
   | "acilis" // cron: planlı birim açılış tarihi gelip müsait oldu (talep spike sinyali)
-  | "ilgi"; // emlakçı: planlı birime "açılınca haber ver" (açılış öncesi talep sinyali)
+  | "ilgi" // emlakçı: planlı birime "açılınca haber ver" (açılış öncesi talep sinyali)
+  | "seo_yayin"; // admin: projeye public_slug verildi (SEO sayfası yayınlandı + IndexNow)
 
 export type OlayGirdi = {
   tip: OlayTip;

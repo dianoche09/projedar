@@ -54,6 +54,16 @@ const YONETIM: NavItem[] = [
     etiket: "Denetim",
     ikon: ic(<><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /><path d="M9 12l2 2 4-4" /></>),
   },
+  {
+    href: "/admin/pazarlama",
+    etiket: "Pazarlama",
+    ikon: ic(<><path d="M3 11l18-5v12L3 14z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></>),
+  },
+  {
+    href: "/admin/seo",
+    etiket: "SEO Sayfaları",
+    ikon: ic(<><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2c2.7 3 2.7 17 0 20M12 2c-2.7 3-2.7 17 0 20" /></>),
+  },
 ];
 
 const PANELLER = [
