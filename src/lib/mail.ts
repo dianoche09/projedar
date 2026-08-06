@@ -42,10 +42,28 @@ const RENK = {
 const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const LOGO = "https://projedar.com/icon-192.png";
 
+/** Mini "bina-kesiti" motifi (email-safe: nested table + bgcolor). Bildirim maillerinde
+ *  canlı stok imzası — dekoratif değil, statü dilini (müsait/opsiyon/satıldı) görselleştirir. */
+function motifKesiti(): string {
+  const D: Record<string, string> = { m: "#2fb36b", o: "#e3a12c", s: "#d15a4e" };
+  const kat = (dizi: string[]) =>
+    `<tr>${dizi.map((c) => `<td style="width:24px;height:11px;background:${D[c]};border-radius:2px;font-size:0;line-height:0;">&nbsp;</td>`).join("")}</tr>`;
+  return `<tr><td style="padding:18px 28px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:3px;">
+        ${kat(["m", "o", "m", "s", "m", "m"])}
+        ${kat(["m", "m", "s", "o", "m", "s"])}
+        ${kat(["s", "m", "m", "m", "o", "m"])}
+      </table>
+      <p style="margin:9px 0 0;font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.03em;color:${RENK.inkFaint};"><span style="color:#2fb36b;">&#9679;</span> müsait&nbsp;&nbsp;<span style="color:#e3a12c;">&#9679;</span> opsiyon&nbsp;&nbsp;<span style="color:#d15a4e;">&#9679;</span> satıldı</p>
+    </td></tr>`;
+}
+
 /**
  * Ortak marka kabuğu — tüm işlemsel mailler bunu kullanır.
- * Üst sinyal şeridi (statü rengi) + logo + rozet + başlık + veri kutusu + teal CTA + footer.
+ * Gradient sinyal şeridi (statü→teal) + logo + "canlı ağ" imzası + sinyalli rozet + başlık +
+ * veri kutusu + (opsiyonel bina-kesiti motifi) + teal CTA + footer.
  * Tablo-tabanlı + inline stil (Outlook/Gmail uyumu). SVG YOK (client'lar strip'ler) → hosted PNG logo.
+ * motif=true → bildirim maillerinde canlı stok motifi (auth mailleri sade kalır).
  */
 export function mailKabuk(o: {
   preheader: string;
@@ -57,6 +75,9 @@ export function mailKabuk(o: {
   ctaLabel: string;
   ctaUrl: string;
   altNot?: string | null;
+  motif?: boolean;
+  pazarlama?: boolean; // true → ticari-ileti footer'ı (İYS/ETK ret ibaresi + opt-out linki)
+  cikisUrl?: string | null; // opt-out (abonelikten çık) linki — pazarlama maillerinde zorunlu
 }): string {
   const yil = new Date().getFullYear();
   const govdeBlok = o.govde
@@ -64,6 +85,14 @@ export function mailKabuk(o: {
         <div style="padding:12px 14px;background:${RENK.kutuZemin};border:1px solid ${RENK.cizgi};border-left:3px solid ${o.renk};border-radius:10px;font-family:${FONT};font-size:13.5px;line-height:1.5;color:${RENK.inkSoft};">${htmlKacir(o.govde)}</div>
       </td></tr>`
     : "";
+  const motifBlok = o.motif ? motifKesiti() : "";
+  // Footer: işlem bildirimi (default) vs. ticari ileti (pazarlama). Ticari iletide ETK/İYS ret
+  // ibaresi + opt-out linki ZORUNLU (soğuk davet = ticari elektronik ileti).
+  const footerBlok = o.pazarlama
+    ? `<p style="margin:0 0 4px;font-family:${FONT};font-size:12px;font-weight:600;color:${RENK.inkSoft};">Projedar &middot; tahsisli canlı satış ağı</p>
+      <p style="margin:0;font-family:${FONT};font-size:11px;line-height:1.5;color:${RENK.inkFaint};">Bu bir ticari elektronik iletidir. Bu daveti işletmenizle ilgili bir iş birliği önerisi olarak aldınız. Bir daha ileti almak istemezsiniz${o.cikisUrl ? ` <a href="${htmlKacir(o.cikisUrl)}" style="color:${RENK.teal};text-decoration:none;">buradan çıkış yapın</a>` : ""}. İletişim: <a href="mailto:destek@projedar.com" style="color:${RENK.teal};text-decoration:none;">destek@projedar.com</a>.</p>`
+    : `<p style="margin:0 0 4px;font-family:${FONT};font-size:12px;font-weight:600;color:${RENK.inkSoft};">Projedar &middot; tahsisli canlı satış ağı</p>
+      <p style="margin:0;font-family:${FONT};font-size:11px;line-height:1.5;color:${RENK.inkFaint};">Bu bir işlem bildirimidir, pazarlama e-postası değildir; bir hesap hareketi olduğu için aldın. Soru için <a href="mailto:destek@projedar.com" style="color:${RENK.teal};text-decoration:none;">destek@projedar.com</a>.</p>`;
   const altNotBlok = o.altNot
     ? `<tr><td style="padding:10px 28px 0;">
         <p style="margin:0;font-family:${FONT};font-size:12px;line-height:1.5;color:${RENK.inkFaint};">${htmlKacir(o.altNot)}</p>
@@ -78,28 +107,29 @@ export function mailKabuk(o: {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${RENK.zemin};padding:28px 16px;">
 <tr><td align="center">
   <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${RENK.kart};border:1px solid ${RENK.cizgi};border-radius:20px;overflow:hidden;">
-    <tr><td style="height:4px;background:${o.renk};font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td style="height:5px;background:${o.renk};background-image:linear-gradient(90deg,${o.renk} 0%,${RENK.teal} 100%);font-size:0;line-height:0;">&nbsp;</td></tr>
     <tr><td style="padding:22px 28px 2px;">
-      <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-        <td style="vertical-align:middle;padding-right:10px;"><img src="${LOGO}" width="34" height="34" alt="Projedar" style="display:block;border-radius:9px;"></td>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td style="vertical-align:middle;padding-right:10px;width:34px;"><img src="${LOGO}" width="34" height="34" alt="Projedar" style="display:block;border-radius:9px;"></td>
         <td style="vertical-align:middle;font-family:${FONT};font-size:19px;font-weight:800;letter-spacing:-.02em;color:${RENK.ink};">proje<span style="color:${RENK.teal};">dar</span></td>
+        <td style="vertical-align:middle;text-align:right;font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:.04em;color:${RENK.inkFaint};white-space:nowrap;"><span style="color:#2fb36b;">&#9679;</span> canlı ağ</td>
       </tr></table>
     </td></tr>
     <tr><td style="padding:16px 28px 0;">
-      <span style="display:inline-block;background:${o.tint};color:${o.renk};font-family:${FONT};font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;">${htmlKacir(o.rozet)}</span>
+      <span style="display:inline-block;background:${o.tint};color:${o.renk};font-family:${FONT};font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;">&#9679; ${htmlKacir(o.rozet)}</span>
     </td></tr>
     <tr><td style="padding:12px 28px 0;">
       <h1 style="margin:0;font-family:${FONT};font-size:21px;line-height:1.28;font-weight:800;color:${RENK.ink};">${htmlKacir(o.baslik)}</h1>
     </td></tr>
     ${govdeBlok}
+    ${motifBlok}
     <tr><td style="padding:22px 28px 4px;">
       <a href="${htmlKacir(o.ctaUrl)}" style="display:inline-block;background:${RENK.teal};color:#ffffff;text-decoration:none;font-family:${FONT};font-size:14px;font-weight:700;padding:13px 26px;border-radius:11px;">${htmlKacir(o.ctaLabel)} &rarr;</a>
     </td></tr>
     ${altNotBlok}
     <tr><td style="padding:24px 28px 26px;">
       <hr style="border:none;border-top:1px solid ${RENK.cizgi};margin:0 0 16px;">
-      <p style="margin:0 0 4px;font-family:${FONT};font-size:12px;font-weight:600;color:${RENK.inkSoft};">Projedar &middot; tahsisli canlı satış ağı</p>
-      <p style="margin:0;font-family:${FONT};font-size:11px;line-height:1.5;color:${RENK.inkFaint};">Bu bir işlem bildirimidir, pazarlama e-postası değildir; bir hesap hareketi olduğu için aldın. Soru için <a href="mailto:destek@projedar.com" style="color:${RENK.teal};text-decoration:none;">destek@projedar.com</a>.</p>
+      ${footerBlok}
     </td></tr>
   </table>
   <p style="margin:16px 0 0;font-family:${FONT};font-size:11px;color:${RENK.inkFaint};">© ${yil} Projedar &middot; projedar.com</p>
@@ -130,10 +160,51 @@ export function bildirimMailiTipli(tip: string, baslik: string, govde: string | 
     govde,
     ctaLabel: s.cta,
     ctaUrl: link ? `${SITE_URL}${link}` : SITE_URL,
+    motif: true,
   });
 }
 
 /** Geriye dönük uyum — tip verilmeyen çağrılar "sistem" stiliyle basılır. */
 export function bildirimMaili(baslik: string, govde: string | null, link: string | null): string {
   return bildirimMailiTipli("sistem", baslik, govde, link);
+}
+
+/* ── Keşif motoru: aday davet maili (ticari elektronik ileti) ───────────────── */
+const SEGMENT_METIN: Record<string, { rol: string; fayda: string }> = {
+  muteahhit: { rol: "müteahhit/geliştirici", fayda: "konut stoğunuzu tek noktadan yönetip bağımsız emlakçı ağına canlı dağıtın" },
+  ofis: { rol: "emlak ofisi", fayda: "size tahsisli projeleri tek canlı havuzdan görüp ekibinizle paylaşın" },
+  emlakci: { rol: "gayrimenkul danışmanı", fayda: "size tahsisli projeleri tek canlı havuzdan görüp müşterinizle paylaşın" },
+  proje: { rol: "geliştirici", fayda: "projenizi bağımsız emlakçı ağına canlı dağıtın" },
+};
+
+/**
+ * Aday davet maili — admin keşif motorunun gönderdiği soğuk davet.
+ * Pazarlama footer'ı (opt-out + İYS/ETK ret) + davet-token'lı kayıt CTA'sı. Best-effort.
+ */
+export function davetMaili(o: {
+  firma: string;
+  segment: string;
+  il: string | null;
+  kayitUrl: string;
+  cikisUrl: string;
+  ekMesaj?: string | null;
+}): string {
+  const s = SEGMENT_METIN[o.segment] ?? SEGMENT_METIN.muteahhit;
+  const konum = o.il ? `${o.il} bölgesinde ` : "";
+  const govde =
+    `Merhaba, ${konum}${s.rol} olarak ${o.firma} ekibini Projedar ağına davet ediyoruz. ` +
+    `Projedar ile ${s.fayda}. Komisyon yok; çift satış yapısal olarak engelli.` +
+    (o.ekMesaj ? `\n\n${o.ekMesaj}` : "");
+  return mailKabuk({
+    preheader: `${o.firma} — Projedar davet`,
+    rozet: "Davet",
+    renk: "#1e9b8a",
+    tint: "#e2f1ef",
+    baslik: `${o.firma} · Projedar'a davetlisiniz`,
+    govde,
+    ctaLabel: "Hesabını oluştur",
+    ctaUrl: o.kayitUrl,
+    pazarlama: true,
+    cikisUrl: o.cikisUrl,
+  });
 }
