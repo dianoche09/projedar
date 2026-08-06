@@ -293,6 +293,7 @@ AUTH-ARKASI (ürün):
 | 2 | **NOG Base** | UAE | 92% | Developer↔broker operating system | Nötr çoklu-geliştirici network etkisi zayıf; KOMİSYONLU | 5/5 |
 | 3 | **DomusHub** | MENA/SEA | 91% | Off-plan Sales OS | Geliştiricinin kendi altyapısı; ortak danışman ağı değil | 5/5 |
 | 4 | **Sell.Do** | Hindistan | 90% | Developer channel-partner OS | Kendi developer/CP CRM'i; çok-geliştirici ağ değil | 5/5 |
+| ✚ | **Tapuva** | TR | 88% | Developer→broker proje dağıtım ağı (broker bedava, AI eşleştirme) | KOMİSYONLU (%3.2-4.0 developer öder); unit-level stok/DB kilit/hold sığ | 5/5 |
 | 5 | **Arveya Enterprise** | TR | 86% | Developer+emlak ofisi ağı | CRM/B2B ekosistem ağır; saf dağıtım ağı değil | 5/5 |
 | 6 | **Avesdo** | K.Amerika | 86% | New-home transaction mgmt | Developer merkezli; açık bağımsız broker marketplace değil | 5/5 |
 | 7 | **BeyondWalls** | Hindistan | 85% | Developer↔CP ekosistem | İKİ YÜZ: consumer portalı açık-ilan (anti-tez); ağır servis katmanı | 4/5 |
@@ -336,6 +337,7 @@ AUTH-ARKASI (ürün):
 | Novo | ○ | ● | ● | ● | ● | ○ | ● | ● | ● | ● | ○ |
 | Realatic | ○ | ● | ● | ● | ● | ● | ● | ● | ● | ● | ● |
 | Konutmatik | ○ | ○ | ● | ● | ● | ○ | ● | ● | ● | ○ | — |
+| Tapuva | ● | ● | ● ilan | ● | ○ | ○ | — | — | ● | ○ | ● |
 | RE-OS | ● | ● | ○ | ○ | ● | ○ | — | — | ● | ○ | ● |
 | MLS.tr | ● | ● | ○ | ○ | ● | ○ | — | — | ● paylaşım | — | ● |
 
@@ -374,6 +376,7 @@ Kesişim = **NETWORK × LIVE INVENTORY × TRANSACTION GOVERNANCE**. Connject'te 
 ### 8.6 Fetch doğrulamaları (2026-08-07)
 
 - **NOG Base (nogbase.ae):** tablo birebir doğrulandı. Developer AED 5.000/ay + broker bedava + milestone-linked komisyon (booking/construction/handover, AED 300/payout, "AED 13.59B komisyon"), canlı stok + instant lock, EOI/rezervasyon, WhatsApp AI, 48sa go-live, launch readiness scoring, native iOS/Android. Kurucu Ahmed Khaire. **Gelir modeli Projedar ile birebir; tek fark KOMİSYONLU → Projedar'ın komisyonsuz konumunu keskinleştirir.**
+- **Tapuva (tapuva.com, TR) %88 — Connject profiline en yakın TR network rakibi:** developer→broker proje dağıtım ağı; **broker ücretsiz** (Projedar gelir modeliyle aynı taraf), çoklu geliştirici (15+ marka, 81 il), canlı ilan (100+), **AI satış koçu** (satış metni + itiraz yanıtı + müşteri eşleştirme) + akıllı eşleştirme (bölge/bütçe→broker), ücretsiz araçlar (vergi/kira getirisi hesaplayıcı, Novo/kolayseo deseni), KVKK. **KRİTİK FARK: KOMİSYONLU** (%3.2-4.0 developer öder, oranlar projede görünür) → Connject (komisyonsuz) ile NOG Base (komisyonlu) arası; Projedar komisyonsuz konumunu keskinleştirir. **Governance sığ:** ilan-seviyesi canlı stok (unit-level grid / DB çift-satış kilidi / hold-rezervasyon net değil) → Projedar'ın transaction OS derinliği yok. Tehdit 5/5 (TR doğrudan, broker-bedava + AI eşleştirme aktif satıyor). ⚠️ Web'de "Tapuva" ≠ "Tapu.com" (ikincisi alakasız ekspertizli açık artırma sitesi, Earlybird yatırımlı).
 - **BeyondWalls — İKİ YÜZ (kritik):** `corporate.beyondwalls.com` = B2B developer↔channel-partner ekosistem (tabloda bu, MahaRERA kayıtlı, Pune/Mumbai). AMA `beyondwalls.com/property/...` (verilen URL) = B2C consumer portal: public listing + açık fiyat (₹46.73L, ₹4.582/sqft) + EMI hesaplayıcı + brosür indir + "Enquire Now" lead formu + indexlenebilir + **statik katalog (unit-level canlı grid YOK)**. Consumer yüzü = Projedar ANTİ-TEZİ (DEĞİŞMEZ #4 kapalı-devre + EİDS ihlali). **Ders: B2B ekosistem/kategori anlatımı AL, consumer portal ALMA.**
 
-**EK-8 kaynak siteler:** nogbase.ae · domushub.io · sell.do · arveya.com · beyondwalls.com · corporate.beyondwalls.com · propertyshell.com · realatic.com · buildesk.in · getunlatch.com · ofpexchange.com · konutmatik.com · spark.re · salefish.app · re-os.com · ownly.re · cecilianpartners.com · mls.tr · portfoycrm.com · novoxcrm.com.
+**EK-8 kaynak siteler:** nogbase.ae · tapuva.com · domushub.io · sell.do · arveya.com · beyondwalls.com · corporate.beyondwalls.com · propertyshell.com · realatic.com · buildesk.in · getunlatch.com · ofpexchange.com · konutmatik.com · spark.re · salefish.app · re-os.com · ownly.re · cecilianpartners.com · mls.tr · portfoycrm.com · novoxcrm.com.
