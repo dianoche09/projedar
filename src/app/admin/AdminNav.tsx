@@ -57,7 +57,13 @@ const YONETIM: NavItem[] = [
   {
     href: "/admin/pazarlama",
     etiket: "Pazarlama",
+    tam: true,
     ikon: ic(<><path d="M3 11l18-5v12L3 14z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></>),
+  },
+  {
+    href: "/admin/pazarlama/kesif",
+    etiket: "Keşif Motoru",
+    ikon: ic(<><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></>),
   },
   {
     href: "/admin/seo",
