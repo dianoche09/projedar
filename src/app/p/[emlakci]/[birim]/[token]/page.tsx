@@ -11,6 +11,7 @@ import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
 import { OdemeSlider } from "./OdemeSlider";
 import { Galeri } from "./Galeri";
+import { FiyatTrend, type FiyatNokta } from "@/components/FiyatTrend";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 
@@ -206,6 +207,22 @@ export default async function PublicBirimPage({
   );
   const genelToplam = b.liste_fiyati != null ? b.liste_fiyati + eklentiToplam : null;
 
+  // Fiyat geçmişi (events tip='fiyat', append-only trigger) — müşteriye olgusal fiyat trendi.
+  const { data: fiyatOlaylar } = await supabase
+    .from("events")
+    .select("payload, created_at")
+    .eq("birim_id", birim)
+    .eq("tip", "fiyat")
+    .order("created_at", { ascending: true });
+  const fiyatNoktalar: FiyatNokta[] = [];
+  for (const o of fiyatOlaylar ?? []) {
+    const pl = (o.payload ?? {}) as { eski?: number | null; yeni?: number | null };
+    if (fiyatNoktalar.length === 0 && pl.eski != null) {
+      fiyatNoktalar.push({ t: o.created_at as string, fiyat: Number(pl.eski) });
+    }
+    if (pl.yeni != null) fiyatNoktalar.push({ t: o.created_at as string, fiyat: Number(pl.yeni) });
+  }
+
   const { data: belgelerRaw } = await supabase
     .from("proje_belge")
     .select("tip, url")
@@ -381,6 +398,7 @@ export default async function PublicBirimPage({
                 <div className="rounded-xl border border-hair bg-paper p-4 font-mono">
                   <span className="text-xs text-gray block">Liste Fiyatı</span>
                   <span className="text-2xl font-bold text-ink">{fmt(liste)} {psim}</span>
+                  <FiyatTrend noktalar={fiyatNoktalar} paraBirimi={(b.para_birimi as string) ?? "TRY"} />
                   {odeme ? (
                     <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm print:block hidden">
                       {odeme.pesinat ? (
