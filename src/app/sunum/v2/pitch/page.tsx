@@ -13,7 +13,6 @@ import {
   Network,
   PhoneCall,
   Rocket,
-  ShieldCheck,
   TrendingUp,
   Users,
   Wrench,
@@ -236,7 +235,7 @@ export default function PitchV2() {
     <Slayt
       key="is-modeli"
       kicker="İş modeli"
-      baslik="Danışmana ücretsiz; gelirimiz yazılım anlaşmasından"
+      baslik="Gelir yazılım anlaşmasından; danışman kurucu programıyla büyür"
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
@@ -248,7 +247,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Users}
           baslik="Büyüme: danışmanlar"
-          metin="Danışmana üyelik ücretsiz, satıştan kesinti yok; kazancın %100'ü onun. Sıfır bariyer, ağın dağıtım tarafını hızla büyütür."
+          metin="Kurucu program: ilk ~1000 danışman ücretsiz (ağ likiditesi). Komisyon hep sıfır, kazancın %100'ü onun; kontenjan sonrası Pro/ofis geliri."
         />
         <MaddeKart
           Ikon={Layers}
@@ -272,7 +271,7 @@ export default function PitchV2() {
         akisli
         adimlar={[
           { baslik: "Daha çok proje", metin: "Üreticiler stoğunu ağa taşır." },
-          { baslik: "Daha çok danışman", metin: "Zengin portföy danışman çeker; katılım ücretsiz." },
+          { baslik: "Daha çok danışman", metin: "Zengin portföy danışman çeker; kurucu programla katılım ücretsiz." },
           { baslik: "Daha hızlı satış", metin: "Canlı veri ve geniş ağ stoku eritir." },
           { baslik: "Daha güçlü çekim", metin: "Sonuç gören üreticiler yeni projeleri ağa getirir; döngü yeniden başlar." },
         ]}

@@ -54,7 +54,7 @@ export default function EmlakciSunumV2() {
       logo
       kicker="Projedar · Gayrimenkul danışmanları için"
       baslik="Canlı stok, güncel fiyat, kilitli opsiyon"
-      alt="Yetkili olduğun projelerin daima güncel birim ve fiyat bilgisine eriş; müşterine tek linkle sun, opsiyonu kilitle. Üyelik ücretsiz, komisyon kesintisi yok: kazancının %100'ü senin."
+      alt="Yetkili olduğun projelerin daima güncel birim ve fiyat bilgisine eriş; müşterine tek linkle sun, opsiyonu kilitle. Kurucu danışman ol: ilk 1000 üye ücretsiz. Komisyon kesintisi yok, kazancının %100'ü senin."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Bloklar yükselir. Stok erir.
@@ -237,13 +237,13 @@ export default function EmlakciSunumV2() {
       gorsel="/sunum/anahtar-teslim.jpg"
       hiza="sol"
       kicker="Kazanç modeli"
-      baslik="Ücretsiz üyelik, komisyonsuz kazanç"
+      baslik="Kurucu üyelik ücretsiz, komisyonsuz kazanç"
     >
       <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={BadgeCheck}
-          baslik="Üyelik ücretsiz"
-          metin="Kayıt, erişim ve kullanım için hiçbir ücret ödemezsin; ilan paketi, abonelik yok."
+          baslik="Kurucu: ilk 1000 ücretsiz"
+          metin="İlk 1000 kurucu danışman için kayıt, erişim ve kullanım ücretsiz (ilk yıl); ilan paketi, abonelik yok."
           sinyal="#3ddc8f"
         />
         <MaddeKart
@@ -321,7 +321,7 @@ export default function EmlakciSunumV2() {
           "Fiyat ve stok her an güncel, teyide gerek yok",
           "Tüm birim durumları tek ekranda, anında",
           "Opsiyon kilidi daireyi sana kilitler, emeğin korunur",
-          "Üyelik ücretsiz, kazancından kesinti yok",
+          "Kurucu üyelik ücretsiz, kazancından kesinti yok",
         ]}
       />
     </Slayt>,
@@ -482,7 +482,7 @@ export default function EmlakciSunumV2() {
         adimlar={[
           { baslik: "Her an doğru bilgiyle satarsın", metin: "Canlı fiyat ve stok cebinde; müşteri karşısında asla eski veriyle kalmazsın." },
           { baslik: "Emeğin sistemle korunur", metin: "Opsiyon kilidi ve 'ilk kaydeden' izi, getirdiğin müşteriyi ve hak edişini güvenceye alır." },
-          { baslik: "Maliyetin sıfırdır", metin: "Üyelik ücretsiz, komisyon kesintisi yok; kazandığın tamamen senin." },
+          { baslik: "Maliyetin sıfırdır", metin: "Kurucu üyelik ücretsiz, komisyon kesintisi yok; kazandığın tamamen senin." },
         ]}
       />
     </Slayt>,

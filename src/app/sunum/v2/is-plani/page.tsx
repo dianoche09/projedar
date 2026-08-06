@@ -134,13 +134,14 @@ export default function IsPlaniV2() {
     </Slayt>,
 
     /* 6 · Gelir modeli · Müteahhit */
-    <Slayt key="gelir-muteahhit" genis kicker="Gelir modeli · 1" baslik="Müteahhit: proje/daire ölçekli, yıllık" alt="Ana gelir. Taban minimum + yönetilen daire adedine göre kademeli; büyüdükçe üst pakete geçer, ağ büyüdükçe gelir kendiliğinden artar. Komisyon yok.">
+    <Slayt key="gelir-muteahhit" genis kicker="Gelir modeli · 1" baslik="Müteahhit: proje/daire ölçekli, yıllık" alt="Ana gelir. İlk ~10 müteahhit kurucu (ücretsiz); sonrası taban minimum + yönetilen aktif daire adedine göre kademeli. Ağ büyüdükçe gelir kendiliğinden artar. Komisyon yok.">
       <div className="grid gap-3 sm:grid-cols-2">
         <FiyatKart
           baslik="Müteahhit paketleri · yıllık"
-          alt="Yönetilen aktif daire adedine göre"
+          alt="Ağdaki aktif daire adedine göre (satılınca düşer)"
           vurgu
           satirlar={[
+            { ad: "Kurucu", kapasite: "ilk ~10 müteahhit · ilk yıl", fiyat: "Ücretsiz" },
             { ad: "Başlangıç", kapasite: "≤ 50 daire", fiyat: "150.000 ₺" },
             { ad: "Profesyonel", kapasite: "51-150 daire", fiyat: "280.000 ₺" },
             { ad: "İşletme", kapasite: "151-350 daire", fiyat: "480.000 ₺" },
@@ -156,13 +157,13 @@ export default function IsPlaniV2() {
     </Slayt>,
 
     /* 7 · Gelir modeli · Danışman & Ofis */
-    <Slayt key="gelir-danisman" genis kicker="Gelir modeli · 2" baslik="Danışman ücretsiz; ofis danışman sayısıyla ölçekli" alt="Danışman tarafı bilinçli olarak ücretsiz: ağ etkisi ve dağıtım gücü moattır. Gelir katmanları değer kanıtlandıkça açılır.">
+    <Slayt key="gelir-danisman" genis kicker="Gelir modeli · 2" baslik="Danışman: kurucu ücretsiz, sonra Pro; ofis danışman-ölçekli" alt="Danışman tarafı kurucu programla ücretsiz açılır (ağ likiditesini yaratan taraf bilinçli sübvanse edilir); kontenjan sonrası Pro. Gelir katmanları değer kanıtlandıkça derinleşir.">
       <div className="grid gap-3 sm:grid-cols-2">
         <FiyatKart
           baslik="Danışman · bireysel"
           alt="Aylık veya yıllık"
           satirlar={[
-            { ad: "Temel", kapasite: "kalıcı ücretsiz", fiyat: "0 ₺" },
+            { ad: "Kurucu", kapasite: "ilk ~1000 danışman · ilk yıl", fiyat: "Ücretsiz" },
             { ad: "Pro", kapasite: "gelişmiş araç + marka", fiyat: "750 ₺/ay · 7.500 ₺/yıl" },
           ]}
         />
@@ -188,7 +189,7 @@ export default function IsPlaniV2() {
         adimlar={[
           { baslik: "Arz önce", metin: "Danışmanı çeken tek şey burada olan tahsisli, canlı, doğrulanmış stoktur; boş ekranla açılmaz." },
           { baslik: "Ankara → İstanbul → İzmir", metin: "Giriş pazarı Ankara (152.534 satış, kurucu sahada). Kanıt döngüsü kapanınca oyun kitabı taşınır." },
-          { baslik: "Davet zinciri", metin: "Müteahhit kendi emlakçı çevresini davet eder; ofislerle toplu katılım; üyelik ücretsiz." },
+          { baslik: "Davet zinciri", metin: "Müteahhit kendi emlakçı çevresini davet eder; ofislerle toplu katılım; ilk ~1000 danışman kurucu (ücretsiz)." },
         ]}
       />
     </Slayt>,
@@ -209,7 +210,7 @@ export default function IsPlaniV2() {
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart Ikon={Network} baslik="Tek özellik değil, kombinasyon" metin="Çok müteahhitli havuz + tahsisli erişim + DB kilidi + komisyonsuz: her biri kopyalanabilir; dördü birden rakibin modelini bozmadan olmaz." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Database} baslik="Veri birikimi" metin="Her paylaşım, görüntüleme ve opsiyon ilk günden kayıtta; geçmişe dönük üretilemez, ağ büyüdükçe derinleşir." />
-        <MaddeKart Ikon={Handshake} baslik="İki tarafı da tutan model" metin="Üretici kontrolü kaybetmez, danışman ücretsiz ve kesintisiz kazanır; iki taraf da ağda kalmayı seçer." />
+        <MaddeKart Ikon={Handshake} baslik="İki tarafı da tutan model" metin="Üretici kontrolü kaybetmez, danışman komisyonsuz ve kesintisiz kazanır; iki taraf da ağda kalmayı seçer." />
         <MaddeKart Ikon={Gavel} baslik="Regülasyon kalkanı" metin="EİDS açık ilanı zorlaştırırken tahsisli birebir paylaşım kapsam dışı; mevzuat modeli koruyor." />
       </div>
     </Slayt>,

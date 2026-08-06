@@ -169,8 +169,8 @@ export default function GtmV2() {
         />
         <MaddeKart
           Ikon={Gift}
-          baslik="Bedava + organik yayılım"
-          metin="Üyelik ücretsiz; danışmanın paylaştığı her canlı link alan tarafta 'bu neyle hazırlandı?' sorusunu doğurur."
+          baslik="Kurucu + organik yayılım"
+          metin="İlk ~1000 danışman kurucu program (ücretsiz); paylaşılan her canlı link alan tarafta 'bu neyle hazırlandı?' sorusunu doğurur."
         />
       </div>
     </Slayt>,
@@ -215,25 +215,25 @@ export default function GtmV2() {
     <Slayt
       key="fiyatlama"
       kicker="Fiyatlama"
-      baslik="Erken dönem: esnek anlaşma, sabit ilke"
-      alt="İlke: komisyon yok. Erken aşamada fiyat kartı değil birebir anlaşma; kanıt biriktikçe paketleşir."
+      baslik="Kurucu program, sonra kademeli SaaS"
+      alt="İlke: komisyon yok. Lansman kozu: ilk kurucular ücretsiz — ağı hızla doldurur; kontenjan dolup kanıt biriktikçe paketleşir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Handshake}
-          baslik="Müteahhit · yıllık anlaşma"
-          metin="Proje kapsamına göre birebir kurgulanır; erken dönemde referans ve vaka değeri fiyattan kıymetlidir."
+          baslik="Müteahhit · ilk ~10 kurucu"
+          metin="İlk ~10 müteahhit kurucu (ücretsiz): referans + vaka + stok likiditesi. Sonrası ağdaki aktif daire adedine göre kademeli yıllık."
           sinyal="#2fd3bc"
         />
         <MaddeKart
           Ikon={Gift}
-          baslik="Danışman · ücretsiz"
-          metin="Temel erişim kalıcı bedava; ağ büyüklüğü gelir modelinin ön koşuludur."
+          baslik="Danışman · ilk ~1000 kurucu"
+          metin="İlk ~1000 danışman ilk yıl ücretsiz; ağın likidite tarafı bilinçli sübvanse edilir. Kontenjan sonrası Pro/ofis."
         />
         <MaddeKart
           Ikon={Layers}
           baslik="Sonra · SaaS katmanları"
-          metin="Ofis/franchise aboneliği, emlakçı premium, veri ürünleri: değer kanıtlanınca açılır."
+          metin="Kontenjan dolunca danışman Pro, ofis/franchise aboneliği, veri ürünleri: değer kanıtlanınca paralı."
         />
       </div>
     </Slayt>,
