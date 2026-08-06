@@ -278,3 +278,102 @@ AUTH-ARKASI (ürün):
   - **ECI LotVue = mekanizma olarak en yakın görsel referans:** interaktif site haritasında renk-kodlu lot durumu+fiyat, builder sisteminden otomatik veri (*"no need to rekey data"* = tek doğru kaynak), **kredi kartıyla online lot kilitleme**, lot-click heat map. Tahsis/kesit görsel anlatımı için incele: ecisolutions.com/products/lotvue.
 
 **Kaynak siteler:** avesdo.com · newhomebuddy.com · alnair.ae · buildersupdate.com · getbuildify.com · entera.ai · ecisolutions.com · novoxcrm.com · topli.io · re-os.com · konutmatik.com · code5.com.tr · connject.com · emlakkanal.com.
+
+---
+
+## 8. GÜNCEL 30+ RAKİP TARAMASI (2026-08-07, Ağustos 2026 web-kontrollü)
+
+"Projedar benzerlik %" = analitik puan (rakip beyanı değil). 6 eksen ağırlıklı: geliştirici→bağımsız emlakçı ağı · çoklu geliştirici · canlı stok/fiyat · müşteri claim/sahiplik · hold-rezervasyon · komisyon/hakediş.
+
+### 8.1 Ana tablo (31 oyuncu)
+
+| # | Oyuncu | Pazar | Benzerlik | Ne satıyor | Projedar'a göre temel fark | Tehdit |
+|--:|--------|-------|----------:|------------|----------------------------|:------:|
+| 1 | **Connject** | TR/Global | 94% | Developer→danışman B2B proje ağı | Transaction OS derinliği (hold/booking/hakediş) sığ | 5/5 |
+| 2 | **NOG Base** | UAE | 92% | Developer↔broker operating system | Nötr çoklu-geliştirici network etkisi zayıf; KOMİSYONLU | 5/5 |
+| 3 | **DomusHub** | MENA/SEA | 91% | Off-plan Sales OS | Geliştiricinin kendi altyapısı; ortak danışman ağı değil | 5/5 |
+| 4 | **Sell.Do** | Hindistan | 90% | Developer channel-partner OS | Kendi developer/CP CRM'i; çok-geliştirici ağ değil | 5/5 |
+| 5 | **Arveya Enterprise** | TR | 86% | Developer+emlak ofisi ağı | CRM/B2B ekosistem ağır; saf dağıtım ağı değil | 5/5 |
+| 6 | **Avesdo** | K.Amerika | 86% | New-home transaction mgmt | Developer merkezli; açık bağımsız broker marketplace değil | 5/5 |
+| 7 | **BeyondWalls** | Hindistan | 85% | Developer↔CP ekosistem | İKİ YÜZ: consumer portalı açık-ilan (anti-tez); ağır servis katmanı | 4/5 |
+| 8 | **Novo CRM** | TR | 84% | Developer CRM + broker bulutu | Developer kendi broker ağını yönetir; nötr marketplace değil | 5/5 |
+| 9 | **Property Shell** | AU/Global | 83% | Project marketing + stock allocation | Emlakçı acquisition/network zayıf; enterprise altyapı | 4/5 |
+| 10 | **Realatic** | Hindistan | 82% | Developer CRM + CP portal | Hindistan'a özgü developer CRM | 4/5 |
+| 11 | **Buildesk** | Hindistan | 81% | Developer/mandate + CP CRM | Marketplace/discovery değil, mevcut partner yönetimi | 4/5 |
+| 12 | **Unlatch** | FR/UK/Global | 80% | New-home collaborative sales | Broker ağı/discovery'den çok işlem dijitalleşmesi | 4/5 |
+| 13 | **OFP Exchange** | UAE/ES/Bali | 80% | Off-plan transaction rail | Komisyonsuz SaaS değil; transaction rail + exclusivity | 4/5 |
+| 14 | **Yapısoft SalesOffice** | TR | 79% | Developer Sales CRM | Kendi satış ofisi/broker; network marketplace yok | 4/5 |
+| 15 | **Konutmatik** | TR | 78% | Dijital proje satış ofisi | Güçlü transaction altyapı ama TR emlakçı ağı değil | 4/5 |
+| 16 | **Spark RE** | CA/US | 77% | New-development sales OS | Network dağıtımı değil, proje satış operasyonu | 4/5 |
+| 17 | **SaleFish** | CA/Global | 76% | New-home sales platform | Developer merkezli transaction platform | 4/5 |
+| 18 | **RE-OS** | TR | 75% | Emlak CRM+MLS+sıfır proje ağı | Developer live-stock/hold altyapısı merkezî değil | 4/5 |
+| 19 | **PrismCRM/Code5** | TR | 73% | Developer proje satış CRM | External broker marketplace/network zayıf | 3/5 |
+| 20 | **Ownly** | CA/US | 72% | Direct digital home buying | Ters: broker maliyetini AZALTMA vaadi | 3/5 |
+| 21 | **Cecilian – The XO** | US | 70% | Developer/homebuilder ERP | Master-plan developer operasyonu | 3/5 |
+| 22 | **MLS.tr** | TR | 69% | Kapalı emlakçı B2B ağı | Yeni proje/developer stoğu + transaction motoru yok | 4/5 |
+| 23 | **PortföyCRM** | TR | 68% | CRM + ofisler arası network | Developer/new-development uzmanlığı yok | 3/5 |
+| 24 | **Planports** | TR | 65% | Emlak/inşaat CRM | Cross-company developer→broker network yok | 3/5 |
+| 25 | **ECI Lasso** | US/CA | 64% | Homebuilder CRM | Inventory distribution + broker transaction sınırlı | 3/5 |
+| 26 | **ProspectONE/BST** | CA | 63% | Homebuilder CRM | Broker ağı yok; satış ofisi yazılımı | 3/5 |
+| 27 | **New Home Star** | US | 61% | Builder sales outsourcing+tech | SaaS marketplace değil; insanlı outsourcing | 3/5 |
+| 28 | **CondoGrid** | CA | 60% | Condo developer sales OS | Network/distribution katmanı dar | 3/5 |
+| 29 | **Rylax** | IE | 58% | Property development platform | Satış network'ünden çok development lifecycle | 2/5 |
+| 30 | **NoviHome** | US | 52% | Homebuyer experience | Buyer experience, dağıtım problemi değil | 2/5 |
+| 31 | **iRealtee** | Filipinler | 50% | Brokerage OS | Brokerage tarafı; developer live inventory değil | 2/5 |
+
+### 8.2 Feature matrix (● güçlü · ○ kısmi · — doğrulanmadı)
+
+| Rakip | Çoklu gel. | Bağımsız broker ağı | Canlı stok | Canlı fiyat | Müşteri claim | Conflict | Hold | Booking | Komisyon | Hakediş | Multi-proj broker |
+|-------|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|
+| **Projedar hedefi** | ● | ● | ● | ● | ● | ● | ● | ● | ● | ● | ● |
+| Connject | ● | ● | ● | ● | ● | ○ | — | — | ● oran | — | ● |
+| NOG Base | ○ | ● | ● | ● | ● | ○ | ● | ● | ● | ● | ○ |
+| DomusHub | ○ | ● | ● | ● | ● | ○ | ● | ● | ● | ● | ○ |
+| Sell.Do | ○ | ● | ● | ● | ● | ● | ● | ● | ● | ● | ● |
+| Arveya | ●/○ | ● | ● | ● | ○ | ○ | ● | ●/○ | ● | ○ | ● |
+| Avesdo | ○ | ● | ● | ● | ● | ○ | ● | ● | ○ | ○ | ○ |
+| BeyondWalls | ● | ● | ● | ● | ● | ○ | ○ | ● | ● | ○ | ● |
+| Novo | ○ | ● | ● | ● | ● | ○ | ● | ● | ● | ● | ○ |
+| Realatic | ○ | ● | ● | ● | ● | ● | ● | ● | ● | ● | ● |
+| Konutmatik | ○ | ○ | ● | ● | ● | ○ | ● | ● | ● | ○ | — |
+| RE-OS | ● | ● | ○ | ○ | ● | ○ | — | — | ● | ○ | ● |
+| MLS.tr | ● | ● | ○ | ○ | ● | ○ | — | — | ● paylaşım | — | ● |
+
+Projedar hedef satırı tüm 11 eksende ● = kimse tüm eksenleri birden kapatmıyor; ürün-özellik konumu lider.
+
+### 8.3 Web mesajı / satılan korku (seçme)
+
+| Rakip | Hero mesajı | Hedeflediği korku | Projedar dersi |
+|-------|-------------|-------------------|----------------|
+| Connject | "Biz aradaki köprüyüz" | Projelerin WhatsApp/PDF'te kaybolması | Network'ü ana ürün yap |
+| NOG Base | "WhatsApp chaos → real-time inventory+commissions" | Stok + broker koordinasyon kaosu | "WhatsApp yerine Projedar" güçlü tema |
+| DomusHub | "Single source of truth" | Eski fiyat, Excel, double booking | Tek doğru kaynak çok güçlü |
+| Sell.Do | "Run your channel partner network with confidence" | Lead/brokerage kavgası, telefonla stok sorma | Enterprise mesajına çok yakın |
+| Novo | "Brokerlar yönetilemiyor" | Müşteri sahipliği + hakediş çatışması | Problem validation |
+| Konutmatik | "Satışı anında yönetin" | Yanlış stok/fiyat, çift rezervasyon | Transaction UX benchmark |
+| RE-OS | "Sıfır projelere iş ortağı olun" | Emlakçının satacak proje bulamaması | Danışman acquisition mesajı |
+| MLS.tr | "Rakip değil ekip olun" | Diğer emlakçıyla paylaşım korkusu | Network trust mesajı |
+| Property Shell | "Stock allocation across sales channels" | Dağıtım kontrolü kaybı | Geliştirici mesajı için iyi |
+
+### 8.4 En ciddi rakipler + globalde kopyalanacak 3
+
+- **TR doğrudan:** Connject (business-model competitor: network + danışmana bedava + komisyonsuz) > Novo CRM (fiyat açık: Starter 1.999 / Pro 2.999 / Business 4.999 TL/ay; Business'ta Broker Ağı + Komisyon Planı) > Arveya (proje stoğu + ofis ağı + yatırımcı talebi, şifreli kapalı paylaşım) > RE-OS ("sıfır projelere iş ortağı") > Konutmatik (transaction derinliği benchmark: Boş→Rezerve→Satıldı + dinamik fiyat + stok lock).
+- **Globalde ürünü en çok kopyalanacak 3:**
+  1. **Sell.Do** — CP onboarding+KYC, kontrollü inventory, buyer tagging, **lead ownership conflict**, unit blocking, token payment, booking, brokerage calc, invoice, **payout ledger**, CP ranking. "Partnerin müşterisi hazır; stok sormak için ofisi arıyor, cevap gelene kadar ünite başkasına tutuluyor" = Projedar use-case'inin birebir tarifi.
+  2. **DomusHub** — problem listesi birebir ("Available? Send me the price!", double sales, outdated marketing, spreadsheet chaos, commissions, agent cabinet, booking timer). Agent Cabinet: My clients→my deals→my commission journal. $250/ay (tek proje) – $500/ay (sınırsız).
+  3. **NOG Base** — iş modeli en öğretici: Developer AED 5.000/ay · Broker ücretsiz · komisyon oto AED 300/payout · developer→broker network→live inventory→reservation→commission.
+
+### 8.5 White-space (30 rakip sentezi) + KOD GERÇEĞİ
+
+Kesişim = **NETWORK × LIVE INVENTORY × TRANSACTION GOVERNANCE**. Connject'te network var / governance sığ; Konutmatik-Novo'da governance var / ortak network yok; MLS-RE-OS'ta network var / unit-level transaction OS sığ. Projedar = üçünün kesişimi + **komisyonsuz**.
+
+Ürün seviyesi zinciri: Developer→Proje→Blok→Kat→Bağımsız bölüm→Fiyat→Kampanya→Broker erişimi→Müşteri claim→Claim conflict→Hold→Reservation→Sale→Commission entitlement→Payout status→Performance.
+
+**Kod doğrulaması (2026-08, koddan):** Projedar'ın "transaction governance + live inventory" ekseni KODDA GÜÇLÜ: dalga/release açılışı, opsiyon yaşam döngüsü (geçici-kilit + müteahhit doğrulama + süre/uzatma/sonuç), iki-taraflı güven skoru, granüler tahsis, DB çift-satış kalkanı, fiyat trendi, güncel-fiyat mikrosite. **Gerçek boşluk = NETWORK ayağı = cold-start/arz doldurma (kod değil, GTM).** En yakın rakiplerin (Connject 15K danışman, NOG Base 29K REGA broker) moat'ı iki-taraflı ağ yoğunluğu.
+
+### 8.6 Fetch doğrulamaları (2026-08-07)
+
+- **NOG Base (nogbase.ae):** tablo birebir doğrulandı. Developer AED 5.000/ay + broker bedava + milestone-linked komisyon (booking/construction/handover, AED 300/payout, "AED 13.59B komisyon"), canlı stok + instant lock, EOI/rezervasyon, WhatsApp AI, 48sa go-live, launch readiness scoring, native iOS/Android. Kurucu Ahmed Khaire. **Gelir modeli Projedar ile birebir; tek fark KOMİSYONLU → Projedar'ın komisyonsuz konumunu keskinleştirir.**
+- **BeyondWalls — İKİ YÜZ (kritik):** `corporate.beyondwalls.com` = B2B developer↔channel-partner ekosistem (tabloda bu, MahaRERA kayıtlı, Pune/Mumbai). AMA `beyondwalls.com/property/...` (verilen URL) = B2C consumer portal: public listing + açık fiyat (₹46.73L, ₹4.582/sqft) + EMI hesaplayıcı + brosür indir + "Enquire Now" lead formu + indexlenebilir + **statik katalog (unit-level canlı grid YOK)**. Consumer yüzü = Projedar ANTİ-TEZİ (DEĞİŞMEZ #4 kapalı-devre + EİDS ihlali). **Ders: B2B ekosistem/kategori anlatımı AL, consumer portal ALMA.**
+
+**EK-8 kaynak siteler:** nogbase.ae · domushub.io · sell.do · arveya.com · beyondwalls.com · corporate.beyondwalls.com · propertyshell.com · realatic.com · buildesk.in · getunlatch.com · ofpexchange.com · konutmatik.com · spark.re · salefish.app · re-os.com · ownly.re · cecilianpartners.com · mls.tr · portfoycrm.com · novoxcrm.com.
