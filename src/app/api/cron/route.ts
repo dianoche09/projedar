@@ -4,6 +4,7 @@ import {
   freshnessCalistir,
   opsiyonSuresiCalistir,
   stokAcilisCalistir,
+  kesifFollowupCalistir,
   type CronSonuc,
 } from "./_lib/isler";
 
@@ -25,6 +26,7 @@ export async function GET(request: Request) {
     ["opsiyon_suresi", opsiyonSuresiCalistir],
     ["stok_acilis", stokAcilisCalistir],
     ["freshness", freshnessCalistir],
+    ["kesif_followup", kesifFollowupCalistir],
   ];
 
   const sonuclar: Record<string, unknown> = {};

@@ -3,14 +3,16 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { KayitForm } from "./KayitForm";
 import { AuthKabuk } from "@/components/ui/AuthKabuk";
-import { davetGecerli } from "@/lib/davet";
+import { davetGecerli, adayDavetGecerli } from "@/lib/davet";
+
+const ADAY_ROL = new Set(["uretici", "emlakci", "ofis_yetkili"]);
 
 export default async function KayitPage({
   searchParams,
 }: {
-  searchParams: Promise<{ hata?: string; rol?: string; d?: string; n?: string; t?: string }>;
+  searchParams: Promise<{ hata?: string; rol?: string; d?: string; n?: string; t?: string; aday?: string }>;
 }) {
-  const { hata, d, n, t } = await searchParams;
+  const { hata, rol, d, n, t, aday } = await searchParams;
 
   const supabase = await createClient();
   const {
@@ -20,6 +22,12 @@ export default async function KayitPage({
 
   // Müteahhit daveti: imza geçerliyse emlakçı rolü ön-seçilir + davet eden gösterilir.
   const davet = davetGecerli(d, n, t) ? { ad: n as string, d: d as string, n: n as string, t: t as string } : null;
+
+  // Admin keşif daveti: (aday + rol + t) imzası geçerliyse rol ön-seçilir + firma gösterilir.
+  const adayDavet =
+    aday && rol && ADAY_ROL.has(rol) && adayDavetGecerli(aday, rol, t)
+      ? { aday, rol, t: t as string, firma: (n ?? "").trim() || "Firmanız" }
+      : null;
 
   return (
     <AuthKabuk>
@@ -35,7 +43,7 @@ export default async function KayitPage({
           </p>
         ) : null}
 
-        <KayitForm davet={davet} />
+        <KayitForm davet={davet} adayDavet={adayDavet} />
 
         <p className="mt-6 border-t border-hair pt-4 text-center text-sm font-medium text-ink-soft">
           Zaten hesabın var mı?{" "}

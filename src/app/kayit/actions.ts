@@ -3,8 +3,9 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { belgeleriKaydet } from "@/lib/belge";
-import { davetGecerli } from "@/lib/davet";
+import { davetGecerli, adayDavetGecerli } from "@/lib/davet";
 import { profilDetayTopla, KOLON_ALANLARI } from "@/lib/kayitAlanlar";
 
 // Self-registration — rol seçimli. Kayıt 'onay_bekliyor' başlar (handle_new_user trigger).
@@ -52,6 +53,23 @@ export async function kayitOl(formData: FormData) {
   });
   if (error) {
     redirect(`/kayit?hata=${encodeURIComponent(error.message)}`);
+  }
+
+  // Admin keşif daveti huni kapanışı — (aday + t) imzası talep_rol'e karşı geçerliyse aday'ı
+  // dönüşen olarak işaretle (service-role; aday RLS admin-only). Attribution KYC'yi atlamaz.
+  const adayId = (formData.get("aday") as string) || undefined;
+  const adayToken = (formData.get("t") as string) || undefined;
+  if (data?.user && adayId && adayDavetGecerli(adayId, talep_rol, adayToken)) {
+    try {
+      const admin = createAdminClient();
+      await admin
+        .from("aday")
+        .update({ donusen_user_id: data.user.id, durum: "kayit_oldu", son_temas: new Date().toISOString() })
+        .eq("id", adayId);
+      await admin.from("aday_temas").insert({ aday_id: adayId, kanal: "email", yon: "gelen", durum: "yanit", konu: "Kayıt oldu" });
+    } catch {
+      /* huni kaydı best-effort — kaydı bloklamaz */
+    }
   }
 
   // Oturum yalnız e-posta onayı KAPALIYKEN açılır. Varsa: kapsamlı veriyi profile yaz

@@ -1,5 +1,12 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitlarYaz } from "@/lib/events";
+import { davetMaili, mailGonder } from "@/lib/mail";
+import { adayDavetToken } from "@/lib/davet";
+import { SEGMENT_ROL, type Segment } from "@/lib/kesif/tipler";
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
+const TAKIP_GUN = 3;
+const MAKS_TEMAS = 3; // ilk davet + 2 hatırlatma → sonra 'soguk'
 
 /**
  * Cron işlerinin çekirdek mantığı — hem tekil route'lardan (elle tetikleme)
@@ -162,5 +169,77 @@ export async function opsiyonSuresiCalistir(): Promise<CronSonuc> {
       temizlenen: liste.length,
       mesaj: `Süresi dolan ${liste.length} opsiyon temizlendi; birimler otomatik 'müsait' (trigger).`,
     },
+  };
+}
+
+/**
+ * Keşif motoru follow-up: davet edilmiş ama yanıt vermemiş adaylara otomatik hatırlatma maili.
+ * Sorgu: durum='davet_edildi' + sonraki_takip<=now + opt_out=false + temas_sayisi<MAKS_TEMAS.
+ * Her hatırlatma temas_sayisi++ ve sonraki_takip'i ileri alır; sınıra ulaşan aday 'soguk' olur.
+ * Opt-out edilenler doğal olarak dışarıda (index koşulu). İYS/ETK: opt-out linki mailde.
+ */
+export async function kesifFollowupCalistir(): Promise<CronSonuc> {
+  const supabase = createAdminClient();
+  const simdi = new Date().toISOString();
+
+  const { data: adaylar, error } = await supabase
+    .from("aday")
+    .select("id, firma_adi, segment, email, il, temas_sayisi")
+    .eq("durum", "davet_edildi")
+    .eq("opt_out", false)
+    .lte("sonraki_takip", simdi)
+    .lt("temas_sayisi", MAKS_TEMAS)
+    .not("email", "is", null)
+    .limit(100);
+
+  if (error) {
+    console.error("Keşif follow-up cron hatası:", error);
+    return { status: 500, govde: { hata: error.message } };
+  }
+  const liste = adaylar ?? [];
+  if (liste.length === 0) {
+    return { status: 200, govde: { basarili: true, hatirlatilan: 0, mesaj: "Takip bekleyen aday yok." } };
+  }
+
+  let hatirlatilan = 0;
+  let soguyan = 0;
+  const sonraki = new Date(Date.now() + TAKIP_GUN * 86400_000).toISOString();
+
+  for (const a of liste) {
+    const rol = SEGMENT_ROL[(a.segment as Segment) ?? "muteahhit"];
+    if (!rol) continue; // proje adayı davet edilmez
+    const id = a.id as string;
+    const firma = a.firma_adi as string;
+    const token = adayDavetToken(id, rol);
+    const kayitUrl = `${SITE}/kayit?rol=${rol}&aday=${id}&n=${encodeURIComponent(firma)}&t=${token}`;
+    const cikisUrl = `${SITE}/api/kesif/cikis?aday=${id}&t=${adayDavetToken(id, "cikis")}`;
+    const html = davetMaili({
+      firma,
+      segment: (a.segment as string) ?? "muteahhit",
+      il: (a.il as string) ?? null,
+      kayitUrl,
+      cikisUrl,
+      ekMesaj: "Bu bir hatırlatmadır — davetiniz hâlâ geçerli.",
+    });
+    await mailGonder({ to: a.email as string, konu: `${firma} · Projedar davetiniz hâlâ açık`, html });
+    await supabase.from("aday_temas").insert({ aday_id: id, kanal: "email", yon: "giden", konu: "Davet hatırlatma", durum: "gonderildi" });
+
+    const yeniSayi = ((a.temas_sayisi as number) ?? 0) + 1;
+    await supabase
+      .from("aday")
+      .update({
+        temas_sayisi: yeniSayi,
+        son_temas: simdi,
+        sonraki_takip: yeniSayi >= MAKS_TEMAS ? null : sonraki,
+        durum: yeniSayi >= MAKS_TEMAS ? "soguk" : "davet_edildi",
+      })
+      .eq("id", id);
+    hatirlatilan++;
+    if (yeniSayi >= MAKS_TEMAS) soguyan++;
+  }
+
+  return {
+    status: 200,
+    govde: { basarili: true, hatirlatilan, soguyan, mesaj: `${hatirlatilan} adaya hatırlatma; ${soguyan} aday 'soğuk'.` },
   };
 }

@@ -60,9 +60,15 @@ function AlanGir({ a, aktif }: { a: Alan; aktif: boolean }) {
   );
 }
 
-export function KayitForm({ davet }: { davet?: { ad: string; d: string; n: string; t: string } | null }) {
+export function KayitForm({
+  davet,
+  adayDavet,
+}: {
+  davet?: { ad: string; d: string; n: string; t: string } | null;
+  adayDavet?: { aday: string; rol: string; t: string; firma: string } | null;
+}) {
   const [adim, setAdim] = useState<0 | 1 | 2>(0);
-  const [rol, setRol] = useState<string>(davet ? "emlakci" : "uretici");
+  const [rol, setRol] = useState<string>(adayDavet ? adayDavet.rol : davet ? "emlakci" : "uretici");
   const temelRef = useRef<HTMLDivElement>(null);
 
   const emlakci = rol === "emlakci";
@@ -98,6 +104,17 @@ export function KayitForm({ davet }: { davet?: { ad: string; d: string; n: strin
           <p className="rounded-xl border border-teal/25 bg-teal-soft px-3.5 py-2.5 text-[13px] font-medium text-teal-d">
             <strong className="font-bold text-ink">{davet.ad}</strong> seni ağına davet ediyor. Danışman olarak kaydol;
             belgeni doğrulayınca sana tahsisli projeleri canlı görürsün.
+          </p>
+        </>
+      ) : null}
+
+      {adayDavet ? (
+        <>
+          <input type="hidden" name="aday" value={adayDavet.aday} />
+          <input type="hidden" name="t" value={adayDavet.t} />
+          <p className="rounded-xl border border-teal/25 bg-teal-soft px-3.5 py-2.5 text-[13px] font-medium text-teal-d">
+            <strong className="font-bold text-ink">{adayDavet.firma}</strong> için Projedar davetini kullanıyorsun. Hesabını
+            oluştur; kaydın admin doğrulaması sonrası aktifleşir.
           </p>
         </>
       ) : null}
