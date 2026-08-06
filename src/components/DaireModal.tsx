@@ -150,14 +150,14 @@ export function DaireModal({
   );
   const genelToplam = liste != null ? liste + eklentiToplam : null;
 
-  // Paylaşımda fiyat CANLI değerden basılır (DEĞİŞMEZ #2). Çok-satırlı + mikrosite link'i.
+  // Fiyat mesaja BASILMAZ — WhatsApp'ta bir kez gönderilince metin/OG donar ve eskir;
+  // fiyat yalnız linkin arkasındaki canlı mikrositede (DEĞİŞMEZ #2 / tek-doğru-kaynak).
   const paylasMetni = [
     projeAd,
     [`Daire ${birim.daire_no ?? ""}`.trim(), birim.oda ?? birim.tip_ad, birim.net_m2 ? `${birim.net_m2} m²` : null]
       .filter(Boolean)
       .join(" · "),
-    liste != null ? `${fmt(liste)} ${psim}` : "",
-    shareUrl ? `Detay ve randevu: ${shareUrl}` : "",
+    shareUrl ? `Güncel fiyat ve detay: ${shareUrl}` : "",
   ]
     .filter(Boolean)
     .join("\n");
