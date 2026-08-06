@@ -111,3 +111,20 @@ if (error) {
   process.exit(1);
 }
 console.log(`✓ katalog_proje upsert tamam (${kayitlar.length} kayıt).`);
+
+// IndexNow: içerik-zengin (canlı olacak) sayfaları Bing/Yandex'e bildir (Google sitemap'i tarar).
+const INDEXNOW_KEY = env.INDEXNOW_KEY || "a3f5c9e1b7d2486fa3f5c9e1b7d2486f";
+const HOST = "projedar.com";
+const pingUrls = kayitlar.filter((r) => zenginlik(r) >= 5).map((r) => `https://${HOST}/proje/${r.slug}`);
+if (pingUrls.length) {
+  try {
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ host: HOST, key: INDEXNOW_KEY, keyLocation: `https://${HOST}/${INDEXNOW_KEY}.txt`, urlList: pingUrls }),
+    });
+    console.log(`IndexNow: ${pingUrls.length} URL bildirildi (HTTP ${res.status}).`);
+  } catch (e) {
+    console.warn(`IndexNow ping başarısız (önemsiz): ${e?.message ?? e}`);
+  }
+}
