@@ -777,13 +777,21 @@ export async function excelImport(formData: FormData) {
     hataya(`/uretici/proje/${proje_id}`, "Dosya okunamadı (xlsx/xls/csv olmalı)");
   }
 
-  const { data: bloklar } = await supabase.from("blok").select("id, ad").eq("proje_id", proje_id);
-  const { data: tipler } = await supabase.from("daire_tipi").select("id, ad").eq("proje_id", proje_id);
+  const [{ data: bloklar }, { data: tipler }, { data: mevcutlar }] = await Promise.all([
+    supabase.from("blok").select("id, ad").eq("proje_id", proje_id),
+    supabase.from("daire_tipi").select("id, ad").eq("proje_id", proje_id),
+    supabase.from("birim").select("blok_id, daire_no").eq("proje_id", proje_id),
+  ]);
   const blokMap = new Map((bloklar ?? []).map((b) => [String(b.ad).toLowerCase().trim(), b.id]));
   const tipMap = new Map((tipler ?? []).map((t) => [String(t.ad).toLowerCase().trim(), t.id]));
+  // Mükerrer koruma: aynı blok+daire_no zaten varsa atla (re-import güvenli; birimGenerator ile aynı disiplin).
+  const dupSet = new Set(
+    (mevcutlar ?? []).map((b) => `${b.blok_id}|${String(b.daire_no ?? "").toLowerCase().trim()}`),
+  );
 
   const birimler: Record<string, unknown>[] = [];
   let atlanan = 0;
+  let mukerrer = 0;
   for (const r of rows!) {
     const blokAd = String(hucre(r, "blok", "blok adı", "block") ?? "").toLowerCase().trim();
     const blok_id = blokMap.get(blokAd);
@@ -791,31 +799,47 @@ export async function excelImport(formData: FormData) {
       atlanan++;
       continue;
     }
+    const daire_no = String(hucre(r, "daire_no", "daire no", "daire", "no") ?? "").trim() || null;
+    const dupAnahtar = `${blok_id}|${(daire_no ?? "").toLowerCase().trim()}`;
+    if (daire_no && dupSet.has(dupAnahtar)) {
+      mukerrer++;
+      continue;
+    }
+    if (daire_no) dupSet.add(dupAnahtar); // aynı dosya içi tekrarları da yakala
     const tipAd = String(hucre(r, "tip", "daire tipi", "tip adı") ?? "").toLowerCase().trim();
     const durumRaw = String(hucre(r, "durum", "status") ?? "musait").toLowerCase().trim();
+    const paraRaw = String(hucre(r, "para_birimi", "para", "currency") ?? "").toUpperCase().trim();
+    const yon = String(hucre(r, "yon", "yön", "cephe", "direction") ?? "").trim() || null;
+    const manzara = String(hucre(r, "manzara", "view") ?? "").trim() || null;
     birimler.push({
       proje_id,
       blok_id,
       tip_id: tipMap.get(tipAd) ?? null,
       kat: Number(hucre(r, "kat", "floor")) || null,
-      daire_no: String(hucre(r, "daire_no", "daire no", "daire", "no") ?? "").trim() || null,
+      daire_no,
       durum: GECERLI_DURUM.includes(durumRaw) ? durumRaw : "musait",
       liste_fiyati: Number(hucre(r, "fiyat", "liste_fiyati", "price")) || null,
       net_m2: Number(hucre(r, "net_m2", "net m2", "m2", "metrekare")) || null,
+      brut_m2: Number(hucre(r, "brut_m2", "brut m2", "brut", "gross")) || null,
+      para_birimi: paraRaw || "TRY",
+      yon,
+      manzara,
     });
   }
 
   if (birimler.length === 0) {
     hataya(
       `/uretici/proje/${proje_id}`,
-      `Geçerli satır yok (${atlanan} atlandı). Blok adları mevcut bloklarla eşleşmeli. Sütunlar: blok, kat, daire_no, tip, durum, fiyat, net_m2`,
+      `Eklenecek yeni birim yok (${atlanan} eşleşmeyen blok, ${mukerrer} mükerrer atlandı). Blok adları mevcut bloklarla eşleşmeli. Sütunlar: blok, kat, daire_no, tip, durum, fiyat, net_m2, brut_m2, para_birimi, yon, manzara`,
     );
   }
   const { error } = await supabase.from("birim").insert(birimler);
   if (error) hataya(`/uretici/proje/${proje_id}`, error.message);
   revalidatePath(`/uretici/proje/${proje_id}`);
+  const uyari =
+    (atlanan ? `, ${atlanan} eşleşmeyen blok` : "") + (mukerrer ? `, ${mukerrer} mükerrer atlandı` : "");
   redirect(
-    `/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(`${birimler.length} birim eklendi${atlanan ? `, ${atlanan} satır atlandı` : ""}`)}`,
+    `/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(`${birimler.length} birim eklendi${uyari}`)}`,
   );
 }
 
