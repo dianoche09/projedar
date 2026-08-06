@@ -58,7 +58,7 @@ export async function stokAcilisCalistir(): Promise<CronSonuc> {
     .eq("satilabilir", true)
     .not("satisa_acilis", "is", null)
     .lte("satisa_acilis", simdi)
-    .select("id");
+    .select("id, proje_id");
 
   if (error) {
     console.error("Stok açılış cron hatası:", error);
@@ -66,6 +66,19 @@ export async function stokAcilisCalistir(): Promise<CronSonuc> {
   }
 
   const acilan = data?.length ?? 0;
+
+  // Açılış = talep spike sinyali: her açılan birim için 'acilis' event yaz
+  // (Talep Radarı bu spike'ı gösterir; dalga öncesi 'ilgi' sinyalleriyle eşleşir).
+  if (acilan > 0) {
+    await kayitlarYaz(
+      (data ?? []).map((b) => ({
+        tip: "acilis" as const,
+        projeId: (b as { proje_id: string }).proje_id,
+        birimId: (b as { id: string }).id,
+        payload: { eylem: "stok_acilis", acilis: simdi },
+      })),
+    );
+  }
   return {
     status: 200,
     govde: {

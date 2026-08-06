@@ -126,7 +126,7 @@ export default async function PublicBirimPage({
   const { data: birimData } = await supabase
     .from("birim")
     .select(`
-      id, daire_no, kat, durum, liste_fiyati, para_birimi, net_m2, brut_m2, yon, manzara, satilabilir, son_guncelleme, odeme_plani,
+      id, daire_no, kat, durum, liste_fiyati, para_birimi, net_m2, brut_m2, yon, manzara, satilabilir, son_guncelleme, odeme_plani, satisa_acilis,
       proje:proje_id (
         id, ad, il, ilce, mahalle, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, sorumlu_ad, sorumlu_tel, lat, lng, video_url, kira_getirisi_pct, amortisman_yil, oturum_uygun, golden_visa_esik, kunye, ada, parsel, emsal, taks,
         uretici:uretici_id (
@@ -596,6 +596,19 @@ export default async function PublicBirimPage({
             <div className="print:hidden">
               {b.satilabilir && bDurum === "musait" ? (
                 <LeadForm projeId={p?.id} birimId={b.id} emlakciId={emlakci} token={token} />
+              ) : bDurum === "planli" && b.satisa_acilis ? (
+                <div className="rounded-2xl border border-navy/20 bg-navy/[0.03] p-5 text-center">
+                  <p className="text-sm font-semibold text-navy">
+                    Bu daire{" "}
+                    {new Date(b.satisa_acilis).toLocaleDateString("tr-TR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}{" "}
+                    tarihinde satışa açılıyor.
+                  </p>
+                  <p className="mt-1 text-xs text-gray">Açılışta güncel fiyat ve müsaitlik burada görünür.</p>
+                </div>
               ) : (
                 <div className="rounded-2xl border border-hair bg-paper p-5 text-center">
                   <p className="text-sm text-gray font-medium">

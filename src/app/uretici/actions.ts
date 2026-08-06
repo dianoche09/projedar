@@ -655,6 +655,65 @@ export async function birimTopluGuncelle(formData: FormData) {
   redirect(`/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(`${idler.length} birim güncellendi`)}`);
 }
 
+// ---- Dalga açılışı: seçili birimleri planlı + açılış tarihiyle programla ----
+// Cron (stokAcilisCalistir) tarih gelince planli→musait yapar + 'acilis' event yazar.
+// Böylece stok partiler halinde ağa açılır (kıtlık + senkron talep = veri yerçekimi).
+export async function dalgaPlanla(formData: FormData) {
+  const supabase = await createClient();
+  const proje_id = String(formData.get("proje_id"));
+  const idler = idListesi(formData);
+  if (idler.length === 0) hataya(`/uretici/proje/${proje_id}`, "Birim seçilmedi.");
+
+  const ham = String(formData.get("satisa_acilis") ?? "").trim();
+  const t = ham ? new Date(ham) : null;
+  if (!t || Number.isNaN(t.getTime())) {
+    hataya(`/uretici/proje/${proje_id}`, "Geçerli bir açılış tarihi seç.");
+  }
+  if (t.getTime() <= Date.now()) {
+    hataya(`/uretici/proje/${proje_id}`, "Açılış tarihi gelecekte olmalı.");
+  }
+  const acilisIso = t.toISOString();
+
+  // Yalnız müsait/planlı birimler dalgaya alınır (opsiyon/satış korunur).
+  const { data: uygun } = await supabase
+    .from("birim")
+    .select("id")
+    .in("id", idler)
+    .eq("proje_id", proje_id)
+    .in("durum", ["musait", "planli"]);
+  const hedef = (uygun ?? []).map((b) => b.id as string);
+  const korunan = idler.length - hedef.length;
+  if (hedef.length === 0) {
+    hataya(`/uretici/proje/${proje_id}`, "Seçili birimlerin hiçbiri planlanabilir değil (opsiyon/satış korunur).");
+  }
+
+  const { error } = await supabase
+    .from("birim")
+    .update({ durum: "planli", satisa_acilis: acilisIso, son_guncelleme: new Date().toISOString() })
+    .in("id", hedef)
+    .eq("proje_id", proje_id);
+  if (error) hataya(`/uretici/proje/${proje_id}`, error.message);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  await kayitlarYaz(
+    hedef.map((bid) => ({
+      tip: "dalga" as const,
+      profileId: user?.id ?? null,
+      projeId: proje_id,
+      birimId: bid,
+      payload: { eylem: "dalga_planla", satisa_acilis: acilisIso },
+    })),
+  );
+
+  revalidatePath(`/uretici/proje/${proje_id}`);
+  const mesaj =
+    `${hedef.length} birim dalgaya alındı · ${new Date(acilisIso).toLocaleString("tr-TR")} açılış` +
+    (korunan ? ` · ${korunan} birim korundu` : "");
+  redirect(`/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(mesaj)}`);
+}
+
 // ---- Çoklu seçim: toplu sil (opsiyon/satış korunur) ----
 export async function birimTopluSil(formData: FormData) {
   const supabase = await createClient();

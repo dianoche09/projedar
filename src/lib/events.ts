@@ -17,7 +17,10 @@ export type OlayTip =
   | "dogrulama" // admin: üretici güven rozeti
   | "abonelik" // admin: paket atama
   | "katalog" // emlakçı: müşteri kataloğu üretti (proje + birim listesi payload)
-  | "favori"; // mikrosite: müşteri favoriledi (anonim sinyal)
+  | "favori" // mikrosite: müşteri favoriledi (anonim sinyal)
+  | "dalga" // üretici: birimleri dalga olarak planladı (satisa_acilis atandı)
+  | "acilis" // cron: planlı birim açılış tarihi gelip müsait oldu (talep spike sinyali)
+  | "ilgi"; // emlakçı: planlı birime "açılınca haber ver" (açılış öncesi talep sinyali)
 
 export type OlayGirdi = {
   tip: OlayTip;

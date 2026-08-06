@@ -19,6 +19,46 @@ const uuid = zUuid;
  * opsiyon doğar (kilit) — çift-satış kalkanı (unique index + trigger) onay anında devreye girer.
  */
 
+/**
+ * Emlakçı planlı (dalga) birime "açılınca haber ver" der — açılış ÖNCESİ talep sinyali.
+ * DEĞİŞMEZ #2/#3'e dokunmaz: stok/durum değişmez, yalnız 'ilgi' event yazılır (veri yerçekimi).
+ * Mükerrer engelli (aynı emlakçı aynı birime bir kez).
+ */
+export async function ilgiBildir(
+  birimId: string,
+  projeId: string,
+): Promise<{ ok: boolean; mesaj: string }> {
+  const b = uuid.safeParse(birimId);
+  const p = uuid.safeParse(projeId);
+  if (!b.success || !p.success) return { ok: false, mesaj: "Geçersiz istek" };
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, mesaj: "Giriş gerekli" };
+
+  const admin = createAdminClient();
+  const { data: mevcut } = await admin
+    .from("events")
+    .select("id")
+    .eq("tip", "ilgi")
+    .eq("birim_id", b.data)
+    .eq("profile_id", user.id)
+    .limit(1)
+    .maybeSingle();
+  if (mevcut) return { ok: true, mesaj: "Zaten haber listesindesin" };
+
+  await kayitYaz({
+    tip: "ilgi",
+    profileId: user.id,
+    projeId: p.data,
+    birimId: b.data,
+    payload: { eylem: "acilinca_haber_ver" },
+  });
+  return { ok: true, mesaj: "Açılınca haber verilecek" };
+}
+
 /** Emlakçı opsiyon TALEBİ gönderir (beklemede) — doğrudan kilit YOK, müteahhit onayına düşer. */
 export async function opsiyonTalepGonder(
   birimId: string,

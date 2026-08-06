@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { birimTopluGuncelle, birimTopluSil } from "@/app/uretici/actions";
+import { birimTopluGuncelle, birimTopluSil, dalgaPlanla } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { DURUM_ETIKET, type BirimDurum } from "@/lib/types";
 
@@ -90,6 +90,17 @@ export function SecimDuzenle({ projeId, children }: { projeId: string; children:
             </select>
             <input name="liste_fiyati" type="number" placeholder="fiyat ₺" className={`${inpCls} w-28`} />
             <SubmitButton varyant="teal">Uygula</SubmitButton>
+          </form>
+          <form action={dalgaPlanla} className="flex flex-wrap items-center gap-2">
+            <input type="hidden" name="proje_id" value={projeId} />
+            <input type="hidden" name="birim_idler" value={idler} />
+            <input
+              name="satisa_acilis"
+              type="datetime-local"
+              className={inpCls}
+              title="Seçili birimleri bu tarihte otomatik açılacak dalga olarak planla"
+            />
+            <SubmitButton varyant="navy">Dalga planla</SubmitButton>
           </form>
           <form action={birimTopluSil}>
             <input type="hidden" name="proje_id" value={projeId} />

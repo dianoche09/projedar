@@ -10,6 +10,7 @@ import { generateShareToken } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { GuvenRozeti } from "@/components/GuvenRozeti";
+import { DalgaTeaser } from "@/components/DalgaTeaser";
 import { KatalogSecici, type SeciBirim } from "./KatalogSecici";
 
 type Belge = { id: string; tip: string | null; ad: string | null; url: string | null };
@@ -61,7 +62,7 @@ export default async function HavuzProjeDetay({
       supabase
         .from("birim")
         .select(
-          "id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, para_birimi, satilabilir, net_m2, brut_m2, yon, manzara, serefiye, odeme_plani, durum_notu, son_guncelleme",
+          "id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, para_birimi, satilabilir, net_m2, brut_m2, yon, manzara, serefiye, odeme_plani, durum_notu, son_guncelleme, satisa_acilis",
         )
         .eq("proje_id", id),
       supabase.from("proje_belge").select("id, tip, ad, url").eq("proje_id", id).order("created_at", { ascending: false }),
@@ -124,6 +125,19 @@ export default async function HavuzProjeDetay({
     .filter((b) => b.durum === "musait" && Number(b.liste_fiyati) > 0)
     .map((b) => Number(b.liste_fiyati));
   const paraBirim = (stok.find((b) => b.para_birimi)?.para_birimi as string) ?? "TRY";
+
+  // Dalga vitrini: en yakın açılış tarihli planlı birim grubu (kıtlık + senkron talep).
+  const planliStok = stok
+    .filter((b) => {
+      const t = (b as { satisa_acilis?: string | null }).satisa_acilis;
+      return b.durum === "planli" && b.satilabilir && b.ana_birim_id == null && !!t;
+    })
+    .map((b) => ({ id: b.id as string, acilis: (b as { satisa_acilis: string }).satisa_acilis }))
+    .sort((a, b) => new Date(a.acilis).getTime() - new Date(b.acilis).getTime());
+  const enYakinDalga = planliStok[0] ?? null;
+  const dalgaAdet = enYakinDalga
+    ? planliStok.filter((b) => b.acilis === enYakinDalga.acilis).length
+    : 0;
   const fiyatAralik =
     fiyatlar.length === 0
       ? "—"
@@ -260,6 +274,18 @@ export default async function HavuzProjeDetay({
           </div>
         ))}
       </div>
+
+      {/* ===== DALGA VİTRİNİ (yakında açılan planlı stok) ===== */}
+      {enYakinDalga ? (
+        <div className="mt-5">
+          <DalgaTeaser
+            projeId={id}
+            birimId={enYakinDalga.id}
+            adet={dalgaAdet}
+            acilis={enYakinDalga.acilis}
+          />
+        </div>
+      ) : null}
 
       {/* ===== GÖRSELLER ===== */}
       {fotolar.length > 0 ? (
