@@ -380,3 +380,65 @@ Kesişim = **NETWORK × LIVE INVENTORY × TRANSACTION GOVERNANCE**. Connject'te 
 - **BeyondWalls — İKİ YÜZ (kritik):** `corporate.beyondwalls.com` = B2B developer↔channel-partner ekosistem (tabloda bu, MahaRERA kayıtlı, Pune/Mumbai). AMA `beyondwalls.com/property/...` (verilen URL) = B2C consumer portal: public listing + açık fiyat (₹46.73L, ₹4.582/sqft) + EMI hesaplayıcı + brosür indir + "Enquire Now" lead formu + indexlenebilir + **statik katalog (unit-level canlı grid YOK)**. Consumer yüzü = Projedar ANTİ-TEZİ (DEĞİŞMEZ #4 kapalı-devre + EİDS ihlali). **Ders: B2B ekosistem/kategori anlatımı AL, consumer portal ALMA.**
 
 **EK-8 kaynak siteler:** nogbase.ae · tapuva.com · domushub.io · sell.do · arveya.com · beyondwalls.com · corporate.beyondwalls.com · propertyshell.com · realatic.com · buildesk.in · getunlatch.com · ofpexchange.com · konutmatik.com · spark.re · salefish.app · re-os.com · ownly.re · cecilianpartners.com · mls.tr · portfoycrm.com · novoxcrm.com.
+
+---
+
+## 9. TÜRKİYE DAVRANIŞ HARİTASI + Arveya Partner yeniden değerlendirme (2026-08-07, kullanıcı)
+
+**Metodoloji dönüşü (en önemli çıkarım):** "Rakip firma" aramak yanlış; **davranış** aramak gerekiyor. Arveya Partner "müteahhit emlakçı canlı stok platformu" sorgusundan kaçar ama "yetkili portföy partner", "kapalı devre kurumsal portföy" sorgusuyla gelir. → keşif sorgu evrenini eşanlamlılarla genişlet (bkz. 9.6).
+
+### 9.1 TR seviyeli rakip/benchmark haritası
+
+| Seviye | Oyuncular | Not |
+|--------|-----------|-----|
+| 🔴 Pure-play / direct | **Connject · Tapuva · Topli** | Doğrudan araştırılacak çekirdek |
+| 🟠 Model olarak çok yakın | **Arveya Partner** | Ürün mantığının önemli bölümünü doğruluyor (9.2) |
+| 🟠 Network tarafında yakın | **RE-OS · MyTEKCE** | Emlakçı acquisition + white-label dağıtım benchmark |
+| 🟡 B2B network davranışı | **MLS.tr · Özel İlan · Emlakçılar Portalı · EDAP** | TR'de kapalı-devre paylaşım DAVRANIŞI var = adoption riski ↓ (9.4) |
+| 🟡 Developer-side feature | **Konutmatik · Novo · Yapısoft · Prism** | Feature/transaction benchmark |
+| 🔵 Alternatif dağıtım kanalı | **NPR · Lia Proje · Go Partners · proje pazarlama şirketleri** | Teknoloji değil, mevcut alternatif maliyet (9.5) |
+| 🔵 Off-market / partner benchmark | **E1 Holding/E1 Plus · Aclass Wealth** | Partner/referral ekonomisi + kapalı yatırım ağı güveni |
+| ⚪ Watchlist / doğrulanmamış | **Xtapu · Portföy Uzmanı** | Gerçek traction/ürün kanıtı çıkana kadar tabloya girmez |
+
+### 9.2 ⭐ Arveya Partner — yeniden değerlendirme (önce "fazla CRM" diye itilmişti; ürün ciddi)
+
+Kamuya açık sayfada AÇIKÇA var (Projedar mantığını doğruluyor):
+- yalnız yetkilendirilen portföyü görme + kapalı-devre erişim + **portföy-bazlı yetkilendirme** (= tahsis)
+- partnerin kendi müşterisi yalnız kendisine görünür (= lead ownership)
+- **telefon-bazlı mükerrer müşteri uyarısı** (= claim conflict)
+- müşteriye **kendi logosuyla teklif** (= white-label)
+- teklif açıldı mı / kaç kez görüntülendi (= paylaşım/görüntülenme sinyali)
+- bekliyor / opsiyon / vazgeçti durumları (= opsiyon yaşam döngüsü)
+- kurumsal: partner sayısı + hangi portföy hangi partnere görünür + partner performansı
+
+**KRİTİK FARK (koru):** Arveya Partner = BİR kurumsal firmanın KENDİ portföyünü KENDİ partner ağına dağıtması = **network software**. Projedar = ÇOK bağımsız geliştiricinin stoğu, TEK bağımsız danışman ağı üzerinden = **network'ün kendisi**. Arveya yazılımı satar, Projedar ağı işletir.
+
+### 9.3 MyTEKCE — düşünülenden öğretici (Lead Protection benchmark)
+
+TEKCE partnerine: 7.000+ portföy → **kendi logosuyla sunum → müşteri kaydı (partner adına) → süreç takibi → satış → komisyon hakedişi → tahsilat takibi.** Hipotezimizi doğruluyor: *danışman yazılım istemiyor; satabileceği stok + müşterisinin korunduğuna dair görünürlük istiyor.* Projedar Lead Protection için doğrudan benchmark. Fark: MyTEKCE = TEKCE'nin KENDİ dağıtım ağı; Projedar = tüm geliştiriciler için bağımsız altyapı.
+
+### 9.4 Özel İlan · Emlakçılar Portalı · EDAP — adoption riski azaltımı (rakip değil, kanıt)
+
+Bunlar rakip oldukları için değil, **TR'de kapalı-devre B2B paylaşım davranışının OLUŞTUĞUNU** kanıtladıkları için önemli. Özel İlan: emlakçı↔emlakçı güvenli kapalı-devre portföy paylaşım ağı. Emlakçılar Portalı: TR çapında MLS + CRM + **dijital ortak satış sözleşmesi + gerçek zamanlı komisyon takibi + müşteri eşleştirme.** Çıkarım: emlakçıların başka profesyonellerle aynı kapalı dijital ağda stok paylaşması TR için yabancı davranış değil = Projedar için benimseme riski düşük.
+
+### 9.5 Alternatif dağıtım kanalları (teknoloji kategorisi değil, dağıtım davranışı)
+
+E1 Holding/E1 Plus (global off-market + franchise/partner ağı, TR iştiraki), Aclass Wealth (butik off-market yatırımcı ağı), Go Partners (Keller Williams çatısı, 600+ iş ortağı, insanlı proje satış/pazarlama service business), NPR/Lia Proje (proje pazarlama+satış hizmet şirketleri). "Rakip şirket" değil **Alternative Distribution Channels** = müteahhitin bugün Projedar yerine kullandığı alternatif maliyet.
+
+### 9.6 Keşif metodolojisi: davranış-arama + eşanlamlı sorgu evreni (SerpAPI)
+
+20 sorgu yetmez → 60-100 temel sorgu × kombinasyon = 500+ SERP. Eşanlamlı eşleme (rakip bizim kelimemizden kaçar):
+
+| Bizim kelime | Rakibin kelimesi | Bizim kelime | Rakibin kelimesi |
+|--------------|------------------|--------------|------------------|
+| Tahsis | Yetkilendirme | Müşteri claim | Müşteri kaydı |
+| Canlı stok | Güncel portföy | Lead protection | Müşteri koruma |
+| Emlakçı ağı | Partner ağı | Developer | Kurumsal firma |
+| Broker | Acente | Müteahhit | Proje sahibi |
+| Proje dağıtımı | Partner satışı | Havuz | Portföy ağı |
+| B2B network | Kapalı devre | Yeni konut | Sıfır proje |
+| Dağıtım | İş ortaklığı | Satış ağı | Yetkili satış ağı |
+
+Örnek getiren sorgular: `"yetkili portföy" "partner"` · `"partner ağı" gayrimenkul` · `"kurumsal portföy" "kapalı devre"`. **Bağlantı:** mevcut Keşif & Davet Motoru (`src/lib/kesif/`, SerpAPI Maps + Serper) sorgu evreni bu eşanlamlılarla genişletilebilir.
+
+**EK-9 kaynak/oyuncu:** arveya.com (Partner) · mytekce.com · ozelilan · emlakcilarportali · edap · e1holding/e1plus · aclasswealth · gopartners · npr · liaproje · xtapu (watchlist).
