@@ -10,6 +10,7 @@ import { OzellikGoster } from "@/components/OzellikGoster";
 import { Logo } from "@/components/Logo";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
+import { DavetPopup } from "@/components/seo/DavetPopup";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
@@ -560,6 +561,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </div>
         <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
+
+      <DavetPopup slug={slug} projeAd={p.ad} />
     </main>
   );
 }
