@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
@@ -30,8 +30,38 @@ const NAV = [
 
 type TipRow = { oda: string | null; net_m2: number | null };
 type BenzerProje = { ad: string; public_slug: string; ilce: string | null; il: string | null; asama: string | null; odaTipleri: string[] };
+type Kaynak = "proje" | "katalog";
+
+const DURUM_ETIKET: Record<string, string> = { lansman: "Lansman", insaat: "İnşaat halinde", teslim: "Teslim edildi" };
+
+/** m² bandı metni (min/max'tan). */
+function m2Metni(min: number | null, max: number | null): string | null {
+  const a = min != null && min > 0 ? min : null;
+  const b = max != null && max > 0 ? max : null;
+  if (a == null && b == null) return null;
+  if (a != null && b != null) return a === b ? `${a} m²` : `${a}–${b} m²`;
+  return `${(a ?? b) as number} m²`;
+}
+/** m² bandı daire_tipi listesinden (kendi DB). */
+function m2BandTip(tipListe: TipRow[]): string | null {
+  const m2ler = tipListe.map((t) => t.net_m2).filter((x): x is number => x != null && x > 0);
+  return m2ler.length ? m2Metni(Math.min(...m2ler), Math.max(...m2ler)) : null;
+}
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/** İki kaynağın (kendi DB proje + dış katalog) normalize edilmiş ortak görünümü. */
+type Veri = {
+  kaynak: Kaynak;
+  p: any;
+  u: any;
+  tipListe: TipRow[];
+  birimSayisi: number;
+  benzer: BenzerProje[];
+  teslimMetin: string | null;
+  asamaMetin: string;
+  m2Band: string | null;
+};
+
 function esigeGirdi(p: any, tipSayisi: number, dogrulanmis: boolean): ProjeIcerikGirdi {
   return {
     il: p.il, ilce: p.ilce, mahalle: p.mahalle, lat: p.lat, lng: p.lng,
@@ -72,7 +102,31 @@ async function benzerProjeler(
     .map((x) => ({ ad: x.ad, public_slug: x.public_slug, ilce: x.ilce, il: x.il, asama: x.insaat_asamasi, odaTipleri: [...(odaMap.get(x.id) ?? [])] }));
 }
 
-async function projeGetir(slug: string) {
+/** Katalogdan aynı ilçeden eşik geçen diğer projeler (internal linking). */
+async function benzerKatalog(
+  supabase: ReturnType<typeof createAdminClient>,
+  k: any,
+): Promise<BenzerProje[]> {
+  if (!k.ilce) return [];
+  const { data } = await supabase
+    .from("katalog_proje")
+    .select("slug, ad, il, ilce, mahalle, oda_tipleri, durum, teslim")
+    .eq("aktif", true)
+    .eq("ilce", k.ilce)
+    .neq("slug", k.slug)
+    .limit(12);
+  const list = (data ?? []) as any[];
+  if (!list.length) return [];
+  return list
+    .filter((x) => projeIcerikSkoru(esigeGirdi(
+      { il: x.il, ilce: x.ilce, mahalle: x.mahalle, insaat_asamasi: x.durum, teslim_tarihi: x.teslim, kunye: {} },
+      Array.isArray(x.oda_tipleri) ? x.oda_tipleri.length : 0, false,
+    )) >= ICERIK_ESIGI)
+    .slice(0, 6)
+    .map((x) => ({ ad: x.ad, public_slug: x.slug, ilce: x.ilce, il: x.il, asama: null, odaTipleri: Array.isArray(x.oda_tipleri) ? x.oda_tipleri : [] }));
+}
+
+async function projeGetir(slug: string): Promise<Veri | null> {
   const supabase = createAdminClient();
   const { data: proje } = await supabase
     .from("proje")
@@ -84,8 +138,53 @@ async function projeGetir(slug: string) {
     supabase.from("daire_tipi").select("oda, net_m2").eq("proje_id", proje.id),
     supabase.from("birim").select("id", { count: "exact", head: true }).eq("proje_id", proje.id),
   ]);
+  const tipListe = (tipler ?? []) as TipRow[];
   const benzer = await benzerProjeler(supabase, proje);
-  return { proje, tipListe: (tipler ?? []) as TipRow[], birimSayisi: birimSayisi ?? 0, benzer };
+  const teslimMetin = proje.teslim_tarihi ? new Date(proje.teslim_tarihi).toLocaleDateString("tr-TR", { year: "numeric", month: "long" }) : null;
+  const asamaMetin = ASAMA_ETIKET[proje.insaat_asamasi as InsaatAsama] ?? "Planlama";
+  return {
+    kaynak: "proje", p: proje, u: proje.uretici, tipListe, birimSayisi: birimSayisi ?? 0, benzer,
+    teslimMetin, asamaMetin, m2Band: m2BandTip(tipListe),
+  };
+}
+
+/** Dış kaynaklı katalog projesi. Ağa girmişse ({eslesen_proje_id}) forward; yoksa normalize Veri. */
+async function katalogGetir(slug: string): Promise<Veri | { forward: string } | null> {
+  const supabase = createAdminClient();
+  const { data: k } = await supabase
+    .from("katalog_proje")
+    .select("*")
+    .eq("slug", slug)
+    .eq("aktif", true)
+    .maybeSingle();
+  if (!k) return null;
+  if (k.eslesen_proje_id) {
+    const { data: eslesen } = await supabase.from("proje").select("public_slug").eq("id", k.eslesen_proje_id).maybeSingle();
+    if (eslesen?.public_slug) return { forward: eslesen.public_slug };
+  }
+  const oda: string[] = Array.isArray(k.oda_tipleri) ? k.oda_tipleri : [];
+  const tipListe: TipRow[] = oda.map((o) => ({ oda: o, net_m2: null }));
+  // p-benzeri nesne: render + eşik fonksiyonları proje şemasını bekler (eksik alanlar null).
+  const p = {
+    id: k.id, public_slug: k.slug, ad: k.ad, il: k.il, ilce: k.ilce, mahalle: k.mahalle,
+    lat: null, lng: null, ada: null, parsel: null, emsal: null, taks: null,
+    insaat_asamasi: k.durum, teslim_tarihi: k.teslim, baslama_tarihi: null,
+    ilerleme_yuzde: null, kira_getirisi_pct: null, kunye: {}, belge_dogrulandi: false,
+    proje_web: k.proje_web,
+  };
+  const u = k.gelistirici ? { ad: k.gelistirici, dogrulanmis: false, profil: {} } : null;
+  const benzer = await benzerKatalog(supabase, k);
+  return {
+    kaynak: "katalog", p, u, tipListe, birimSayisi: k.daire_sayisi ?? 0, benzer,
+    teslimMetin: k.teslim ?? null, asamaMetin: DURUM_ETIKET[k.durum as string] ?? "Proje", m2Band: m2Metni(k.m2_min, k.m2_max),
+  };
+}
+
+/** Birleşik resolver: önce kendi DB (opt-in public_slug), sonra dış katalog (fallback/forward). */
+async function veriGetir(slug: string): Promise<Veri | { forward: string } | null> {
+  const kendi = await projeGetir(slug);
+  if (kendi) return kendi;
+  return katalogGetir(slug);
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
@@ -100,12 +199,10 @@ function sssListesi(ad: string): { s: string; c: string }[] {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const veri = await projeGetir(slug);
-  if (!veri) return {};
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const p = veri.proje as any;
-  const u = p.uretici;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+  const veri = await veriGetir(slug);
+  if (!veri || "forward" in veri) return {};
+  const p = veri.p;
+  const u = veri.u;
   if (projeIcerikSkoru(esigeGirdi(p, veri.tipListe.length, Boolean(u?.dogrulanmis))) < ICERIK_ESIGI) return {};
   const konum = [p.mahalle, p.ilce, p.il].filter(Boolean).join(", ");
   const baslik = `${p.ad}${konum ? ` · ${konum}` : ""} | Projedar`;
@@ -168,13 +265,13 @@ function BolumBaslik({ etiket, baslik, alt }: { etiket: string; baslik: string; 
 
 export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const veri = await projeGetir(slug);
+  const veri = await veriGetir(slug);
   if (!veri) notFound();
+  if ("forward" in veri) redirect(`/proje/${veri.forward}`);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const p = veri.proje as any;
-  const u = p.uretici as any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+  const p = veri.p;
+  const u = veri.u;
+  const kaynak = veri.kaynak;
   const dogrulanmis = Boolean(u?.dogrulanmis);
   if (projeIcerikSkoru(esigeGirdi(p, veri.tipListe.length, dogrulanmis)) < ICERIK_ESIGI) notFound();
 
@@ -187,8 +284,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const sss = sssListesi(p.ad);
 
   const odaTipleri = [...new Set(veri.tipListe.map((t) => t.oda).filter(Boolean) as string[])];
-  const m2ler = veri.tipListe.map((t) => t.net_m2).filter((x): x is number => x != null && x > 0);
-  const m2Band = m2ler.length ? (Math.min(...m2ler) === Math.max(...m2ler) ? `${Math.min(...m2ler)} m²` : `${Math.min(...m2ler)}–${Math.max(...m2ler)} m²`) : null;
+  const m2Band = veri.m2Band;
 
   const kunyeSatir: [string, string][] = [];
   if (p.ada || p.parsel) kunyeSatir.push(["Ada / Parsel", [p.ada, p.parsel].filter(Boolean).join(" / ")]);
@@ -198,14 +294,14 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   if (kunye.arsa_alani) kunyeSatir.push(["Arsa Alanı", `${kunye.arsa_alani} m²`]);
   if (kunye.otopark) kunyeSatir.push(["Otopark", String(kunye.otopark)]);
 
-  const asama = ASAMA_ETIKET[p.insaat_asamasi as InsaatAsama] ?? "Planlama";
+  const asama = veri.asamaMetin;
   const ilerleme = Number(p.ilerleme_yuzde ?? 0);
-  const teslim = p.teslim_tarihi ? new Date(p.teslim_tarihi).toLocaleDateString("tr-TR", { year: "numeric", month: "long" }) : null;
+  const teslim = veri.teslimMetin;
   const kiraGetirisi = p.kira_getirisi_pct != null ? Number(p.kira_getirisi_pct) : null;
   const gorsel = temaGorsel(p.il, p.ilce);
   const up = (u?.profil ?? {}) as Record<string, string | null>;
 
-  after(() => kayitYaz({ tip: "goruntuleme", projeId: p.id, payload: { kaynak: "proje_seo", slug } }));
+  after(() => kayitYaz({ tip: "goruntuleme", ...(kaynak === "proje" ? { projeId: p.id } : {}), payload: { kaynak: kaynak === "proje" ? "proje_seo" : "katalog_seo", slug } }));
 
   return (
     <main className="flex min-h-screen flex-col bg-paper text-ink">
@@ -260,6 +356,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
               {odaTipleri.length ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm">{odaTipleri.join(" · ")}</span> : null}
               {m2Band ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm">{m2Band}</span> : null}
               <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm"><CalendarClock size={13} className="text-[#7fd4c4]" />{asama}</span>
+              {p.proje_web ? <a href={p.proje_web} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1.5 rounded-full border border-teal/40 bg-teal/10 px-3 py-1.5 font-semibold text-[#7fd4c4] transition-colors hover:bg-teal/20">Resmi proje sitesi ↗</a> : null}
             </div>
           </div>
         </div>
@@ -285,8 +382,14 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
             <div className="lg:col-span-1">
               <div className="kart kart-3d flex h-full flex-col p-6">
                 <h3 className="font-display text-base font-bold text-ink">İnşaat durumu</h3>
-                <div className="mt-4 flex items-center justify-between text-sm"><span className="font-medium text-ink">{asama}</span><span className="font-mono font-semibold text-teal-d">%{ilerleme}</span></div>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-hair"><div className="h-full bg-teal transition-all" style={{ width: `${ilerleme}%` }} /></div>
+                {kaynak === "proje" ? (
+                  <>
+                    <div className="mt-4 flex items-center justify-between text-sm"><span className="font-medium text-ink">{asama}</span><span className="font-mono font-semibold text-teal-d">%{ilerleme}</span></div>
+                    <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-hair"><div className="h-full bg-teal transition-all" style={{ width: `${ilerleme}%` }} /></div>
+                  </>
+                ) : (
+                  <div className="mt-4 text-sm"><span className="font-medium text-ink">{asama}</span></div>
+                )}
                 {teslim ? <p className="mt-4 flex items-center gap-1.5 font-mono text-xs text-ink-soft"><CalendarClock size={13} /> Tahmini teslim: <span className="text-ink">{teslim}</span></p> : null}
                 {kiraGetirisi != null ? <p className="mt-2 flex items-center gap-1.5 font-mono text-xs text-teal-d"><TrendingUp size={13} /> %{kiraGetirisi} yıllık kira getirisi</p> : null}
               </div>

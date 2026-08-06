@@ -73,5 +73,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     projeler = [];
   }
 
-  return [...statik, ...projeler];
+  // Dış katalog projeleri (aktif + ağa girmemiş): aynı eşik; forward'lananlar hariç,
+  // kendi public_slug'larıyla URL çakışması dedup'lanır (resolver kendi DB'yi önceler).
+  let katalog: MetadataRoute.Sitemap = [];
+  try {
+    const supabase = createAdminClient();
+    const { data: katRaw } = await supabase
+      .from("katalog_proje")
+      .select("slug, il, ilce, mahalle, oda_tipleri, durum, teslim, updated_at")
+      .eq("aktif", true)
+      .is("eslesen_proje_id", null);
+    const mevcut = new Set(projeler.map((x) => x.url));
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    katalog = ((katRaw ?? []) as any[])
+      .filter(
+        (k) =>
+          projeIcerikSkoru({
+            il: k.il,
+            ilce: k.ilce,
+            mahalle: k.mahalle,
+            insaat_asamasi: k.durum,
+            teslim_tarihi: k.teslim,
+            kunye: {},
+            daireTipiSayisi: Array.isArray(k.oda_tipleri) ? k.oda_tipleri.length : 0,
+            dogrulanmis: false,
+          }) >= ICERIK_ESIGI,
+      )
+      .map((k) => ({
+        url: `${SITE}/proje/${k.slug}`,
+        lastModified: k.updated_at ? new Date(k.updated_at) : now,
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      }))
+      .filter((x) => !mevcut.has(x.url));
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+  } catch {
+    katalog = [];
+  }
+
+  return [...statik, ...projeler, ...katalog];
 }
