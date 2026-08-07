@@ -71,12 +71,18 @@ export async function POST(req: NextRequest) {
   }
 
   const admin = createAdminClient();
-  const { data: kampanya } = await admin
+  const { data: kampanya, error: kampErr } = await admin
     .from("kesif_kampanya")
     .insert({ il, segmentler, durum: "calisiyor", baslatan: adminId })
     .select("id")
     .single();
-  const kampanyaId = kampanya?.id as string | undefined;
+  if (kampErr || !kampanya) {
+    return NextResponse.json(
+      { hata: `Kampanya oluşturulamadı: ${kampErr?.message ?? "bilinmeyen"} (migration uygulandı mı?)` },
+      { status: 500 },
+    );
+  }
+  const kampanyaId = kampanya.id as string;
 
   try {
     const { adaylar, hatalar } = await kesfet(il, segmentler as Segment[], anahtar);
@@ -95,16 +101,17 @@ export async function POST(req: NextRequest) {
       ozet: a.ozet ?? null,
       kaynak: a.kaynak,
       kaynak_url: a.kaynak_url ?? null,
-      kampanya_id: kampanyaId ?? null,
+      kampanya_id: kampanyaId,
       durum: "yeni",
     }));
 
     let eklenen = 0;
     if (satirlar.length) {
-      const { data: ekli } = await admin
+      const { data: ekli, error: upErr } = await admin
         .from("aday")
         .upsert(satirlar, { onConflict: "firma_adi_norm,il", ignoreDuplicates: true })
         .select("id");
+      if (upErr) throw new Error(`Aday yazma hatası: ${upErr.message}`);
       eklenen = ekli?.length ?? 0;
     }
 
