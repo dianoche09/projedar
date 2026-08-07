@@ -101,7 +101,7 @@ export function KesifPanel() {
       const d = await res.json();
       if (!res.ok) setHata(d.hata ?? "Keşif hatası");
       else {
-        setMesaj(`${d.eklenen} yeni aday eklendi (${d.bulunan} bulundu).`);
+        setMesaj(`${d.eklenen} yeni aday eklendi (${d.bulunan} bulundu · ${d.mailBulunan ?? 0} e-posta çıkarıldı).`);
         await yukle(filtreDurum);
       }
     } catch (e) {
@@ -134,6 +134,21 @@ export function KesifPanel() {
     } finally {
       setDavetEdilen(null);
     }
+  }
+
+  async function segmentDegistir(id: string, segment: string) {
+    setHata(null);
+    const res = await fetch("/api/admin/kesif", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, segment }),
+    });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      setHata(d.hata ?? "Segment güncellenemedi");
+      return;
+    }
+    await yukle(filtreDurum);
   }
 
   function filtrele(durum: string) {
@@ -243,7 +258,18 @@ export function KesifPanel() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-display text-[15px] font-bold text-ink">{a.firma_adi}</span>
-                      <span className={`rozet mono text-[11px] ${SEGMENT_RENK[a.segment] ?? "bg-soft text-gray"}`}>{a.segment}</span>
+                      <select
+                        value={a.segment}
+                        onChange={(e) => segmentDegistir(a.id, e.target.value)}
+                        title="Segment yanlışsa düzelt (davet rolü + pitch buna göre)"
+                        className={`rozet mono cursor-pointer border-0 text-[11px] outline-none ${SEGMENT_RENK[a.segment] ?? "bg-soft text-gray"}`}
+                      >
+                        {SEGMENTLER.map((s) => (
+                          <option key={s.key} value={s.key}>
+                            {s.etiket}
+                          </option>
+                        ))}
+                      </select>
                       <span className="rozet mono bg-soft text-[11px] text-gray">{DURUM_ETIKET[a.durum] ?? a.durum}</span>
                       {a.opt_out ? <span className="rozet mono bg-red-soft text-[11px] text-red">opt-out</span> : null}
                     </div>

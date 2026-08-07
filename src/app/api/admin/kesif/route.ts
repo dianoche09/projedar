@@ -5,6 +5,7 @@ import { adminIdVeya } from "@/lib/kesif/guard";
 import { anahtarlariOku } from "@/lib/kesif/anahtar";
 import { kesfet } from "@/lib/kesif/kesfet";
 import { normalize } from "@/lib/kesif/dedup";
+import { mailBul, havuzda } from "@/lib/kesif/site-mail";
 import { SEGMENTLER, type Segment } from "@/lib/kesif/tipler";
 
 export const maxDuration = 300; // keşif çok sorgulu → uzun sürebilir (Fluid Compute)
@@ -87,6 +88,18 @@ export async function POST(req: NextRequest) {
     const yil = new Date().getFullYear();
     const { adaylar, hatalar } = await kesfet(il, segmentler as Segment[], anahtar, yil);
 
+    // Web sitesinden mail çıkarımı (sade, LLM yok) — e-posta daveti çalışsın diye.
+    // Yalnız website'i olup maili olmayanlar; sınırlı (80) + eşzamanlı (6) — süre kontrolü.
+    const mailAdaylari = adaylar.filter((a) => a.website && !a.email).slice(0, 80);
+    let mailBulunan = 0;
+    await havuzda(mailAdaylari, 6, async (a) => {
+      const m = await mailBul(a.website);
+      if (m) {
+        a.email = m;
+        mailBulunan++;
+      }
+    });
+
     // Aday havuzuna yaz — dedup uniq index (firma_adi_norm, il) çift kaydı reddeder (ignore).
     const satirlar = adaylar.map((a) => ({
       firma_adi: a.firma_adi,
@@ -120,11 +133,11 @@ export async function POST(req: NextRequest) {
       .update({
         durum: "tamamlandi",
         bulunan_aday: eklenen,
-        sonuc: { toplam_bulunan: adaylar.length, eklenen, hatalar: hatalar.slice(0, 20) },
+        sonuc: { toplam_bulunan: adaylar.length, eklenen, mail_bulunan: mailBulunan, hatalar: hatalar.slice(0, 20) },
       })
       .eq("id", kampanyaId);
 
-    return NextResponse.json({ kampanya_id: kampanyaId, bulunan: adaylar.length, eklenen, hatalar });
+    return NextResponse.json({ kampanya_id: kampanyaId, bulunan: adaylar.length, eklenen, mailBulunan, hatalar });
   } catch (e) {
     await admin.from("kesif_kampanya").update({ durum: "hata", sonuc: { hata: (e as Error).message } }).eq("id", kampanyaId);
     return NextResponse.json({ hata: (e as Error).message }, { status: 500 });
@@ -133,6 +146,7 @@ export async function POST(req: NextRequest) {
 
 const PatchSchema = z.object({
   id: z.string().uuid(),
+  segment: z.enum(SEGMENTLER).optional(),
   durum: z.string().trim().max(30).optional(),
   notlar: z.string().trim().max(2000).optional(),
   email: z.string().trim().max(200).optional(),
