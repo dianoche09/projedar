@@ -9,6 +9,14 @@ import { SEGMENT_ROL, type Segment } from "@/lib/kesif/tipler";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
 const TAKIP_GUN = 3;
 
+/** Segmente göre WhatsApp davet cümlesi (müteahhit ≠ ofis/emlakçı pitch'i). */
+const WA_PITCH: Record<string, string> = {
+  muteahhit: "Projenizi bağımsız emlakçı ağına canlı dağıtın, tek noktadan stok/fiyat kontrolü, komisyon yok.",
+  proje: "Projenizi bağımsız emlakçı ağına canlı dağıtın, komisyon yok.",
+  ofis: "Size tahsisli konut projelerini tek canlı havuzdan görüp ekibinizle paylaşın, komisyon yok.",
+  emlakci: "Size tahsisli konut projelerini tek canlı havuzdan görüp müşterinizle paylaşın, komisyon yok.",
+};
+
 /**
  * Adaya davet gönder (admin onaylı tek-tık). İki kanal:
  *  - email: token'lı kayıt linki + opt-out'lu mail (Resend).
@@ -61,9 +69,10 @@ export async function POST(req: NextRequest) {
   if (kanal === "whatsapp") {
     const num = aday.telefon ? waNumara(aday.telefon as string) : null;
     if (!num) return NextResponse.json({ hata: "Adayın geçerli telefonu yok" }, { status: 400 });
+    const pitch = WA_PITCH[(aday.segment as string) ?? "muteahhit"] ?? WA_PITCH.muteahhit;
     const metin =
-      `Merhaba, ${firma} için Projedar davetimiz. Projenizi bağımsız emlakçı ağına canlı dağıtın, ` +
-      `komisyon yok. Hesabınızı buradan oluşturabilirsiniz: ${kayitUrl}` +
+      `Merhaba, ${firma} için Projedar davetimiz. ${pitch} ` +
+      `Hesabınızı buradan oluşturabilirsiniz: ${kayitUrl}` +
       (ekMesaj ? `\n\n${ekMesaj}` : "");
     waUrl = `https://wa.me/${num}?text=${encodeURIComponent(metin)}`;
   } else {
