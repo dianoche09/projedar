@@ -22,11 +22,29 @@ const FONT = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial
 const LOGO = "https://projedar.com/icon-192.png";
 const YIL = new Date().getFullYear();
 
-/** Kart gövdesi (parça) — önizlemede istiflenir, dosyada tam HTML'e sarılır. */
-function kart({ renk, tint, rozet, baslik, govde, cta, kod, altNot }) {
+/** Mini "bina-kesiti" motifi (email-safe: nested table + bgcolor). Bildirim maillerinde
+ *  canlı stok imzası — dekoratif değil, statü dilini (müsait/opsiyon/satıldı) görselleştirir. */
+function motifKesiti() {
+  const D = { m: "#2fb36b", o: "#e3a12c", s: "#d15a4e" };
+  const kat = (dizi) =>
+    `<tr>${dizi.map((c) => `<td style="width:24px;height:11px;background:${D[c]};border-radius:2px;font-size:0;line-height:0;">&nbsp;</td>`).join("")}</tr>`;
+  return `<tr><td style="padding:18px 28px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:3px;">
+        ${kat(["m", "o", "m", "s", "m", "m"])}
+        ${kat(["m", "m", "s", "o", "m", "s"])}
+        ${kat(["s", "m", "m", "m", "o", "m"])}
+      </table>
+      <p style="margin:9px 0 0;font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.03em;color:${RENK.inkFaint};"><span style="color:#2fb36b;">&#9679;</span> müsait&nbsp;&nbsp;<span style="color:#e3a12c;">&#9679;</span> opsiyon&nbsp;&nbsp;<span style="color:#d15a4e;">&#9679;</span> satıldı</p>
+    </td></tr>`;
+}
+
+/** Kart gövdesi (parça) — önizlemede istiflenir, dosyada tam HTML'e sarılır.
+ *  motif=true → bina-kesiti motifi (yalnız bildirim mailleri; auth sade kalır). */
+function kart({ renk, tint, rozet, baslik, govde, cta, kod, altNot, motif }) {
   const govdeBlok = govde
     ? `<tr><td style="padding:12px 28px 0;"><div style="padding:12px 14px;background:${RENK.kutuZemin};border:1px solid ${RENK.cizgi};border-left:3px solid ${renk};border-radius:10px;font-family:${FONT};font-size:13.5px;line-height:1.5;color:${RENK.inkSoft};">${govde}</div></td></tr>`
     : "";
+  const motifBlok = motif ? motifKesiti() : "";
   const kodBlok = kod
     ? `<tr><td style="padding:18px 28px 0;"><div style="text-align:center;padding:18px;background:${RENK.kutuZemin};border:1px solid ${RENK.cizgi};border-radius:12px;font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:30px;font-weight:700;letter-spacing:.28em;color:${RENK.ink};">${kod}</div></td></tr>`
     : "";
@@ -37,14 +55,15 @@ function kart({ renk, tint, rozet, baslik, govde, cta, kod, altNot }) {
     ? `<tr><td style="padding:12px 28px 0;"><p style="margin:0;font-family:${FONT};font-size:11.5px;line-height:1.5;color:${RENK.inkFaint};word-break:break-all;">${altNot}</p></td></tr>`
     : "";
   return `<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${RENK.kart};border:1px solid ${RENK.cizgi};border-radius:20px;overflow:hidden;">
-    <tr><td style="height:4px;background:${renk};font-size:0;line-height:0;">&nbsp;</td></tr>
-    <tr><td style="padding:22px 28px 2px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td style="vertical-align:middle;padding-right:10px;"><img src="${LOGO}" width="34" height="34" alt="Projedar" style="display:block;border-radius:9px;"></td>
+    <tr><td style="height:5px;background:${renk};background-image:linear-gradient(90deg,${renk} 0%,${RENK.teal} 100%);font-size:0;line-height:0;">&nbsp;</td></tr>
+    <tr><td style="padding:22px 28px 2px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td style="vertical-align:middle;padding-right:10px;width:34px;"><img src="${LOGO}" width="34" height="34" alt="Projedar" style="display:block;border-radius:9px;"></td>
       <td style="vertical-align:middle;font-family:${FONT};font-size:19px;font-weight:800;letter-spacing:-.02em;color:${RENK.ink};">proje<span style="color:${RENK.teal};">dar</span></td>
+      <td style="vertical-align:middle;text-align:right;font-family:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;font-weight:600;letter-spacing:.04em;color:${RENK.inkFaint};white-space:nowrap;"><span style="color:#2fb36b;">&#9679;</span> canlı ağ</td>
     </tr></table></td></tr>
-    <tr><td style="padding:16px 28px 0;"><span style="display:inline-block;background:${tint};color:${renk};font-family:${FONT};font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;">${rozet}</span></td></tr>
+    <tr><td style="padding:16px 28px 0;"><span style="display:inline-block;background:${tint};color:${renk};font-family:${FONT};font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 11px;border-radius:999px;">&#9679; ${rozet}</span></td></tr>
     <tr><td style="padding:12px 28px 0;"><h1 style="margin:0;font-family:${FONT};font-size:21px;line-height:1.28;font-weight:800;color:${RENK.ink};">${baslik}</h1></td></tr>
-    ${govdeBlok}${kodBlok}${ctaBlok}${altNotBlok}
+    ${govdeBlok}${motifBlok}${kodBlok}${ctaBlok}${altNotBlok}
     <tr><td style="padding:24px 28px 26px;"><hr style="border:none;border-top:1px solid ${RENK.cizgi};margin:0 0 16px;">
       <p style="margin:0 0 4px;font-family:${FONT};font-size:12px;font-weight:600;color:${RENK.inkSoft};">Projedar &middot; tahsisli canlı satış ağı</p>
       <p style="margin:0;font-family:${FONT};font-size:11px;line-height:1.5;color:${RENK.inkFaint};">Bu bir güvenlik / hesap e-postasıdır. Bu işlemi sen başlatmadıysan e-postayı yok sayabilirsin. Soru için <a href="mailto:destek@projedar.com" style="color:${RENK.teal};text-decoration:none;">destek@projedar.com</a>.</p>
@@ -121,10 +140,10 @@ function render(t, mod) {
 
 // ── app işlemsel mail örnekleri (önizleme için; mail.ts STIL ile aynı) ────────
 const APP_ORNEK = [
-  { renk: "#e3a12c", tint: "#fbf1dd", rozet: "Yeni talep", baslik: "Yeni opsiyon talebi", govde: "Kaya Emlak · Meram Panorama · Daire A-12", cta: { label: "Talebi incele", href: "#" } },
-  { renk: "#2fb36b", tint: "#e4f5ec", rozet: "Onaylandı", baslik: "Opsiyon talebin onaylandı", govde: "Meram Panorama · Daire A-12 · 3 gün opsiyon", cta: { label: "Opsiyonlarıma git", href: "#" } },
-  { renk: "#d15a4e", tint: "#f9e7e4", rozet: "Yanıtlandı", baslik: "Opsiyon talebin reddedildi", govde: "Meram Panorama · Daire A-12", cta: { label: "Opsiyonlarıma git", href: "#" } },
-  { renk: "#1e9b8a", tint: "#e2f1ef", rozet: "Yeni lead", baslik: "Yeni müşteri (lead)", govde: "Ahmet Y. · Randevu istedi", cta: { label: "Lead'i gör", href: "#" } },
+  { renk: "#e3a12c", tint: "#fbf1dd", rozet: "Yeni talep", baslik: "Yeni opsiyon talebi", govde: "Kaya Emlak · Meram Panorama · Daire A-12", cta: { label: "Talebi incele", href: "#" }, motif: true },
+  { renk: "#2fb36b", tint: "#e4f5ec", rozet: "Onaylandı", baslik: "Opsiyon talebin onaylandı", govde: "Meram Panorama · Daire A-12 · 3 gün opsiyon", cta: { label: "Opsiyonlarıma git", href: "#" }, motif: true },
+  { renk: "#d15a4e", tint: "#f9e7e4", rozet: "Yanıtlandı", baslik: "Opsiyon talebin reddedildi", govde: "Meram Panorama · Daire A-12", cta: { label: "Opsiyonlarıma git", href: "#" }, motif: true },
+  { renk: "#1e9b8a", tint: "#e2f1ef", rozet: "Yeni lead", baslik: "Yeni müşteri (lead)", govde: "Ahmet Y. · Randevu istedi", cta: { label: "Lead'i gör", href: "#" }, motif: true },
 ];
 
 // ── yaz ───────────────────────────────────────────────────────────────────────
