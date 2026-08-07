@@ -11,14 +11,21 @@ const API = "https://api.anthropic.com/v1/messages";
 const MODEL = "claude-sonnet-5";
 
 const SISTEM =
-  "Sen Türkiye gayrimenkul pazarı için bir aday (prospect) analiz asistanısın. " +
-  "Ham web arama verisinden her firma için yapılandırılmış aday kaydı üretirsin. " +
-  "KURALLAR: (1) İletişim bilgisi (email/telefon) yalnız verilen metinde AÇIKÇA geçiyorsa yaz; " +
-  "emin değilsen null bırak — ASLA uydurma. (2) segment: yeni konut projesi geliştiren/inşa eden firma " +
-  "'muteahhit'; emlak ofisi 'ofis'; bireysel danışman 'emlakci'. Bir proje ilanıysa arkasındaki " +
-  "geliştiriciyi 'muteahhit' olarak işaretle. (3) uygunluk_skoru 0-100: firmanın ProjePazar için " +
-  "(canlı konut stoğu olan müteahhit / aktif emlak ofisi) ne kadar nitelikli aday olduğu. " +
-  "(4) ozet: tek cümle Türkçe. (5) proje_sayisi yalnız müteahhit için tahmin, yoksa null.";
+  "Sen Türkiye gayrimenkul pazarı için aday (prospect) analiz asistanısın. HEDEF: YENİ/AKTİF konut " +
+  "projesi olan MÜTEAHHİTLER. Ham web verisinden her kayıt için yapılandırılmış aday üretirsin.\n" +
+  "KURALLAR:\n" +
+  "(1) İki ayrı taraf çıkar: MÜTEAHHİT (geliştirici firma) → firma_adi + email/telefon/(müteahhit) ; " +
+  "PROJE → proje_adi + proje_website + proje_telefon (satış ofisi). Bir proje ilanıysa arkasındaki " +
+  "geliştiriciyi firma_adi yap.\n" +
+  "(2) İletişim (email/telefon/website) yalnız verilen metinde/web sitesinde AÇIKÇA varsa yaz; emin " +
+  "değilsen null. ASLA uydurma. Web sitesi domaini varsa email için 'info@domain' MAKUL bir tahmindir, " +
+  "kurumsal kurumsal görünüyorsa yazabilirsin, aksi halde null.\n" +
+  "(3) proje_durumu: lansman | on_satis (satışta) | insaat (inşaat devam) | tamamlandi (teslim/bitmiş/" +
+  "satıldı) | belirsiz.\n" +
+  "(4) uygunluk_skoru 0-100 TAZELİK ODAKLI: lansman/on_satis/insaat = YÜKSEK (70-100). tamamlandi/teslim " +
+  "edilmiş/sold-out = DÜŞÜK (<30). Projesi belirsiz salt-firma = orta (30-55). Eski projeyi ELE.\n" +
+  "(5) segment: geliştirici 'muteahhit'; emlak ofisi 'ofis'; bireysel danışman 'emlakci'.\n" +
+  "(6) ozet: tek cümle Türkçe (proje adı + durum + neden nitelikli). proje_sayisi müteahhit için tahmin.";
 
 const ARAC = {
   name: "adaylar_kaydet",
@@ -31,11 +38,15 @@ const ARAC = {
         items: {
           type: "object",
           properties: {
-            firma_adi: { type: "string" },
+            firma_adi: { type: "string", description: "müteahhit (geliştirici) firma" },
             segment: { type: "string", enum: ["muteahhit", "proje", "ofis", "emlakci"] },
             kisi: { type: ["string", "null"] },
-            email: { type: ["string", "null"] },
-            telefon: { type: ["string", "null"] },
+            email: { type: ["string", "null"], description: "müteahhit e-postası" },
+            telefon: { type: ["string", "null"], description: "müteahhit telefonu" },
+            proje_adi: { type: ["string", "null"] },
+            proje_durumu: { type: ["string", "null"], enum: ["lansman", "on_satis", "insaat", "tamamlandi", "belirsiz", null] },
+            proje_website: { type: ["string", "null"] },
+            proje_telefon: { type: ["string", "null"], description: "proje satış ofisi telefonu" },
             proje_sayisi: { type: ["integer", "null"] },
             uygunluk_skoru: { type: "integer", minimum: 0, maximum: 100 },
             ozet: { type: "string" },

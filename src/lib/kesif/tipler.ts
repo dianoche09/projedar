@@ -20,14 +20,25 @@ export const AdayHamSchema = z.object({
 });
 export type AdayHam = z.infer<typeof AdayHamSchema>;
 
-/** Zengin aday — Claude çıktısı (yapılandırılmış). Halüsinasyon yasak: emin olmadığı alanı boş bırakır. */
+/** Proje yaşam evresi — tazelik sinyali. tamamlandi/belirsiz düşük skor alır. */
+export const PROJE_DURUMLARI = ["lansman", "on_satis", "insaat", "tamamlandi", "belirsiz"] as const;
+export type ProjeDurumu = (typeof PROJE_DURUMLARI)[number];
+
+/**
+ * Zengin aday — Claude çıktısı (yapılandırılmış). Halüsinasyon yasak: emin olmadığı alanı boş bırakır.
+ * firma_adi + firma iletişimi = MÜTEAHHİT; proje_* alanları o müteahhitin YENİ/aktif projesi.
+ */
 export const AdayZenginSchema = z.object({
-  firma_adi: z.string(),
+  firma_adi: z.string(), // müteahhit (geliştirici) firma
   segment: z.enum(SEGMENTLER),
   kisi: z.string().nullable().optional(),
-  email: z.string().nullable().optional(),
+  email: z.string().nullable().optional(), // müteahhit iletişim
   telefon: z.string().nullable().optional(),
   proje_sayisi: z.number().int().nullable().optional(),
+  proje_adi: z.string().nullable().optional(),
+  proje_durumu: z.enum(PROJE_DURUMLARI).nullable().optional(),
+  proje_website: z.string().nullable().optional(), // proje satış ofisi/landing
+  proje_telefon: z.string().nullable().optional(),
   uygunluk_skoru: z.number().int().min(0).max(100),
   ozet: z.string(),
 });

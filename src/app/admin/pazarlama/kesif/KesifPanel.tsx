@@ -12,6 +12,10 @@ type Aday = {
   website: string | null;
   il: string | null;
   ilce: string | null;
+  proje_adi: string | null;
+  proje_durumu: string | null;
+  proje_website: string | null;
+  proje_telefon: string | null;
   proje_sayisi: number | null;
   uygunluk_skoru: number | null;
   ozet: string | null;
@@ -19,6 +23,21 @@ type Aday = {
   durum: string;
   temas_sayisi: number;
   opt_out: boolean;
+};
+
+const PROJE_DURUM_ETIKET: Record<string, string> = {
+  lansman: "Lansman",
+  on_satis: "Satışta",
+  insaat: "İnşaat",
+  tamamlandi: "Tamamlandı",
+  belirsiz: "Belirsiz",
+};
+const PROJE_DURUM_RENK: Record<string, string> = {
+  lansman: "bg-green/15 text-teal-d",
+  on_satis: "bg-green/15 text-teal-d",
+  insaat: "bg-amber/15 text-amber-d",
+  tamamlandi: "bg-red-soft text-red",
+  belirsiz: "bg-soft text-gray",
 };
 
 const SEGMENTLER = [
@@ -159,7 +178,7 @@ export function KesifPanel() {
     }
   }
 
-  async function davet(aday: Aday) {
+  async function davet(aday: Aday, kanal: "email" | "whatsapp") {
     setHata(null);
     setMesaj(null);
     setDavetEdilen(aday.id);
@@ -167,12 +186,14 @@ export function KesifPanel() {
       const res = await fetch("/api/admin/kesif/davet", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adayId: aday.id }),
+        body: JSON.stringify({ adayId: aday.id, kanal }),
       });
       const d = await res.json();
       if (!res.ok) setHata(d.hata ?? "Davet hatası");
       else {
-        setMesaj(`${aday.firma_adi} davet edildi.`);
+        // WhatsApp: sunucu göndermez → deep-link'i yeni sekmede aç (admin gönderir).
+        if (d.waUrl) window.open(d.waUrl, "_blank", "noopener");
+        setMesaj(kanal === "whatsapp" ? `${aday.firma_adi} — WhatsApp açıldı, gönder.` : `${aday.firma_adi} davet edildi.`);
         await yukle(filtreDurum);
       }
     } catch (e) {
@@ -292,7 +313,8 @@ export function KesifPanel() {
         ) : (
           adaylar.map((a) => {
             const rolDavet = a.segment !== "proje";
-            const davetlenebilir = rolDavet && !a.opt_out && !!a.email && !["kayit_oldu", "reddedildi"].includes(a.durum);
+            const davetlenebilir =
+              rolDavet && !a.opt_out && (!!a.email || !!a.telefon) && !["kayit_oldu", "reddedildi"].includes(a.durum);
             return (
               <article key={a.id} className="belir belir-1 rounded-2xl border border-hair bg-card p-4">
                 <div className="flex items-start gap-3">
@@ -313,16 +335,32 @@ export function KesifPanel() {
                         skor {a.uygunluk_skoru ?? "—"}
                       </span>
                       <span className="rozet mono bg-soft text-[11px] text-gray">{DURUM_ETIKET[a.durum] ?? a.durum}</span>
+                      {a.proje_durumu ? (
+                        <span className={`rozet mono text-[11px] ${PROJE_DURUM_RENK[a.proje_durumu] ?? "bg-soft text-gray"}`}>
+                          {PROJE_DURUM_ETIKET[a.proje_durumu] ?? a.proje_durumu}
+                        </span>
+                      ) : null}
                       {a.opt_out ? <span className="rozet mono bg-red-soft text-[11px] text-red">opt-out</span> : null}
                     </div>
-                    {a.ozet ? <p className="mt-1 text-[13px] text-ink-soft">{a.ozet}</p> : null}
+                    {a.proje_adi ? (
+                      <p className="mt-1 text-[13px] font-semibold text-navy">📍 {a.proje_adi}</p>
+                    ) : null}
+                    {a.ozet ? <p className="mt-0.5 text-[13px] text-ink-soft">{a.ozet}</p> : null}
                     <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[12px] text-gray">
                       {a.il ? <span>{a.il}{a.ilce ? ` · ${a.ilce}` : ""}</span> : null}
-                      {a.telefon ? <span className="mono">{a.telefon}</span> : null}
-                      {a.email ? <span className="mono">{a.email}</span> : null}
+                      {a.telefon ? <span className="mono">☎ {a.telefon}</span> : null}
+                      {a.email ? <span className="mono">✉ {a.email}</span> : null}
                       {a.website ? (
                         <a href={a.website} target="_blank" rel="noreferrer" className="text-teal-d hover:underline">
-                          web
+                          müteahhit web
+                        </a>
+                      ) : null}
+                      {a.proje_telefon && a.proje_telefon !== a.telefon ? (
+                        <span className="mono">proje ☎ {a.proje_telefon}</span>
+                      ) : null}
+                      {a.proje_website && a.proje_website !== a.website ? (
+                        <a href={a.proje_website} target="_blank" rel="noreferrer" className="text-teal-d hover:underline">
+                          proje web
                         </a>
                       ) : null}
                       {a.proje_sayisi != null ? <span>~{a.proje_sayisi} proje</span> : null}
@@ -332,21 +370,24 @@ export function KesifPanel() {
                   <div className="flex shrink-0 flex-col items-end gap-1.5">
                     <button
                       type="button"
-                      onClick={() => davet(a)}
-                      disabled={!davetlenebilir || davetEdilen === a.id}
-                      className={btnIkincil}
-                      title={
-                        !rolDavet
-                          ? "Proje adayı doğrudan davet edilemez"
-                          : a.opt_out
-                            ? "Aday ileti almayı reddetti"
-                            : !a.email
-                              ? "E-posta yok"
-                              : ""
-                      }
+                      onClick={() => davet(a, "whatsapp")}
+                      disabled={!davetlenebilir || !a.telefon || davetEdilen === a.id}
+                      className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                      style={{ background: "#25D366" }}
+                      title={!rolDavet ? "Proje adayı önce müteahhide çözülmeli" : a.opt_out ? "Opt-out" : !a.telefon ? "Telefon yok" : "WhatsApp'ta davet mesajı aç"}
                     >
-                      {davetEdilen === a.id ? "Gönderiliyor…" : a.durum === "davet_edildi" ? "Tekrar davet" : "Davet et"}
+                      {davetEdilen === a.id ? "…" : "WhatsApp davet"}
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => davet(a, "email")}
+                      disabled={!davetlenebilir || !a.email || davetEdilen === a.id}
+                      className={btnIkincil}
+                      title={!a.email ? "E-posta yok (zenginleştir veya WhatsApp kullan)" : "E-posta davet gönder"}
+                    >
+                      E-posta davet
+                    </button>
+                    {a.durum === "davet_edildi" ? <span className="text-[11px] text-teal-d">✓ davet edildi</span> : null}
                     {a.temas_sayisi > 0 ? (
                       <span className="text-[11px] text-gray">{a.temas_sayisi} temas</span>
                     ) : null}

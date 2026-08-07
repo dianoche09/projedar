@@ -15,13 +15,16 @@ export async function kesfet(
   il: string,
   segmentler: Segment[],
   anahtar: KesifAnahtarlari,
+  yil: number,
 ): Promise<{ adaylar: AdayHam[]; hatalar: string[] }> {
   const adaylar: AdayHam[] = [];
   const hatalar: string[] = [];
 
   for (const segment of segmentler) {
-    for (const sorgu of sorgularUret(il, segment)) {
-      // 1) SerpAPI Maps (birincil)
+    // Yeni proje içeriği Maps'te değil web'de/portalda/haberde → proje & müteahhitte web HER ZAMAN.
+    const webHer = segment === "muteahhit" || segment === "proje";
+    for (const sorgu of sorgularUret(il, segment, yil)) {
+      // 1) SerpAPI Maps (birincil — işletme/telefon)
       let mapsSayi = 0;
       if (anahtar.serpapi_key) {
         try {
@@ -32,8 +35,8 @@ export async function kesfet(
           hatalar.push(`maps "${sorgu}": ${(e as Error).message}`);
         }
       }
-      // 2) Serper web fallback (Maps zayıfsa)
-      if (mapsSayi < 3 && anahtar.serper_key) {
+      // 2) Serper web — proje/müteahhitte her zaman; ofis/emlakçıda yalnız Maps zayıfsa fallback.
+      if ((webHer || mapsSayi < 3) && anahtar.serper_key) {
         try {
           const r = await araWeb(sorgu, segment, anahtar.serper_key);
           adaylar.push(...r.map((a) => ({ ...a, il })));

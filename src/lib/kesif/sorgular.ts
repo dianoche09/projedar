@@ -1,51 +1,36 @@
 import type { Segment } from "./tipler";
 
 /**
- * Segment × il → Türkçe arama sorgu seti (SerpAPI Maps / Serper / Places için).
- * Sabit set — keşif tekrarlanabilir olsun. İl adı sorguya gömülür.
+ * Segment × il → Türkçe arama sorgu seti. HEDEF: yeni/aktif projesi olan müteahhit.
+ * Eski/tamamlanmış projeleri elemek için sorgular YENİLİK niyeti taşır (lansman, satışta,
+ * inşaat, ön satış, teslim 20xx). İl sorguya gömülür.
  *
- * İki katman:
- *  (a) DOĞRUDAN sorgular — işletme adı/kategorisiyle Maps'te bulunur (inşaat firması, emlak ofisi).
- *  (b) DAVRANIŞ/EŞANLAMLI sorgular — rakip/aday bizim sözlüğümüzden kaçar; kendi kelimesiyle aranır.
- *      (tahsis=yetkilendirme · canlı stok=güncel portföy · emlakçı ağı=partner ağı · broker=acente ·
- *       müteahhit=proje sahibi · developer=kurumsal firma · yeni konut=sıfır proje). Bunlar Maps'te
- *      genelde <3 sonuç döner → kesfet() otomatik Serper web fallback'e düşer (doğru kaynak).
- * Maliyet notu: her sorgu = (Maps + gerekirse Serper + Places) çağrısı × il. Sorgu ekledikçe maliyet artar.
+ * Yıl gömülü sorgular tazeliği artırır ({yil} = içinde bulunulan yıl, çağrı anında basılır).
+ * Maliyet: her sorgu = (Maps + Serper web + Places) × il. proje/muteahhit'te web HER ZAMAN çalışır
+ * (yeni proje içeriği Maps'te değil web/portal/haberde) — bkz. kesfet().
  */
-const SABLON: Record<Segment, string[]> = {
-  muteahhit: [
-    // (a) doğrudan
-    "{il} inşaat firması",
-    "{il} konut projesi",
-    "{il} gayrimenkul geliştirme",
-    // (b) davranış/eşanlamlı — "proje sahibi / kurumsal portföy / yetkili satış"
-    "{il} proje sahibi firma yetkili satış",
-    "{il} kurumsal gayrimenkul portföyü partner",
-    "{il} konut projesi yetkili satış ağı",
-  ],
-  proje: [
-    "{il} yeni konut projesi",
-    "{il} satılık daire proje",
-    "{il} sıfır konut projesi",
-    "{il} markalı konut projesi satış",
-  ],
-  ofis: [
-    "{il} emlak ofisi",
-    "{il} gayrimenkul ofisi",
-    // (b) davranış — "yetkili satış ofisi / iş ortağı / partner ağı"
-    "{il} yetkili satış ofisi gayrimenkul",
-    "{il} gayrimenkul iş ortağı partner ağı",
-  ],
-  emlakci: [
-    "{il} gayrimenkul danışmanı",
-    "{il} emlak danışmanı",
-    // (b) davranış — "acente / proje satış partneri / portföy ağı"
-    "{il} proje satış danışmanı acente",
-    "{il} gayrimenkul partner ağı portföy paylaşımı",
-  ],
-};
+function sablon(yil: number): Record<Segment, string[]> {
+  return {
+    // Müteahhit = yeni projesi OLAN geliştirici (tamamlanmışı değil).
+    muteahhit: [
+      `{il} yeni konut projesi lansman ${yil}`,
+      `{il} inşaatı devam eden konut projesi müteahhit`,
+      `{il} satışta konut projesi geliştirici firma`,
+      `{il} ön satış konut projesi ${yil}`,
+    ],
+    // Proje = yeni proje kaydı → zenginleştirmede arkasındaki müteahhide çözülür.
+    proje: [
+      `{il} yeni lansman konut projesi ${yil}`,
+      `{il} satışta daire projesi teslim ${yil + 1}`,
+      `{il} inşaat halinde konut projesi satış ofisi`,
+      `{il} ön talep konut projesi yeni`,
+    ],
+    ofis: ["{il} emlak ofisi", "{il} yetkili satış ofisi gayrimenkul"],
+    emlakci: ["{il} gayrimenkul danışmanı", "{il} proje satış danışmanı"],
+  };
+}
 
-export function sorgularUret(il: string, segment: Segment): string[] {
+export function sorgularUret(il: string, segment: Segment, yil: number): string[] {
   const temiz = il.trim();
-  return SABLON[segment].map((s) => s.replace("{il}", temiz));
+  return sablon(yil)[segment].map((s) => s.replace(/\{il\}/g, temiz));
 }

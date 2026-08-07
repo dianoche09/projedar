@@ -7,10 +7,11 @@ import { emailCikar, telefonCikar } from "../cikar";
  * Kolayimar searchWeb (Serper tercihli) deseni.
  */
 export async function araWeb(sorgu: string, segment: Segment, key: string): Promise<AdayHam[]> {
+  // tbs=qdr:y → son 1 yılın içeriği (yeni/aktif proje bias; eski/tamamlanmış proje elenir).
   const res = await fetch("https://google.serper.dev/search", {
     method: "POST",
     headers: { "X-API-KEY": key, "Content-Type": "application/json" },
-    body: JSON.stringify({ q: sorgu, gl: "tr", hl: "tr", num: 10 }),
+    body: JSON.stringify({ q: sorgu, gl: "tr", hl: "tr", num: 10, tbs: "qdr:y" }),
     signal: AbortSignal.timeout(20000),
   });
   if (!res.ok) throw new Error(`Serper ${res.status}`);

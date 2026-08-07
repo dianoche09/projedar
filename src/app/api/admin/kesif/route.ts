@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
   let qb = admin
     .from("aday")
     .select(
-      "id, firma_adi, segment, kisi, email, telefon, website, il, ilce, proje_sayisi, uygunluk_skoru, ozet, kaynak, durum, temas_sayisi, son_temas, sonraki_takip, opt_out, created_at",
+      "id, firma_adi, segment, kisi, email, telefon, website, il, ilce, proje_adi, proje_durumu, proje_website, proje_telefon, proje_sayisi, uygunluk_skoru, ozet, kaynak, durum, temas_sayisi, son_temas, sonraki_takip, opt_out, created_at",
     )
     .order("uygunluk_skoru", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
@@ -85,7 +85,8 @@ export async function POST(req: NextRequest) {
   const kampanyaId = kampanya.id as string;
 
   try {
-    const { adaylar, hatalar } = await kesfet(il, segmentler as Segment[], anahtar);
+    const yil = new Date().getFullYear();
+    const { adaylar, hatalar } = await kesfet(il, segmentler as Segment[], anahtar, yil);
 
     // Aday havuzuna yaz — dedup uniq index (firma_adi_norm, il) çift kaydı reddeder (ignore).
     const satirlar = adaylar.map((a) => ({
