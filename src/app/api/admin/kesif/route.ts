@@ -29,9 +29,8 @@ export async function GET(req: NextRequest) {
   let qb = admin
     .from("aday")
     .select(
-      "id, firma_adi, segment, kisi, email, telefon, website, il, ilce, proje_adi, proje_durumu, proje_website, proje_telefon, proje_sayisi, uygunluk_skoru, ozet, kaynak, durum, temas_sayisi, son_temas, sonraki_takip, opt_out, created_at",
+      "id, firma_adi, segment, kisi, email, telefon, website, il, ilce, ozet, kaynak, durum, temas_sayisi, son_temas, sonraki_takip, opt_out, created_at",
     )
-    .order("uygunluk_skoru", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(200);
   if (il) qb = qb.eq("il", il);

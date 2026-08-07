@@ -44,8 +44,7 @@ const GRUPLAR: {
     baslik: "Keşif & Davet Motoru",
     faz: "gerekli",
     aciklama:
-      "Müteahhit/proje/emlak ofisi adaylarını web'den keşfetmek için arama anahtarları. En az biri gerekli; " +
-      "Claude zenginleştirme yukarıdaki claude_key'i kullanır.",
+      "Müteahhit/proje/emlak ofisi adaylarını web'den keşfetmek için arama anahtarları. En az biri gerekli.",
     alanlar: [
       { name: "serpapi_key", etiket: "SerpAPI API Key", ipucu: "serpapi.com → Api Key (Google Maps + web)" },
       { name: "serper_key", etiket: "Serper API Key (opsiyonel)", ipucu: "serper.dev → API Key (web fallback)" },

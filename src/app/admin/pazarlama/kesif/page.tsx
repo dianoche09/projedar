@@ -26,7 +26,7 @@ export default async function KesifSayfasi() {
           <>
             <span className="font-medium">müteahhit · proje · emlak ofisi keşfi</span>
             <span className="text-hair">·</span>
-            <span className="mono text-xs text-gray">web → Claude zenginleştir → davet</span>
+            <span className="mono text-xs text-gray">web keşif → WhatsApp/e-posta davet</span>
           </>
         }
         sag={<span className="rozet mono bg-teal/10 text-teal-d">canlı ağ</span>}

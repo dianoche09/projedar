@@ -12,32 +12,11 @@ type Aday = {
   website: string | null;
   il: string | null;
   ilce: string | null;
-  proje_adi: string | null;
-  proje_durumu: string | null;
-  proje_website: string | null;
-  proje_telefon: string | null;
-  proje_sayisi: number | null;
-  uygunluk_skoru: number | null;
   ozet: string | null;
   kaynak: string | null;
   durum: string;
   temas_sayisi: number;
   opt_out: boolean;
-};
-
-const PROJE_DURUM_ETIKET: Record<string, string> = {
-  lansman: "Lansman",
-  on_satis: "Satışta",
-  insaat: "İnşaat",
-  tamamlandi: "Tamamlandı",
-  belirsiz: "Belirsiz",
-};
-const PROJE_DURUM_RENK: Record<string, string> = {
-  lansman: "bg-green/15 text-teal-d",
-  on_satis: "bg-green/15 text-teal-d",
-  insaat: "bg-amber/15 text-amber-d",
-  tamamlandi: "bg-red-soft text-red",
-  belirsiz: "bg-soft text-gray",
 };
 
 const SEGMENTLER = [
@@ -56,7 +35,6 @@ const SEGMENT_RENK: Record<string, string> = {
 
 const DURUM_ETIKET: Record<string, string> = {
   yeni: "Yeni",
-  zenginlesti: "Zenginleşti",
   davet_edildi: "Davet edildi",
   acildi: "Açıldı",
   kayit_oldu: "Kayıt oldu",
@@ -64,32 +42,23 @@ const DURUM_ETIKET: Record<string, string> = {
   soguk: "Soğuk",
 };
 
-const HUNI_SIRA = ["yeni", "zenginlesti", "davet_edildi", "kayit_oldu"];
-
-function skorRenk(s: number | null): string {
-  if (s == null) return "bg-soft text-gray";
-  if (s >= 70) return "bg-green/15 text-teal-d";
-  if (s >= 40) return "bg-amber/15 text-amber-d";
-  return "bg-red-soft text-red";
-}
+const HUNI_SIRA = ["yeni", "davet_edildi", "kayit_oldu"];
 
 const btnBirincil =
   "rounded-xl px-3.5 py-2 text-sm font-semibold text-white shadow-card transition-opacity hover:opacity-90 disabled:opacity-50";
 const btnIkincil =
-  "rounded-xl border border-hair bg-paper px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:border-teal disabled:opacity-50";
+  "rounded-xl border border-hair bg-paper px-3 py-1.5 text-[13px] font-semibold text-ink transition-colors hover:border-teal disabled:opacity-40";
 const inp = "rounded-xl border border-hair bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-teal";
 
 export function KesifPanel() {
   const [il, setIl] = useState("");
-  const [segSecim, setSegSecim] = useState<Set<string>>(new Set(["muteahhit", "ofis"]));
+  const [segSecim, setSegSecim] = useState<Set<string>>(new Set(["muteahhit", "proje"]));
   const [adaylar, setAdaylar] = useState<Aday[]>([]);
   const [huni, setHuni] = useState<Record<string, number>>({});
-  const [secili, setSecili] = useState<Set<string>>(new Set());
   const [filtreDurum, setFiltreDurum] = useState("");
   const [mesaj, setMesaj] = useState<string | null>(null);
   const [hata, setHata] = useState<string | null>(null);
   const [kesfediliyor, setKesfediliyor] = useState(false);
-  const [zenginlesiyor, setZenginlesiyor] = useState(false);
   const [davetEdilen, setDavetEdilen] = useState<string | null>(null);
 
   const yukle = useCallback(async (durum = "") => {
@@ -102,7 +71,7 @@ export function KesifPanel() {
   }, []);
 
   useEffect(() => {
-    // Mount'ta aday havuzunu çek — setState await sonrası (senkron değil); mount-fetch deseni.
+    // Mount'ta aday havuzunu çek (setState await sonrası — mount-fetch deseni).
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void yukle();
   }, [yukle]);
@@ -112,14 +81,6 @@ export function KesifPanel() {
       const n = new Set(prev);
       if (n.has(k)) n.delete(k);
       else n.add(k);
-      return n;
-    });
-
-  const seçAç = (id: string) =>
-    setSecili((prev) => {
-      const n = new Set(prev);
-      if (n.has(id)) n.delete(id);
-      else n.add(id);
       return n;
     });
 
@@ -147,34 +108,6 @@ export function KesifPanel() {
       setHata((e as Error).message);
     } finally {
       setKesfediliyor(false);
-    }
-  }
-
-  async function zenginlestir() {
-    if (secili.size === 0) {
-      setHata("Zenginleştirmek için aday seç.");
-      return;
-    }
-    setHata(null);
-    setMesaj(null);
-    setZenginlesiyor(true);
-    try {
-      const res = await fetch("/api/admin/kesif/zenginlestir", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adayIds: [...secili] }),
-      });
-      const d = await res.json();
-      if (!res.ok) setHata(d.hata ?? "Zenginleştirme hatası");
-      else {
-        setMesaj(`${d.guncellenen} aday zenginleştirildi.`);
-        setSecili(new Set());
-        await yukle(filtreDurum);
-      }
-    } catch (e) {
-      setHata((e as Error).message);
-    } finally {
-      setZenginlesiyor(false);
     }
   }
 
@@ -216,13 +149,7 @@ export function KesifPanel() {
         <div className="flex flex-wrap items-end gap-3">
           <label className="flex flex-col gap-1 text-[13px] font-semibold text-ink">
             İl
-            <input
-              value={il}
-              onChange={(e) => setIl(e.target.value)}
-              placeholder="ör. Ankara"
-              className={inp}
-              style={{ width: 180 }}
-            />
+            <input value={il} onChange={(e) => setIl(e.target.value)} placeholder="ör. Ankara" className={inp} style={{ width: 180 }} />
           </label>
           <div className="flex flex-col gap-1 text-[13px] font-semibold text-ink">
             Segmentler
@@ -253,7 +180,7 @@ export function KesifPanel() {
           </button>
         </div>
         <p className="mt-2.5 text-[12px] text-gray">
-          Keşif ucuz (SerpAPI/Serper/Places). Claude zenginleştirme yalnız seçtiğin adaylarda çalışır.
+          Yeni/aktif proje niyetli sorgular (lansman · inşaat · satışta) + son 1 yıl tazelik. SerpAPI/Serper/Places.
         </p>
       </section>
 
@@ -282,26 +209,21 @@ export function KesifPanel() {
         </div>
       )}
 
-      {/* Aksiyon barı */}
-      <div className="flex flex-wrap items-center gap-2.5">
-        <button type="button" onClick={zenginlestir} disabled={zenginlesiyor || secili.size === 0} className={btnIkincil}>
-          {zenginlesiyor ? "Zenginleştiriliyor…" : `Claude ile zenginleştir (${secili.size})`}
-        </button>
-        <div className="ml-auto flex items-center gap-1.5">
-          <span className="text-[12px] text-gray">Filtre:</span>
-          {["", "yeni", "zenginlesti", "davet_edildi", "kayit_oldu"].map((d) => (
-            <button
-              key={d || "hepsi"}
-              type="button"
-              onClick={() => filtrele(d)}
-              className={`rozet mono px-2 py-1 text-[11.5px] transition-colors ${
-                filtreDurum === d ? "bg-navy/10 text-navy" : "bg-soft text-gray"
-              }`}
-            >
-              {d ? DURUM_ETIKET[d] : "Hepsi"}
-            </button>
-          ))}
-        </div>
+      {/* Filtre */}
+      <div className="flex flex-wrap items-center justify-end gap-1.5">
+        <span className="text-[12px] text-gray">Filtre:</span>
+        {["", "yeni", "davet_edildi", "kayit_oldu"].map((d) => (
+          <button
+            key={d || "hepsi"}
+            type="button"
+            onClick={() => filtrele(d)}
+            className={`rozet mono px-2 py-1 text-[11.5px] transition-colors ${
+              filtreDurum === d ? "bg-navy/10 text-navy" : "bg-soft text-gray"
+            }`}
+          >
+            {d ? DURUM_ETIKET[d] : "Hepsi"}
+          </button>
+        ))}
       </div>
 
       {/* Aday listesi */}
@@ -318,52 +240,23 @@ export function KesifPanel() {
             return (
               <article key={a.id} className="belir belir-1 rounded-2xl border border-hair bg-card p-4">
                 <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    checked={secili.has(a.id)}
-                    onChange={() => seçAç(a.id)}
-                    className="mt-1 size-4 accent-teal"
-                    aria-label="Aday seç"
-                  />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-display text-[15px] font-bold text-ink">{a.firma_adi}</span>
-                      <span className={`rozet mono text-[11px] ${SEGMENT_RENK[a.segment] ?? "bg-soft text-gray"}`}>
-                        {a.segment}
-                      </span>
-                      <span className={`rozet mono text-[11px] ${skorRenk(a.uygunluk_skoru)}`}>
-                        skor {a.uygunluk_skoru ?? "—"}
-                      </span>
+                      <span className={`rozet mono text-[11px] ${SEGMENT_RENK[a.segment] ?? "bg-soft text-gray"}`}>{a.segment}</span>
                       <span className="rozet mono bg-soft text-[11px] text-gray">{DURUM_ETIKET[a.durum] ?? a.durum}</span>
-                      {a.proje_durumu ? (
-                        <span className={`rozet mono text-[11px] ${PROJE_DURUM_RENK[a.proje_durumu] ?? "bg-soft text-gray"}`}>
-                          {PROJE_DURUM_ETIKET[a.proje_durumu] ?? a.proje_durumu}
-                        </span>
-                      ) : null}
                       {a.opt_out ? <span className="rozet mono bg-red-soft text-[11px] text-red">opt-out</span> : null}
                     </div>
-                    {a.proje_adi ? (
-                      <p className="mt-1 text-[13px] font-semibold text-navy">📍 {a.proje_adi}</p>
-                    ) : null}
-                    {a.ozet ? <p className="mt-0.5 text-[13px] text-ink-soft">{a.ozet}</p> : null}
+                    {a.ozet ? <p className="mt-1 text-[13px] text-ink-soft">{a.ozet}</p> : null}
                     <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[12px] text-gray">
                       {a.il ? <span>{a.il}{a.ilce ? ` · ${a.ilce}` : ""}</span> : null}
                       {a.telefon ? <span className="mono">☎ {a.telefon}</span> : null}
                       {a.email ? <span className="mono">✉ {a.email}</span> : null}
                       {a.website ? (
                         <a href={a.website} target="_blank" rel="noreferrer" className="text-teal-d hover:underline">
-                          müteahhit web
+                          web
                         </a>
                       ) : null}
-                      {a.proje_telefon && a.proje_telefon !== a.telefon ? (
-                        <span className="mono">proje ☎ {a.proje_telefon}</span>
-                      ) : null}
-                      {a.proje_website && a.proje_website !== a.website ? (
-                        <a href={a.proje_website} target="_blank" rel="noreferrer" className="text-teal-d hover:underline">
-                          proje web
-                        </a>
-                      ) : null}
-                      {a.proje_sayisi != null ? <span>~{a.proje_sayisi} proje</span> : null}
                       {a.kaynak ? <span className="text-gray/70">{a.kaynak}</span> : null}
                     </div>
                   </div>
@@ -374,7 +267,7 @@ export function KesifPanel() {
                       disabled={!davetlenebilir || !a.telefon || davetEdilen === a.id}
                       className="rounded-xl px-3 py-1.5 text-[13px] font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
                       style={{ background: "#25D366" }}
-                      title={!rolDavet ? "Proje adayı önce müteahhide çözülmeli" : a.opt_out ? "Opt-out" : !a.telefon ? "Telefon yok" : "WhatsApp'ta davet mesajı aç"}
+                      title={!rolDavet ? "Proje adayı doğrudan davet edilemez" : a.opt_out ? "Opt-out" : !a.telefon ? "Telefon yok" : "WhatsApp'ta davet mesajı aç"}
                     >
                       {davetEdilen === a.id ? "…" : "WhatsApp davet"}
                     </button>
@@ -383,14 +276,12 @@ export function KesifPanel() {
                       onClick={() => davet(a, "email")}
                       disabled={!davetlenebilir || !a.email || davetEdilen === a.id}
                       className={btnIkincil}
-                      title={!a.email ? "E-posta yok (zenginleştir veya WhatsApp kullan)" : "E-posta davet gönder"}
+                      title={!a.email ? "E-posta yok (WhatsApp kullan)" : "E-posta davet gönder"}
                     >
                       E-posta davet
                     </button>
                     {a.durum === "davet_edildi" ? <span className="text-[11px] text-teal-d">✓ davet edildi</span> : null}
-                    {a.temas_sayisi > 0 ? (
-                      <span className="text-[11px] text-gray">{a.temas_sayisi} temas</span>
-                    ) : null}
+                    {a.temas_sayisi > 0 ? <span className="text-[11px] text-gray">{a.temas_sayisi} temas</span> : null}
                   </div>
                 </div>
               </article>
