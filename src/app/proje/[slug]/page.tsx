@@ -11,6 +11,7 @@ import { Logo } from "@/components/Logo";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { DavetPopup } from "@/components/seo/DavetPopup";
+import { ProjeZenginIcerik, type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
@@ -171,7 +172,7 @@ async function katalogGetir(slug: string): Promise<Veri | { forward: string } | 
     lat: null, lng: null, ada: null, parsel: null, emsal: null, taks: null,
     insaat_asamasi: k.durum, teslim_tarihi: k.teslim, baslama_tarihi: null,
     ilerleme_yuzde: null, kira_getirisi_pct: null, kunye: {}, belge_dogrulandi: false,
-    proje_web: k.proje_web,
+    proje_web: k.proje_web, icerik: k.icerik ?? null,
   };
   const u = k.gelistirici ? { ad: k.gelistirici, dogrulanmis: false, profil: {} } : null;
   const benzer = await benzerKatalog(supabase, k);
@@ -189,13 +190,21 @@ async function veriGetir(slug: string): Promise<Veri | { forward: string } | nul
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-/** B2B SSS — hem görünür accordion hem FAQPage JSON-LD (tek kaynak). */
-function sssListesi(ad: string): { s: string; c: string }[] {
-  return [
-    { s: `${ad} projesini Projedar ağında nasıl satarım?`, c: `Gayrimenkul danışmanı olarak Projedar ağına ücretsiz katılır, müteahhidin bu projede size tahsis ettiği daireleri canlı stoktan tek dokunuşla paylaşırsınız. Komisyondan pay alınmaz, kazancın tamamı sizde kalır.` },
-    { s: `${ad} sizin projeniz mi? Projedar ağına nasıl eklerim?`, c: `Projeyi yöneten müteahhit iseniz Projedar'a başvurup projeyi ağa ekleyebilir, stoğunuzu ve fiyatınızı tek panelden yönetip yetkili danışmanlara tahsisli olarak açabilirsiniz.` },
-    { s: `${ad} projesinin fiyatları bu sayfada var mı?`, c: `Hayır. Projedar bir ilan portalı değildir; fiyat ve güncel stok yalnız ağdaki yetkili gayrimenkul danışmanlarına canlı olarak açılır. Bu sayfa projenin künye ve konum bilgisini içerir.` },
-  ];
+/** İki-mod SSS (arama niyeti + Projedar B2B). Görünür accordion + FAQPage JSON-LD tek kaynak. */
+function sssListesi(args: { ad: string; konum: string; gelistirici: string | null; teslim: string | null; odaTipleri: string[]; m2Band: string | null; kaynak: Kaynak }): { s: string; c: string }[] {
+  const { ad, konum, gelistirici, teslim, odaTipleri, m2Band, kaynak } = args;
+  const list: { s: string; c: string }[] = [];
+  if (konum) list.push({ s: `${ad} nerede, hangi ilçede yer alıyor?`, c: `${ad}, ${konum} konumunda yer alan bir yeni konut projesidir.` });
+  if (gelistirici) list.push({ s: `${ad} hangi firma tarafından yapılıyor?`, c: `${ad} projesi ${gelistirici} tarafından geliştirilmektedir.` });
+  if (odaTipleri.length) list.push({ s: `${ad} projesinde hangi daire tipleri var?`, c: `${ad} projesinde ${odaTipleri.join(", ")} tiplerinde daireler bulunmaktadır${m2Band ? `; büyüklükler ${m2Band} aralığındadır` : ""}.` });
+  if (teslim) list.push({ s: `${ad} ne zaman teslim edilecek?`, c: `${ad} projesinin tahmini teslim dönemi ${teslim} olarak belirtilmektedir; güncel bilgi geliştiriciden teyit edilmelidir.` });
+  if (kaynak === "katalog") {
+    list.push({ s: `${ad} projesini Projedar üzerinden satabilir miyim?`, c: `Bu proje henüz Projedar ağında olmayabilir. Gayrimenkul danışmanıysanız Projedar ağına ücretsiz katılabilir, projeler ağa eklendikçe size tahsis edilen daireleri canlı stoktan satarsınız. Müteahhit veya proje sahibiyseniz projenizi Projedar ağına ekleyebilirsiniz.` });
+  } else {
+    list.push({ s: `${ad} projesini Projedar ağında nasıl satarım?`, c: `Gayrimenkul danışmanı olarak Projedar ağına ücretsiz katılır, müteahhidin size tahsis ettiği daireleri canlı stoktan paylaşırsınız. Projedar satış komisyonuna ortak olmaz; kazancınız tamamen sizde kalır.` });
+  }
+  list.push({ s: `${ad} fiyatları ne kadar, bu sayfada var mı?`, c: `Projedar bir ilan portalı değildir; fiyat ve güncel stok yalnız ağdaki yetkili gayrimenkul danışmanlarına canlı açılır. Bu sayfa projenin künye, konum ve daire yapısı bilgisini içerir.` });
+  return list;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -219,7 +228,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function jsonLd(p: any, u: any, birimSayisi: number, odaTipleri: string[]): object {
+function jsonLd(p: any, u: any, birimSayisi: number, odaTipleri: string[], sss: { s: string; c: string }[]): object {
   const ozellikler = okuOzellikler((p.kunye ?? {}) as Record<string, unknown>);
   const amenity = Object.values(ozellikler).flat().filter(Boolean).map((ad) => ({ "@type": "LocationFeatureSpecification", name: ad, value: true }));
   return {
@@ -247,7 +256,7 @@ function jsonLd(p: any, u: any, birimSayisi: number, odaTipleri: string[]): obje
           { "@type": "ListItem", position: 4, name: p.ad, item: `${SITE}/proje/${p.public_slug}` },
         ],
       },
-      { "@type": "FAQPage", "@id": `${SITE}/proje/${p.public_slug}#faq`, mainEntity: sssListesi(p.ad).map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
+      { "@type": "FAQPage", "@id": `${SITE}/proje/${p.public_slug}#faq`, mainEntity: sss.map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
     ],
   };
 }
@@ -281,11 +290,12 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const malzeme = Array.isArray(kunye.malzeme) ? (kunye.malzeme as string[]) : [];
   const aciklama = typeof kunye.aciklama === "string" ? (kunye.aciklama as string).trim() : "";
   const konum = [p.mahalle, p.ilce, p.il].filter(Boolean).join(", ");
+  const icerik = (p.icerik ?? null) as ProjeIcerikVeri | null;
   const bloklar = projeIcerikBloklari({ ad: p.ad, il: p.il, ilce: p.ilce, mahalle: p.mahalle, slug });
-  const sss = sssListesi(p.ad);
 
   const odaTipleri = [...new Set(veri.tipListe.map((t) => t.oda).filter(Boolean) as string[])];
   const m2Band = veri.m2Band;
+  const sss = sssListesi({ ad: p.ad, konum, gelistirici: u?.ad ?? null, teslim: veri.teslimMetin, odaTipleri, m2Band, kaynak });
 
   const kunyeSatir: [string, string][] = [];
   if (p.ada || p.parsel) kunyeSatir.push(["Ada / Parsel", [p.ada, p.parsel].filter(Boolean).join(" / ")]);
@@ -306,7 +316,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
   return (
     <main className="flex min-h-screen flex-col bg-paper text-ink">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(p, u, veri.birimSayisi, odaTipleri)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(p, u, veri.birimSayisi, odaTipleri, sss)) }} />
 
       {/* ============ HEADER ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
@@ -363,18 +373,23 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </div>
       </section>
 
-      {/* ============ NEDİR (varyant giriş) ============ */}
-      <section className="relative px-5 py-16 sm:px-6 sm:py-20">
-        <div className="mx-auto w-full max-w-3xl">
-          <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Bu sayfa nedir</p>
-            <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.giris}</p>
-            <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.surec}</p>
+      {/* ============ ZENGİN İÇERİK (icerik varsa) / NEDİR (yoksa varyant) ============ */}
+      {icerik ? (
+        <ProjeZenginIcerik icerik={icerik} ad={p.ad} />
+      ) : (
+        <section className="relative px-5 py-16 sm:px-6 sm:py-20">
+          <div className="mx-auto w-full max-w-3xl">
+            <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Bu sayfa nedir</p>
+              <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.giris}</p>
+              <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.surec}</p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* ============ KÜNYE + İNŞAAT + YATIRIM ============ */}
+      {/* ============ KÜNYE + İNŞAAT (yalnız icerik yoksa; icerik varsa zengin bölümler kapsar) ============ */}
+      {!icerik ? (
       <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto w-full max-w-6xl">
           <div><BolumBaslik etiket="Proje bilgisi" baslik="Künye, inşaat ve daire yapısı" alt="Fiyat ve canlı stok bu sayfada gösterilmez; onlar yalnız ağdaki yetkili danışmanlara açılır." /></div>
@@ -411,6 +426,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* ============ PROJE HAKKINDA (kunye.aciklama, varsa) ============ */}
       {aciklama ? (

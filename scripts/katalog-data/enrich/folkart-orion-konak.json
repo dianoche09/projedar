@@ -1,0 +1,69 @@
+{
+  "ad": "Folkart Orion",
+  "il": "İzmir",
+  "ilce": "Konak",
+  "mahalle": "Çınarlı",
+  "gelistirici": "Folkart Yapı",
+  "proje_alani_m2": 45000,
+  "daire_sayisi": null,
+  "blok_sayisi": null,
+  "oda_tipleri": ["1+1", "2+1", "3+1", "3+1 Dubleks", "4+1", "5+1 Dubleks", "5+2 Dubleks", "6+1 Dubleks"],
+  "m2_min": 75,
+  "m2_max": 1109,
+  "magaza": true,
+  "yesil_alan": true,
+  "sosyal_alan": true,
+  "manzara": "İzmir Körfezi manzarası",
+  "otopark": null,
+  "durum": "insaat",
+  "teslim": "2028 (portal listelemelerinde Eylül 2028)",
+  "ozellikler": [
+    "Karma kullanım (konut, otel, hastane, ofis, ticari, rezidans)",
+    "Medical Park Hastanesi",
+    "Beş yıldızlı otel ve rezidans kulesi",
+    "Modern ofis kulesi",
+    "Geniş ticari alanlar ve mağazalar",
+    "Yaklaşık 30.000 m² yeşil alan ve anıt ağaçlar",
+    "TAGO Mimarlık (Gökhan Altan Altuğ) tasarımı",
+    "Açık ve kapalı yüzme havuzu",
+    "Fitness salonu, sauna, buhar odası",
+    "Yoga ve pilates alanı",
+    "Kapalı basketbol salonu",
+    "Sinema ve oyun odaları",
+    "Kütüphane ve toplantı salonu",
+    "Çocuk oyun alanları",
+    "İzmir Körfezi manzarası"
+  ],
+  "cevre_noktalar": [
+    "İzmir Yeni Kent Merkezi",
+    "Bayraklı iş ve finans aksı",
+    "Ankara Caddesi aksı",
+    "Konak merkez hattı",
+    "İzmir Körfezi kıyısı",
+    "Tramvay ve toplu ulaşım erişimi",
+    "Çevre yolu / ana arter bağlantıları"
+  ],
+  "ekstra": {
+    "toplam_insaat_alani_m2": 360000,
+    "yesil_alan_m2": 30000,
+    "mimar": "TAGO Mimarlık (Gökhan Altan Altuğ)",
+    "on_satis_tarihi": "3 Mart 2026",
+    "lansman_tarihi": "3 Eylül 2026",
+    "karma_bilesenler": ["konut", "otel", "hastane (Medical Park)", "ofis kulesi", "rezidans kulesi", "ticari alanlar"],
+    "daire_sayisi_notu": "Kaynaklar farklı: Emlakjet 725, Konut Radar ~1.000, haberler ~1.200 (muhtemelen rezidans dahil karma toplam); kesin satılık daire adedi lansmanda netleşecek."
+  },
+  "metin": {
+    "ozet": "Folkart Orion, Folkart Yapı imzasıyla İzmir Konak'ın Çınarlı Mahallesi'nde, Yeni Kent Merkezi aksında yükselen büyük ölçekli bir karma yaşam projesidir. Yaklaşık 45.000 metrekare arsa üzerinde, 360.000 metrekareye ulaşan toplam inşaat hacmiyle klasik bir konut projesinden çok yeni nesil bir şehir içi yaşam kompleksi olarak kurgulanır. Konut, beş yıldızlı otel, Medical Park Hastanesi, ofis kulesi, rezidans ve geniş ticari alanları tek bir bütünde buluşturan proje, İzmir Körfezi manzarası ve yaklaşık 30.000 metrekarelik yeşil alanıyla öne çıkar. TAGO Mimarlık tarafından tasarlanan Folkart Orion, yüksek katlı kule yapıları ile yatay sosyal yaşam kurgusunu birlikte ele alır. 1+1'den 6+1 dubleks seçeneklerine uzanan geniş daire yelpazesiyle hem aileler hem yatırımcılar için İzmir'in dikkat çeken yeni konut adreslerinden biri olma iddiası taşır.",
+    "konum_cevre": "Folkart Orion, İzmir Konak sınırları içinde, Çınarlı Mahallesi'nde ve Ankara Caddesi aksında, kentin Yeni Kent Merkezi olarak anılan gelişen iş ve yaşam bölgesinde konumlanır. Proje, Bayraklı iş aksı ile Konak merkez hattı arasında güçlü bir hibrit yaşam modeli kurgulayarak İzmir'in giriş kapısı niteliğinde bir noktada yükselir. İzmir Körfezi kıyısına ve şehrin ana ulaşım arterlerine yakınlığı, çevre yolu bağlantısı ve toplu ulaşım hatlarıyla desteklenen konumu, hem iş hem sosyal yaşam için yüksek erişilebilirlik sağlar. Finans, ofis ve ticaretin yoğunlaştığı bu aks, projeyi merkezî konumu güçlü, prestijli bir yaşam ve yatırım adresi hâline getirir.",
+    "daire_tipleri": "Folkart Orion, 1+1, 2+1, 3+1, 4+1, 5+1 ve 6+1 seçenekleriyle geniş bir daire yelpazesi sunar; tek katlı planların yanında dubleks kurgular da yer alır. Metrekareler 1+1 dairelerde 75 metrekareden başlayıp geniş dubleks ve penthouse tiplerinde 1.100 metrekareyi aşan değerlere ulaşır. Kompakt daireler yatırımcılar ve tek yaşayanlar için, geniş 3+1, 4+1 ve dubleks tipler ise ferah alan arayan aileler için uygundur.",
+    "ozellikler_metni": "Proje, karma kullanım konseptiyle konutun yanında beş yıldızlı otel, Medical Park Hastanesi, ofis ve rezidans kuleleri ile geniş ticari alanları aynı bütünde toplar. Sosyal donatılar açık ve kapalı yüzme havuzu, fitness salonu, sauna ve buhar odası, yoga ve pilates alanı, kapalı basketbol salonu, sinema odaları, kütüphane, oyun odası ve çocuk oyun alanlarını kapsar. Yaklaşık 30.000 metrekarelik yeşil alan, anıt ağaçlar ve iç avlu kurgusuyla peyzaj, yaşam kalitesini yükseltir.",
+    "yatirim_teslim": "Ön satışı 2026 başında açılan Folkart Orion'da teslimlerin 2028 yılı içinde etap etap yapılması planlanır; portal listelemelerinde teslim dönemi Eylül 2028 olarak yer alır. Projenin konumlandığı Yeni Kent Merkezi, İzmir'in gelişen iş ve konut akslarından biri olup bölgedeki yeni konut arzının yoğunlaştığı noktalardandır. Karma kullanım kurgusu ve merkezî konumu, projeyi hem oturum hem uzun vadeli yatırım açısından değerlendirilebilir bir seçenek hâline getirir."
+  },
+  "kaynaklar": [
+    "https://www.emlakjet.com/projeler/proje/folkart-orion",
+    "https://folkart.com.tr/izmir-in-dev-projesi-folkart-orion-lansman-icin-gun-sayiyor",
+    "https://www.konutradar.com/izmir-folkart-orion-proje-bilgileri/",
+    "https://www.insaatderyasi.com/folkart-orion-satisa-cikti-30755h.htm",
+    "https://www.hurriyet.com.tr/yerel-haberler/izmir/izmirin-dev-projesi-folkart-orion-lansman-icin-gun-sayiyor-42921624"
+  ]
+}

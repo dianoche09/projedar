@@ -1,0 +1,73 @@
+{
+  "ad": "Uplife Kadıköy",
+  "il": "İstanbul",
+  "ilce": "Kadıköy",
+  "mahalle": "Dumlupınar Mahallesi (Fikirtepe)",
+  "gelistirici": "Teknik Yapı",
+  "proje_alani_m2": 16145,
+  "daire_sayisi": 830,
+  "blok_sayisi": 4,
+  "oda_tipleri": ["1+1", "2+1", "3+1"],
+  "m2_min": 57.93,
+  "m2_max": 129.16,
+  "magaza": true,
+  "yesil_alan": true,
+  "sosyal_alan": true,
+  "manzara": "Deniz ve Adalar manzarası",
+  "otopark": "Çok katlı kapalı otopark",
+  "durum": "insaat",
+  "teslim": "Aralık 2026",
+  "ozellikler": [
+    "Açık yüzme havuzu",
+    "Kapalı yüzme havuzu",
+    "Çocuk havuzu",
+    "Fitness salonu",
+    "Sauna",
+    "Hamam",
+    "Çok katlı kapalı otopark",
+    "Güneşlenme terası",
+    "Çocuk oyun alanları",
+    "Peyzajlı yeşil alanlar",
+    "7/24 kameralı güvenlik",
+    "Jeneratör",
+    "Su deposu",
+    "Asansör",
+    "Ebeveyn banyosu",
+    "Giyinme odası",
+    "Kafe ve restoran",
+    "Prestij Caddesi ticari aksı"
+  ],
+  "cevre_noktalar": [
+    "Ünalan Metro (M4 hattı, yaklaşık 200 m)",
+    "Göztepe Metro (M4 hattı, yaklaşık 200 m)",
+    "E5 karayolu (bitişik)",
+    "Marmaray",
+    "Metrobüs",
+    "Avrasya Tüneli",
+    "Acıbadem Dr. Şinasi Can Hastanesi",
+    "İstanbul Medeniyet Üniversitesi",
+    "Kozzy AVM",
+    "Tepe Nautilus AVM"
+  ],
+  "ekstra": {
+    "kullanim": "Karma kullanım (konut + ticari rezidans)",
+    "ticari_birim_sayisi": 20,
+    "ticari_aks": "Prestij Caddesi",
+    "ofis_home_ofis_uygun": true,
+    "daire_dagilimi": { "1+1": 526, "2+1": 261, "3+1": 43 }
+  },
+  "metin": {
+    "ozet": "Uplife Kadıköy, Teknik Yapı imzasıyla İstanbul'un Anadolu Yakası'nda, Kadıköy'e bağlı Fikirtepe'nin Dumlupınar Mahallesi'nde yükselen yeni nesil bir rezidans projesidir. Yaklaşık 16 bin metrekarelik arsa üzerine kurulan proje, üçü 23, biri 22 katlı toplam 4 kuleden oluşuyor ve içinde 830 konut ile ticari birimler barındırıyor. Kentsel dönüşümle hızla değer kazanan bölgede konumlanan Uplife Kadıköy, 1+1, 2+1 ve 3+1 daire seçenekleriyle yaklaşık 58 metrekareden 129 metrekareye kadar farklı yaşam alanları sunuyor. E5 karayolunun hemen yanında, metro ve Marmaray hattına yürüme mesafesindeki proje, hem oturmak hem de yatırım yapmak isteyenlere hitap ediyor. Deniz ve Adalar manzarasına açılan kuleler, zengin sosyal donatılarıyla Fikirtepe'nin prestij aksında modern bir yaşam vaadi taşıyor. Teslim tarihi Aralık 2026 olarak planlanıyor.",
+    "konum_cevre": "Uplife Kadıköy, Kadıköy Fikirtepe'de E5 karayolunun hemen bitişiğinde yer alarak İstanbul'un iki yakasına da hızlı erişim sağlıyor. Proje, M4 metro hattının Ünalan ve Göztepe istasyonlarına yaklaşık birkaç dakikalık yürüme mesafesinde; Marmaray, metrobüs ve Avrasya Tüneli bağlantıları da yakın çevrede bulunuyor. Bu konum sayesinde Kadıköy merkez, Söğütlüçeşme ve şehrin tarihi aksına ulaşım oldukça pratik. Çevrede Acıbadem hastaneleri, İstanbul Medeniyet Üniversitesi kampüsü, Kozzy ve Tepe Nautilus alışveriş merkezleri gibi günlük ihtiyaçları karşılayan noktalar yer alıyor. Fikirtepe'nin kentsel dönüşümle yenilenen dokusu, bölgeyi hem ulaşım hem de sosyal olanaklar açısından güçlü bir yaşam merkezine dönüştürüyor.",
+    "daire_tipleri": "Projede 1+1, 2+1 ve 3+1 olmak üzere üç ana daire tipi bulunuyor; büyüklükler yaklaşık 58 metrekareden 129 metrekareye kadar uzanıyor. Kompakt 1+1 daireler yalnız yaşayanlar, öğrenciler ve yatırımcılar için pratik bir başlangıç sunarken, 2+1 seçenekler küçük aileler için dengeli bir plan getiriyor. 3+1 daireler ise daha geniş yaşam alanı arayan aileler için tasarlandı. Rezidans daireleri, yönetim planında ofis ve home-ofis kullanımına da uygun olacak şekilde hazırlandı.",
+    "ozellikler_metni": "Uplife Kadıköy, sitesi içinde güçlü bir sosyal donatı programı sunuyor. Açık ve kapalı yüzme havuzları, çocuk havuzu, fitness salonu, sauna ve hamam gibi olanaklar spor ve dinlenme ihtiyaçlarını tek çatı altında topluyor. Çok katlı kapalı otopark, güneşlenme terasları, çocuk oyun alanları ve peyzajlı yeşil alanlar projeyi tamamlıyor. 7/24 çalışan kameralı güvenlik, jeneratör ve su deposu gibi teknik altyapı ise konfor ve güvenliği sürekli kılıyor. Deniz ve Adalar manzarasına açılan yüksek katlar, ayrıcalıklı bir yaşam sunuyor.",
+    "yatirim_teslim": "Projenin teslim tarihi Aralık 2026 olarak planlanıyor. Fikirtepe, İstanbul'un kentsel dönüşümle en hızlı yenilenen bölgelerinden biri olarak öne çıkıyor ve bu dönüşüm bölgedeki yeni konut arzını sürekli canlı tutuyor. Merkezi konumu, güçlü ulaşım bağlantıları ve markalı geliştirici kimliğiyle Uplife Kadıköy, hem oturmak hem de orta ve uzun vadeli yatırım düşünenler için bölgedeki dikkat çeken seçenekler arasında yer alıyor. Yatırım kararında güncel proje verilerinin doğrudan geliştiriciden teyit edilmesi önerilir."
+  },
+  "kaynaklar": [
+    "http://www.uplifekadikoy.com/",
+    "https://projeskop.com/projeler/proje/uplife-kadikoy",
+    "https://www.emlakjet.com/projeler/proje/uplife-kadikoy",
+    "https://www.guncelprojebilgileri.com/istanbul-anadolu-konut-projeleri/uplife-kadikoy",
+    "https://tasinmazhaber.com/uplife-kadikoy-konutlarinin-teslim-tarihi-ne-zaman/"
+  ]
+}
