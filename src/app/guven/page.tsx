@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { LansmanPopup } from "@/components/LansmanPopup";
 import { Reveal } from "@/components/Reveal";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck, Scale, EyeOff } from "lucide-react";
 
@@ -261,6 +262,7 @@ export default function GuvenSayfasi() {
         </div>
         <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
+      <LansmanPopup />
     </main>
   );
 }

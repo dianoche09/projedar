@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { LansmanPopup } from "@/components/LansmanPopup";
 import { Logo } from "@/components/Logo";
 import { Reveal } from "@/components/Reveal";
 import { NasilCalisirAdimlar } from "./NasilCalisirAdimlar";
@@ -444,6 +445,7 @@ export default function MuteahhitSayfasi() {
         </div>
         <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
       </footer>
+      <LansmanPopup varsayilanRol="uretici" />
     </main>
   );
 }

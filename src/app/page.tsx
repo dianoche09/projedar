@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { LansmanPopup } from "@/components/LansmanPopup";
 import { panelYolu } from "@/lib/roller";
 import { cikisYap } from "@/app/(auth)/login/actions";
 import { Logo } from "@/components/Logo";
@@ -593,6 +594,7 @@ export default async function Home() {
           </footer>
         }
       />
+      <LansmanPopup />
     </main>
   );
 }
