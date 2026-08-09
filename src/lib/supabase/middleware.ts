@@ -20,7 +20,8 @@ function herkeseAcik(pathname: string): boolean {
     pathname.startsWith("/gizlilik") || // hukuki sayfa (public)
     pathname.startsWith("/tasarim") || // tasarım yönü örnekleri (geçici showcase)
     pathname.startsWith("/sunum") || // yüz yüze görüşme deck'leri (gizli link, noindex)
-    pathname.startsWith("/anasayfa_mockup") // interaktif anasayfa prototipi
+    pathname.startsWith("/anasayfa_mockup") || // interaktif anasayfa prototipi
+    pathname.startsWith("/mockups") // design lab: skill karşılaştırma mockup'ları (public/mockups)
   );
 }
 
