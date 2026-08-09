@@ -10,7 +10,6 @@ import { Logo } from "@/components/Logo";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { DavetPopup } from "@/components/seo/DavetPopup";
 import { type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
-import { AgdaGuvenSeridi } from "@/components/seo/ProjeGorsel";
 import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
@@ -381,6 +380,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
               <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/80">Konut projesi dosyası</span>
             )}
             {dogrulanmis ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/90"><ShieldCheck size={13} strokeWidth={2} /> Doğrulanmış müteahhit</span> : null}
+            {kaynak === "proje" && ilerleme > 0 ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/85">{asama} · %{ilerleme}</span> : null}
           </div>
 
           <h1 className="mt-5 font-display font-black leading-[0.94] tracking-tight [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] text-[clamp(2.6rem,8vw,5rem)]">{p.ad}</h1>
@@ -401,13 +401,19 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
               ))}
             </div>
           ) : null}
+
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            {kaynak === "proje" ? (
+              <>
+                <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action hover:-translate-y-0.5">Canlı stoğu gör</Link>
+                <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/75"><span className="size-2 rounded-full bg-green nabiz" />Canlı stok danışman panelinde</span>
+              </>
+            ) : (
+              <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action hover:-translate-y-0.5">Bu projeyi ağda sat</Link>
+            )}
+          </div>
         </div>
       </section>
-
-      {/* ============ AĞDA GÜVEN ŞERİDİ (yalnız sistemdeki proje; canlı stok SAYISI public'te YOK) ============ */}
-      {kaynak === "proje" ? (
-        <AgdaGuvenSeridi dogrulanmis={dogrulanmis} asama={asama} ilerleme={ilerleme} teslim={teslim} />
-      ) : null}
 
       {/* ============ PROJEDAR TANITIM BANNER (hero altı) ============ */}
       <ProjedarBanner />
