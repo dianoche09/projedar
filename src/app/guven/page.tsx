@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { LansmanPopup } from "@/components/LansmanPopup";
 import { Reveal } from "@/components/Reveal";
+import { DagitimAgi } from "@/components/landing/DagitimAgi";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck, Scale, EyeOff } from "lucide-react";
 
 /**
@@ -151,6 +152,24 @@ export default function GuvenSayfasi() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ============ TOPOLOJİ: güvenin mimarisi tek karede ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Topoloji</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Tek doğru kaynak, tahsisli dağıtım</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                Güvenin dayanağı mimaridir: fiyat ve durum yalnız canlı havuzda yaşar, görünürlük tahsisle sınırlanır, aktif opsiyon veritabanında kilitlenir.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100} className="mt-12">
+            <DagitimAgi />
+          </Reveal>
         </div>
       </section>
 
