@@ -838,6 +838,11 @@ a:focus-visible,
     linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
   background-size: 32px 32px;
 }
+
+/* /nedir nötr ağ diyagramı — tahsis çizgisi akışı (üretici → danışman) */
+@keyframes agAkis { to { stroke-dashoffset: -32; } }
+.ag-cizgi { stroke-dasharray: 5 7; animation: agAkis 1.15s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .ag-cizgi { animation: none; } }
 /* akan olay satırı */
 @keyframes olayGir {
   from { opacity: 0; transform: translateY(-10px); }
