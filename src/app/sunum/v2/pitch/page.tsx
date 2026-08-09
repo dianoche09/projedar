@@ -210,7 +210,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Database}
           baslik="Opsiyon kilidi"
-          metin="Opsiyonlanan daire veritabanı seviyesinde kilitlenir; çift satışın önüne yapısal olarak geçilir."
+          metin="Opsiyonlanan daire veritabanı seviyesinde kilitlenir; aynı stok için eşzamanlı ikinci aktif opsiyon oluşamaz."
           sinyal="#2fd3bc"
         />
         <MaddeKart
@@ -257,7 +257,7 @@ export default function PitchV2() {
         />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Fiyatlandırma detayları ve birim ekonomisi: görüşmede paylaşılacaktır.
+        Üç gelir akışı (müteahhit + emlakçı Pro + ofis/franchise); Ay-24 hedef çıkış run-rate ~40M ₺. Detaylı birim ekonomisi ve 24 aylık model: finansal sunum.
       </p>
     </Slayt>,
 
@@ -311,8 +311,8 @@ export default function PitchV2() {
         />
         <MaddeKart
           Ikon={Gavel}
-          baslik="Regülasyon kalkanı"
-          metin="Yeni EİDS ilan düzenlemesi açık paylaşımı zorlaştırırken tahsisli birebir paylaşım modeli kapsam dışı; mevzuat modeli koruyor."
+          baslik="Regülasyon uyumu"
+          metin="Yeni EİDS düzenlemesi açık ilan paylaşımını zorlaştırıyor; tahsisli, birebir, kapalı-devre model bu baskıdan daha az etkileniyor. Nihai hukuki niteleme değerlendirmeye tabidir."
         />
       </div>
     </Slayt>,
