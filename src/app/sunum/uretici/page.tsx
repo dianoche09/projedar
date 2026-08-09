@@ -458,7 +458,7 @@ export default function UreticiSunum() {
       key="ag-guven"
       kicker="Ağ & güven"
       baslik="Belgeli ağ, davetle büyür"
-      alt="İlan yok, komisyon yok, tahsis var. Ağın her üyesi belgeli, her proje doğrulanmış."
+      alt="Açık ilan değil, tahsis var; Projedar komisyondan pay almaz. Ağın her üyesi belgeli, her proje doğrulanmış."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <MaddeKart

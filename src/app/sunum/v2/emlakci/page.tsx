@@ -54,7 +54,7 @@ export default function EmlakciSunumV2() {
       logo
       kicker="Projedar · Gayrimenkul danışmanları için"
       baslik="Canlı stok, güncel fiyat, kilitli opsiyon"
-      alt="Yetkili olduğun projelerin daima güncel birim ve fiyat bilgisine eriş; müşterine tek linkle sun, opsiyonu kilitle. Kurucu danışman ol: ilk 1000 üye ücretsiz. Komisyon kesintisi yok, kazancının %100'ü senin."
+      alt="Yetkili olduğun projelerin daima güncel birim ve fiyat bilgisine eriş; müşterine tek linkle sun, opsiyonu kilitle. Kurucu danışman programıyla ücretsiz başla. Komisyon kesintisi yok; Projedar kazancından pay almaz."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Bloklar yükselir. Stok erir.
@@ -237,19 +237,19 @@ export default function EmlakciSunumV2() {
       gorsel="/sunum/anahtar-teslim.jpg"
       hiza="sol"
       kicker="Kazanç modeli"
-      baslik="Kurucu üyelik ücretsiz, kazancın %100'ü senin"
+      baslik="Kurucu üyelik ücretsiz, komisyondan kesinti yok"
     >
       <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={BadgeCheck}
-          baslik="Kurucu: ilk 1000 ücretsiz"
-          metin="İlk 1000 kurucu danışman için kayıt, erişim ve kullanım ücretsiz (ilk yıl); ilan paketi, abonelik yok."
+          baslik="Kurucu programı ücretsiz"
+          metin="Kurucu danışman programında kayıt, erişim ve kullanım ücretsiz; ilan paketi, abonelik yok."
           sinyal="#3ddc8f"
         />
         <MaddeKart
           Ikon={Percent}
           baslik="Komisyon kesintisi yok"
-          metin="Satıştan kazandığın komisyon tamamen senin; Projedar pay almaz."
+          metin="Müteahhitin sana tanımladığı komisyondan Projedar pay almaz."
         />
         <MaddeKart
           Ikon={ClipboardList}
@@ -318,7 +318,7 @@ export default function EmlakciSunumV2() {
           "Portföy erişimi için üyelik ve ilan paketlerine ödersin",
         ]}
         yeni={[
-          "Fiyat ve stok her an güncel, teyide gerek yok",
+          "Fiyat ve stok tek canlı kaynaktan; son güncelleme her kayıtta görünür",
           "Tüm birim durumları tek ekranda, anında",
           "Opsiyon kilidi daireyi sana kilitler, emeğin korunur",
           "Kurucu üyelik ücretsiz, kazancından kesinti yok",
@@ -410,14 +410,14 @@ export default function EmlakciSunumV2() {
     <Slayt
       key="regulasyon"
       kicker="Regülasyon"
-      baslik="İlan cezası riski olmadan paylaş"
-      alt="Şubat 2026'dan beri satılık ilanlar EİDS kaydına bağlı; kurala aykırı sosyal medya paylaşımlarına 286 bin TL'yi aşan idari para cezası öngörülüyor."
+      baslik="Halka açık ilan değil: birebir tahsisli link"
+      alt="Şubat 2026'dan beri satılık ilanlar EİDS kaydına bağlı; kurala aykırı sosyal medya paylaşımlarına 286 bin TL'yi aşan idari para cezası öngörülüyor. Projedar linki teknik olarak halka açık/aranabilir bir ilan değildir; EİDS kapsamındaki niteleme hukuki değerlendirmeye tabidir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Gavel}
-          baslik="Projedar linki ilan değildir"
-          metin="Müşterine gönderdiğin sayfa halka açık ilan değil, sana tahsisli birebir sunumdur; yalnız yetkili ağ içinde dolaşır."
+          baslik="Teknik olarak halka açık ilan değil"
+          metin="Müşterine gönderdiğin sayfa aranabilir/halka açık bir ilan değil; token'lı, yalnız yetkili ağ içinde dolaşan birebir sunumdur. EİDS niteliği hukuki değerlendirmeye tabidir."
           sinyal="#2fd3bc"
         />
         <MaddeKart
@@ -480,9 +480,9 @@ export default function EmlakciSunumV2() {
     <Slayt key="ozet" kicker="Özet" baslik="Üç cümlede Projedar">
       <AdimSirasi
         adimlar={[
-          { baslik: "Her an doğru bilgiyle satarsın", metin: "Canlı fiyat ve stok cebinde; müşteri karşısında asla eski veriyle kalmazsın." },
-          { baslik: "Emeğin sistemle korunur", metin: "Opsiyon kilidi ve 'ilk kaydeden' izi, getirdiğin müşteriyi ve hak edişini güvenceye alır." },
-          { baslik: "Maliyetin sıfırdır", metin: "Kurucu üyelik ücretsiz, komisyon kesintisi yok; kazandığın tamamen senin." },
+          { baslik: "Canlı bilgiyle satarsın", metin: "Canlı fiyat ve stok cebinde; her kayıtta son güncelleme zamanı görünür." },
+          { baslik: "Emeğin sistemle korunur", metin: "Opsiyon kilidi ve 'ilk kaydeden' izi, getirdiğin müşteriyi ve hak edişini kayıt altına alır (sahiplik garantisi değil, şeffaflık)." },
+          { baslik: "Maliyetin sıfırdır", metin: "Kurucu program ücretsiz, komisyon kesintisi yok; Projedar kazancından pay almaz." },
         ]}
       />
     </Slayt>,

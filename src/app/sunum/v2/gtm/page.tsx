@@ -216,24 +216,24 @@ export default function GtmV2() {
       key="fiyatlama"
       kicker="Fiyatlama"
       baslik="Kurucu program, sonra kademeli SaaS"
-      alt="İlke: komisyon yok. Lansman kozu: ilk kurucular ücretsiz — ağı hızla doldurur; kontenjan dolup kanıt biriktikçe paketleşir."
+      alt="İlke: Projedar komisyondan pay almaz. Lansman kozu: ilk kurucular ücretsiz, ağı hızla doldurur; kurucu aşama tamamlanıp kanıt biriktikçe paketleşir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
           Ikon={Handshake}
-          baslik="Müteahhit · ilk ~10 kurucu"
-          metin="İlk ~10 müteahhit kurucu (ücretsiz): referans + vaka + stok likiditesi. Sonrası ağdaki aktif daire adedine göre kademeli yıllık."
+          baslik="Müteahhit · kurucu program"
+          metin="İlk kurucu müteahhitler ücretsiz: referans + vaka + stok likiditesi. Sonrası ağdaki aktif daire adedine göre kademeli yıllık."
           sinyal="#2fd3bc"
         />
         <MaddeKart
           Ikon={Gift}
-          baslik="Danışman · ilk ~1000 kurucu"
-          metin="İlk ~1000 danışman ilk yıl ücretsiz; ağın likidite tarafı bilinçli sübvanse edilir. Kontenjan sonrası Pro/ofis."
+          baslik="Danışman · kurucu program"
+          metin="İlk kurucu danışmanlar ücretsiz; ağın likidite tarafı bilinçli sübvanse edilir. Kurucu aşama sonrası Pro/ofis."
         />
         <MaddeKart
           Ikon={Layers}
           baslik="Sonra · SaaS katmanları"
-          metin="Kontenjan dolunca danışman Pro, ofis/franchise aboneliği, veri ürünleri: değer kanıtlanınca paralı."
+          metin="Kurucu aşama tamamlanınca danışman Pro, ofis/franchise aboneliği, veri ürünleri: değer kanıtlanınca paralı."
         />
       </div>
     </Slayt>,

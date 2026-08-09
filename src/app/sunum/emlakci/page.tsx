@@ -395,8 +395,8 @@ export default function EmlakciSunum() {
       key="ucret"
       orta
       kicker="Ücret"
-      baslik="Kazancın %100'ü sende"
-      alt="Üyelik ücretsiz, komisyondan pay almayız. Gelirimizi proje sahibiyle yaptığımız anlaşmadan alırız; senin kazandığın komisyon tamamen senindir."
+      baslik="Komisyonundan Projedar pay almaz"
+      alt="Üyelik ücretsiz, komisyondan pay almayız. Gelirimizi proje sahibiyle yaptığımız anlaşmadan alırız; müteahhitin sana tanımladığı komisyondan Projedar kesinti yapmaz."
     >
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MaddeKart

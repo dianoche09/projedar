@@ -34,7 +34,7 @@ const CEYREKLER: Ceyrek[] = [
   { ad: "Ç8", ay: "Ay 22-24", muteahhit: 14, kumMuteahhit: 100, gelir: 3.5 },
 ];
 
-/** 24 aylık çeyreklik gelir bar grafiği (koyu tema). Gelir Ç1'den başlar; kurucu kontenjan dolunca ivmelenir. */
+/** 24 aylık çeyreklik gelir bar grafiği (koyu tema). Gelir Ç1'den başlar; kurucu aşama tamamlanınca ivmelenir. */
 function ProjeksiyonBar() {
   const maxGelir = Math.max(...CEYREKLER.map((c) => c.gelir));
   return (
@@ -74,7 +74,7 @@ export default function FinansalV2() {
       logo
       kicker="Projedar · Finansal projeksiyon"
       baslik="24 aylık plan"
-      alt="Ürün canlı. İlk ~10 müteahhit kurucu programıyla ücretsiz ve hızlı katılır; paralı müteahhit geliri Ay 1'den başlar, kurucu kontenjan dolunca ivmelenir. Komisyon yok."
+      alt="Ürün canlı. İlk müteahhitler kurucu programıyla ücretsiz ve hızlı katılır; paralı müteahhit geliri Ay 1'den başlar, kurucu aşama tamamlanınca ivmelenir. Projedar satış komisyonundan pay almaz."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Muhafazakar baz senaryo · saha verisiyle güncellenir
@@ -82,16 +82,16 @@ export default function FinansalV2() {
     </GorselSlayt>,
 
     /* 2 · Gelir mimarisi */
-    <Slayt key="mimari" genis kicker="Gelir mimarisi" baslik="Tek ana gelir, iki büyüme katmanı" alt="Komisyon yok. Gelir yazılım/erişim anlaşmasından; değer metriği ağdaki aktif daire (satılınca düşer) ve danışman sayısı.">
+    <Slayt key="mimari" genis kicker="Gelir mimarisi" baslik="Tek ana gelir, iki büyüme katmanı" alt="Projedar komisyondan pay almaz. Gelir yazılım/erişim anlaşmasından; değer metriği ağdaki aktif daire (satılınca düşer) ve danışman sayısı.">
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Building2} baslik="Müteahhit anlaşması · ANA" metin="İlk ~10 müteahhit kurucu (ücretsiz). Sonrası ağdaki aktif daire adedine göre kademeli yıllık: küçük proje (&lt;50 daire) 40-85K giriş → 150K orta → 600K+ enterprise; yüksek LTV, düşük churn." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={Users} baslik="Danışman Pro + Ofis" metin="Kurucu: ilk ~1000 danışman ilk yıl ücretsiz. Sonra Pro 7.500₺/yıl, ofis danışman-kademeli 25K+. Gelir katmanı Yıl 2." />
+        <MaddeKart Ikon={Building2} baslik="Müteahhit anlaşması · ANA" metin="İlk müteahhitler kurucu programıyla ücretsiz. Sonrası ağdaki aktif daire adedine göre kademeli yıllık: küçük proje (&lt;50 daire) 40-85K giriş → 150K orta → 600K+ enterprise; yüksek LTV, düşük churn." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Users} baslik="Danışman Pro + Ofis" metin="Kurucu program danışmanları ücretsiz. Sonra Pro 7.500₺/yıl, ofis danışman-kademeli 25K+. Gelir katmanı Yıl 2." />
         <MaddeKart Ikon={Layers} baslik="Veri ürünleri · SONRA" metin="Talep/fiyat endeksi, piyasa zekâsı. Ağ büyüyüp veri derinleşince açılır; yüksek marjlı katman." />
       </div>
     </Slayt>,
 
     /* 3 · 24 aylık plan */
-    <Slayt key="plan" genis kicker="24 aylık plan" baslik="Gelir Ay 1'den; kurucu kontenjan dolunca ivmelenir" alt="Piyasada binlerce proje var: arz kısıt değil, kısıt saha ve concierge kapasitesi. Kurucu 10 müteahhit ücretsiz olduğu için hızlı dolar; paralı müteahhit geliri Ay 1-2'de başlar ve referans çarkıyla ivmelenir.">
+    <Slayt key="plan" genis kicker="24 aylık plan" baslik="Gelir Ay 1'den; kurucu aşama tamamlanınca ivmelenir" alt="Piyasada binlerce proje var: arz kısıt değil, kısıt saha ve concierge kapasitesi. İlk kurucu müteahhitler ücretsiz olduğu için ağ hızlı dolar; paralı müteahhit geliri Ay 1-2'de başlar ve referans çarkıyla ivmelenir.">
       <ProjeksiyonBar />
     </Slayt>,
 

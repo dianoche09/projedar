@@ -241,13 +241,13 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Handshake}
           baslik="Gelir: müteahhit anlaşması"
-          metin="Erken aşamada gelir, inşaat firmalarıyla birebir B2B anlaşmalardan gelir. Değer net: hızlı stok erimesi, fiyat disiplini, sıfır çift satış. Komisyona dokunulmaz."
+          metin="Erken aşamada gelir, inşaat firmalarıyla birebir B2B anlaşmalardan gelir. Değer net: hızlı stok erimesi, fiyat disiplini, çift satışa karşı veritabanı seviyesinde kalkan. Projedar komisyondan pay almaz."
           sinyal="#2fd3bc"
         />
         <MaddeKart
           Ikon={Users}
           baslik="Büyüme: danışmanlar"
-          metin="Kurucu program: ilk ~1000 danışman ücretsiz (ağ likiditesi). Komisyon hep sıfır, kazancın %100'ü onun; kontenjan sonrası Pro/ofis geliri."
+          metin="Kurucu program: ilk kurucu danışmanlar ücretsiz (ağ likiditesi). Projedar komisyondan pay almaz; kurucu aşama sonrası Pro/ofis geliri."
         />
         <MaddeKart
           Ikon={Layers}

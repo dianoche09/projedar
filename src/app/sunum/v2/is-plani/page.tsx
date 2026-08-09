@@ -73,7 +73,7 @@ export default function IsPlaniV2() {
       alt="İnşaat firmalarının konut stoğunu yetkili danışman ağına canlı veriyle dağıtan, satış komisyonuna ortak olmayan, kapalı devre B2B ağ. Ürün canlı: projedar.com."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
-        Stok kontrolü üreticide. Dağıtım ağda. Çift satış imkânsız.
+        Stok kontrolü üreticide. Dağıtım ağda. Çift satış veritabanı seviyesinde engellenir.
       </p>
     </GorselSlayt>,
 
@@ -114,7 +114,7 @@ export default function IsPlaniV2() {
       <div className="mt-6 grid gap-3 sm:grid-cols-4">
         <MaddeKart Ikon={Zap} baslik="Canlı veri" metin="Değişiklik saniyeler içinde tüm ağda; sürüm karmaşası biter." sinyal="#2fd3bc" />
         <MaddeKart Ikon={MessageCircle} baslik="Tek kaynak link" metin="Müşteriye giden link her açılışta güncel değeri gösterir." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={Database} baslik="Opsiyon kilidi" metin="Opsiyonlanan daire DB seviyesinde kilitlenir; çift satış yapısal engelli." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Database} baslik="Opsiyon kilidi" metin="Opsiyonlanan daire DB seviyesinde kilitlenir; eşzamanlı aktif opsiyon çakışması engellenir." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Layers} baslik="Kontrollü erişim" metin="Kimin neyi göreceğini üretici daire bazında tanımlar." sinyal="#2fd3bc" />
       </div>
     </Slayt>,
@@ -134,14 +134,14 @@ export default function IsPlaniV2() {
     </Slayt>,
 
     /* 6 · Gelir modeli · Müteahhit */
-    <Slayt key="gelir-muteahhit" genis kicker="Gelir modeli · 1" baslik="Müteahhit: proje/daire ölçekli, yıllık" alt="Ana gelir. İlk ~10 müteahhit kurucu (ücretsiz); sonrası taban minimum + yönetilen aktif daire adedine göre kademeli. Ağ büyüdükçe gelir kendiliğinden artar. Komisyon yok.">
+    <Slayt key="gelir-muteahhit" genis kicker="Gelir modeli · 1" baslik="Müteahhit: proje/daire ölçekli, yıllık" alt="Ana gelir. Kurucu program müteahhitleri ücretsiz; sonrası taban minimum + yönetilen aktif daire adedine göre kademeli. Ağ büyüdükçe gelir kendiliğinden artar. Projedar satış komisyonundan pay almaz.">
       <div className="grid gap-3 sm:grid-cols-2">
         <FiyatKart
           baslik="Müteahhit paketleri · yıllık"
           alt="Ağdaki aktif daire adedine göre (satılınca düşer)"
           vurgu
           satirlar={[
-            { ad: "Kurucu", kapasite: "ilk ~10 müteahhit · ilk yıl", fiyat: "Ücretsiz" },
+            { ad: "Kurucu", kapasite: "kurucu program · ilk müteahhitler", fiyat: "Ücretsiz" },
             { ad: "Başlangıç", kapasite: "≤ 50 daire", fiyat: "150.000 ₺" },
             { ad: "Profesyonel", kapasite: "51-150 daire", fiyat: "280.000 ₺" },
             { ad: "İşletme", kapasite: "151-350 daire", fiyat: "480.000 ₺" },
@@ -150,20 +150,20 @@ export default function IsPlaniV2() {
           ]}
         />
         <div className="flex flex-col gap-3">
-          <MaddeKart Ikon={Handshake} baslik="Değer nettir" metin="Hızlı stok erimesi, fiyat disiplini, sıfır çift satış. Kurulum concierge ile bizde; 'evet' demenin maliyeti sıfır." sinyal="#2fd3bc" />
+          <MaddeKart Ikon={Handshake} baslik="Değer nettir" metin="Hızlı stok erimesi, fiyat disiplini, çift satışa karşı veritabanı seviyesinde kalkan. Kurulum concierge ile bizde; 'evet' demenin maliyeti sıfır." sinyal="#2fd3bc" />
           <MaddeKart Ikon={BadgeCheck} baslik="Öngörülebilir" metin="Müteahhit daire adedini bilir, fiyatını net görür. Marjinal ücret büyük projede azalır (hacim avantajı)." />
         </div>
       </div>
     </Slayt>,
 
     /* 7 · Gelir modeli · Danışman & Ofis */
-    <Slayt key="gelir-danisman" genis kicker="Gelir modeli · 2" baslik="Danışman: kurucu ücretsiz, sonra Pro; ofis danışman-ölçekli" alt="Danışman tarafı kurucu programla ücretsiz açılır (ağ likiditesini yaratan taraf bilinçli sübvanse edilir); kontenjan sonrası Pro. Gelir katmanları değer kanıtlandıkça derinleşir.">
+    <Slayt key="gelir-danisman" genis kicker="Gelir modeli · 2" baslik="Danışman: kurucu ücretsiz, sonra Pro; ofis danışman-ölçekli" alt="Danışman tarafı kurucu programla ücretsiz açılır (ağ likiditesini yaratan taraf bilinçli sübvanse edilir); kurucu program sonrası Pro. Gelir katmanları değer kanıtlandıkça derinleşir.">
       <div className="grid gap-3 sm:grid-cols-2">
         <FiyatKart
           baslik="Danışman · bireysel"
           alt="Aylık veya yıllık"
           satirlar={[
-            { ad: "Kurucu", kapasite: "ilk ~1000 danışman · ilk yıl", fiyat: "Ücretsiz" },
+            { ad: "Kurucu", kapasite: "kurucu program · ilk danışmanlar", fiyat: "Ücretsiz" },
             { ad: "Pro", kapasite: "gelişmiş araç + marka", fiyat: "750 ₺/ay · 7.500 ₺/yıl" },
           ]}
         />
@@ -179,7 +179,7 @@ export default function IsPlaniV2() {
         />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Komisyon yok: danışmanın kazancına dokunulmaz. Premium = araç ve erişim ücreti. Sonra: veri ürünleri (talep/fiyat endeksi).
+        Projedar komisyondan pay almaz: danışmanın kazancına dokunulmaz. Premium = araç ve erişim ücreti. Sonra: veri ürünleri (talep/fiyat endeksi).
       </p>
     </Slayt>,
 

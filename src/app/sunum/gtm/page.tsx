@@ -214,7 +214,7 @@ export default function GtmSunum() {
       key="fiyatlama"
       kicker="Fiyatlama"
       baslik="Erken dönem: esnek anlaşma, sabit ilke"
-      alt="İlke: komisyon yok. Erken aşamada fiyat kartı değil birebir anlaşma; kanıt biriktikçe paketleşir."
+      alt="İlke: Projedar komisyondan pay almaz. Erken aşamada fiyat kartı değil birebir anlaşma; kanıt biriktikçe paketleşir."
     >
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart
