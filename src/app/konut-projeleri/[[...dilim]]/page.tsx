@@ -96,14 +96,14 @@ export async function generateMetadata({ params }: { params: Promise<{ dilim?: s
 function ProjeKarti({ p }: { p: HubProje }) {
   const konum = [p.ilce, p.il].filter(Boolean).join(", ");
   const asama = p.asama ? ASAMA[p.asama] ?? null : null;
-  const kapak = temaGorsel(p.il) ?? havuzGorsel(p.slug, "konum");
+  const kapak = p.kapak ?? temaGorsel(p.il) ?? havuzGorsel(p.slug, "konum");
   const govde = (
     <>
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image src={kapak} alt="" fill sizes="(max-width: 1024px) 100vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
         <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.04) 0%, rgba(8,20,34,0.6) 100%)" }} />
         {asama ? <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">{asama}</span> : null}
-        <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>
+        {p.kapak ? null : <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>}
         <h3 className="absolute inset-x-3.5 bottom-3 font-display text-[15px] font-bold leading-snug tracking-tight text-white drop-shadow">{p.ad}</h3>
       </div>
       <div className="flex flex-1 flex-col p-4">

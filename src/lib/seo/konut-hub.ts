@@ -20,6 +20,7 @@ export type HubProje = {
   odaTipleri: string[];
   m2: string | null;
   esik: boolean; // standalone sayfası açılıyor mu (link ver)
+  kapak: string | null; // kaynak sitenin og:image kapak görseli (katalog); yoksa null → temsili
   kaynak: "proje" | "katalog";
 };
 
@@ -93,6 +94,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
         odaTipleri: [...(odaMap.get(p.id) ?? [])],
         m2: m2ler.length ? m2Metni(Math.min(...m2ler), Math.max(...m2ler)) : null,
         esik: projeIcerikSkoru(girdi) >= ICERIK_ESIGI,
+        kapak: null,
         kaynak: "proje",
       });
     }
@@ -101,7 +103,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
   // 2) Katalog projeleri (aktif, konumu olan)
   const { data: katRaw } = await supabase
     .from("katalog_proje")
-    .select("slug, ad, il, ilce, mahalle, oda_tipleri, m2_min, m2_max, durum, teslim")
+    .select("slug, ad, il, ilce, mahalle, oda_tipleri, m2_min, m2_max, durum, teslim, kapak_url")
     .eq("aktif", true)
     .not("il", "is", null)
     .not("ilce", "is", null);
@@ -121,6 +123,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
       odaTipleri: Array.isArray(k.oda_tipleri) ? k.oda_tipleri : [],
       m2: m2Metni(k.m2_min ?? null, k.m2_max ?? null),
       esik: projeIcerikSkoru(girdi) >= ICERIK_ESIGI,
+      kapak: k.kapak_url ?? null,
       kaynak: "katalog",
     });
   }

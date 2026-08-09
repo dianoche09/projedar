@@ -23,7 +23,7 @@ export const revalidate = 3600; // proje meta yavaş değişir; canlı stok publ
 const SITE = "https://projedar.com";
 
 type TipRow = { ad?: string | null; oda: string | null; net_m2: number | null; brut_m2?: number | null; plan_url?: string | null; banyo?: number | null; balkon?: number | null; otopark?: number | null };
-type BenzerProje = { ad: string; public_slug: string; ilce: string | null; il: string | null; asama: string | null; odaTipleri: string[] };
+type BenzerProje = { ad: string; public_slug: string; ilce: string | null; il: string | null; asama: string | null; odaTipleri: string[]; kapak: string | null };
 type Kaynak = "proje" | "katalog";
 
 const DURUM_ETIKET: Record<string, string> = { lansman: "Lansman", insaat: "İnşaat halinde", teslim: "Teslim edildi" };
@@ -93,7 +93,7 @@ async function benzerProjeler(
   return list
     .filter((x) => projeIcerikSkoru(esigeGirdi(x, tipSayim.get(x.id) ?? 0, Boolean(x.uretici?.dogrulanmis))) >= ICERIK_ESIGI)
     .slice(0, 6)
-    .map((x) => ({ ad: x.ad, public_slug: x.public_slug, ilce: x.ilce, il: x.il, asama: x.insaat_asamasi, odaTipleri: [...(odaMap.get(x.id) ?? [])] }));
+    .map((x) => ({ ad: x.ad, public_slug: x.public_slug, ilce: x.ilce, il: x.il, asama: x.insaat_asamasi, odaTipleri: [...(odaMap.get(x.id) ?? [])], kapak: null }));
 }
 
 /** Katalogdan aynı ilçeden eşik geçen diğer projeler (internal linking). */
@@ -104,7 +104,7 @@ async function benzerKatalog(
   if (!k.ilce) return [];
   const { data } = await supabase
     .from("katalog_proje")
-    .select("slug, ad, il, ilce, mahalle, oda_tipleri, durum, teslim")
+    .select("slug, ad, il, ilce, mahalle, oda_tipleri, durum, teslim, kapak_url")
     .eq("aktif", true)
     .eq("ilce", k.ilce)
     .neq("slug", k.slug)
@@ -117,7 +117,7 @@ async function benzerKatalog(
       Array.isArray(x.oda_tipleri) ? x.oda_tipleri.length : 0, false,
     )) >= ICERIK_ESIGI)
     .slice(0, 6)
-    .map((x) => ({ ad: x.ad, public_slug: x.slug, ilce: x.ilce, il: x.il, asama: null, odaTipleri: Array.isArray(x.oda_tipleri) ? x.oda_tipleri : [] }));
+    .map((x) => ({ ad: x.ad, public_slug: x.slug, ilce: x.ilce, il: x.il, asama: null, odaTipleri: Array.isArray(x.oda_tipleri) ? x.oda_tipleri : [], kapak: x.kapak_url ?? null }));
 }
 
 async function projeGetir(slug: string): Promise<Veri | null> {
@@ -165,6 +165,7 @@ async function katalogGetir(slug: string): Promise<Veri | { forward: string } | 
     insaat_asamasi: k.durum, teslim_tarihi: k.teslim, baslama_tarihi: null,
     ilerleme_yuzde: null, kira_getirisi_pct: null, kunye: {}, belge_dogrulandi: false,
     proje_web: k.proje_web, icerik: k.icerik ?? null,
+    kapak_url: k.kapak_url ?? null, kapak_kaynak: k.kapak_kaynak ?? null,
   };
   const u = k.gelistirici ? { ad: k.gelistirici, dogrulanmis: false, profil: {} } : null;
   const benzer = await benzerKatalog(supabase, k);
@@ -309,7 +310,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
   // ---- Görsel havuzu (temsili; il-bazlı hero + slug-hash rotasyon) ----
   const heroCity = temaGorsel(p.il);
-  const gorsel = heroCity ?? havuzGorsel(slug, "konum"); // her sayfada hero görseli olsun
+  const kapak = (p.kapak_url ?? null) as string | null; // katalog: kaynak sitenin GERÇEK og:image kapağı
+  const gorsel = kapak ?? heroCity ?? havuzGorsel(slug, "konum"); // gerçek kapak > il-hero > havuz
   const detayGorsel = havuzGorsel(slug, "detay");
   const interiorGorsel = havuzGorsel(slug, "ic");
   const amenityGorsel = havuzGorsel(slug, "amenity");
@@ -363,7 +365,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <Image src={gorsel} alt="" fill priority sizes="100vw" className="scale-105 object-cover object-[50%_45%]" aria-hidden />
         <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,16,28,0.55) 0%, rgba(6,16,28,0.12) 30%, rgba(6,16,28,0.5) 64%, rgba(6,16,28,0.94) 100%)" }} />
         <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 20% 32%, rgba(30,155,138,0.22) 0%, transparent 60%)" }} />
-        <span className="absolute bottom-4 right-4 z-10 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] text-white/70">Temsili görsel</span>
+        <span className="absolute bottom-4 right-4 z-10 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] text-white/70">{kapak ? `Görsel: ${p.kapak_kaynak ?? "kaynak"}` : "Temsili görsel"}</span>
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-14 pt-24 sm:px-6">
           <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-white/60">
             <Link href="/" className="hover:text-white">Ana sayfa</Link>
@@ -688,14 +690,14 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
             <div><BolumBaslik etiket="Ağdaki diğer projeler" baslik={p.ilce ? `${p.ilce} ve çevresinden` : "İlgili projeler"} /></div>
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {veri.benzer.map((b) => {
-                const kapak = temaGorsel(b.il) ?? havuzGorsel(b.public_slug, "konum");
+                const kapak = b.kapak ?? temaGorsel(b.il) ?? havuzGorsel(b.public_slug, "konum");
                 return (
                   <Link key={b.public_slug} href={`/proje/${b.public_slug}`} className="kart kart-3d group flex h-full flex-col overflow-hidden p-0">
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image src={kapak} alt="" fill sizes="(max-width: 1024px) 100vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                       <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.04) 0%, rgba(8,20,34,0.58) 100%)" }} />
                       <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">{ASAMA_ETIKET[b.asama as InsaatAsama] ?? "Proje"}</span>
-                      <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>
+                      {b.kapak ? null : <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>}
                       <h3 className="absolute inset-x-3 bottom-2.5 font-display text-base font-bold tracking-tight text-white drop-shadow">{b.ad}</h3>
                     </div>
                     <div className="flex flex-1 flex-col p-4">

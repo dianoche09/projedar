@@ -12,6 +12,15 @@ const withSerwist = withSerwistInit({
 const nextConfig: NextConfig = {
   // Üst dizindeki ilgisiz package-lock.json'ı workspace root sanmasını engelle
   outputFileTracingRoot: import.meta.dirname,
+  // Katalog proje kapak görselleri: kaynak sitenin (og:image) CDN'inden next/image ile
+  // optimize edilerek servis edilir (rehost yerine hotlink; "Görsel: <kaynak>" atfı sayfada).
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "imaj.emlakjet.com" },
+      { protocol: "https", hostname: "satisofisi.com" },
+      { protocol: "https", hostname: "www.satisofisi.com" },
+    ],
+  },
   async headers() {
     return [
       {
