@@ -257,7 +257,7 @@ export default function PitchV2() {
         />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Üç gelir akışı (müteahhit + emlakçı Pro + ofis/franchise); Ay-24 hedef çıkış run-rate ~40M ₺. Detaylı birim ekonomisi ve 24 aylık model: finansal sunum.
+        Üç gelir akışı (müteahhit + emlakçı + ofis/franchise); Ay-24 hedef yıllık gelir hızı ~37M ₺. Detaylı birim ekonomisi ve 24 aylık model: finansal sunum.
       </p>
     </Slayt>,
 
@@ -377,7 +377,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Building2}
           baslik="Ağ büyümesi"
-          metin="Saha ekibi; üretici ve danışman kazanımı, kurulum (concierge) operasyonu."
+          metin="Saha ekibi; üretici ve danışman kazanımı, kurulum operasyonu."
           sinyal="#2fd3bc"
         />
         <MaddeKart
@@ -387,9 +387,9 @@ export default function PitchV2() {
         />
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Banknote} baslik="$200K / %25 (post ~$800K)" metin="Ankor: cirosuz aşamanın fiyatı. Ürün canlı ve dış kaynaksız kuruldu; ilk ödeyen müteahhitle değerleme ~$1,2M+'a revize." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={TrendingUp} baslik="$150K primary → ekip" metin="Ana kullanım saha & concierge ekibi + ürün derinleşme. Gelir Ay 1'den başlar; sermaye runway değil, büyüme ateşlemesi." />
-        <MaddeKart Ikon={Handshake} baslik="$50K = kurucu IP/emek" metin="Secondary: kurucunun ürünü fikirden canlıya kendi kaynağıyla taşımasının kısmi karşılığı." />
+        <MaddeKart Ikon={Banknote} baslik="10M ₺ / %25 (yatırım sonrası ~40M ₺)" metin="Başlangıç değeri: cirosuz aşamanın fiyatı. Ürün canlı ve dış kaynaksız kuruldu; ilk ödeyen müteahhitle değer ~60M ₺+'a yükselir." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={TrendingUp} baslik="7,5M ₺ şirkete sermaye → ekip" metin="Ana kullanım saha & kurulum ekibi + ürün derinleşme. Gelir ilk aydan başlar; sermaye idare parası değil, büyüme yakıtı." />
+        <MaddeKart Ikon={Handshake} baslik="2,5M ₺ = kurucu emeği" metin="Kurucunun ürünü fikirden canlıya kendi kaynağıyla taşımasının kısmi karşılığı." />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
         24 ay hedefi: ~100 proje · ~5.000 ödeyen danışman · ~150 ofis. Değerleme cirosuz aşamanın fiyatı; ilk gelirle yukarı revize edilir.
