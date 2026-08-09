@@ -84,7 +84,7 @@ export default function FinansalV2() {
     /* 2 · Gelir mimarisi */
     <Slayt key="mimari" genis kicker="Gelir mimarisi" baslik="Tek ana gelir, iki büyüme katmanı" alt="Komisyon yok. Gelir yazılım/erişim anlaşmasından; değer metriği ağdaki aktif daire (satılınca düşer) ve danışman sayısı.">
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Building2} baslik="Müteahhit anlaşması · ANA" metin="İlk ~10 müteahhit kurucu (ücretsiz). Sonrası ağdaki aktif daire adedine göre kademeli yıllık (150K → 600K+); yüksek LTV, düşük churn." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Building2} baslik="Müteahhit anlaşması · ANA" metin="İlk ~10 müteahhit kurucu (ücretsiz). Sonrası ağdaki aktif daire adedine göre kademeli yıllık: küçük proje (&lt;50 daire) 40-85K giriş → 150K orta → 600K+ enterprise; yüksek LTV, düşük churn." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Users} baslik="Danışman Pro + Ofis" metin="Kurucu: ilk ~1000 danışman ilk yıl ücretsiz. Sonra Pro 7.500₺/yıl, ofis danışman-kademeli 25K+. Gelir katmanı Yıl 2." />
         <MaddeKart Ikon={Layers} baslik="Veri ürünleri · SONRA" metin="Talep/fiyat endeksi, piyasa zekâsı. Ağ büyüyüp veri derinleşince açılır; yüksek marjlı katman." />
       </div>
@@ -113,7 +113,7 @@ export default function FinansalV2() {
     /* 5 · Birim ekonomisi */
     <Slayt key="birim" genis kicker="Birim ekonomisi" baslik="Tek anlaşma, CAC'ı hızla karşılar" alt="Yıllık peşin sözleşme + düşük churn + referans-CAC = sağlıklı geri ödeme.">
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <MaddeKart Ikon={Coins} baslik="Ort. anlaşma" metin="~250K ₺/yıl (band 150-600K). Proje büyüklüğü arttıkça üst pakete geçer." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Coins} baslik="Ort. anlaşma" metin="~250K ₺/yıl (band 40K giriş - 600K+). Küçük proje yumuşak giriş kademesiyle başlar, büyüklük arttıkça üst pakete geçer." sinyal="#2fd3bc" />
         <MaddeKart Ikon={TrendingUp} baslik="LTV" metin="Düşük churn × yıllık yenileme: 3 yılda 750K ₺+ (PropTech benchmark $20-100K)." />
         <MaddeKart Ikon={Target} baslik="CAC" metin="Referans/el-satış: dijital reklamsız, düşük maliyet. Karar verici tek kişi." />
         <MaddeKart Ikon={Calculator} baslik="Geri ödeme" metin="Yıllık peşin tahsilat: tek anlaşma edinim maliyetini ilk yılda karşılar." sinyal="#2fd3bc" />
