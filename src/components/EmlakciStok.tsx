@@ -43,6 +43,7 @@ export function EmlakciStok({
   tipler,
   baslangic,
   shareUrlMap,
+  kazancMap,
   benimOpsiyonlar,
   opsiyonYontemi = "talep_kod",
 }: {
@@ -52,6 +53,8 @@ export function EmlakciStok({
   tipler: Tip[];
   baslangic: BinaBirim[];
   shareUrlMap: Record<string, string>;
+  /** Birim başına emlakçı kazancı (satış primi, TL). DB'de hesaplanır; ham komisyon gelmez. */
+  kazancMap?: Record<string, number>;
   /** Bu emlakçıya ait opsiyonlu birim id'leri (bırak butonu için). */
   benimOpsiyonlar?: string[];
   /** Proje opsiyon yöntemi: 'dogrudan' → anlık kilit; diğer → talep→onay. */
@@ -251,6 +254,11 @@ export function EmlakciStok({
                 <span className="mono flex-none text-[12.5px] font-semibold text-ink">
                   {b.liste_fiyati ? `${fiyatKisa(Number(b.liste_fiyati))} ₺` : "—"}
                 </span>
+                {kazancMap?.[b.id] != null ? (
+                  <span className="mono hidden flex-none text-[11.5px] font-bold text-teal-d md:inline" title="Bu daireyi satarsan kazancın (satış primin)">
+                    +{fiyatKisa(kazancMap[b.id])} ₺
+                  </span>
+                ) : null}
                 <span className={`hidden flex-none text-[11px] font-bold sm:inline ${g.renk}`}>{g.etiket}</span>
               </button>
             );

@@ -74,6 +74,17 @@ export default async function HavuzProjeDetay({
   const tipListe = (tipler ?? []) as Tip[];
   const kunye = (proje.kunye ?? {}) as Record<string, unknown>;
 
+  // Emlakçı kazanç görünürlüğü: RPC birim başına kazancı DB'de hesaplar (ham komisyon
+  // client'a çıkmaz). Migration uygulanmadıysa rpc hata verir → boş map (graceful).
+  const { data: kazancRaw } = await supabase.rpc("emlakci_birim_kazanci", { p_proje_id: id });
+  const kazancMap: Record<string, number> = {};
+  for (const k of (kazancRaw ?? []) as { birim_id: string; kazanc: number | null }[]) {
+    if (k.kazanc != null) kazancMap[k.birim_id] = Number(k.kazanc);
+  }
+  const toplamKazanc = ((birimler ?? []) as { id: string; durum: string }[])
+    .filter((b) => b.durum === "musait" && kazancMap[b.id] != null)
+    .reduce((s, b) => s + kazancMap[b.id], 0);
+
   // Üretici kurumsal profili (RLS: uretici_emlakci_select — tahsisli projenin üreticisi görünür).
   const { data: uretici } = await supabase
     .from("uretici")
@@ -527,6 +538,13 @@ export default async function HavuzProjeDetay({
       {/* ===== FİYAT LİSTESİ · CANLI STOK ===== */}
       <div className="mt-8">
         <h2 className="font-display text-lg font-semibold text-ink">Fiyat Listesi · Canlı Stok</h2>
+        {toplamKazanc > 0 ? (
+          <p className="mt-1.5 text-sm text-ink-soft">
+            Bu projede senin için potansiyel kazanç:{" "}
+            <span className="font-bold text-teal-d">{toplamKazanc.toLocaleString("tr-TR")} ₺</span>{" "}
+            <span className="text-xs text-gray">(müsait dairelerden, satış primin)</span>
+          </p>
+        ) : null}
         <div className="mt-4">
           {toplam === 0 ? (
             <p className="rounded-2xl border border-dashed border-hair bg-card/60 p-10 text-center text-sm leading-relaxed text-gray">
@@ -540,6 +558,7 @@ export default async function HavuzProjeDetay({
               tipler={tipler ?? []}
               baslangic={stok as never}
               shareUrlMap={shareUrlMap}
+              kazancMap={kazancMap}
               benimOpsiyonlar={benimOpsiyonlar}
               opsiyonYontemi={
                 ((proje.opsiyon_ayar as { yontem?: string } | null)?.yontem) ??
