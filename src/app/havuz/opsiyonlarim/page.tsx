@@ -237,15 +237,20 @@ export default async function Opsiyonlarim() {
                         </td>
                         <td>
                           {b?.proje ? (
-                            <OpsiyonSonucBtn
-                              birimId={b.id}
-                              projeId={b.proje.id}
-                              projeAd={b.proje.ad}
-                              daireNo={b.daire_no}
-                              musteriTel={o.musteri_tel}
-                              kesin={!gecici}
-                              uzatilabilir={b.proje.opsiyon_ayar?.uzatma_hakki !== false && o.uzatildi !== true}
-                            />
+                            <div className="flex flex-col items-start gap-1.5">
+                              <OpsiyonSonucBtn
+                                birimId={b.id}
+                                projeId={b.proje.id}
+                                projeAd={b.proje.ad}
+                                daireNo={b.daire_no}
+                                musteriTel={o.musteri_tel}
+                                kesin={!gecici}
+                                uzatilabilir={b.proje.opsiyon_ayar?.uzatma_hakki !== false && o.uzatildi !== true}
+                              />
+                              <Link href={`/havuz/opsiyonlarim/sertifika/${o.id}`} className="text-[11px] font-semibold text-teal hover:underline">
+                                Sertifika →
+                              </Link>
+                            </div>
                           ) : null}
                         </td>
                       </tr>
@@ -322,6 +327,9 @@ export default async function Opsiyonlarim() {
                         kesin={!gecici}
                         uzatilabilir={b.proje.opsiyon_ayar?.uzatma_hakki !== false && o.uzatildi !== true}
                       />
+                      <Link href={`/havuz/opsiyonlarim/sertifika/${o.id}`} className="mt-2 inline-block text-[12px] font-semibold text-teal hover:underline">
+                        Talep sertifikası →
+                      </Link>
                     </div>
                   ) : null}
                 </article>
