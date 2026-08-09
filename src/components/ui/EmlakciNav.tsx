@@ -47,18 +47,6 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/hakedis",
-    etiket: "Hakedişlerim",
-    tam: true,
-    ikon: (
-      <>
-        <rect x="2" y="6" width="20" height="13" rx="2" />
-        <path d="M2 10h20" />
-        <circle cx="17" cy="14" r="1.4" />
-      </>
-    ),
-  },
-  {
     href: "/havuz/paylastiklarim",
     etiket: "Paylaştıklarım",
     tam: true,
