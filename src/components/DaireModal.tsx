@@ -168,7 +168,7 @@ export function DaireModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onKapat} aria-hidden />
-      <div className="sheet-in glass-card relative z-10 max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-2xl p-6 shadow-cardlg sm:rounded-2xl border border-slate-200/80">
+      <div className="sheet-in glass-card relative z-10 max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-2xl p-6 shadow-cardlg sm:rounded-2xl sm:max-w-lg lg:max-w-4xl border border-slate-200/80">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h3 className="font-display text-lg font-bold text-slate-900 tracking-tight">Daire {birim.daire_no ?? "—"}</h3>
@@ -177,6 +177,15 @@ export function DaireModal({
               {birim.kat != null ? ` · ${birim.kat}. kat` : ""}
               {!birim.satilabilir ? " · arsa payı (satılamaz)" : ""}
             </p>
+            {mod === "uretici" ? (
+              <span className="mt-1.5 inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2 py-0.5 text-[10.5px] font-bold text-slate-500">
+                <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+                  <rect x="3" y="11" width="18" height="11" rx="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                Yalnız bu daire yönetiliyor
+              </span>
+            ) : null}
           </div>
           <button onClick={onKapat} className="rounded-xl px-3 py-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-800 text-xs font-bold" aria-label="Kapat">
             ✕
@@ -189,8 +198,11 @@ export function DaireModal({
           </span>
         ) : null}
 
+        {/* Web'de yatay (iki kolon), mobilde dikey (tek kolon). Sol: görsel + künye + fiyat; Sağ: eklenti + ödeme + aksiyon. */}
+        <div className="mt-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
+        <div className="min-w-0">
         {/* Daire planı — tip görseli varsa onu, yoksa şematik plan */}
-        <div className="mt-4 overflow-hidden rounded-xl border border-slate-100 bg-slate-50">
+        <div className="overflow-hidden rounded-xl border border-slate-100 bg-slate-50">
           {birim.plan_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={birim.plan_url} alt={`${birim.tip_ad ?? "Daire"} planı`} className="max-h-72 w-full object-contain bg-slate-100/50" />
@@ -262,6 +274,8 @@ export function DaireModal({
           </div>
         ) : null}
 
+        </div>{/* /sol kolon */}
+        <div className="min-w-0">
         {/* Eklentiler — otopark/depo (ana daireye bağlı). Üretici: ekle/sil; diğer: salt-okunur. */}
         {eklentiler.length > 0 || mod === "uretici" ? (
           <div className="mt-4 rounded-xl border border-slate-200/60 bg-slate-50 p-4">
@@ -610,6 +624,8 @@ export function DaireModal({
             </div>
           </div>
         )}
+        </div>{/* /sağ kolon */}
+        </div>{/* /grid (web yatay · mobil dikey) */}
       </div>
     </div>
   );
