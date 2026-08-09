@@ -528,6 +528,9 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                   <div className="mt-1 flex flex-wrap items-center gap-2"><h2 className="font-display text-xl font-bold tracking-tight text-ink">{u.ad}</h2>{dogrulanmis ? <span className="inline-flex items-center gap-1 rounded-full bg-teal/10 px-2 py-0.5 text-[10px] font-semibold text-teal"><ShieldCheck size={11} /> Doğrulanmış</span> : null}</div>
                   {up.hakkinda ? <p className="mt-2 text-sm leading-relaxed text-ink-soft">{up.hakkinda}</p> : null}
                   <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-ink-soft">{up.kurulus_yili ? <span>Kuruluş {up.kurulus_yili}</span> : null}{(up.il || up.ilce) ? <span>{[up.ilce, up.il].filter(Boolean).join(", ")}</span> : null}</div>
+                  {kaynak === "proje" ? (
+                    <Link href={`/firma/${slugify(u.ad)}`} className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-teal transition-colors hover:underline">{u.ad} firmasının tüm projeleri <ChevronRight size={14} /></Link>
+                  ) : null}
                 </div>
               </div>
             </div>

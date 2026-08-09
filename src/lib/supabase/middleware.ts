@@ -19,6 +19,7 @@ function herkeseAcik(pathname: string): boolean {
     pathname.startsWith("/p/") || // imzalı paylaşım landing
     pathname.startsWith("/proje/") || // public proje microsite (PR-7)
     pathname === "/konut-projeleri" || pathname.startsWith("/konut-projeleri/") || // public SEO hub (il/ilçe kırılımı)
+    pathname.startsWith("/firma/") || // public müteahhit kurumsal SEO sayfası
     pathname.startsWith("/kvkk-aydinlatma") || // KVKK aydınlatma (lead formundan, anonim erişim)
     pathname.startsWith("/kullanim-kosullari") || // hukuki sayfa (public)
     pathname.startsWith("/gizlilik") || // hukuki sayfa (public)

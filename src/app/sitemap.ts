@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { projeIcerikSkoru, ICERIK_ESIGI } from "@/lib/seo/icerik-esigi";
 import { tumHubProjeleri } from "@/lib/seo/konut-hub";
+import { tumFirmaSluglari } from "@/lib/seo/firma";
 
 const SITE = "https://projedar.com";
 
@@ -131,5 +132,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // hub kök URL'si yine de kalır
   }
 
-  return [...statik, ...hub, ...projeler, ...katalog];
+  // Müteahhit kurumsal sayfaları (/firma/[slug]): eşik-geçen projesi olan firmalar.
+  let firmalar: MetadataRoute.Sitemap = [];
+  try {
+    const liste = await tumFirmaSluglari();
+    firmalar = liste.map((f) => ({ url: `${SITE}/firma/${f.slug}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.6 }));
+  } catch {
+    firmalar = [];
+  }
+
+  return [...statik, ...hub, ...firmalar, ...projeler, ...katalog];
 }
