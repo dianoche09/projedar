@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { girisYap } from "./actions";
+import { sifreSifirlamaIste } from "./actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { AuthKabuk } from "@/components/ui/AuthKabuk";
 
 const inpCls =
   "min-h-12 w-full rounded-xl border border-hair bg-soft px-4 font-sans text-base text-ink outline-none transition-all placeholder:text-ink-soft/55 focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/12";
 
-export default async function LoginPage({
+export default async function SifremiUnuttumPage({
   searchParams,
 }: {
   searchParams: Promise<{ hata?: string; mesaj?: string }>;
@@ -16,9 +16,11 @@ export default async function LoginPage({
   return (
     <AuthKabuk>
       <div className="kart p-6 sm:p-8">
-        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">Giriş yap</h1>
+        <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">
+          Şifreni sıfırla
+        </h1>
         <p className="mt-2 text-sm font-medium text-ink-soft">
-          Canlı stok ağına eriş. E-posta ve parolanla devam et.
+          Hesabının e-postasını gir, sıfırlama bağlantısını gönderelim.
         </p>
 
         {hata && (
@@ -35,7 +37,7 @@ export default async function LoginPage({
           </p>
         )}
 
-        <form action={girisYap} className="mt-6 flex flex-col gap-4">
+        <form action={sifreSifirlamaIste} className="mt-6 flex flex-col gap-4">
           <label className="flex flex-col gap-2 text-sm font-bold text-ink">
             E-posta
             <input
@@ -47,46 +49,23 @@ export default async function LoginPage({
               className={inpCls}
             />
           </label>
-          <label className="flex flex-col gap-2 text-sm font-bold text-ink">
-            Parola
-            <input
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              minLength={6}
-              placeholder="••••••••"
-              className={inpCls}
-            />
-          </label>
-          <div className="-mt-1 text-right">
-            <Link
-              href="/sifremi-unuttum"
-              className="text-sm font-semibold text-teal hover:underline"
-            >
-              Şifremi unuttum
-            </Link>
-          </div>
 
           <SubmitButton
             varyant="teal"
-            bekleyenMetin="Giriş yapılıyor…"
-            className="mt-4 min-h-12 w-full rounded-xl bg-teal py-3.5 text-base font-bold text-white hover:bg-teal-d shadow-[0_6px_16px_rgba(30,155,138,0.3)]"
+            bekleyenMetin="Gönderiliyor…"
+            className="mt-2 min-h-12 w-full rounded-xl bg-teal py-3.5 text-base font-bold text-white hover:bg-teal-d shadow-[0_6px_16px_rgba(30,155,138,0.3)]"
           >
-            Giriş yap
+            Sıfırlama bağlantısı gönder
           </SubmitButton>
         </form>
+
         <p className="mt-6 border-t border-hair pt-4 text-center text-sm font-medium text-ink-soft">
-          Hesabın yok mu?{" "}
-          <Link href="/kayit" className="font-bold text-teal hover:underline">
-            Kayıt ol
+          Şifreni hatırladın mı?{" "}
+          <Link href="/login" className="font-bold text-teal hover:underline">
+            Giriş yap
           </Link>
         </p>
       </div>
-
-      <p className="mt-6 text-center text-xs font-semibold text-ink-soft/70">
-        Kapalı devre B2B ağ · yalnızca davetli üretici ve danışmanlar.
-      </p>
     </AuthKabuk>
   );
 }

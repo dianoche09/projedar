@@ -12,6 +12,9 @@ function herkeseAcik(pathname: string): boolean {
     pathname.startsWith("/design-lab") || // konsept karşılaştırma sayfası
     pathname.startsWith("/recommended") || // final öneri konsepti
     pathname.startsWith("/login") ||
+    pathname.startsWith("/sifremi-unuttum") || // şifre sıfırlama isteği (public)
+    pathname.startsWith("/sifre-yenile") || // recovery oturumuyla yeni parola
+    pathname.startsWith("/auth/") || // Supabase auth callback (code → oturum)
     pathname.startsWith("/kayit") || // self-registration
     pathname.startsWith("/p/") || // imzalı paylaşım landing
     pathname.startsWith("/proje/") || // public proje microsite (PR-7)
