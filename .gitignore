@@ -40,3 +40,6 @@ yarn-error.log*
 
 # yerel kopya/çöp klasör (içinde .env.local var, asla commit edilmemeli)
 projepazar-sistem/
+
+# diagram-design skill (1.8MB assets) — proje-scope, commit etme
+.claude/skills/
