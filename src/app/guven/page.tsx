@@ -36,7 +36,7 @@ const TEMINATLAR = [
   { Icon: ShieldCheck, b: "Sıfır çift satış", a: "Aktif opsiyon, veritabanında tekil kayıt kuralıyla korunur. Aynı daireye ikinci opsiyon açmak uygulama hatasıyla bile mümkün değildir; kural uygulamada değil, veritabanının kendisindedir." },
   { Icon: Database, b: "Herkes yalnız kendine açılanı görür", a: "Kim hangi daireyi görecek, proje sahibi belirler ve bu kural sistemin en derin katmanında uygulanır. Danışmana açılmayan daire ekranında hiç var olmaz; gizlemek değil, hiç göstermemek." },
   { Icon: BadgeCheck, b: "Doğrulanmış ağ", a: "Her üretici doğrulama rozetiyle yayınlanır; danışman yetki belgesi doğrulanmadan stok detayına erişemez. Ağdaki herkesin kim olduğu bellidir." },
-  { Icon: CircleSlash, b: "Komisyon yok", a: "Hiçbir satıştan pay alınmaz. Gelir müteahhit tarafındaki sabit anlaşmadan gelir; platformun satışın tarafı olmaması güvenin ön şartıdır." },
+  { Icon: CircleSlash, b: "Satıştan pay almayız", a: "Hiçbir satıştan pay alınmaz. Gelir müteahhit tarafındaki sabit anlaşmadan gelir; platformun satışın tarafı olmaması güvenin ön şartıdır." },
   { Icon: Lock, b: "Kapalı, davetli devre", a: "Son kullanıcıya açık ilan yoktur. Stok yalnız tahsisli danışmanların kapalı havuzunda görünür; paylaşım birebir linkle yapılır." },
   { Icon: FileCheck, b: "Tek doğru kaynak", a: "Fiyat ve durum yalnız birim kaydında yaşar, hiçbir yerde kopyalanmaz. Paylaşılan link fiyatı o anki canlı değerden basar; her verinin üstünde tazelik damgası vardır." },
 ];

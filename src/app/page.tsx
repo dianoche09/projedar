@@ -48,7 +48,7 @@ const GUVEN = [
   { Icon: ShieldCheck, b: "Sıfır çift satış", a: "Bir daire opsiyonlandığı anda sistem onu herkes için kilitler. Aynı daire iki kişiye birden satılamaz; bu bir söz değil, sistemin çalışma şeklidir." },
   { Icon: Database, b: "Herkes yalnız kendine açılanı görür", a: "Kim hangi projeyi, hangi daireyi görecek; bunu proje sahibi belirler. Danışmana açılmayan daire ekranında hiç görünmez." },
   { Icon: BadgeCheck, b: "Doğrulanmış projeler", a: "Her proje, belgeleri kontrol edildikten sonra doğrulama rozetiyle yayınlanır; kaynağı belirsiz ilan yoktur." },
-  { Icon: CircleSlash, b: "Komisyon yok", a: "Satıştan pay almayız; danışman için başlangıçta tamamen ücretsizdir." },
+  { Icon: CircleSlash, b: "Kazancın %100'ü senin", a: "Satıştan pay almayız; danışman için başlangıçta tamamen ücretsizdir." },
   { Icon: Lock, b: "Kapalı, davetli ağ", a: "Herkese açık ilan yoktur; projeler yalnız davetli ve yetkili danışmanlara açılır, müşteriye birebir paylaşılır." },
   { Icon: FileCheck, b: "Müşterin sende kalır", a: "Müşterinin kişisel verisi toplanıp profillenmez; alıcı bilgisi danışmanda kalır, kimseyle paylaşılmaz." },
 ];
@@ -543,7 +543,7 @@ export default async function Home() {
                     Danışmanım, ücretsiz katıl →
                   </Link>
                 </div>
-                <p className="mt-7 font-mono text-[12px] tracking-wide text-white/50">Komisyon yok · Açık ilan yok · Çift satış yok</p>
+                <p className="mt-7 font-mono text-[12px] tracking-wide text-white/50">Kazancın %100&apos;ü senin · Açık ilan yok · Çift satış yok</p>
               </div>
             </div>
           </div>
