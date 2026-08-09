@@ -18,56 +18,46 @@ import { DevSayi, GorselSlayt, MaddeKart } from "@/components/sunum/parcalar";
 
 export const metadata: Metadata = {
   title: "Projedar · Finansal Projeksiyon v2",
-  description: "24 aylık finansal plan (v2): ilk yıl kuruluş + kurucu dönem, gelir modeli, birim ekonomisi, senaryolar.",
+  description: "24 aylık finansal plan (v2): gelir Ay 1'den (müteahhit-ölçekli), birim ekonomisi, senaryolar.",
 };
 
-type Ceyrek = { ad: string; ay: string; muteahhit: number; kumMuteahhit: number; gelir: number; kurulus?: boolean; kurucu?: boolean };
+type Ceyrek = { ad: string; ay: string; muteahhit: number; kumMuteahhit: number; gelir: number };
 
 const CEYREKLER: Ceyrek[] = [
-  { ad: "Ç1", ay: "Ay 1-3", muteahhit: 0, kumMuteahhit: 0, gelir: 0, kurulus: true },
-  { ad: "Ç2", ay: "Ay 4-6", muteahhit: 0, kumMuteahhit: 0, gelir: 0, kurulus: true },
-  { ad: "Ç3", ay: "Ay 7-9", muteahhit: 4, kumMuteahhit: 4, gelir: 0, kurucu: true },
-  { ad: "Ç4", ay: "Ay 10-12", muteahhit: 6, kumMuteahhit: 10, gelir: 0, kurucu: true },
-  { ad: "Ç5", ay: "Ay 13-15", muteahhit: 7, kumMuteahhit: 17, gelir: 1.75 },
-  { ad: "Ç6", ay: "Ay 16-18", muteahhit: 8, kumMuteahhit: 25, gelir: 2.25 },
-  { ad: "Ç7", ay: "Ay 19-21", muteahhit: 9, kumMuteahhit: 34, gelir: 3.0 },
-  { ad: "Ç8", ay: "Ay 22-24", muteahhit: 10, kumMuteahhit: 44, gelir: 3.8 },
+  { ad: "Ç1", ay: "Ay 1-3", muteahhit: 16, kumMuteahhit: 16, gelir: 1.2 },
+  { ad: "Ç2", ay: "Ay 4-6", muteahhit: 10, kumMuteahhit: 26, gelir: 2.0 },
+  { ad: "Ç3", ay: "Ay 7-9", muteahhit: 11, kumMuteahhit: 37, gelir: 2.4 },
+  { ad: "Ç4", ay: "Ay 10-12", muteahhit: 11, kumMuteahhit: 48, gelir: 2.6 },
+  { ad: "Ç5", ay: "Ay 13-15", muteahhit: 12, kumMuteahhit: 60, gelir: 2.9 },
+  { ad: "Ç6", ay: "Ay 16-18", muteahhit: 13, kumMuteahhit: 73, gelir: 3.1 },
+  { ad: "Ç7", ay: "Ay 19-21", muteahhit: 13, kumMuteahhit: 86, gelir: 3.3 },
+  { ad: "Ç8", ay: "Ay 22-24", muteahhit: 14, kumMuteahhit: 100, gelir: 3.5 },
 ];
 
-/** 24 aylık çeyreklik gelir bar grafiği (koyu tema). İlk yıl kuruluş + kurucu dönem (gelir 0). */
+/** 24 aylık çeyreklik gelir bar grafiği (koyu tema). Gelir Ç1'den başlar; kurucu kontenjan dolunca ivmelenir. */
 function ProjeksiyonBar() {
   const maxGelir = Math.max(...CEYREKLER.map((c) => c.gelir));
   return (
     <div className="deck-kart p-5 text-left">
       <div className="flex items-end gap-2 sm:gap-3" style={{ height: 190 }}>
-        {CEYREKLER.map((c) => {
-          const sifir = c.gelir === 0;
-          return (
+        {CEYREKLER.map((c) => (
           <div key={c.ad} className="flex flex-1 flex-col items-center justify-end gap-2">
-            <span className={`mono text-[11px] font-bold ${sifir ? "text-white/40" : "text-[#2fd3bc]"}`}>
-              {sifir ? "0" : `${c.gelir.toLocaleString("tr-TR")}M`}
-            </span>
+            <span className="mono text-[11px] font-bold text-[#2fd3bc]">{c.gelir.toLocaleString("tr-TR")}M</span>
             <div
               className="w-full rounded-t-md transition-all"
               style={{
-                height: sifir ? 4 : `${Math.max(8, (c.gelir / maxGelir) * 150)}px`,
-                background: sifir
-                  ? "repeating-linear-gradient(45deg, rgba(255,255,255,0.12), rgba(255,255,255,0.12) 4px, transparent 4px, transparent 8px)"
-                  : "linear-gradient(180deg, #2fd3bc 0%, #1a8f7f 100%)",
+                height: `${Math.max(8, (c.gelir / maxGelir) * 150)}px`,
+                background: "linear-gradient(180deg, #2fd3bc 0%, #1a8f7f 100%)",
               }}
             />
             <span className="mono text-[10px] font-semibold text-white/70">{c.ad}</span>
             <span className="mono text-[8.5px] text-white/35">{c.ay}</span>
           </div>
-          );
-        })}
+        ))}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3 text-[11px]">
-        <span className="mono text-white/50">
-          <span className="mr-1.5 inline-block size-2 rounded-sm" style={{ background: "repeating-linear-gradient(45deg,rgba(255,255,255,0.2),rgba(255,255,255,0.2) 3px,transparent 3px,transparent 6px)" }} />
-          Ay 1-12: kuruluş + kurucu dönem (gelir 0)
-        </span>
-        <span className="mono font-bold text-[#2fd3bc]">24 ay toplam tahsilat ~10,8M ₺ · ay 24 run-rate ~12M ₺</span>
+        <span className="mono text-white/50">Ç1: ilk ~10 müteahhit kurucu (ücretsiz); gelir paralı müteahhitle Ay 1&apos;den</span>
+        <span className="mono font-bold text-[#2fd3bc]">24 ay toplam tahsilat ~21M ₺ · ay 24 run-rate ~22M ₺</span>
       </div>
     </div>
   );
@@ -84,7 +74,7 @@ export default function FinansalV2() {
       logo
       kicker="Projedar · Finansal projeksiyon"
       baslik="24 aylık plan"
-      alt="İlk yıl kuruluş + kurucu dönem (gelir yok): ürün canlı, ilk ~10 müteahhit ve ~1000 danışman kurucu programıyla ücretsiz katılır, ağ likiditesi kurulur. Ay 13'ten itibaren komisyonsuz yazılım geliri."
+      alt="Ürün canlı. İlk ~10 müteahhit kurucu programıyla ücretsiz ve hızlı katılır; paralı müteahhit geliri Ay 1'den başlar, kurucu kontenjan dolunca ivmelenir. Komisyon yok."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Muhafazakar baz senaryo · saha verisiyle güncellenir
@@ -101,7 +91,7 @@ export default function FinansalV2() {
     </Slayt>,
 
     /* 3 · 24 aylık plan */
-    <Slayt key="plan" genis kicker="24 aylık plan" baslik="İlk yıl kuruluş + kurucu, gelir Yıl 2'de ivmelenir" alt="İlk yıl bilinçli gelirsizdir: arz-önce ilkesiyle önce stok ve doğrulanmış danışman ağı kurulur; ilk ~10 müteahhit ve ~1000 danışman kurucu programıyla ücretsiz katılır. Gerçek gelir ay 13'te paralı müteahhitle başlar.">
+    <Slayt key="plan" genis kicker="24 aylık plan" baslik="Gelir Ay 1'den; kurucu kontenjan dolunca ivmelenir" alt="Piyasada binlerce proje var: arz kısıt değil, kısıt saha ve concierge kapasitesi. Kurucu 10 müteahhit ücretsiz olduğu için hızlı dolar; paralı müteahhit geliri Ay 1-2'de başlar ve referans çarkıyla ivmelenir.">
       <ProjeksiyonBar />
     </Slayt>,
 
