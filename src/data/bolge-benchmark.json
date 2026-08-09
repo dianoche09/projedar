@@ -3,7 +3,7 @@
   "olcu": "tl_m2_giris_medyan",
   "not": "Liste/başlayan fiyattan türetilmiş yaklaşık ₺/m² medyanı; satış değil, benchmark.",
   "proje_toplam": 1500,
-  "min_proje": 3,
+  "min_proje": 2,
   "il": {
     "İstanbul": {
       "m2": 114944,
@@ -219,6 +219,10 @@
       "m2": 58659,
       "proje": 9
     },
+    "Konya/Meram": {
+      "m2": 55103,
+      "proje": 2
+    },
     "Ankara/Etimesgut": {
       "m2": 53409,
       "proje": 33
@@ -227,9 +231,21 @@
       "m2": 49635,
       "proje": 60
     },
+    "Kocaeli/Gebze": {
+      "m2": 49065,
+      "proje": 2
+    },
     "Zonguldak/Ereğli": {
       "m2": 40625,
       "proje": 4
+    },
+    "Muğla/Dalaman": {
+      "m2": 33065,
+      "proje": 2
+    },
+    "Bursa/Gemlik": {
+      "m2": 17442,
+      "proje": 2
     },
     "Kayseri/Kocasinan": {
       "m2": 14286,
