@@ -464,21 +464,22 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-6xl">
             <BolumBaslik etiket="Daire tipleri" baslik="Daire tipleri ve kat planları" alt="Fiyat ve müsaitlik bu sayfada gösterilmez; canlı stok yalnız yetkili danışmana açılır." />
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className={`mx-auto mt-10 grid grid-cols-1 gap-5 ${planlar.length >= 3 ? "sm:grid-cols-2 lg:grid-cols-3" : planlar.length === 2 ? "max-w-3xl sm:grid-cols-2" : "max-w-sm"}`}>
               {planlar.map((tp) => (
-                <div key={`${tp.ad ?? tp.oda ?? ""}-${tp.net_m2 ?? ""}`} className="kart kart-3d overflow-hidden p-0">
-                  <div className="relative aspect-[4/3] bg-white">
-                    <Image src={tp.plan_url as string} alt={`${p.ad} ${tp.oda ?? ""} daire planı`} fill sizes="(max-width: 1024px) 100vw, 360px" className="object-contain p-3" />
+                <div key={`${tp.ad ?? tp.oda ?? ""}-${tp.net_m2 ?? ""}`} className="kart kart-3d flex flex-col overflow-hidden p-0">
+                  <div className="relative aspect-[4/3] border-b border-hair bg-soft">
+                    <Image src={tp.plan_url as string} alt={`${p.ad} ${tp.oda ?? ""} daire planı`} width={520} height={390} sizes="(max-width: 1024px) 100vw, 380px" className="h-full w-full object-contain p-5" />
                     <span className="absolute left-3 top-3 rounded-md bg-navy px-2.5 py-1 font-mono text-[11px] font-semibold text-white">{tp.oda}</span>
+                    <span className="absolute right-3 top-3 rounded bg-white/75 px-2 py-0.5 font-mono text-[10px] font-medium text-ink-soft backdrop-blur-sm">Kat planı</span>
                   </div>
-                  <div className="border-t border-hair p-4">
+                  <div className="p-4">
                     <p className="font-display font-bold text-ink">{tp.ad ?? `${tp.oda} daire`}</p>
-                    <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-ink-soft">
-                      {tp.net_m2 ? <span>Net {tp.net_m2} m²</span> : null}
-                      {tp.brut_m2 ? <span>Brüt {tp.brut_m2} m²</span> : null}
-                      {tp.banyo ? <span>{tp.banyo} banyo</span> : null}
-                      {tp.balkon ? <span>{tp.balkon} balkon</span> : null}
-                      {tp.otopark ? <span>otopark</span> : null}
+                    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                      {tp.net_m2 ? <span className="rounded-md bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[11px] font-semibold text-teal-d">{tp.net_m2} m² net</span> : null}
+                      {tp.brut_m2 ? <span className="rounded-md bg-paper px-2 py-0.5 font-mono text-[11px] text-ink-soft">{tp.brut_m2} m² brüt</span> : null}
+                      {tp.banyo ? <span className="rounded-md bg-paper px-2 py-0.5 font-mono text-[11px] text-ink-soft">{tp.banyo} banyo</span> : null}
+                      {tp.balkon ? <span className="rounded-md bg-paper px-2 py-0.5 font-mono text-[11px] text-ink-soft">balkon</span> : null}
+                      {tp.otopark ? <span className="rounded-md bg-paper px-2 py-0.5 font-mono text-[11px] text-ink-soft">otopark</span> : null}
                     </div>
                   </div>
                 </div>

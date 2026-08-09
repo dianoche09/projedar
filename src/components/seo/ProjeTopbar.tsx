@@ -30,7 +30,7 @@ export function ProjeTopbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,box-shadow,border-color] duration-300 ${
-        solid ? "border-[var(--cizgi)] bg-white/80 shadow-[0_1px_0_rgba(255,255,255,0.6)] backdrop-blur-xl" : "border-transparent bg-transparent"
+        solid ? "border-[var(--cizgi)] bg-white shadow-[0_6px_20px_rgba(16,36,58,0.08)]" : "border-transparent bg-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
