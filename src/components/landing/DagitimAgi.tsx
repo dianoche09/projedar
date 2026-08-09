@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
+import { YatayKaydirma } from "./YatayKaydirma";
 
 /**
  * Dağıtım ağı topolojisi (statik SVG).
@@ -9,28 +7,10 @@ import { useEffect, useRef, useState } from "react";
  * Mobilde yatay kaydırılır (mevcut karşılaştırma tablosu deseniyle tutarlı).
  */
 export function DagitimAgi() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [kaydirilabilir, setKaydirilabilir] = useState(false);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const guncelle = () => setKaydirilabilir(el.scrollWidth - el.clientWidth - el.scrollLeft > 4);
-    guncelle();
-    el.addEventListener("scroll", guncelle, { passive: true });
-    const ro = new ResizeObserver(guncelle);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", guncelle);
-      ro.disconnect();
-    };
-  }, []);
-
   return (
     <figure className="m-0">
-      <div className="relative">
-        <div ref={scrollRef} className="overflow-x-auto rounded-2xl border border-[var(--cizgi)] bg-[var(--zemin)]">
-          <div className="min-w-[820px] p-4 sm:p-6">
+      <YatayKaydirma containerClassName="rounded-2xl border border-[var(--cizgi)] bg-[var(--zemin)]">
+        <div className="min-w-[820px] p-4 sm:p-6">
           <svg
             viewBox="0 128 960 408"
             className="h-auto w-full"
@@ -115,19 +95,8 @@ export function DagitimAgi() {
             <rect x="632" y="504" width="14" height="12" rx="3" fill="#ffffff" stroke="#10243a" strokeWidth="1" />
             <text x="652" y="513" fill="#46586b" fontSize="8" className="font-mono">üretici · komuta</text>
           </svg>
-          </div>
         </div>
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute inset-y-px right-px w-16 rounded-r-2xl bg-gradient-to-l from-[var(--zemin)] to-transparent transition-opacity duration-300 ${kaydirilabilir ? "opacity-100" : "opacity-0"}`}
-        />
-        <div
-          aria-hidden
-          className={`pointer-events-none absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full border border-[var(--cizgi)] bg-white/90 px-2.5 py-1 font-mono text-[10px] tracking-wide text-ink-soft backdrop-blur-sm transition-opacity duration-300 ${kaydirilabilir ? "opacity-100" : "opacity-0"}`}
-        >
-          → kaydır
-        </div>
-      </div>
+      </YatayKaydirma>
       <figcaption className="mt-4 border-t border-[var(--cizgi)] pt-4 font-mono text-[11px] leading-relaxed text-[var(--ink-faint)]">
         <span className="text-ink-soft">Çift-satış kalkanı:</span> aktif opsiyon veritabanında benzersiz kilitle korunur; aynı daireye ikinci opsiyon yapısal olarak imkânsızdır.
         <br />
