@@ -31,6 +31,18 @@ python3 emlakjet_envanteri.py --yenile     # cache'i yok say, taze indir
 - `cikti/rapor.md` — özet (en çok projesi olan müteahhitler, il dağılımı)
 - `cikti/ham/sayfa-NNN.html` — ham cache (tekrar koşuda site yorulmaz)
 
+## Fiyat/m² benchmark (benchmark.py)
+`projeler.csv`'den il ve il+ilçe bazlı ₺/m² medyan tablosu üretir.
+```bash
+python3 benchmark.py --min-proje 3
+```
+Çıktı: `cikti/benchmark-il.csv`, `cikti/benchmark-ilce.csv`, `cikti/benchmark.md`.
+
+> **Nüans:** kart yalnız fiyat aralığı + m² aralığı verir, birim bazlı değil. İki uç
+> ölçü hesaplanır: `tl_m2_giris = fiyat_min/alan_min` (giriş daire), `tl_m2_ust =
+> fiyat_max/alan_max` (üst daire). Medyan alınır. Yaklaşıktır, benchmark amaçlı.
+> Fiyatı gizli projeler (çoğu KKTC/döviz) hesaba girmez ("-" görünür).
+
 ## Sınırlar (bilerek)
 - **Kişisel veri toplanmaz** (danışman telefon/e-posta yok) — KVKK.
 - Sadece Allow olan liste sayfaları gezilir; filtre/görsel URL'lerine girilmez.
