@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Çankaya Vadi Konakları · Projedar /proje — AĞDA (sistemde, canlı stok)</title>
+<!-- AGDA MOCKUP: sistemde olan gercek proje (Cankaya Vadi Konaklari, demo seed). Canli stok paneli GERCEK veri: 90 birim, 80 musait / 4 opsiyon / 6 satildi.
+     SEO'dan farki: guven rozeti + CANLI STOK paneli + insaat ilerleme + CTA "Havuzda ac". Ust toggle ile SEO modu da onizlenir. Fiyat YOK. Gorseller temsili (jenerik, blok/cephe yok). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e2136; --soft:#46586b; --faint:#7d8da0; --teal:#1e9b8a; --teald:#178274; --teal2:#2fd3bc; --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+    --paper:#eef1f6; --paper2:#f5f7fb; --card:#fff; --line:rgba(16,36,58,.10); --line2:rgba(16,36,58,.16); --navy:#0a1f33;
+    --green-soft:#e5f5ec; --amber-soft:#fbf0da; --red-soft:#f8e7e4; --teal-soft:#e2f3f0;
+    --disp:'Outfit',system-ui,sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace; --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .disp{font-family:var(--disp);letter-spacing:-.02em}.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
+  [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  [data-reveal].in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none;transition:none}}
+  body[data-mod="seo"] .only-agda{display:none!important}
+  body[data-mod="agda"] .only-seo{display:none!important}
+  .btn{display:inline-flex;align-items:center;gap:9px;height:52px;padding:0 24px;border-radius:14px;font-weight:600;font-size:15px;border:0;cursor:pointer;transition:transform .12s,box-shadow .2s,background .2s}
+  .btn:active{transform:scale(.97)}
+  .btn-teal{background:var(--teald);color:#fff;box-shadow:0 8px 22px rgba(23,130,116,.28)}.btn-teal:hover{background:var(--teal)}
+  .btn-dark{background:var(--navy);color:#fff}.btn-dark:hover{background:#0d2942}
+  .btn-line{background:#fff;color:var(--ink);border:1px solid var(--line2)}.btn-line:hover{border-color:rgba(16,36,58,.3)}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:40;transition:background .3s,box-shadow .3s,border-color .3s;border-bottom:1px solid transparent}
+  header.solid{background:rgba(238,241,246,.82);backdrop-filter:blur(16px) saturate(1.4);border-color:var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:800;font-size:21px;color:#fff;transition:color .3s}
+  header.solid .brand{color:var(--ink)} .brand b{color:var(--teal2)} header.solid .brand b{color:var(--teal)}
+  .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--teal2);box-shadow:0 0 14px var(--teal2)}
+  .nav .cta{height:42px;padding:0 17px;border-radius:11px;font-weight:600;font-size:13.5px;background:var(--teal);color:#fff;display:inline-flex;align-items:center;gap:7px}
+
+  .modebar{position:fixed;z-index:45;left:50%;transform:translateX(-50%);top:78px;display:inline-flex;align-items:center;gap:8px;padding:6px;border-radius:999px;background:rgba(10,31,51,.72);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.18);box-shadow:0 10px 30px rgba(2,10,18,.4)}
+  .modebar .lbl{font-size:11px;color:#aebfce;padding:0 6px 0 10px}
+  .modebar button{font-family:var(--sans);height:32px;padding:0 14px;border-radius:999px;border:0;cursor:pointer;font-weight:600;font-size:12.5px;color:#cfe0ee;background:transparent}
+  .modebar button[aria-pressed="true"]{background:var(--teal);color:#04201c}
+
+  .hero{position:relative;min-height:96svh;display:flex;align-items:flex-end;overflow:hidden;background:var(--navy)}
+  .hero-img{position:absolute;inset:0;background:url('assets/pr-hero.jpg?v=2') center/cover no-repeat;transform:scale(1.06);will-change:transform}
+  .hero-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,20,33,.55) 0%,rgba(8,20,33,.12) 30%,rgba(8,20,33,.5) 64%,rgba(8,20,33,.94) 100%)}
+  .hero-in{position:relative;z-index:2;width:100%;padding:0 0 54px;color:#fff}
+  .crumbs{font-size:12.5px;color:rgba(255,255,255,.75);margin-bottom:20px}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+  .h-eye{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal2);border:1px solid rgba(255,255,255,.22);background:rgba(8,20,33,.35);border-radius:999px;padding:8px 15px}
+  .h-eye .g{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(47,179,107,.5);animation:pulse 2s infinite}
+  .verified{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#eafff6;border:1px solid rgba(47,211,188,.5);background:rgba(47,211,188,.14);border-radius:999px;padding:8px 14px}
+  .verified svg{width:14px;height:14px}
+  @keyframes pulse{70%{box-shadow:0 0 0 8px rgba(47,179,107,0)}100%{box-shadow:0 0 0 0 rgba(47,179,107,0)}}
+  @media(prefers-reduced-motion:reduce){.h-eye .g{animation:none}}
+  h1{font-family:var(--disp);font-weight:900;font-size:clamp(42px,8vw,88px);line-height:.94;letter-spacing:-.04em;text-shadow:0 2px 40px rgba(0,0,0,.35)}
+  .h-sub{margin-top:18px;font-size:clamp(16px,2vw,19px);color:rgba(255,255,255,.9);max-width:56ch}.h-sub b{font-weight:600}
+  .h-stats{margin-top:30px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;max-width:760px}
+  .h-stat{padding:16px 18px;border-radius:16px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(14px)}
+  .h-stat .n{font-family:var(--mono);font-weight:600;font-size:clamp(19px,2.2vw,25px);letter-spacing:-.03em}
+  .h-stat .l{font-size:11.5px;color:rgba(255,255,255,.72);margin-top:5px}
+  .temsili{position:absolute;right:16px;bottom:14px;z-index:3;font-size:10.5px;color:rgba(255,255,255,.7);background:rgba(8,20,33,.5);border:1px solid rgba(255,255,255,.16);padding:4px 10px;border-radius:7px}
+
+  section{padding:66px 0}
+  .kick{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--teald);text-transform:uppercase;margin-bottom:14px}
+  h2{font-family:var(--disp);font-weight:800;font-size:clamp(25px,3.2vw,36px);letter-spacing:-.02em;line-height:1.1}
+  .lead{color:var(--soft);font-size:16.5px;line-height:1.75;max-width:62ch}.lead b{color:var(--ink);font-weight:600}
+
+  /* CANLI STOK PANEL — Agda modun yildizi */
+  .stokwrap{margin-top:-70px;position:relative;z-index:5}
+  .stok{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 30px 70px rgba(16,36,58,.16);padding:30px 30px 28px;display:grid;grid-template-columns:1.3fr .9fr;gap:34px;align-items:center}
+  .stok .live{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--teald);background:var(--teal-soft);border:1px solid rgba(30,155,138,.25);border-radius:999px;padding:7px 13px;margin-bottom:14px}
+  .stok .live .d{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  .stok h3{font-family:var(--disp);font-weight:800;font-size:22px;margin-bottom:4px}
+  .stok .muted{color:var(--faint);font-size:13.5px;margin-bottom:16px}
+  .stokbar{height:16px;border-radius:9px;overflow:hidden;display:flex;background:rgba(16,36,58,.06)}
+  .stokbar i{display:block;height:100%}
+  .s-musait{background:linear-gradient(90deg,#37c178,#2fb36b)} .s-ops{background:linear-gradient(90deg,#eab23f,#e3a12c)} .s-sat{background:linear-gradient(90deg,#dd6a5e,#d15a4e)}
+  .durumrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .dpill{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:12px;font-size:13.5px;font-weight:600}
+  .dpill .k{font-family:var(--mono)} .d-musait{background:var(--green-soft);color:#1f7d4c} .d-ops{background:var(--amber-soft);color:#9a6a12} .d-sat{background:var(--red-soft);color:#a23f34}
+  .dpill .dot{width:8px;height:8px;border-radius:50%} .d-musait .dot{background:var(--green)} .d-ops .dot{background:var(--amber)} .d-sat .dot{background:var(--red)}
+  .stok .side{border-left:1px solid var(--line);padding-left:30px}
+  .stok .side .row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line)}
+  .stok .side .row:last-of-type{border-bottom:0}
+  .stok .side .row span{color:var(--faint)} .stok .side .row b{font-family:var(--mono);font-weight:600}
+  .prog{margin-top:14px}.prog .t{display:flex;justify-content:space-between;font-size:12.5px;color:var(--soft);margin-bottom:6px}
+  .prog .bar{height:8px;border-radius:6px;background:rgba(16,36,58,.08);overflow:hidden}.prog .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));width:45%}
+  .stok .act{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+  @media(max-width:820px){.stok{grid-template-columns:1fr;gap:22px}.stok .side{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:18px}}
+
+  .ov{display:grid;grid-template-columns:1.35fr .9fr;gap:48px;align-items:center}
+  .ov .fig{border-radius:var(--r);overflow:hidden;box-shadow:0 24px 60px rgba(16,36,58,.16);position:relative}
+  .ov .fig img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}
+  .ov .fig figcaption{position:absolute;left:12px;bottom:12px;font-size:10.5px;color:rgba(255,255,255,.85);background:rgba(8,20,33,.5);padding:4px 9px;border-radius:7px}
+  @media(max-width:820px){.ov{grid-template-columns:1fr;gap:26px}.ov .fig{order:-1}}
+
+  .band{position:relative;border-radius:26px;overflow:hidden;min-height:420px;display:flex;align-items:flex-end;box-shadow:0 30px 70px rgba(16,36,58,.2)}
+  .band .bg{position:absolute;inset:0;background:url('assets/pr-konum.jpg?v=2') center/cover no-repeat}
+  .band .sc{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,20,33,.9) 0%,rgba(8,20,33,.62) 46%,rgba(8,20,33,.3) 100%)}
+  .band .c{position:relative;z-index:2;color:#fff;padding:42px;max-width:640px}.band .c h2{color:#fff}
+  .figtag{position:absolute;right:14px;top:14px;z-index:3;font-size:10.5px;color:rgba(255,255,255,.8);background:rgba(8,20,33,.5);padding:4px 9px;border-radius:7px}
+  .poi{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .poi .p{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:rgba(255,255,255,.92);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px}
+  .poi .p i{width:7px;height:7px;border-radius:50%;background:var(--teal2);margin-top:6px;flex:none;box-shadow:0 0 8px var(--teal2)}
+  @media(max-width:620px){.poi{grid-template-columns:1fr}.band .c{padding:26px}}
+
+  .cta-sec{padding-bottom:80px}
+  .cta-card{border-radius:26px;padding:46px 42px;background:linear-gradient(180deg,#fff,#f6f9fc);border:1px solid var(--line);box-shadow:0 30px 70px rgba(16,36,58,.12)}
+  .livepill{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--teald);background:var(--teal-soft);border:1px solid rgba(30,155,138,.25);border-radius:999px;padding:7px 13px;margin-bottom:16px}
+  .livepill .d{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  .modetag{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.04em;margin-bottom:12px}
+  .cta-card h2{margin-bottom:12px;max-width:24ch}.cta-card .s{color:var(--soft);font-size:16.5px;line-height:1.7;max-width:64ch;margin-bottom:28px}
+  .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .cc{border:1px solid var(--line2);border-radius:var(--r);padding:26px;background:#fff;position:relative;overflow:hidden}
+  .cc.primary{border-color:rgba(30,155,138,.4);box-shadow:0 10px 30px rgba(30,155,138,.12)}
+  .cc::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--_s,var(--teal))}
+  .cc .role{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .cc h3{font-family:var(--disp);font-weight:700;font-size:21px;margin:9px 0 9px}.cc p{font-size:14px;color:var(--soft);margin-bottom:18px}
+  .note{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--faint);text-align:center}.note b{color:var(--teald)}
+  @media(max-width:720px){.cta-grid{grid-template-columns:1fr}.cta-card{padding:32px 24px}}
+
+  .faq details{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px;background:#fff}
+  .faq summary{cursor:pointer;font-weight:600;font-size:16px;list-style:none;display:flex;justify-content:space-between;gap:14px}
+  .faq summary::-webkit-details-marker{display:none}.faq summary .pl{color:var(--teal);transition:transform .2s}
+  .faq details[open] summary .pl{transform:rotate(45deg)}.faq details p{margin-top:12px;color:var(--soft);font-size:14.5px;line-height:1.7}
+  footer{background:var(--navy);color:rgba(255,255,255,.62);padding:44px 0;font-size:13px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+  footer .b{font-family:var(--disp);font-weight:800;font-size:18px;color:#fff}footer .b b{color:var(--teal2)}
+</style>
+</head>
+<body data-mod="agda">
+<header id="hd"><div class="wrap nav">
+  <div class="brand"><span class="dot"></span>Proje<b>dar</b></div>
+  <a class="cta" href="#cta"><span class="only-agda">Havuzda aç</span><span class="only-seo">Projeni ağa ekle</span> →</a>
+</div></header>
+
+<div class="modebar" role="group" aria-label="Önizleme modu">
+  <span class="lbl">Önizleme:</span>
+  <button data-mbtn="agda" aria-pressed="true">Ağda (sistemde)</button>
+  <button data-mbtn="seo" aria-pressed="false">SEO-only</button>
+</div>
+
+<div class="hero">
+  <div class="hero-img" id="heroImg"></div><div class="hero-scrim"></div>
+  <span class="temsili">Temsili genel görsel · gerçek proje render'ı değildir</span>
+  <div class="wrap hero-in">
+    <nav class="crumbs"><a href="#">Projedar</a> / <a href="#">Ankara</a> / <a href="#">Çankaya</a> / Çankaya Vadi Konakları</nav>
+    <div class="badges">
+      <span class="h-eye only-agda"><span class="g"></span>Projedar ağında · canlı stok</span>
+      <span class="h-eye only-seo">Konut projesi dosyası</span>
+      <span class="verified only-agda"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#2fd3bc" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="#2fd3bc" stroke-width="1.6"/></svg>Doğrulanmış üretici</span>
+    </div>
+    <h1>Çankaya Vadi<br>Konakları</h1>
+    <p class="h-sub"><b>Demo İnşaat A.Ş.</b> · Ankara, Çankaya, Kızılırmak Mah. · Vadi konumunda 5 blok. Kaba inşaat aşamasında, teslim Haziran 2027.</p>
+    <div class="h-stats">
+      <div class="h-stat"><div class="n">90</div><div class="l">Konut birimi</div></div>
+      <div class="h-stat"><div class="n">5</div><div class="l">Blok</div></div>
+      <div class="h-stat"><div class="n">2+1 · 3+1</div><div class="l">Daire tipleri</div></div>
+      <div class="h-stat"><div class="n">85-125</div><div class="l">Daire m² bandı</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CANLI STOK PANEL (sadece AĞDA modda; SEO'da gizli) -->
+<div class="wrap only-agda"><div class="stokwrap"><div class="stok" data-reveal>
+  <div>
+    <span class="live"><span class="d"></span>Canlı stok · panelde anlık güncellenir</span>
+    <h3>90 birimin canlı durumu</h3>
+    <p class="muted">Fiyat ve durum tek doğru kaynaktan; müşteriye paylaşırken canlı değer basılır.</p>
+    <div class="stokbar">
+      <i class="s-musait" style="width:88.9%"></i><i class="s-ops" style="width:4.4%"></i><i class="s-sat" style="width:6.7%"></i>
+    </div>
+    <div class="durumrow">
+      <span class="dpill d-musait"><span class="dot"></span><span class="k">80</span> müsait</span>
+      <span class="dpill d-ops"><span class="dot"></span><span class="k">4</span> opsiyonlu</span>
+      <span class="dpill d-sat"><span class="dot"></span><span class="k">6</span> satıldı</span>
+    </div>
+    <div class="act">
+      <button class="btn btn-teal">Havuzda canlı stoğu aç →</button>
+      <button class="btn btn-line">Müşteri kataloğu üret</button>
+    </div>
+  </div>
+  <div class="side">
+    <div class="row"><span>Geliştirici</span><b>Demo İnşaat A.Ş.</b></div>
+    <div class="row"><span>Durum</span><b>Kaba inşaat</b></div>
+    <div class="row"><span>Teslim</span><b>Haz 2027</b></div>
+    <div class="prog">
+      <div class="t"><span>İnşaat ilerleme</span><span>%45</span></div>
+      <div class="bar"><i></i></div>
+    </div>
+  </div>
+</div></div></div>
+
+<!-- SEO modda (proje ağda değilmiş gibi) gösterilecek özet blok -->
+<div class="wrap only-seo"><div class="stokwrap"><div class="stok" data-reveal style="grid-template-columns:1fr">
+  <div>
+    <span class="live" style="background:var(--paper2);color:var(--soft);border-color:var(--line)">Bu proje Projedar ağına eklendiğinde canlı stok burada görünür</span>
+    <h3>Çankaya Vadi Konakları</h3>
+    <p class="muted">SEO modunda fiyat ve canlı stok gösterilmez; yalnız olgusal künye ve B2B davet yer alır.</p>
+    <div class="durumrow">
+      <span class="dpill d-musait" style="background:var(--paper2);color:var(--soft)">90 birim</span>
+      <span class="dpill d-musait" style="background:var(--paper2);color:var(--soft)">2+1 · 3+1</span>
+      <span class="dpill d-musait" style="background:var(--paper2);color:var(--soft)">85-125 m²</span>
+    </div>
+  </div>
+</div></div></div>
+
+<section><div class="wrap">
+  <div class="ov">
+    <div data-reveal>
+      <div class="kick">Genel bakış</div>
+      <h2>Çankaya'nın vadi aksında,<br>doğrulanmış bir geliştiriciyle</h2>
+      <p class="lead" style="margin-top:18px">Çankaya Vadi Konakları, Demo İnşaat A.Ş. imzasıyla Ankara Çankaya'nın Kızılırmak Mahallesi'nde, vadi konumunda yükseliyor. <b>5 blokta toplam 90 konut</b>; 2+1 ve 3+1 seçenekleriyle 85 m²'den 125 m²'ye planlar. İnşaat kaba yapı aşamasında (yaklaşık %45); teslim Haziran 2027 planlanıyor. Geliştirici Projedar tarafından <b>doğrulanmış üretici</b> rozetine sahip.</p>
+    </div>
+    <figure class="fig" data-reveal>
+      <img src="assets/pr-doku.jpg?v=2" alt="Modern iç mekân detayı, temsili" loading="lazy" />
+      <figcaption>Temsili görsel</figcaption>
+    </figure>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="band" data-reveal>
+    <div class="bg"></div><div class="sc"></div>
+    <span class="figtag">Temsili görsel</span>
+    <div class="c">
+      <div class="kick" style="color:var(--teal2)">Konum &amp; çevre</div>
+      <h2 style="color:#fff">Çankaya merkezine yakın vadi konumu</h2>
+      <p class="lead" style="color:rgba(255,255,255,.9);margin-top:14px">Ankara Çankaya, Kızılırmak Mahallesi; şehir merkezine ve ana ulaşım akslarına yakın, vadi manzaralı bir bölgede.</p>
+      <div class="poi">
+        <div class="p"><i></i><span><b>Çankaya merkez</b> yakın</span></div>
+        <div class="p"><i></i><span><b>Ana ulaşım aksları</b> erişilebilir</span></div>
+        <div class="p"><i></i><span><b>Vadi &amp; yeşil alan</b> manzarası</span></div>
+        <div class="p"><i></i><span><b>Kızılırmak Mahallesi</b></span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section class="cta-sec" id="cta"><div class="wrap"><div class="cta-card" data-reveal>
+  <div class="only-agda">
+    <span class="livepill"><span class="d"></span>Canlı stok · panelde güncel</span>
+    <div class="modetag">MOD: AĞDA · bu proje Projedar sisteminde</div>
+    <h2>Bu proje Projedar ağında. Stok canlı.</h2>
+    <p class="s">Tahsisli birimleri canlı fiyat ve durumla gör, tek dokunuşla paylaş. Müsait / opsiyon / satıldı ve fiyat tek doğru kaynaktan anlık güncellenir.</p>
+    <div class="cta-grid">
+      <div class="cc primary" style="--_s:var(--teal)">
+        <div class="role">Gayrimenkul danışmanı · sana tahsisli</div>
+        <h3>Canlı stoğu havuzda aç</h3>
+        <p>Çankaya Vadi Konakları'nın sana tahsisli birimlerini havuz panelinde canlı gör, müşterine anında paylaş.</p>
+        <button class="btn btn-teal">Havuzda canlı stoğu aç →</button>
+      </div>
+      <div class="cc" style="--_s:var(--amber)">
+        <div class="role">Henüz tahsisli değil misin?</div>
+        <h3>Tahsis talep et</h3>
+        <p>Geliştiriciden bu projeye tahsis iste; onaylanınca canlı stok erişimi açılır.</p>
+        <button class="btn btn-line">Tahsis talep et →</button>
+      </div>
+    </div>
+  </div>
+  <div class="only-seo">
+    <div class="modetag">MOD: SEO · bu proje henüz ağda değilmiş gibi</div>
+    <h2>Bu proje henüz Projedar ağında değil.</h2>
+    <p class="s">Ağa girdiğinde tahsisli birimler tek canlı havuzdan yönetilir. Erişim açık pazar değil, geliştirici kontrollü tahsisle işler.</p>
+    <div class="cta-grid">
+      <div class="cc primary" style="--_s:var(--navy)">
+        <div class="role">Geliştirici / müteahhit</div>
+        <h3>Bu proje senin mi? Ağa ekle</h3>
+        <p>Stoğunu, fiyatını ve dağıtımını tek noktadan yönet; yalnız yetkilendirdiğin danışmanlar satışa çıkarsın.</p>
+        <button class="btn btn-dark">Projeni ağa ekle →</button>
+      </div>
+      <div class="cc" style="--_s:var(--teal)">
+        <div class="role">Gayrimenkul danışmanı</div>
+        <h3>Bu projeyle ilgileniyor musun?</h3>
+        <p>Kaydol; proje ağa girince tahsis önceliği ve canlı stok erişimi sende olsun.</p>
+        <button class="btn btn-line">Danışman olarak kaydol →</button>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>Projedar satış komisyonuna ortak olmaz.</b> Kazancınız tamamen sizde kalır.</p>
+</div></div></section>
+
+<section class="faq" style="padding-top:0"><div class="wrap" style="max-width:840px">
+  <div class="kick">Sık sorulanlar</div>
+  <h2 style="margin-bottom:8px">Çankaya Vadi Konakları hakkında</h2>
+  <details open><summary>Proje nerede, hangi firma yapıyor?<span class="pl">+</span></summary><p>Ankara, Çankaya, Kızılırmak Mahallesi'nde; geliştirici Demo İnşaat A.Ş. (Projedar tarafından doğrulanmış üretici). İnşaat kaba yapı aşamasında, teslim Haziran 2027 planlanıyor.</p></details>
+  <details class="only-agda"><summary>Canlı stok ne demek?<span class="pl">+</span></summary><p>Proje Projedar ağında. Size tahsis edilen birimlerin müsait / opsiyon / satıldı durumu ve fiyatı havuz panelinde tek doğru kaynaktan anlık görünür; müşteriye paylaşırken canlı değer basılır. Şu an 90 birimden 80'i müsait.</p></details>
+  <details class="only-seo"><summary>Bu projeyi Projedar üzerinden satabilir miyim?<span class="pl">+</span></summary><p>Proje ağa eklendiğinde, size tahsis edilen birimleri canlı stoktan görür ve paylaşırsınız. Projedar geliştirici kontrollü tahsisle çalışır ve satış komisyonuna ortak olmaz.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="b">Proje<b>dar</b></div>
+  <div>Tahsisli canlı konut stoğu dağıtım ağı · örnek: sistemdeki demo proje verisi, görseller temsilidir.</div>
+</div></footer>
+
+<script>
+  const hd=document.getElementById('hd');
+  const onScroll=()=>{hd.classList.toggle('solid',window.scrollY>window.innerHeight*0.7);};
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.14});
+  document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+  const setMod=(m)=>{document.body.dataset.mod=m;document.querySelectorAll('[data-mbtn]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mbtn===m)));};
+  document.querySelectorAll('[data-mbtn]').forEach(b=>b.addEventListener('click',()=>setMod(b.dataset.mbtn)));
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hero=document.getElementById('heroImg');
+  if(!reduce&&hero){addEventListener('scroll',()=>{const y=window.scrollY;if(y<window.innerHeight){hero.style.transform=`scale(1.06) translateY(${y*0.12}px)`;}},{passive:true});}
+</script>
+</body>
+</html>
