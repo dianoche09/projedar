@@ -44,7 +44,7 @@ function RekabetTablo() {
     "Çok müteahhitli ortak havuz",
     "Bağımsız danışman ağına dağıtım",
     "Veritabanında çift satış kalkanı",
-    "Komisyonsuz model",
+    "Komisyona ortak olmayan model",
   ];
   const kolonlar: { ad: string; degerler: boolean[] }[] = [
     { ad: "İlan portalları", degerler: [false, true, false, false, false] },
@@ -295,7 +295,7 @@ export default function PitchV2() {
         <MaddeKart
           Ikon={Network}
           baslik="Tek özellik değil, kombinasyon"
-          metin="Çok müteahhitli havuz + tahsisli erişim + veritabanı kilidi + komisyonsuz model: her biri tek tek kopyalanabilir; dördü birden, rakibin iş modelini bozmadan olmaz."
+          metin="Çok müteahhitli havuz + tahsisli erişim + veritabanı kilidi + satış komisyonuna ortak olmama: her biri tek tek kopyalanabilir; dördü birden, rakibin iş modelini bozmadan olmaz."
           sinyal="#2fd3bc"
         />
         <MaddeKart

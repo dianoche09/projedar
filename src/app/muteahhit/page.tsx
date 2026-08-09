@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar",
     description:
-      "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde imkânsız. Komisyonsuz, kapalı devre.",
+      "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde imkânsız. Satış komisyonuna ortak olmayan, kapalı devre.",
     type: "website",
     siteName: "Projedar",
     url: `${SITE}/muteahhit`,
@@ -43,7 +43,7 @@ const NAV = [
 const KALELER = [
   {
     Icon: CircleSlash,
-    baslik: "Komisyonsuz",
+    baslik: "Komisyona ortak değiliz",
     metin: "Satıştan pay almayız, sabit yıllık anlaşma. Ne kadar satarsan sat, maliyetin değişmez; işlemin içine girmeyiz.",
     sinyal: "var(--color-teal)",
   },
@@ -138,7 +138,7 @@ function jsonLd() {
         inLanguage: "tr-TR",
         isPartOf: { "@id": `${SITE}/#website` },
         description:
-          "Geliştirici firmalar için tahsisli canlı proje satış ağı: stok, fiyat ve tahsis tek noktadan; çift satış veritabanı seviyesinde imkânsız; komisyonsuz model.",
+          "Geliştirici firmalar için tahsisli canlı proje satış ağı: stok, fiyat ve tahsis tek noktadan; çift satış veritabanı seviyesinde imkânsız; satış komisyonuna ortak olmayan model.",
       },
       {
         "@type": "BreadcrumbList",
@@ -224,7 +224,7 @@ export default function MuteahhitSayfasi() {
               <a href="#nasil-calisir" className="inline-flex min-h-[52px] items-center justify-center rounded-full border border-white/30 px-7 text-[15px] font-semibold text-white transition-colors hover:border-white/60 hover:bg-white/10 sm:min-h-12">Nasıl çalışır</a>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
-              {["Komisyonsuz", "Tahsisli görünürlük", "DB seviyesinde opsiyon kilidi", "Kapalı devre"].map((t) => (
+              {["Komisyona ortak değil", "Tahsisli görünürlük", "DB seviyesinde opsiyon kilidi", "Kapalı devre"].map((t) => (
                 <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-[rgba(11,20,32,0.45)] px-3 py-1.5 text-xs font-medium text-white/85 backdrop-blur-sm">
                   <span className="size-[5px] rounded-full bg-[#7fd4c4]" /> {t}
                 </span>

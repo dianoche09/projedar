@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Projedar Güven Protokolü",
     description:
-      "Güven sözle değil, mimariyle: DB seviyesinde opsiyon kilidi, satır seviyesinde görünürlük, doğrulanmış ağ, komisyonsuz model, kapalı devre paylaşım.",
+      "Güven sözle değil, mimariyle: DB seviyesinde opsiyon kilidi, satır seviyesinde görünürlük, doğrulanmış ağ, satış komisyonuna ortak olmama, kapalı devre paylaşım.",
     type: "website",
     siteName: "Projedar",
     url: `${SITE}/guven`,

@@ -237,7 +237,7 @@ export default function EmlakciSunumV2() {
       gorsel="/sunum/anahtar-teslim.jpg"
       hiza="sol"
       kicker="Kazanç modeli"
-      baslik="Kurucu üyelik ücretsiz, komisyonsuz kazanç"
+      baslik="Kurucu üyelik ücretsiz, kazancın %100'ü senin"
     >
       <div className="da da-3 mt-8 grid w-full gap-3 sm:grid-cols-3">
         <MaddeKart

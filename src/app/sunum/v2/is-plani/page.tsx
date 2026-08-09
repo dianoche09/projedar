@@ -70,7 +70,7 @@ export default function IsPlaniV2() {
       logo
       kicker="Projedar · İş planı"
       baslik="Yeni konut satışının dağıtım altyapısı"
-      alt="İnşaat firmalarının konut stoğunu yetkili danışman ağına canlı veriyle dağıtan, komisyonsuz ve kapalı devre B2B ağ. Ürün canlı: projedar.com."
+      alt="İnşaat firmalarının konut stoğunu yetkili danışman ağına canlı veriyle dağıtan, satış komisyonuna ortak olmayan, kapalı devre B2B ağ. Ürün canlı: projedar.com."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
         Stok kontrolü üreticide. Dağıtım ağda. Çift satış imkânsız.
@@ -208,9 +208,9 @@ export default function IsPlaniV2() {
     /* 10 · Rekabet + savunulabilirlik */
     <Slayt key="rekabet" genis kicker="Rekabet & savunulabilirlik" baslik="Kopyalanması zor olan: kombinasyon" alt="İlan portalları stoğu herkese teşhir eder; CRM'ler tek firmanın içine bakar. Beş özelliği bir arada sunan başka oyuncu yok.">
       <div className="grid gap-3 sm:grid-cols-2">
-        <MaddeKart Ikon={Network} baslik="Tek özellik değil, kombinasyon" metin="Çok müteahhitli havuz + tahsisli erişim + DB kilidi + komisyonsuz: her biri kopyalanabilir; dördü birden rakibin modelini bozmadan olmaz." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Network} baslik="Tek özellik değil, kombinasyon" metin="Çok müteahhitli havuz + tahsisli erişim + DB kilidi + satış komisyonuna ortak olmama: her biri kopyalanabilir; dördü birden rakibin modelini bozmadan olmaz." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Database} baslik="Veri birikimi" metin="Her paylaşım, görüntüleme ve opsiyon ilk günden kayıtta; geçmişe dönük üretilemez, ağ büyüdükçe derinleşir." />
-        <MaddeKart Ikon={Handshake} baslik="İki tarafı da tutan model" metin="Üretici kontrolü kaybetmez, danışman komisyonsuz ve kesintisiz kazanır; iki taraf da ağda kalmayı seçer." />
+        <MaddeKart Ikon={Handshake} baslik="İki tarafı da tutan model" metin="Üretici kontrolü kaybetmez, danışman komisyonunun tamamını kesintisiz kazanır; iki taraf da ağda kalmayı seçer." />
         <MaddeKart Ikon={Gavel} baslik="Regülasyon kalkanı" metin="EİDS açık ilanı zorlaştırırken tahsisli birebir paylaşım kapsam dışı; mevzuat modeli koruyor." />
       </div>
     </Slayt>,

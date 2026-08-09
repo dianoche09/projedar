@@ -63,7 +63,7 @@ export default function PitchDeck() {
       logo
       kicker="Projedar · Pitch deck"
       baslik="Yeni konut satışının canlı altyapısı"
-      alt="Çok-müteahhitli, üretici-kontrollü, tahsisli canlı stok dağıtım ağı. Komisyonsuz; yalnızca yetkili danışmanlara açık."
+      alt="Çok-müteahhitli, üretici-kontrollü, tahsisli canlı stok dağıtım ağı. Satış komisyonuna ortak olmaz; yalnızca yetkili danışmanlara açık."
     >
     </GorselSlayt>,
 
@@ -136,7 +136,7 @@ export default function PitchDeck() {
         />
         <MaddeKart
           Ikon={Handshake}
-          baslik="Komisyonsuz model"
+          baslik="Komisyona ortak olmayan model"
           metin="Gelir müteahhit anlaşmasından; taraflar arasındaki komisyona dokunulmaz."
           sinyal="#2fd3bc"
         />
@@ -233,16 +233,16 @@ export default function PitchDeck() {
       key="rekabet"
       kicker="Rekabet"
       baslik="Bu modeli yapan başka kimse yok"
-      alt="Piyasadaki çözümler dört gruba ayrılıyor. Çok müteahhitli, üretici kontrollü ve komisyonsuz ağ kuran tek oyuncu biziz."
+      alt="Piyasadaki çözümler dört gruba ayrılıyor. Çok müteahhitli, üretici kontrollü ve satış komisyonuna ortak olmayan ağ kuran tek oyuncu biziz."
     >
       <div className="grid gap-3 sm:grid-cols-2">
         <MatrisHucre
           baslik="Açık erişim · emlakçı kontrolü"
-          ornek="İlan portalları, Topli (komisyonlu pazaryeri): stok kontrolü dağınık, fiyat disiplini yok."
+          ornek="İlan portalları ve komisyonlu pazaryerleri: stok kontrolü dağınık, fiyat disiplini yok."
         />
         <MatrisHucre
           baslik="Açık erişim · müteahhit kontrolü"
-          ornek="Statik proje katalogları (Connject): medya var, canlı stok ve tahsis yok."
+          ornek="Statik proje katalogları: medya var, canlı stok ve tahsis yok."
         />
         <MatrisHucre
           baslik="Tahsisli · emlakçı kontrolü"
@@ -251,11 +251,11 @@ export default function PitchDeck() {
         <MatrisHucre
           biz
           baslik="Tahsisli · müteahhit kontrolü · çok-üretici"
-          ornek="Projedar: canlı havuz + tahsisli erişim + veritabanında çift satış kalkanı + komisyonsuz. Bu alanda tek oyuncu biziz."
+          ornek="Projedar: canlı havuz + tahsisli erişim + veritabanında çift satış kalkanı + satış komisyonuna ortak olmama. Bu alanda tek oyuncu biziz."
         />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Tek-firma CRM&apos;ler (Novo, Konutmatik) müteahhit hücresinde kalır; ağ etkisi kuramaz.
+        Tek-firma CRM&apos;ler müteahhit hücresinde kalır; ağ etkisi kuramaz.
       </p>
     </Slayt>,
 
