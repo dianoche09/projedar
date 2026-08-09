@@ -16,7 +16,7 @@ export function B2BCta() {
           <Share2 size={22} strokeWidth={1.75} color="var(--color-teal-d)" />
         </span>
         <p className="mt-4 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-teal-d">Gayrimenkul danışmanı mısın?</p>
-        <h3 className="mt-1 font-display text-xl font-bold tracking-tight text-ink">Yeni projeleri komisyonsuz sat</h3>
+        <h3 className="mt-1 font-display text-xl font-bold tracking-tight text-ink">Yeni projeleri sat, komisyonun tamamı sende</h3>
         <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
           Projedar ağına ücretsiz katıl; sana tahsis edilen yeni konut projelerini canlı stoktan, güncel fiyatla ve tek dokunuşla müşterine paylaş.
         </p>

@@ -113,6 +113,10 @@ const SSS: { s: string; c: string }[] = [
     c: "Yalnız sizin tahsis ettikleriniz. Tahsis daire seviyesindedir: tüm projeyi, tek bloğu ya da seçili daireleri belirlediğiniz emlakçı ve ofislere açarsınız; gerisi herkese kapalı kalır.",
   },
   {
+    s: "Rakip bir müteahhit fiyatımı veya stoğumu görebilir mi?",
+    c: "Hayır. Havuz çok-müteahhitli olsa da her firmanın verisi satır seviyesinde izole edilir (veritabanı seviyesinde erişim kuralı, uretici_id). Başka bir müteahhit sizin stoğunuzu, fiyatınızı ya da tahsislerinizi göremez; kendi verisi dışında hiçbir şeye erişemez.",
+  },
+  {
     s: "Bu bir ilan portalı mı? EİDS'e takılır mıyım?",
     c: "İlan portalı değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız tahsisli emlakçıların kapalı havuzunda görünür. İlan değil, tahsis, kapalı devre paylaşım modeli budur.",
   },
@@ -359,19 +363,19 @@ export default function MuteahhitSayfasi() {
         </div>
       </section>
 
-      {/* ============ KURUCU MÜTEAHHİT, mekanikli, dürüst kıtlık ============ */}
+      {/* ============ KURUCU MÜTEAHHİT — erken katılım değeri (kıtlık vaadi yok) ============ */}
       <section id="kurucu" className="relative scroll-mt-20">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
           <Reveal>
             <div className="kart signal-top mx-auto max-w-3xl p-8 sm:p-10" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
               <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[#9a6a12]">Kurucu Müteahhit</p>
-              <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bölge başına sınırlı kurucu kontenjanı</h2>
+              <h2 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Ağı birlikte kuran müteahhitlere özel koşullar</h2>
               <p className="mt-4 text-pretty text-[15px] leading-relaxed text-ink-soft">
-                İlk dönemde her bölgede sınırlı sayıda kurucu müteahhitle çalışıyoruz. Sebep pazarlama değil, <strong className="font-semibold text-ink">tahsis modelinin kendisi</strong>: aynı bölgede sınırsız müteahhit, emlakçı ağının odağını böler. Ağın satması için emlakçının havuzunda az ve güçlü proje olması gerekir.
+                Kuruluş döneminde ağa erken katılan müteahhitlerle koşulları sabitliyoruz ve kurulumu birlikte yapıyoruz. Erken kurucunun avantajı <strong className="font-semibold text-ink">tahsis modelinin kendisinden</strong> gelir: ağın satması için emlakçının havuzunda güçlü ve güncel proje olması gerekir, erken kurucular bu odağın merkezinde yer alır.
               </p>
               <ul className="mt-5 flex flex-col gap-2.5">
                 {[
-                  "Bölgedeki emlakçı ağının odağı kurucu projelerde toplanır",
+                  "Emlakçı ağının odağı kurucu projelerde toplanır",
                   "Kuruluş dönemi anlaşma koşulları kurucu müteahhit için sabitlenir",
                   "Kurulum concierge ile yapılır: stok ve tahsis yapınızı birlikte kurarız",
                 ].map((m) => (
@@ -381,9 +385,9 @@ export default function MuteahhitSayfasi() {
                   </li>
                 ))}
               </ul>
-              <p className="mt-5 font-mono text-[11.5px] text-[var(--ink-faint)]">Sahte sayaç yok: bölgenizdeki güncel kontenjan durumunu görüşmede net söyleriz.</p>
+              <p className="mt-5 font-mono text-[11.5px] text-[var(--ink-faint)]">Suni aciliyet, sahte sayaç yok: kuruluş dönemi koşullarını görüşmede net konuşuruz.</p>
               <div className="mt-6">
-                <Link href="/kayit?rol=uretici" className="btn-primary px-7 text-[15px] max-sm:min-h-[52px] max-sm:w-full hover:-translate-y-0.5">Kontenjan durumunu sor</Link>
+                <Link href="/kayit?rol=uretici" className="btn-primary px-7 text-[15px] max-sm:min-h-[52px] max-sm:w-full hover:-translate-y-0.5">Kuruluş koşullarını konuş</Link>
               </div>
             </div>
           </Reveal>
@@ -439,7 +443,7 @@ export default function MuteahhitSayfasi() {
                 ))}
               </div>
               <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Stoğun, fiyatın, ağın, tek komuta merkezinden.</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Projeni ağa açmadan önce modeli birlikte konuşalım: stok yapın, tahsis kuralların, bölgendeki kurucu kontenjanı.</p>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Projeni ağa açmadan önce modeli birlikte konuşalım: stok yapın, tahsis kuralların, kuruluş dönemi koşulların.</p>
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link href="/kayit?rol=uretici" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-[var(--golge-3)] sm:min-h-[44px] sm:w-auto">Projenizi konuşalım</Link>
                 <a href="#nasil-calisir" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Nasıl çalışır</a>

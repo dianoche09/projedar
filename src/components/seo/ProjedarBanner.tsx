@@ -18,7 +18,7 @@ export function ProjedarBanner() {
               Yeni konut projelerinin <span className="text-[#7fd4c4]">tahsisli canlı satış ağı</span>
             </p>
             <p className="mt-1 max-w-2xl text-xs leading-relaxed text-white/72 sm:text-[13px]">
-              Projedar, konut projelerini yetkili gayrimenkul danışmanlarıyla buluşturur. İlan portalı değildir; komisyonsuz, kapalı devre B2B. Emlakçı komisyonsuz satar, müteahhit stoğunu ve fiyatını tek panelden yönetir.
+              Projedar, konut projelerini yetkili gayrimenkul danışmanlarıyla buluşturur. İlan portalı değildir; kapalı devre B2B ve Projedar satış komisyonuna ortak olmaz. Danışman komisyonunun tamamını alır (Projedar pay almaz), müteahhit stoğunu ve fiyatını tek panelden yönetir.
             </p>
           </div>
         </div>

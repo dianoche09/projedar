@@ -103,7 +103,7 @@ export function DavetPopup({ slug, projeAd }: { slug: string; projeAd: string })
               </Link>
               <Link href="/kayit?rol=emlakci&kaynak=proje-seo-popup" className="group flex items-center gap-3 rounded-2xl border border-[var(--cizgi)] p-3.5 text-left transition-colors hover:border-teal/50 hover:bg-teal/5">
                 <span className="grid size-10 flex-none place-items-center rounded-xl bg-teal/10"><Users size={20} strokeWidth={1.7} className="text-teal-d" /></span>
-                <span className="min-w-0 flex-1"><span className="block text-sm font-bold text-ink">Gayrimenkul danışmanıyım</span><span className="block text-xs text-ink-soft">Ağa katıl, yeni projeleri komisyonsuz sat.</span></span>
+                <span className="min-w-0 flex-1"><span className="block text-sm font-bold text-ink">Gayrimenkul danışmanıyım</span><span className="block text-xs text-ink-soft">Ağa katıl, kazancın tamamı sende; Projedar pay almaz.</span></span>
                 <ChevronRight size={16} className="flex-none text-ink-soft transition-transform group-hover:translate-x-0.5" />
               </Link>
               <button type="button" onClick={() => { setHata(null); setMod("musteri"); }} className="group flex items-center gap-3 rounded-2xl border border-[var(--cizgi)] p-3.5 text-left transition-colors hover:border-teal/50 hover:bg-teal/5">

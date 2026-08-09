@@ -364,6 +364,21 @@ export default function EmlakciLanding() {
         </div>
       </section>
 
+      {/* ============ EİDS / PAYLAŞIM POLİTİKASI ŞERİDİ ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6">
+          <Reveal className="mx-auto flex max-w-2xl flex-col items-center gap-2 text-center">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Uyumluluk</span>
+            <p className="text-pretty font-display text-lg font-bold tracking-tight text-ink">
+              Paylaşımın birebir ve WhatsApp üzerinden. <span className="text-teal">Açık ilan değil, sana tahsisli link.</span>
+            </p>
+            <p className="max-w-xl text-pretty text-sm leading-relaxed text-ink-soft">
+              Sana tahsisli link bir ilan yayını değildir; müşterine birebir gönderilir (WhatsApp, mesaj). Bu seni EİDS ilan rejiminin sosyal medya kısıtından ve paylaşım başına ceza riskinden uzak tutar. Açık ilan gibi yayınlamak yerine hedefli, izlenebilir paylaşırsın.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ============ SSS ============ */}
       <section id="sss" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
         <div className="mx-auto w-full max-w-3xl px-5 py-20 sm:px-6 sm:py-24">

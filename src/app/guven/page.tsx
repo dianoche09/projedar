@@ -47,6 +47,10 @@ const SSS: { s: string; c: string }[] = [
     c: "Aktif opsiyon veritabanı seviyesinde tekil kayıt kuralıyla (unique kilit) korunur. İkinci bir opsiyon talebi uygulamaya değil, doğrudan veritabanı kuralına çarpar ve reddedilir. Bu bir operasyon sözü değil, teknik imkânsızlıktır.",
   },
   {
+    s: "Rakip müteahhitler birbirinin verisini görebilir mi?",
+    c: "Göremez. Havuz çok-müteahhitli olsa da her firmanın stoğu, fiyatı ve tahsisi satır seviyesinde izole edilir; erişim veritabanı kuralıyla kendi verisine kilitlidir. Başka bir müteahhit sizin verinize erişemez. Bu da operasyon sözü değil, mimari sınırdır.",
+  },
+  {
     s: "Projedar bir ilan sitesi mi? EİDS'e tabi mi?",
     c: "Değildir. Son kullanıcıya açık ilan yayını yoktur; stok yalnız müteahhidin tahsis ettiği doğrulanmış danışmanların kapalı havuzunda görünür ve paylaşım birebir linkle yapılır. Model ilan değil, tahsistir.",
   },
