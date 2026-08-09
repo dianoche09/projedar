@@ -1043,3 +1043,78 @@ a:focus-visible,
     min-height: 0 !important;
   }
 }
+
+/* =========================================================
+   SEKTÖREL İÇERİK KATMANI — gövde tipografisi (.icerik-govde)
+   /rehber · /araclar · /sozluk · /karsilastirma · /sablonlar
+   ========================================================= */
+.icerik-govde {
+  color: var(--color-ink-soft);
+  font-size: 15px;
+  line-height: 1.72;
+}
+.icerik-govde > * + * {
+  margin-top: 1rem;
+}
+.icerik-govde p {
+  text-wrap: pretty;
+}
+.icerik-govde strong {
+  color: var(--color-ink);
+  font-weight: 650;
+}
+.icerik-govde a {
+  color: var(--color-teal-d);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(30, 155, 138, 0.32);
+  transition: text-decoration-color 0.15s ease;
+}
+.icerik-govde a:hover {
+  text-decoration-color: var(--color-teal);
+}
+.icerik-govde h3 {
+  color: var(--color-ink);
+  font-family: var(--font-display), "Outfit", sans-serif;
+  font-weight: 700;
+  font-size: 1.06rem;
+  letter-spacing: -0.01em;
+  margin-top: 1.6rem;
+  scroll-margin-top: 7rem;
+}
+.icerik-govde ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.icerik-govde ul > li {
+  position: relative;
+  padding-left: 1.4rem;
+}
+.icerik-govde ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0.32rem;
+  top: 0.62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-teal);
+}
+.icerik-govde ol {
+  list-style: decimal;
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.icerik-govde ol > li::marker {
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+/* nested modüller (tablo, senaryo kutusu) gövde ritmini kırmasın */
+.icerik-govde .not-prose {
+  margin-top: 1.4rem;
+}

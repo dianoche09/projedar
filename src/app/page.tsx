@@ -579,16 +579,26 @@ export default async function Home() {
       <AgBuyuyor
         altKisim={
           <footer className="relative mt-auto border-t border-white/10">
-            <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-5 py-10 sm:px-6 md:flex-row md:justify-between">
+            <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 px-5 py-10 sm:px-6 md:flex-row md:items-start md:justify-between">
               <div className="flex flex-col items-center gap-3 md:items-start">
                 <Logo size={24} wordmark acik />
-                <p className="max-w-xs text-center text-xs leading-relaxed text-white/60 md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
+                <p className="max-w-xs text-center text-xs leading-relaxed text-white/60 md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan konut stoğu dağıtım ağı.</p>
               </div>
-              <nav aria-label="Yasal" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-white/70">
-                <Link href="/kullanim-kosullari" className="transition-colors duration-200 hover:text-white hover:underline">Kullanım Koşulları</Link>
-                <Link href="/gizlilik" className="transition-colors duration-200 hover:text-white hover:underline">Gizlilik</Link>
-                <Link href="/kvkk-aydinlatma" className="transition-colors duration-200 hover:text-white hover:underline">KVKK Aydınlatma</Link>
-              </nav>
+              <div className="flex flex-col gap-8 text-center sm:flex-row sm:gap-14 md:text-left">
+                <nav aria-label="Keşfet" className="flex flex-col gap-2.5">
+                  <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-white/45">Keşfet</p>
+                  <Link href="/muteahhit" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Müteahhitler için</Link>
+                  <Link href="/emlakci" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Danışmanlar için</Link>
+                  <Link href="/konut-projeleri" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Konut projeleri</Link>
+                  <Link href="/rehber" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Rehberler</Link>
+                </nav>
+                <nav aria-label="Yasal" className="flex flex-col gap-2.5">
+                  <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-white/45">Yasal</p>
+                  <Link href="/kullanim-kosullari" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Kullanım Koşulları</Link>
+                  <Link href="/gizlilik" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">Gizlilik</Link>
+                  <Link href="/kvkk-aydinlatma" className="text-[13px] font-medium text-white/70 transition-colors duration-200 hover:text-white hover:underline">KVKK Aydınlatma</Link>
+                </nav>
+              </div>
             </div>
             <div className="border-t border-white/10 px-5 py-5 text-center text-[11px] text-white/45 sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
           </footer>

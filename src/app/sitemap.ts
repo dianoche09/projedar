@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { projeIcerikSkoru, ICERIK_ESIGI } from "@/lib/seo/icerik-esigi";
+import { sitemapIcerikleri, icerikYolu } from "@/lib/icerik/kayit";
 import { tumHubProjeleri } from "@/lib/seo/konut-hub";
 import { tumFirmaSluglari } from "@/lib/seo/firma";
 
@@ -18,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE}/muteahhit`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/emlakci`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/guven`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE}/rehber`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${SITE}/kullanim-kosullari`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE}/gizlilik`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE}/kvkk-aydinlatma`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
@@ -141,5 +143,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     firmalar = [];
   }
 
-  return [...statik, ...hub, ...firmalar, ...projeler, ...katalog];
+  // Sektörel içerik sayfaları (registry'den otomatik; yüzlerce içerik olsa da
+  // sitemap elle güncellenmez). Yalnız published + index'lenebilir olanlar.
+  const icerikler: MetadataRoute.Sitemap = sitemapIcerikleri().map((m) => ({
+    url: `${SITE}${icerikYolu(m)}`,
+    lastModified: new Date(m.updatedAt),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  return [...statik, ...icerikler, ...hub, ...firmalar, ...projeler, ...katalog];
 }
