@@ -43,3 +43,6 @@ projepazar-sistem/
 
 # diagram-design skill (1.8MB assets) — proje-scope, commit etme
 .claude/skills/
+
+# İzole geliştirme worktree'leri (repoya girmez)
+.worktrees/
