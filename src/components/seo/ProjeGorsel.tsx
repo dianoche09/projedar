@@ -39,7 +39,7 @@ export function AgdaGuvenSeridi({
             <span className="size-2 rounded-full bg-green nabiz" /> Canlı stok danışman panelinde
           </span>
           <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action ml-auto whitespace-nowrap hover:-translate-y-0.5">
-            Havuzda aç
+            Canlı stoğu gör
           </Link>
         </div>
       </div>

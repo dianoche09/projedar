@@ -29,7 +29,7 @@ const NAV = [
   { etiket: "Güven", href: "/guven" },
 ];
 
-type TipRow = { oda: string | null; net_m2: number | null };
+type TipRow = { ad?: string | null; oda: string | null; net_m2: number | null; brut_m2?: number | null; plan_url?: string | null; banyo?: number | null; balkon?: number | null; otopark?: number | null };
 type BenzerProje = { ad: string; public_slug: string; ilce: string | null; il: string | null; asama: string | null; odaTipleri: string[] };
 type Kaynak = "proje" | "katalog";
 
@@ -136,7 +136,7 @@ async function projeGetir(slug: string): Promise<Veri | null> {
     .maybeSingle();
   if (!proje) return null;
   const [{ data: tipler }, { count: birimSayisi }] = await Promise.all([
-    supabase.from("daire_tipi").select("oda, net_m2").eq("proje_id", proje.id),
+    supabase.from("daire_tipi").select("ad, oda, net_m2, brut_m2, plan_url, banyo, balkon, otopark").eq("proje_id", proje.id),
     supabase.from("birim").select("id", { count: "exact", head: true }).eq("proje_id", proje.id),
   ]);
   const tipListe = (tipler ?? []) as TipRow[];
@@ -321,6 +321,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const interiorGorsel = havuzGorsel(slug, "ic");
   const amenityGorsel = havuzGorsel(slug, "amenity");
   const cevreGorsel = havuzGorsel(slug, "konum");
+  const planlar = kaynak === "proje" ? veri.tipListe.filter((tp) => tp.plan_url) : []; // Ağda: gerçek daire/kat planları
 
   // ---- Zengin içerik metinleri (varsa) ----
   const t = (icerik?.metin ?? {}) as { ozet?: string | null; konum_cevre?: string | null; daire_tipleri?: string | null; ozellikler_metni?: string | null; yatirim_teslim?: string | null };
@@ -468,8 +469,35 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </section>
       ) : null}
 
-      {/* ============ DAİRE TİPLERİ (split + iç mekan görseli) ============ */}
-      {daireMetin || odaTipleri.length || dagilim ? (
+      {/* ============ DAİRE PLANLARI (Ağda: gerçek kat/daire planları) ============ */}
+      {planlar.length ? (
+        <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
+          <div className="mx-auto w-full max-w-6xl">
+            <BolumBaslik etiket="Daire tipleri" baslik="Daire tipleri ve kat planları" alt="Fiyat ve müsaitlik bu sayfada gösterilmez; canlı stok yalnız yetkili danışmana açılır." />
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {planlar.map((tp) => (
+                <div key={`${tp.ad ?? tp.oda ?? ""}-${tp.net_m2 ?? ""}`} className="kart kart-3d overflow-hidden p-0">
+                  <div className="relative aspect-[4/3] bg-white">
+                    <Image src={tp.plan_url as string} alt={`${p.ad} ${tp.oda ?? ""} daire planı`} fill sizes="(max-width: 1024px) 100vw, 360px" className="object-contain p-3" />
+                    <span className="absolute left-3 top-3 rounded-md bg-navy px-2.5 py-1 font-mono text-[11px] font-semibold text-white">{tp.oda}</span>
+                  </div>
+                  <div className="border-t border-hair p-4">
+                    <p className="font-display font-bold text-ink">{tp.ad ?? `${tp.oda} daire`}</p>
+                    <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-ink-soft">
+                      {tp.net_m2 ? <span>Net {tp.net_m2} m²</span> : null}
+                      {tp.brut_m2 ? <span>Brüt {tp.brut_m2} m²</span> : null}
+                      {tp.banyo ? <span>{tp.banyo} banyo</span> : null}
+                      {tp.balkon ? <span>{tp.balkon} balkon</span> : null}
+                      {tp.otopark ? <span>otopark</span> : null}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {daireMetin ? <p className="mx-auto mt-6 max-w-3xl text-pretty text-center text-[15px] leading-relaxed text-ink-soft">{daireMetin}</p> : null}
+          </div>
+        </section>
+      ) : (daireMetin || odaTipleri.length || dagilim) ? (
         <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[.95fr_1.05fr]">
             <figure className="relative overflow-hidden rounded-[22px] shadow-[var(--golge-3)]">
@@ -590,8 +618,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </section>
       ) : null}
 
-      {/* ============ MÜTEAHHİT KARTI (varsa) ============ */}
-      {u?.ad ? (
+      {/* ============ MÜTEAHHİT KARTI (yalnız anlamlı bilgi varsa; boş/yarım kart gösterme) ============ */}
+      {u?.ad && (kaynak === "proje" || up.hakkinda || up.kurulus_yili || up.il || up.ilce) ? (
         <section className="px-5 py-14 sm:px-6">
           <div className="mx-auto max-w-3xl">
             <div className="kart signal-top p-7" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
@@ -612,52 +640,55 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </section>
       ) : null}
 
-      {/* ============ İKİ-MOD CTA (Ağda: canlı stok/havuz · SEO: davet) ============ */}
+      {/* ============ İKİ-MOD CTA (koyu komuta; dikkat çekici para bölümü) ============ */}
       <section className="px-5 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
-          <div className="relative overflow-hidden rounded-[26px] border border-[var(--cizgi)] bg-gradient-to-b from-white to-[#f6f9fc] p-8 shadow-[var(--golge-3)] sm:p-11">
-            {kaynak === "proje" ? (
-              <>
-                <span className="inline-flex items-center gap-2 rounded-full border border-teal/25 bg-[var(--color-teal-soft)] px-3 py-1.5 text-[12.5px] font-semibold text-teal-d"><span className="size-2 rounded-full bg-green nabiz" />Bu proje Projedar ağında · canlı stok danışman panelinde</span>
-                <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bu proje Projedar ağında. Stok canlı.</h2>
-                <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft sm:text-base">Tahsisli birimleri canlı fiyat ve durumla görür, müşterine tek dokunuşla paylaşırsın. Müsaitlik ve fiyat tek doğru kaynaktan anlık güncellenir; birim sayıları herkese açık gösterilmez.</p>
-                <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı</p>
-                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Canlı stoğu havuzda aç</h3>
-                    <p className="mt-2 text-sm text-ink-soft">Sana tahsisli birimleri havuz panelinde canlı gör, müşterine paylaş.</p>
-                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action mt-4 hover:-translate-y-0.5">Havuzda aç</Link>
+          <div className="komuta relative overflow-hidden rounded-[28px] p-8 shadow-[var(--golge-3)] sm:p-12">
+            <div className="komuta-grid absolute inset-0" aria-hidden />
+            <div className="relative text-white">
+              {kaynak === "proje" ? (
+                <>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-[#7fd4c4] backdrop-blur-md"><span className="size-2 rounded-full bg-green nabiz" />Bu proje Projedar ağında · canlı stok danışman panelinde</span>
+                  <h2 className="mt-4 max-w-[24ch] font-display text-3xl font-extrabold tracking-tight sm:text-[40px]">Bu proje Projedar ağında. Stok canlı.</h2>
+                  <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-white/75 sm:text-base">Tahsisli birimleri canlı fiyat ve durumla görür, müşterine tek dokunuşla paylaşırsın. Müsaitlik ve fiyat tek doğru kaynaktan anlık güncellenir; birim sayıları herkese açık gösterilmez.</p>
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı · sana tahsisli</p>
+                      <h3 className="mt-2 font-display text-lg font-bold text-ink">Canlı daire stoğunu gör</h3>
+                      <p className="mt-2 text-sm text-ink-soft">Sana tahsisli birimlerin daire, fiyat ve durumunu panelde canlı gör, müşterine paylaş.</p>
+                      <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action mt-4 hover:-translate-y-0.5">Canlı daireleri gör</Link>
+                    </div>
+                    <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Henüz tahsisli değil misin?</p>
+                      <h3 className="mt-2 font-display text-lg font-bold text-ink">Tahsis talep et</h3>
+                      <p className="mt-2 text-sm text-ink-soft">Geliştiriciden bu projeye tahsis iste; onaylanınca canlı stok erişimin açılır.</p>
+                      <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-ghost mt-4">Tahsis talep et</Link>
+                    </div>
                   </div>
-                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
-                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Henüz tahsisli değil misin?</p>
-                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Tahsis talep et</h3>
-                    <p className="mt-2 text-sm text-ink-soft">Geliştiriciden bu projeye tahsis iste; onaylanınca canlı stok açılır.</p>
-                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-ghost mt-4">Tahsis talep et</Link>
+                </>
+              ) : (
+                <>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 font-mono text-[12px] text-white/70 backdrop-blur-md">Bu proje henüz Projedar ağında değil</span>
+                  <h2 className="mt-4 max-w-[24ch] font-display text-3xl font-extrabold tracking-tight sm:text-[40px]">Bu projeyi Projedar ağında sat.</h2>
+                  <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-white/75 sm:text-base">Projedar açık pazar değil: erişim geliştirici kontrollü tahsisle yönetilen nötr bir ağdır. Proje ağa girdiğinde tahsisli birimler tek canlı havuzdan yönetilir.</p>
+                  <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                    <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı</p>
+                      <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu projeyi ağda sat</h3>
+                      <p className="mt-2 text-sm text-ink-soft">Ücretsiz katıl; proje ağa girince tahsis önceliği ve canlı stok erişimi sende olsun.</p>
+                      <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action mt-4 hover:-translate-y-0.5">Danışman olarak katıl</Link>
+                    </div>
+                    <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
+                      <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Geliştirici / müteahhit</p>
+                      <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu proje senin mi? Ağa ekle</h3>
+                      <p className="mt-2 text-sm text-ink-soft">Stoğunu, fiyatını ve dağıtımını tek noktadan yönet; yalnız yetkili danışmanlar satsın.</p>
+                      <Link href="/kayit?rol=uretici&kaynak=proje-seo" className="btn-ghost mt-4">Projeni ağa ekle</Link>
+                    </div>
                   </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <span className="inline-flex items-center gap-2 rounded-full border border-[var(--cizgi-2)] bg-paper px-3 py-1.5 font-mono text-[12px] text-ink-soft">Bu proje henüz Projedar ağında değil</span>
-                <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bu projeyi Projedar ağında sat.</h2>
-                <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft sm:text-base">Projedar açık pazar değil: erişim geliştirici kontrollü tahsisle yönetilen nötr bir ağdır. Proje ağa girdiğinde tahsisli birimler tek canlı havuzdan yönetilir.</p>
-                <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
-                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Geliştirici / müteahhit</p>
-                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu proje senin mi? Ağa ekle</h3>
-                    <p className="mt-2 text-sm text-ink-soft">Stoğunu, fiyatını ve dağıtımını tek noktadan yönet; yalnız yetkili danışmanlar satsın.</p>
-                    <Link href="/kayit?rol=uretici&kaynak=proje-seo" className="btn-primary mt-4 hover:-translate-y-0.5">Projeni ağa ekle</Link>
-                  </div>
-                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı</p>
-                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu projeyle ilgileniyor musun?</h3>
-                    <p className="mt-2 text-sm text-ink-soft">Kaydol; proje ağa girince tahsis önceliği ve canlı stok erişimi sende olsun.</p>
-                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-ghost mt-4">Danışman olarak kaydol</Link>
-                  </div>
-                </div>
-              </>
-            )}
-            <p className="mt-6 border-t border-hair pt-5 text-center text-sm text-[var(--ink-faint)]"><span className="font-semibold text-teal-d">Projedar satış komisyonuna ortak olmaz.</span> Kazancınız tamamen sizde kalır.</p>
+                </>
+              )}
+              <p className="mt-7 border-t border-white/15 pt-5 text-center text-sm text-white/70"><span className="font-semibold text-[#7fd4c4]">Projedar satış komisyonuna ortak olmaz.</span> Kazancınız tamamen sizde kalır.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -667,17 +698,28 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-6xl">
             <div><BolumBaslik etiket="Ağdaki diğer projeler" baslik={p.ilce ? `${p.ilce} ve çevresinden` : "İlgili projeler"} /></div>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {veri.benzer.map((b) => (
-                <div key={b.public_slug}>
-                  <Link href={`/proje/${b.public_slug}`} className="kart kart-3d group flex h-full flex-col p-5">
-                    <div className="flex items-center justify-between"><span className="rounded-md bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-teal-d">{ASAMA_ETIKET[b.asama as InsaatAsama] ?? "Proje"}</span><ChevronRight size={16} className="text-ink-soft transition-transform group-hover:translate-x-0.5" /></div>
-                    <h3 className="mt-3 font-display text-base font-bold tracking-tight text-ink">{b.ad}</h3>
-                    <p className="mt-1 text-xs text-ink-soft">{[b.ilce, b.il].filter(Boolean).join(", ")}</p>
-                    {b.odaTipleri.length ? <p className="mt-3 font-mono text-[11px] text-ink-soft">{b.odaTipleri.join(" · ")}</p> : null}
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {veri.benzer.map((b) => {
+                const kapak = temaGorsel(b.il) ?? havuzGorsel(b.public_slug, "konum");
+                return (
+                  <Link key={b.public_slug} href={`/proje/${b.public_slug}`} className="kart kart-3d group flex h-full flex-col overflow-hidden p-0">
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <Image src={kapak} alt="" fill sizes="(max-width: 1024px) 100vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.04) 0%, rgba(8,20,34,0.58) 100%)" }} />
+                      <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">{ASAMA_ETIKET[b.asama as InsaatAsama] ?? "Proje"}</span>
+                      <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>
+                      <h3 className="absolute inset-x-3 bottom-2.5 font-display text-base font-bold tracking-tight text-white drop-shadow">{b.ad}</h3>
+                    </div>
+                    <div className="flex flex-1 flex-col p-4">
+                      <p className="flex items-center gap-1 text-xs text-ink-soft"><MapPin size={12} className="opacity-70" />{[b.ilce, b.il].filter(Boolean).join(", ")}</p>
+                      <div className="mt-3 flex items-center justify-between gap-2">
+                        {b.odaTipleri.length ? <div className="flex flex-wrap gap-1">{b.odaTipleri.slice(0, 4).map((o) => <span key={o} className="rounded bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[10.5px] font-semibold text-teal-d">{o}</span>)}</div> : <span />}
+                        <ChevronRight size={16} className="flex-none text-ink-soft transition-transform group-hover:translate-x-0.5" />
+                      </div>
+                    </div>
                   </Link>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
