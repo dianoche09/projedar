@@ -66,6 +66,11 @@ const YONETIM: NavItem[] = [
     ikon: ic(<><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></>),
   },
   {
+    href: "/admin/kurucu",
+    etiket: "Kurucu Liste",
+    ikon: ic(<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="m22 11-3 3-1.5-1.5" /></>),
+  },
+  {
     href: "/admin/seo",
     etiket: "SEO Sayfaları",
     ikon: ic(<><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2c2.7 3 2.7 17 0 20M12 2c-2.7 3-2.7 17 0 20" /></>),
