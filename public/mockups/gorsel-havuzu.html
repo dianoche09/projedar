@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar · Görsel Havuzu (temsili, telifsiz)</title>
+<!-- /proje sayfalari icin GORSEL HAVUZU. Hepsi nano-banana-pro uretimi, TEMSILI, telifsiz.
+     Kural: proje blok/bina DIS CEPHE gorunumu YOK. Hero = ILE gore secilir; ic/amenity/konum/detay = slug-hash ile rotasyon. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0e2136;--soft:#46586b;--faint:#7d8da0;--teal:#1e9b8a;--teald:#178274;--line:rgba(16,36,58,.1);--paper:#eef1f6;--navy:#0a1f33;
+    --disp:'Outfit',system-ui,sans-serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}img{display:block;width:100%;height:100%;object-fit:cover}
+  header{background:var(--navy);color:#fff;padding:54px 0 40px}
+  .brand{font-family:var(--disp);font-weight:800;font-size:20px;margin-bottom:20px}.brand b{color:#2fd3bc}
+  h1{font-family:var(--disp);font-weight:900;font-size:clamp(30px,5vw,48px);letter-spacing:-.03em;line-height:1.02}
+  .sub{margin-top:14px;color:#aebfce;font-size:16px;max-width:76ch}
+  .rules{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+  .rule{font-size:12.5px;color:#cfe0ee;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:7px 13px;background:rgba(255,255,255,.05)}
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  .sh{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .sh h2{font-family:var(--disp);font-weight:800;font-size:23px;letter-spacing:-.01em}
+  .sh .cnt{font-family:var(--mono);font-size:12.5px;color:var(--faint)}
+  .lead{color:var(--soft);font-size:14.5px;max-width:70ch;margin-bottom:22px}
+  .grid{display:grid;gap:14px}
+  .g-hero{grid-template-columns:repeat(4,1fr)}
+  .g-4{grid-template-columns:repeat(4,1fr)}
+  .g-3{grid-template-columns:repeat(3,1fr)}
+  .card{border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 8px 22px rgba(16,36,58,.08);position:relative}
+  .card .im{position:relative;overflow:hidden}
+  .ar-169 .im{aspect-ratio:16/9}.ar-43 .im{aspect-ratio:4/3}.ar-34 .im{aspect-ratio:3/4}
+  .card .lbl{position:absolute;left:10px;bottom:10px;z-index:2;font-size:12px;font-weight:600;color:#fff;background:rgba(8,20,33,.62);backdrop-filter:blur(4px);padding:5px 11px;border-radius:8px}
+  .card .lbl b{color:#2fd3bc}
+  .tem{position:absolute;right:8px;top:8px;z-index:2;font-size:9.5px;color:rgba(255,255,255,.85);background:rgba(8,20,33,.5);padding:3px 7px;border-radius:6px}
+  @media(max-width:900px){.g-hero,.g-4{grid-template-columns:repeat(2,1fr)}.g-3{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.g-hero,.g-4,.g-3{grid-template-columns:1fr}}
+  footer{padding:32px 0 60px;color:var(--faint);font-size:12.5px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand">Proje<b>dar</b> · görsel havuzu</div>
+  <h1>/proje sayfaları için görsel havuzu</h1>
+  <p class="sub">Tüm görseller üretilmiş, <b>temsili</b> ve telifsizdir (biz sahibiz). Hiçbiri projenin gerçek blok/bina dış cephesini iddia etmez. Hero, projenin <b>iline</b> göre seçilir; iç mekan, amenity, konum ve detay görselleri her sayfada <b>slug-hash ile rotasyon</b>la farklılaşır. Ağda modda geliştirici kendi lisanslı fotoğrafını yüklerse o kullanılır.</p>
+  <div class="rules">
+    <span class="rule">Proje blok/cephe görünümü YOK</span>
+    <span class="rule">İç dekor · genel şehir · iç amenity · bağlantı serbest</span>
+    <span class="rule">Fiyat/stok sayısı görselde yok</span>
+    <span class="rule">Şehir-bazlı hero</span>
+    <span class="rule">Rotasyon = farklı proje, farklı görsel</span>
+  </div>
+</div></header>
+
+<section><div class="wrap">
+  <div class="sh"><h2>Şehir hero havuzu</h2><span class="cnt">8 il · projenin iline göre seçilir</span></div>
+  <p class="lead">Projenin bulunduğu şehre göre hero atanır: Ankara projesi Ankara görselini, İstanbul projesi İstanbul görselini alır. Genel şehir panoraması, spesifik bina değil.</p>
+  <div class="grid g-hero">
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/pr-hero.jpg?v=2" loading="lazy" alt="İstanbul"><span class="lbl"><b>İstanbul</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-ankara.jpg" loading="lazy" alt="Ankara"><span class="lbl"><b>Ankara</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-izmir.jpg" loading="lazy" alt="İzmir"><span class="lbl"><b>İzmir</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-bursa.jpg" loading="lazy" alt="Bursa"><span class="lbl"><b>Bursa</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-antalya.jpg" loading="lazy" alt="Antalya"><span class="lbl"><b>Antalya</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-kocaeli.jpg" loading="lazy" alt="Kocaeli"><span class="lbl"><b>Kocaeli</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-konya.jpg" loading="lazy" alt="Konya"><span class="lbl"><b>Konya</b></span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/hero-adana.jpg" loading="lazy" alt="Adana"><span class="lbl"><b>Adana</b></span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sh"><h2>İç mekan havuzu</h2><span class="cnt">4 · genel bakış / yaşam</span></div>
+  <p class="lead">Oturma, mutfak, yatak odası ve genel iç mekan. Genel bakış bölümünün yan görseli ve editoryal aralar için.</p>
+  <div class="grid g-4">
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pr-interior.jpg" loading="lazy" alt="iç mekan"><span class="lbl">İç mekan 1</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-interior-1.jpg" loading="lazy" alt="oturma"><span class="lbl">Oturma</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-interior-2.jpg" loading="lazy" alt="mutfak"><span class="lbl">Mutfak</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-interior-3.jpg" loading="lazy" alt="yatak odası"><span class="lbl">Yatak odası</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sh"><h2>Amenity (iç) havuzu</h2><span class="cnt">4 · yaşam &amp; donatı</span></div>
+  <p class="lead">Kapalı havuz/spa, fitness, lounge. Donatı bandı görseli. Dış cephe/kule yok.</p>
+  <div class="grid g-4">
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pr-amenity.jpg?v=2" loading="lazy" alt="iç havuz"><span class="lbl">İç havuz</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-amenity-1.jpg" loading="lazy" alt="havuz spa"><span class="lbl">Havuz &amp; spa</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-amenity-2.jpg" loading="lazy" alt="fitness"><span class="lbl">Fitness</span></div></div>
+    <div class="card ar-43"><div class="im"><span class="tem">temsili</span><img src="assets/pool-amenity-3.jpg" loading="lazy" alt="lounge"><span class="lbl">Lounge</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sh"><h2>Bağlantı / konum havuzu</h2><span class="cnt">4 · konum bandı</span></div>
+  <p class="lead">Metro, otoyol ışık izleri, köprü. Konum ve çevre bölümünün arka görseli. Konut bloğu odaklı değil.</p>
+  <div class="grid g-4">
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/pr-konum.jpg?v=2" loading="lazy" alt="bağlantı"><span class="lbl">Bağlantı 1</span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/pool-konum-1.jpg" loading="lazy" alt="metro otoyol"><span class="lbl">Metro &amp; otoyol</span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/pool-konum-2.jpg" loading="lazy" alt="köprü"><span class="lbl">Köprü</span></div></div>
+    <div class="card ar-169"><div class="im"><span class="tem">temsili</span><img src="assets/pool-konum-3.jpg" loading="lazy" alt="bulvar"><span class="lbl">Bulvar</span></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sh"><h2>Detay havuzu</h2><span class="cnt">4 · malzeme / lobi</span></div>
+  <p class="lead">İç malzeme, lobi ve doku detayları. Portre oranlı, editoryal yan görsel için.</p>
+  <div class="grid g-4">
+    <div class="card ar-34"><div class="im"><span class="tem">temsili</span><img src="assets/pr-doku.jpg?v=2" loading="lazy" alt="detay"><span class="lbl">Detay 1</span></div></div>
+    <div class="card ar-34"><div class="im"><span class="tem">temsili</span><img src="assets/pool-detay-1.jpg" loading="lazy" alt="ahşap pirinç"><span class="lbl">Ahşap &amp; pirinç</span></div></div>
+    <div class="card ar-34"><div class="im"><span class="tem">temsili</span><img src="assets/pool-detay-2.jpg" loading="lazy" alt="lobi"><span class="lbl">Lobi</span></div></div>
+    <div class="card ar-34"><div class="im"><span class="tem">temsili</span><img src="assets/pool-detay-3.jpg" loading="lazy" alt="malzeme"><span class="lbl">Malzeme</span></div></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">Projedar görsel havuzu · üretim: nano-banana-pro 2K · hepsi temsili ve telifsiz · production'da havuz genişletilir (il başına + slot başına ~20) ve slug-hash ile seçilir. Örnek Ağda sayfası: <a href="proje-flagship-agda.html" style="color:var(--teald);font-weight:600">Çankaya Vadi Konakları →</a></div></footer>
+</body>
+</html>
