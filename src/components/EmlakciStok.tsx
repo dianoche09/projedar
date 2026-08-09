@@ -275,6 +275,7 @@ export function EmlakciStok({
           projeId={projeId}
           mod="emlakci"
           projeAd={projeAd}
+          kazanc={kazancMap?.[secili.id]}
           shareUrl={shareUrlMap[secili.id] ?? ""}
           benimOpsiyon={benimOpsiyonlar?.includes(secili.id) ?? false}
           opsiyonYontemi={opsiyonYontemi}

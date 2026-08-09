@@ -6,7 +6,7 @@ export default async function Havuz() {
   const supabase = await createClient();
 
   // RLS: proje_emlakci_select + birim_emlakci_select → yalnız tahsisli projeler/birimler
-  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }] = await Promise.all([
+  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }, { data: kazancOzet }] = await Promise.all([
     supabase
       .from("proje")
       .select("id, ad, il, ilce, mahalle, lat, lng, kunye, belge_dogrulandi, son_guncelleme, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, para_birimi, oturum_uygun, golden_visa_esik, kira_getirisi_pct")
@@ -14,8 +14,15 @@ export default async function Havuz() {
     supabase.from("birim").select("proje_id, tip_id, durum, liste_fiyati, tur"),
     supabase.from("daire_tipi").select("proje_id, oda, ad, net_m2"),
     supabase.from("proje_belge").select("proje_id, url").eq("tip", "kapak"),
+    // Emlakçı kazanç özeti (tahsisli projelerde daire başına min/max prim). Migration
+    // yoksa hata → boş (graceful). Ham komisyon client'a çıkmaz.
+    supabase.rpc("emlakci_kazanc_ozet"),
   ]);
   const kapakMap = new Map((kapaklar ?? []).map((k) => [k.proje_id, k.url as string | null]));
+  const kazancMap = new Map<string, { min: number; max: number }>();
+  for (const k of (kazancOzet ?? []) as { proje_id: string; kazanc_min: number; kazanc_max: number }[]) {
+    if (k.kazanc_max != null) kazancMap.set(k.proje_id, { min: Number(k.kazanc_min), max: Number(k.kazanc_max) });
+  }
 
   const kartlar: ProjeKart[] = (projeler ?? []).map((p) => {
     const bb = (birimler ?? []).filter((b) => b.proje_id === p.id);
@@ -48,6 +55,8 @@ export default async function Havuz() {
       satildi: bb.filter((b) => b.durum === "satildi").length,
       min: fiyatlar.length ? Math.min(...fiyatlar) : null,
       max: fiyatlar.length ? Math.max(...fiyatlar) : null,
+      kazancMin: kazancMap.get(p.id)?.min ?? null,
+      kazancMax: kazancMap.get(p.id)?.max ?? null,
       tipler: tipSet,
       kapak: kapakMap.get(p.id) ?? null,
       turler: [...new Set(bb.map((b) => b.tur).filter(Boolean))] as string[],

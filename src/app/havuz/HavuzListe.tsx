@@ -33,6 +33,9 @@ export type ProjeKart = {
   satildi: number;
   min: number | null;
   max: number | null;
+  /** Emlakçı kazancı (satış primi) daire başına min/max, tahsisli müsait dairelerden. */
+  kazancMin: number | null;
+  kazancMax: number | null;
   tipler: string[];
   kapak: string | null;
   // Connject-paritesi: birim türü + para birimi + yatırım/yabancı alanları
@@ -452,6 +455,18 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
                       </div>
                     ) : null}
                   </div>
+
+                  {/* senin payın — tahsis komisyonundan hesaplanan satış primi aralığı */}
+                  {p.kazancMax != null ? (
+                    <div className="mt-2.5 flex items-center justify-between rounded-lg border border-teal/25 bg-teal-soft px-3 py-2">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-teal-d">Senin payın</span>
+                      <span className="mono text-[13.5px] font-extrabold text-teal-d">
+                        {p.kazancMin != null && p.kazancMin !== p.kazancMax
+                          ? `+${fiyat(p.kazancMin)} – ${fiyat(p.kazancMax)} ${ps}`
+                          : `+${fiyat(p.kazancMax)} ${ps}`}
+                      </span>
+                    </div>
+                  ) : null}
 
                   {/* yatırım rozeti — Faz-1 yurtiçi (golden vize / oturum YOK) */}
                   {p.kira_getirisi != null ? (

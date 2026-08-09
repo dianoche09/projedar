@@ -112,6 +112,7 @@ export function DaireModal({
   benimOpsiyon = false,
   opsiyonYontemi = "talep_kod",
   eklentiler = [],
+  kazanc,
 }: {
   birim: ModalBirim;
   projeId: string;
@@ -125,6 +126,8 @@ export function DaireModal({
   opsiyonYontemi?: string;
   /** Bu daireye bağlı eklentiler (otopark/depo). Üretici modunda ekle/sil; diğerlerinde salt-okunur. */
   eklentiler?: Eklenti[];
+  /** Emlakçı modu: bu daireyi satınca kazanç (satış primi, TL). DB'de hesaplanır. */
+  kazanc?: number;
 }) {
   const [durum, setDurum] = useState<BirimDurum>(birim.durum);
   const [bekliyor, basla] = useTransition();
@@ -249,6 +252,13 @@ export function DaireModal({
           <div className="mt-4 bg-slate-50 border border-slate-200/60 rounded-xl p-4 flex justify-between items-center shadow-sm">
             <span className="text-xs font-bold text-slate-500">Liste Fiyatı</span>
             <span className="font-mono text-lg font-extrabold text-teal">{fmt(liste)} {psim}</span>
+          </div>
+        ) : null}
+
+        {mod === "emlakci" && kazanc != null ? (
+          <div className="mt-3 flex items-center justify-between rounded-xl border border-teal/30 bg-teal/[0.06] p-4">
+            <span className="text-xs font-bold text-teal-d">Bu daireyi satarsan kazancın</span>
+            <span className="font-mono text-lg font-extrabold text-teal-d">+{fmt(kazanc)} {psim}</span>
           </div>
         ) : null}
 
