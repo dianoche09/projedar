@@ -24,11 +24,12 @@ type BirimRaw = { proje_id: string; durum: string; son_guncelleme: string | null
 const OLAY_ETIKET: Record<string, string> = {
   paylasim: "Paylaşım", goruntuleme: "Görüntüleme", lead: "Lead", favori: "Favori",
   satis: "Satış", opsiyon: "Opsiyon talebi", durum: "Durum değişimi", fiyat: "Fiyat değişimi",
+  ilgi: "Ön-talep", acilis: "Stok açılışı", dalga: "Dalga planı",
 };
 const OLAY_RENK: Record<string, string> = {
   satis: "var(--color-red)", opsiyon: "var(--color-amber)", lead: "var(--color-green)", favori: "var(--color-red)",
   paylasim: "var(--color-navy)", goruntuleme: "var(--color-ink-soft)", durum: "var(--color-ink-soft)",
-  fiyat: "var(--color-teal)",
+  fiyat: "var(--color-teal)", ilgi: "var(--color-teal)", acilis: "var(--color-green)", dalga: "var(--color-navy)",
 };
 const KANAL_ETIKET: Record<string, string> = {
   mikrosite: "Mikrosite", "proje karti": "Proje kartı", manuel: "Manuel", diğer: "Diğer",
@@ -148,6 +149,21 @@ export default async function UreticiTalepRadari() {
     [...projGor.entries()]
       .filter(([id, g]) => g >= 5 && (ozet.get(id)?.opsiyon ?? 0) === 0)
       .sort((a, b) => b[1] - a[1])[0] ?? null;
+
+  // — ÖN-TALEP (EOI) · "açılınca haber ver" ilgi sinyalleri (60g) —
+  // Planlı/dalga stoğuna açılış öncesi biriken talep. ilgiBildir mükerrer-korumalı
+  // (profil+birim tek kez) → adet = benzersiz kişi-birim ilgisi. Açılış zamanlaması +
+  // fiyat gücü kararı için erken sinyal; rakip veremez (verisi yok).
+  const eoiProje = new Map<string, { adet: number; son: string }>();
+  for (const e of events)
+    if (e.tip === "ilgi" && e.proje_id) {
+      const m = eoiProje.get(e.proje_id) ?? { adet: 0, son: e.created_at };
+      m.adet++;
+      if (e.created_at > m.son) m.son = e.created_at;
+      eoiProje.set(e.proje_id, m);
+    }
+  const eoiListe = [...eoiProje.entries()].sort((a, b) => b[1].adet - a[1].adet);
+  const eoiToplam = eoiListe.reduce((t, [, m]) => t + m.adet, 0);
 
   const enCokGor = [...projGor.entries()].sort((a, b) => b[1] - a[1])[0] ?? null;
   const enCokMusait = [...ozet.entries()].sort((a, b) => b[1].musait - a[1].musait)[0] ?? null;
@@ -335,6 +351,11 @@ export default async function UreticiTalepRadari() {
                   renk="text-teal-d" metin={`${projeAd.get(enCokGor[0]) ?? "—"} — son 7 günde en çok görüntülenen proje.`}
                   href={`/uretici/proje/${enCokGor[0]}`} hrefMetin="Projeyi aç →" />
               ) : null}
+              {eoiToplam > 0 ? (
+                <Insight sig="var(--color-teal)" ust="Ön-talep · açılınca haber ver" deger={String(eoiToplam)}
+                  renk="text-teal-d" metin={`${eoiListe.length} projede açılış öncesi talep birikti. Açılış zamanlaması ve fiyat için erken sinyal.`}
+                  href="#on-talep" hrefMetin="Aşağıda detay →" />
+              ) : null}
               {opsiyon > 0 ? (
                 <Insight sig="var(--color-amber)" ust="Aktif opsiyon" deger={String(opsiyon)}
                   renk="text-amber" metin="birim karar bekliyor — teyit veya serbest bırak." href="/uretici/opsiyonlar" hrefMetin="Opsiyonları gör →" />
@@ -354,6 +375,31 @@ export default async function UreticiTalepRadari() {
                   renk="text-red" metin="birim 15 günden eski — fiyat/durum tazele (stale rozeti)." href="/uretici/stok" hrefMetin="Stoğu tazele →" />
               ) : null}
             </div>
+
+            {/* ÖN-TALEP (EOI) · açılınca haber ver */}
+            {eoiListe.length > 0 ? (
+              <section id="on-talep" className="kart p-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-[15px] font-bold text-ink">Ön-Talep · Açılınca Haber Ver</h2>
+                  <span className="mono text-[11px] text-[var(--ink-faint)]">{eoiToplam} talep · 60g</span>
+                </div>
+                <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
+                  Planlı/dalga stoğuna açılış öncesi biriken talep. Yüksek ilgi → daha erken açılış ya da fiyat gücü. Rakip veremez; verisi yok.
+                </p>
+                <ul className="mt-3 divide-y divide-[var(--cizgi)]">
+                  {eoiListe.slice(0, 8).map(([id, m]) => (
+                    <li key={id} className="flex items-center gap-3 py-2.5">
+                      <span className="size-[7px] shrink-0 rounded-full bg-teal" aria-hidden />
+                      <Link href={`/uretici/proje/${id}`} className="min-w-0 flex-1 truncate text-[13px] font-medium text-ink hover:text-teal">
+                        {projeAd.get(id) ?? "—"}
+                      </Link>
+                      <span className="mono shrink-0 text-[11px] text-[var(--ink-faint)]">son {zamanOnce(m.son)}</span>
+                      <span className="mono w-8 shrink-0 text-right text-[13px] font-semibold text-teal-d">{m.adet}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
             {/* KANAL DAĞILIMI */}
             {kanalListe.length > 0 ? (
