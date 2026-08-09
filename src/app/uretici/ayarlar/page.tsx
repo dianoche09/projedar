@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ureticiProfilGuncelle } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { HesapVeVeri } from "@/components/hesap/HesapVeVeri";
 
 /* =========================================================
    AYARLAR — profil + üretici firma bilgisi (salt-okunur özet).
@@ -184,6 +185,8 @@ export default async function UreticiAyarlar() {
             </Link>
           </div>
         </section>
+
+        <HesapVeVeri revalideYolu="/uretici/ayarlar" />
       </div>
     </div>
   );

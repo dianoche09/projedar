@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cikisYap } from "@/app/(auth)/login/actions";
 import { ROL_ETIKET, type Rol } from "@/lib/roller";
 import { HESAP_DURUM_ETIKET, type HesapDurum } from "@/lib/types";
+import { HesapVeVeri } from "@/components/hesap/HesapVeVeri";
 
 export default async function Profil() {
   const supabase = await createClient();
@@ -118,6 +119,8 @@ export default async function Profil() {
           </p>
         )}
       </div>
+
+      <HesapVeVeri revalideYolu="/havuz/profil" />
 
       <form action={cikisYap} className="belir belir-3 mt-4">
         <button className="btn-ghost w-full" style={{ minHeight: 48 }}>
