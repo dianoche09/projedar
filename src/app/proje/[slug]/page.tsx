@@ -16,7 +16,8 @@ import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
 import { slugify } from "@/lib/seo/slug";
-import { temaGorsel } from "@/lib/seo/tema-gorsel";
+import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
+import { AgdaGuvenSeridi, GorselBant } from "@/components/seo/ProjeGorsel";
 import { MapPin, Building2, CalendarClock, TrendingUp, Layers, ShieldCheck, ChevronRight } from "lucide-react";
 
 export const revalidate = 3600; // proje meta yavaş değişir; canlı stok public'te yok
@@ -191,19 +192,35 @@ async function veriGetir(slug: string): Promise<Veri | { forward: string } | nul
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /** İki-mod SSS (arama niyeti + Projedar B2B). Görünür accordion + FAQPage JSON-LD tek kaynak. */
-function sssListesi(args: { ad: string; konum: string; gelistirici: string | null; teslim: string | null; odaTipleri: string[]; m2Band: string | null; kaynak: Kaynak }): { s: string; c: string }[] {
-  const { ad, konum, gelistirici, teslim, odaTipleri, m2Band, kaynak } = args;
+/** Slug'dan deterministik varyant indeksi (thin-content: sabit cevaplar sayfadan sayfaya çeşitlensin). */
+function varyant(slug: string, n: number): number {
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) & 0xffff;
+  return h % n;
+}
+
+function sssListesi(args: { ad: string; konum: string; gelistirici: string | null; teslim: string | null; odaTipleri: string[]; m2Band: string | null; kaynak: Kaynak; slug: string }): { s: string; c: string }[] {
+  const { ad, konum, gelistirici, teslim, odaTipleri, m2Band, kaynak, slug } = args;
   const list: { s: string; c: string }[] = [];
   if (konum) list.push({ s: `${ad} nerede, hangi ilçede yer alıyor?`, c: `${ad}, ${konum} konumunda yer alan bir yeni konut projesidir.` });
   if (gelistirici) list.push({ s: `${ad} hangi firma tarafından yapılıyor?`, c: `${ad} projesi ${gelistirici} tarafından geliştirilmektedir.` });
   if (odaTipleri.length) list.push({ s: `${ad} projesinde hangi daire tipleri var?`, c: `${ad} projesinde ${odaTipleri.join(", ")} tiplerinde daireler bulunmaktadır${m2Band ? `; büyüklükler ${m2Band} aralığındadır` : ""}.` });
   if (teslim) list.push({ s: `${ad} ne zaman teslim edilecek?`, c: `${ad} projesinin tahmini teslim dönemi ${teslim} olarak belirtilmektedir; güncel bilgi geliştiriciden teyit edilmelidir.` });
   if (kaynak === "katalog") {
-    list.push({ s: `${ad} projesini Projedar üzerinden satabilir miyim?`, c: `Bu proje henüz Projedar ağında olmayabilir. Gayrimenkul danışmanıysanız Projedar ağına ücretsiz katılabilir, projeler ağa eklendikçe size tahsis edilen daireleri canlı stoktan satarsınız. Müteahhit veya proje sahibiyseniz projenizi Projedar ağına ekleyebilirsiniz.` });
+    // Ağda-değil: satış iddiası YOK; arama-niyeti + nötr bilgilendirme.
+    const c = [
+      `${ad} bu bilgi sayfasında künye, konum ve daire yapısıyla derlenmiştir. Güncel fiyat ve stok için projenin geliştiricisiyle ya da yetkili bir gayrimenkul danışmanıyla iletişime geçilmelidir.`,
+      `${ad} hakkındaki bu sayfa olgusal proje bilgisini toplar; fiyat ve müsaitlik zamanla değiştiğinden güncel durumu geliştiriciden ya da yetkili danışmandan teyit etmek gerekir.`,
+    ][varyant(slug, 2)];
+    list.push({ s: `${ad} hakkında güncel bilgiyi nereden alabilirim?`, c });
   } else {
     list.push({ s: `${ad} projesini Projedar ağında nasıl satarım?`, c: `Gayrimenkul danışmanı olarak Projedar ağına ücretsiz katılır, müteahhidin size tahsis ettiği daireleri canlı stoktan paylaşırsınız. Projedar satış komisyonuna ortak olmaz; kazancınız tamamen sizde kalır.` });
   }
-  list.push({ s: `${ad} fiyatları ne kadar, bu sayfada var mı?`, c: `Projedar bir ilan portalı değildir; fiyat ve güncel stok yalnız ağdaki yetkili gayrimenkul danışmanlarına canlı açılır. Bu sayfa projenin künye, konum ve daire yapısı bilgisini içerir.` });
+  const fiyatC = [
+    `Projedar bir ilan portalı değildir; fiyat ve güncel stok yalnız ağdaki yetkili gayrimenkul danışmanlarına canlı açılır. Bu sayfa projenin künye, konum ve daire yapısı bilgisini içerir.`,
+    `Bu sayfada fiyat listesi gösterilmez. ${ad} için güncel fiyat ve müsait stok, yalnız ağdaki yetkili danışmanlara canlı olarak açılır; sayfa konum, künye ve daire tiplerini kapsar.`,
+  ][varyant(slug, 2)];
+  list.push({ s: `${ad} fiyatları ne kadar, bu sayfada var mı?`, c: fiyatC });
   return list;
 }
 
@@ -295,7 +312,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
   const odaTipleri = [...new Set(veri.tipListe.map((t) => t.oda).filter(Boolean) as string[])];
   const m2Band = veri.m2Band;
-  const sss = sssListesi({ ad: p.ad, konum, gelistirici: u?.ad ?? null, teslim: veri.teslimMetin, odaTipleri, m2Band, kaynak });
+  const sss = sssListesi({ ad: p.ad, konum, gelistirici: u?.ad ?? null, teslim: veri.teslimMetin, odaTipleri, m2Band, kaynak, slug });
 
   const kunyeSatir: [string, string][] = [];
   if (p.ada || p.parsel) kunyeSatir.push(["Ada / Parsel", [p.ada, p.parsel].filter(Boolean).join(" / ")]);
@@ -309,7 +326,11 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const ilerleme = Number(p.ilerleme_yuzde ?? 0);
   const teslim = veri.teslimMetin;
   const kiraGetirisi = p.kira_getirisi_pct != null ? Number(p.kira_getirisi_pct) : null;
-  const gorsel = temaGorsel(p.il, p.ilce);
+  const heroCity = temaGorsel(p.il);
+  const gorsel = heroCity ?? havuzGorsel(slug, "konum"); // her sayfada hero görseli olsun
+  const amenityGorsel = havuzGorsel(slug, "amenity");
+  const cevreGorsel = havuzGorsel(slug, "konum");
+  const showCevreBant = Boolean(heroCity); // hero şehir görseli ise ayrı çevre bandı; fallback konum'sa tekrarı önle
   const up = (u?.profil ?? {}) as Record<string, string | null>;
 
   after(() => kayitYaz({ tip: "goruntuleme", ...(kaynak === "proje" ? { projeId: p.id } : {}), payload: { kaynak: kaynak === "proje" ? "proje_seo" : "katalog_seo", slug } }));
@@ -373,6 +394,11 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </div>
       </section>
 
+      {/* ============ AĞDA GÜVEN ŞERİDİ (yalnız sistemdeki proje; canlı stok SAYISI public'te YOK) ============ */}
+      {kaynak === "proje" ? (
+        <AgdaGuvenSeridi dogrulanmis={dogrulanmis} asama={asama} ilerleme={ilerleme} teslim={teslim} />
+      ) : null}
+
       {/* ============ ZENGİN İÇERİK (icerik varsa) / NEDİR (yoksa varyant) ============ */}
       {icerik ? (
         <ProjeZenginIcerik icerik={icerik} ad={p.ad} />
@@ -380,13 +406,16 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <section className="relative px-5 py-16 sm:px-6 sm:py-20">
           <div className="mx-auto w-full max-w-3xl">
             <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Bu sayfa nedir</p>
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">{p.ad} hakkında</p>
               <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.giris}</p>
               <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.surec}</p>
             </div>
           </div>
         </section>
       )}
+
+      {/* ============ YAŞAM (görsel bant, temsili) ============ */}
+      <GorselBant src={amenityGorsel} alt={`${p.ad} sosyal yaşam alanları (temsili görsel)`} etiket="Yaşam" baslik="Sosyal alanlar ve yaşam kalitesi" />
 
       {/* ============ KÜNYE + İNŞAAT (yalnız icerik yoksa; icerik varsa zengin bölümler kapsar) ============ */}
       {!icerik ? (
@@ -472,6 +501,11 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
             </div>
           </div>
         </section>
+      ) : null}
+
+      {/* ============ ÇEVRE & ULAŞIM (görsel bant, temsili; hero şehir görseli ise) ============ */}
+      {showCevreBant && konum ? (
+        <GorselBant src={cevreGorsel} alt={`${p.ad} çevresi ve ulaşım (temsili görsel)`} etiket="Çevre & ulaşım" baslik={konum} />
       ) : null}
 
       {/* ============ B2B SÜREÇ (danışman / müteahhit) ============ */}
