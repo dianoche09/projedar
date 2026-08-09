@@ -150,13 +150,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <div className="komuta relative overflow-hidden rounded-[26px] p-8 text-center sm:p-12">
             <div className="komuta-grid absolute inset-0" aria-hidden />
             <div className="relative text-white">
-              <h2 className="mx-auto max-w-[24ch] font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
-                {firma.kaynak === "proje" ? `${firma.ad} projelerini Projedar ağında satın.` : `${firma.ad} firmasının yetkilisi misiniz?`}
-              </h2>
+              <h2 className="mx-auto max-w-[24ch] font-display text-2xl font-extrabold tracking-tight sm:text-3xl">{firma.ad} projeleri, doğru satış ağında.</h2>
               <p className="mx-auto mt-3 max-w-xl text-pretty text-[15px] leading-relaxed text-white/75">
                 {firma.kaynak === "proje"
-                  ? "Gayrimenkul danışmanıysan ücretsiz katıl, bu firmanın tahsisli projelerini canlı stoktan sat. Projedar satış komisyonuna ortak olmaz."
-                  : "Projelerinizi Projedar'ın tahsisli canlı satış ağına açın; stoğunuzu ve fiyatınızı tek panelden yönetin, yalnız yetkili danışmanlar satsın."}
+                  ? `Gayrimenkul danışmanıysan Projedar ağına ücretsiz katıl, ${firma.ad} projelerini canlı stoktan sat. Geliştiriciysen stoğunu tek panelden yönet. Projedar satış komisyonuna ortak olmaz.`
+                  : `Gayrimenkul danışmanıysan Projedar ağına ücretsiz katıl; geliştiriciysen ${firma.ad} projelerini ağa ekle, stoğunu ve fiyatını tek panelden yönet. Projedar satış komisyonuna ortak olmaz.`}
               </p>
               <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link href="/kayit?rol=uretici&kaynak=firma-seo" className="inline-flex min-h-[48px] items-center justify-center rounded-[13px] bg-white px-7 text-[15px] font-bold text-ink transition-all hover:-translate-y-0.5">Projeni ağa ekle</Link>
