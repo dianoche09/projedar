@@ -48,6 +48,7 @@ export type StokSatir = {
   tip_tam_ad: string | null;
   oda: string | null;
   plan_url: string | null;
+  gorsel_url: string | null;
   tur: string | null;
   ana_birim_id: string | null;
 };
@@ -74,6 +75,7 @@ function satirToModalBirim(s: StokSatir): ModalBirim {
     tip_ad: s.tip_tam_ad ?? s.tip_ad,
     oda: s.oda,
     plan_url: s.plan_url,
+    gorsel_url: s.gorsel_url,
     odeme_plani: s.odeme_plani,
   };
 }

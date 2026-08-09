@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { usePathname } from "next/navigation";
 import { useFormStatus } from "react-dom";
-import { birimDurumGuncelle, birimGuncelle, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
+import { birimDurumGuncelle, birimGuncelle, birimGorselSil, birimGorselYukle, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
 import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/havuz/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
@@ -42,6 +43,8 @@ export type ModalBirim = {
   tip_ad: string | null;
   oda: string | null;
   plan_url?: string | null;
+  /** Bu daireye özel görsel (varsa tip planının önüne geçer). */
+  gorsel_url?: string | null;
   odeme_plani?: OdemePlani;
 };
 
@@ -136,6 +139,9 @@ export function DaireModal({
   const [musteriTel, setMusteriTel] = useState("");
   const [gerekce, setGerekce] = useState("");
   const toast = useToast();
+  const pathname = usePathname();
+  // Görsel önceliği: daireye özel görsel → tip planı → şematik plan
+  const daireGorsel = birim.gorsel_url ?? birim.plan_url ?? null;
 
   const taban = birim.taban_fiyat;
   const liste = birim.liste_fiyati;
@@ -201,14 +207,52 @@ export function DaireModal({
         {/* Web'de yatay (iki kolon), mobilde dikey (tek kolon). Sol: görsel + künye + fiyat; Sağ: eklenti + ödeme + aksiyon. */}
         <div className="mt-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:items-start">
         <div className="min-w-0">
-        {/* Daire planı — tip görseli varsa onu, yoksa şematik plan */}
-        <div className="overflow-hidden rounded-xl border border-slate-100 bg-slate-50">
-          {birim.plan_url ? (
+        {/* Daire görseli — daireye özel görsel > tip planı > şematik plan. Üretici düzenleyebilir. */}
+        <div className="group relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50">
+          {daireGorsel ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={birim.plan_url} alt={`${birim.tip_ad ?? "Daire"} planı`} className="max-h-72 w-full object-contain bg-slate-100/50" />
+            <img src={daireGorsel} alt={`${birim.tip_ad ?? "Daire"} görseli`} className="max-h-72 w-full object-contain bg-slate-100/50" />
           ) : (
             <KatPlani etiket={birim.oda ?? birim.tip_ad ?? undefined} buyuk />
           )}
+          {mod === "uretici" ? (
+            <div className="absolute right-2 top-2 flex items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+              <form action={birimGorselYukle}>
+                <input type="hidden" name="proje_id" value={projeId} />
+                <input type="hidden" name="birim_id" value={birim.id} />
+                <input type="hidden" name="geri_yol" value={pathname} />
+                <label className="flex cursor-pointer items-center gap-1 rounded-lg bg-navy/90 px-2.5 py-1.5 text-[11px] font-bold text-white shadow-sm backdrop-blur transition-colors hover:bg-navy">
+                  <svg className="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <path d="M17 8l-5-5-5 5" />
+                    <path d="M12 3v12" />
+                  </svg>
+                  {birim.gorsel_url ? "Değiştir" : "Görsel yükle"}
+                  <input
+                    type="file"
+                    name="dosya"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => e.currentTarget.form?.requestSubmit()}
+                  />
+                </label>
+              </form>
+              {birim.gorsel_url ? (
+                <form action={birimGorselSil}>
+                  <input type="hidden" name="proje_id" value={projeId} />
+                  <input type="hidden" name="birim_id" value={birim.id} />
+                  <input type="hidden" name="geri_yol" value={pathname} />
+                  <button
+                    type="submit"
+                    className="rounded-lg bg-white/90 px-2.5 py-1.5 text-[11px] font-bold text-slate-500 shadow-sm backdrop-blur transition-colors hover:bg-red-soft hover:text-red"
+                    aria-label="Daire görselini kaldır"
+                  >
+                    Kaldır
+                  </button>
+                </form>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         {birim.net_m2 || birim.brut_m2 || birim.yon || birim.manzara || birim.oda ? (

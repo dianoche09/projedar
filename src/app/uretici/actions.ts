@@ -443,6 +443,79 @@ export async function birimGuncelle(formData: FormData) {
   revalidatePath("/uretici/stok");
 }
 
+// ---- Per-daire görsel yükle/sil (birim.gorsel_url; tip planının önüne geçer) ----
+export async function birimGorselYukle(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const birim_id = String(formData.get("birim_id"));
+  const geri = geriYol(formData) ?? "/uretici/stok";
+  const supabase = await createClient();
+  if (!(await projeSahibiMi(supabase, proje_id))) hataya("/uretici", "Bu projeye erişim yok");
+
+  const dosya = formData.get("dosya");
+  if (!(dosya instanceof File) || dosya.size === 0) hataya(geri, "Görsel seçilmedi");
+
+  const admin = createAdminClient();
+  // IDOR kalkanı: birim bu projeye ait mi? Değilse Storage/DB'ye dokunma.
+  const { data: birim } = await admin
+    .from("birim")
+    .select("gorsel_url")
+    .eq("id", birim_id)
+    .eq("proje_id", proje_id)
+    .single();
+  if (!birim) hataya(geri, "Birim bu projede bulunamadı");
+  const eskiYol = medyaYolu((birim as { gorsel_url: string | null }).gorsel_url ?? null);
+  if (eskiYol) await admin.storage.from(MEDYA_BUCKET).remove([eskiYol]);
+
+  const uzanti = dosya.name.includes(".") ? dosya.name.split(".").pop()!.toLowerCase() : "png";
+  const yol = `${proje_id}/birim/${birim_id}-${randomUUID()}.${uzanti}`;
+  const buf = Buffer.from(await dosya.arrayBuffer());
+  const { error: upErr } = await admin.storage
+    .from(MEDYA_BUCKET)
+    .upload(yol, buf, { contentType: dosya.type || "image/png", upsert: false });
+  if (upErr) hataya(geri, `Yükleme hatası: ${upErr.message}`);
+
+  const { data: pub } = admin.storage.from(MEDYA_BUCKET).getPublicUrl(yol);
+  const { data: gnc, error } = await admin
+    .from("birim")
+    .update({ gorsel_url: pub.publicUrl, son_guncelleme: new Date().toISOString() })
+    .eq("id", birim_id)
+    .eq("proje_id", proje_id)
+    .select("id");
+  if (error) hataya(geri, error.message);
+  if (!gnc || gnc.length === 0) hataya(geri, "Birim bu projede bulunamadı");
+  revalidatePath("/uretici/stok");
+  revalidatePath(`/uretici/proje/${proje_id}`);
+  redirect(`${geri}${geri.includes("?") ? "&" : "?"}mesaj=${encodeURIComponent("Daire görseli güncellendi")}`);
+}
+
+export async function birimGorselSil(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const birim_id = String(formData.get("birim_id"));
+  const geri = geriYol(formData) ?? "/uretici/stok";
+  const supabase = await createClient();
+  if (!(await projeSahibiMi(supabase, proje_id))) hataya("/uretici", "Bu projeye erişim yok");
+
+  const admin = createAdminClient();
+  const { data: birim } = await admin
+    .from("birim")
+    .select("gorsel_url")
+    .eq("id", birim_id)
+    .eq("proje_id", proje_id)
+    .single();
+  if (!birim) hataya(geri, "Birim bu projede bulunamadı");
+  const eskiYol = medyaYolu((birim as { gorsel_url: string | null }).gorsel_url ?? null);
+  if (eskiYol) await admin.storage.from(MEDYA_BUCKET).remove([eskiYol]);
+  const { error } = await admin
+    .from("birim")
+    .update({ gorsel_url: null, son_guncelleme: new Date().toISOString() })
+    .eq("id", birim_id)
+    .eq("proje_id", proje_id);
+  if (error) hataya(geri, error.message);
+  revalidatePath("/uretici/stok");
+  revalidatePath(`/uretici/proje/${proje_id}`);
+  redirect(`${geri}${geri.includes("?") ? "&" : "?"}mesaj=${encodeURIComponent("Daire görseli kaldırıldı")}`);
+}
+
 // ── Eklenti birimler (otopark/depo → ana daireye bağlı; daireden doğrudan eklenir/silinir) ──
 const EKLENTI_TUR = ["otopark", "depo"] as const;
 

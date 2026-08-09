@@ -62,6 +62,10 @@ export default async function UreticiStok({
       supabase.from("hakedis").select("birim_id, emlakci_id"),
     ]);
 
+  // Per-daire görsel (birim.gorsel_url) — best-effort: kolon yoksa (migration bekliyor) sayfa kırılmasın
+  const { data: gorselRaw } = await supabase.from("birim").select("id, gorsel_url");
+  const gorselById = new Map((gorselRaw ?? []).map((g) => [g.id as string, (g as { gorsel_url: string | null }).gorsel_url ?? null]));
+
   const birimler = (birimRaw ?? []) as BirimRaw[];
   const blokAd = new Map((bloklar ?? []).map((b) => [b.id, b.ad as string | null]));
   const tipAd = new Map(
@@ -170,6 +174,7 @@ export default async function UreticiStok({
       tip_tam_ad: tipTamAd.get(b.tip_id ?? "") ?? null,
       oda: tipOda.get(b.tip_id ?? "") ?? null,
       plan_url: tipPlan.get(b.tip_id ?? "") ?? null,
+      gorsel_url: gorselById.get(b.id) ?? null,
       tur: b.tur,
       ana_birim_id: b.ana_birim_id,
     }));
