@@ -19,7 +19,6 @@ import { CanliPortfoy } from "@/components/CanliPortfoy";
 import { BirebirPaylasim } from "@/components/BirebirPaylasim";
 import { Reveal } from "@/components/Reveal";
 import { AnaMenu } from "@/components/AnaMenu";
-import { IkincilNav } from "@/components/IkincilNav";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck } from "lucide-react";
 
 /** Proje anatomisi, proje sahibi ne yükler / danışman ne görür. */
@@ -71,10 +70,6 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Projedar — Yeni projelerin profesyonel satış ağı" },
 };
 
-const NAV = [
-  { etiket: "Nasıl çalışır", href: "#nasil-calisir" },
-  { etiket: "Sık sorulanlar", href: "#sss" },
-];
 
 const FAYDA = {
   prod: {
@@ -184,9 +179,8 @@ export default async function Home() {
     <main className="flex flex-1 flex-col bg-paper text-ink">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd()) }} />
 
-      {/* ============ ÜST MENÜ (ortak) ============ */}
+      {/* ============ ÜST MENÜ (ortak; anasayfada ikincil şerit yok) ============ */}
       <AnaMenu panelHref={panelHref} />
-      <IkincilNav ogeler={NAV} />
 
       {/* ============ HERO: Zaman Akışı (mockup-07'den; 3 fazlı video, kullanıcı seçimi) ============ */}
       <HeroZamanAkisi />
