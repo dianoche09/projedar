@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { projeIcerikSkoru, ICERIK_ESIGI } from "@/lib/seo/icerik-esigi";
+import { tumHubProjeleri } from "@/lib/seo/konut-hub";
 
 const SITE = "https://projedar.com";
 
@@ -111,5 +112,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     katalog = [];
   }
 
-  return [...statik, ...projeler, ...katalog];
+  // Konut projeleri hub'ı: kök + il + il/ilçe kırılım sayfaları (SEO iç bağlantı ağı).
+  let hub: MetadataRoute.Sitemap = [{ url: `${SITE}/konut-projeleri`, lastModified: now, changeFrequency: "weekly", priority: 0.6 }];
+  try {
+    const hepsi = await tumHubProjeleri();
+    const iller = new Set<string>();
+    const ilceler = new Set<string>();
+    for (const p of hepsi) {
+      iller.add(p.ilSlug);
+      if (p.ilceSlug) ilceler.add(`${p.ilSlug}/${p.ilceSlug}`);
+    }
+    hub = [
+      ...hub,
+      ...[...iller].map((il) => ({ url: `${SITE}/konut-projeleri/${il}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.5 })),
+      ...[...ilceler].map((x) => ({ url: `${SITE}/konut-projeleri/${x}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.4 })),
+    ];
+  } catch {
+    // hub kök URL'si yine de kalır
+  }
+
+  return [...statik, ...hub, ...projeler, ...katalog];
 }
