@@ -8,18 +8,19 @@ const NAV = [
   { etiket: "Müteahhitler için", href: "/muteahhit" },
   { etiket: "Danışmanlar için", href: "/emlakci" },
   { etiket: "Konut projeleri", href: "/konut-projeleri" },
+  { etiket: "Rehber", href: "/rehber" },
   { etiket: "Güven", href: "/guven" },
 ];
 
 /**
- * /proje topbar: hero üzerinde ŞEFFAF (beyaz metin), aşağı kaydırınca cam/katı (ink metin).
- * Projedar global nav'ın sinematik-hero uyarlaması. Scroll eşiği = ~0.6 viewport.
+ * /proje topbar: hero üzerinde ŞEFFAF (beyaz metin), scroll başlar başlamaz cam/katı (ink metin).
+ * Projedar global nav'ın sinematik-hero uyarlaması. Scroll eşiği = 16px (hemen tetiklenir).
  */
 export function ProjeTopbar() {
   const [solid, setSolid] = useState(false);
   useEffect(() => {
     const onScroll = () => {
-      const next = window.scrollY > window.innerHeight * 0.6;
+      const next = window.scrollY > 16;
       setSolid((prev) => (prev === next ? prev : next));
     };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -61,7 +62,7 @@ export function ProjeTopbar() {
               Giriş yap
             </Link>
           </span>
-          <Link href="/kayit" className="btn-action whitespace-nowrap hover:-translate-y-0.5">Ücretsiz başla</Link>
+          <Link href="/kayit" className="btn-action whitespace-nowrap hover:-translate-y-0.5">Ağa katıl</Link>
         </div>
       </nav>
     </header>
