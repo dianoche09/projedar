@@ -3,8 +3,6 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { LansmanPopup } from "@/components/LansmanPopup";
 import { panelYolu } from "@/lib/roller";
-import { cikisYap } from "@/app/(auth)/login/actions";
-import { Logo } from "@/components/Logo";
 import { Sayaclar } from "@/components/Sayaclar";
 import { HeroFazSeridi as HeroZamanAkisi } from "@/components/landing/HeroZamanAkisi";
 import { CeliskiSahnesi } from "@/components/landing/CeliskiSahnesi";
@@ -20,7 +18,8 @@ import { CanliHavuzDemo } from "@/components/CanliHavuzDemo";
 import { CanliPortfoy } from "@/components/CanliPortfoy";
 import { BirebirPaylasim } from "@/components/BirebirPaylasim";
 import { Reveal } from "@/components/Reveal";
-import { MagneticButton } from "@/components/MagneticButton";
+import { AnaMenu } from "@/components/AnaMenu";
+import { IkincilNav } from "@/components/IkincilNav";
 import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck } from "lucide-react";
 
 /** Proje anatomisi, proje sahibi ne yükler / danışman ne görür. */
@@ -73,8 +72,6 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  { etiket: "Müteahhitler için", href: "/muteahhit" },
-  { etiket: "Danışmanlar için", href: "/emlakci" },
   { etiket: "Nasıl çalışır", href: "#nasil-calisir" },
   { etiket: "Sık sorulanlar", href: "#sss" },
 ];
@@ -187,30 +184,9 @@ export default async function Home() {
     <main className="flex flex-1 flex-col bg-paper text-ink">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd()) }} />
 
-      {/* ============ ÜST MENÜ ============ */}
-      <header className="sticky top-[var(--lansman-bar-h,0px)] z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
-        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
-          <div className="hidden items-center gap-1 md:flex">
-            {NAV.map((n) => (
-              <a key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</a>
-            ))}
-          </div>
-          <div className="flex items-center gap-2.5">
-            {panelHref ? (
-              <>
-                <span className="hidden sm:block"><form action={cikisYap}><button type="submit" className="btn-ghost">Çıkış</button></form></span>
-                <MagneticButton href={panelHref} className="btn-action">Panele git</MagneticButton>
-              </>
-            ) : (
-              <>
-                <span className="hidden sm:block"><Link href="/login" className="btn-ghost">Giriş yap</Link></span>
-                <MagneticButton href="/kayit" className="btn-action">Ücretsiz başla</MagneticButton>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
+      {/* ============ ÜST MENÜ (ortak) ============ */}
+      <AnaMenu panelHref={panelHref} />
+      <IkincilNav ogeler={NAV} />
 
       {/* ============ HERO: Zaman Akışı (mockup-07'den; 3 fazlı video, kullanıcı seçimi) ============ */}
       <HeroZamanAkisi />

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { SiteHeader } from "@/components/icerik/SiteChrome";
+import { AnaMenu } from "@/components/AnaMenu";
 import { KapanisFooter } from "@/components/KapanisFooter";
 import { IcerikDamgasi } from "@/components/icerik/IcerikDamgasi";
 import { kategoriIcerikleri } from "@/lib/icerik/kayit";
@@ -29,7 +29,7 @@ export default function RehberIndex() {
 
   return (
     <main className="flex min-h-full flex-col">
-      <SiteHeader aktif="rehber" />
+      <AnaMenu aktif="rehber" />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
         <nav aria-label="İçerik konumu" className="text-[12.5px] text-ink-soft">

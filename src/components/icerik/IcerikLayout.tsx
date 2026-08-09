@@ -6,7 +6,7 @@ import { YazarInceleyen } from "./YazarInceleyen";
 import { IcerikToc, type TocOge } from "./IcerikToc";
 import { IcerikHero } from "./IcerikGorsel";
 import { IcerikGoruntuleme } from "./IcerikGoruntuleme";
-import { SiteHeader } from "./SiteChrome";
+import { AnaMenu } from "@/components/AnaMenu";
 import { KapanisFooter } from "@/components/KapanisFooter";
 import { icerikSchemas } from "@/lib/icerik/schema";
 import type { IcerikMeta } from "@/lib/icerik/tipler";
@@ -29,7 +29,7 @@ export function IcerikLayout({
   return (
     <main className="flex min-h-full flex-col">
       <IcerikGoruntuleme slug={meta.slug} kategori={meta.kategori} />
-      <SiteHeader aktif={meta.kategori} />
+      <AnaMenu aktif={meta.kategori} />
 
       {/* ---- içerik gövdesi ---- */}
       <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-6 sm:py-10">
