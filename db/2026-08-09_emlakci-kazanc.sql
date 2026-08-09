@@ -49,4 +49,5 @@ language sql stable security definer set search_path = public as $$
     and (select belge_durumu from profiles where id = auth.uid()) = 'dogrulandi';
 $$;
 
+revoke execute on function emlakci_birim_kazanci(uuid) from public;
 grant execute on function emlakci_birim_kazanci(uuid) to authenticated;
