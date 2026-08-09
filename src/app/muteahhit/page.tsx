@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { NasilCalisirAdimlar } from "./NasilCalisirAdimlar";
 import { TahsisPaneli } from "@/components/landing/TahsisPaneli";
 import { KilitKoreografi } from "@/components/landing/KilitKoreografi";
+import { DagitimAgi } from "@/components/landing/DagitimAgi";
 import "@/app/mockup-02/mockup02.css";
 import { CircleSlash, SlidersHorizontal, Database } from "lucide-react";
 
@@ -262,6 +263,24 @@ export default function MuteahhitSayfasi() {
           </div>
         </section>
       </div>
+
+      {/* ============ TOPOLOJİ: sistem tek karede ============ */}
+      <section className="relative">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20 sm:px-6 sm:py-24">
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Topoloji</p>
+              <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Sistem tek karede</h2>
+              <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
+                Stok, fiyat ve tahsis tek noktada sende; her emlakçı canlı havuzdan yalnız kendisine tahsisli birimleri görür. Aşağıda ağın kuşbakışı yapısı.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={100} className="mt-12">
+            <DagitimAgi />
+          </Reveal>
+        </div>
+      </section>
 
       {/* ============ NASIL ÇALIŞIR, 4 adım, canlı mini-simülasyonlar ============ */}
       <section id="nasil-calisir" className="relative scroll-mt-20 border-y border-[var(--cizgi)] bg-white/55">
