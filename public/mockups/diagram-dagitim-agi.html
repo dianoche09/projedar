@@ -74,6 +74,9 @@
   <h1>Tek doğru kaynak, tahsisli dağıtım</h1>
   <p class="sub">Üretici stoğu, fiyatı ve kimin göreceğini tek noktadan yönetir. Fiyat ve durum yalnız canlı havuzda tutulur; her emlakçı bu havuzdan yalnızca kendisine tahsisli birimleri görür.</p>
 
+  <div class="da-scroll-wrap" style="position:relative;">
+  <div class="da-scroll" style="overflow-x:auto; border-radius:16px; border:1px solid var(--rule); background:var(--paper);">
+  <div style="min-width:820px; padding:16px;">
   <svg viewBox="0 0 960 560" role="img" aria-label="Projedar dağıtım ağı topolojisi: üretici, canlı stok havuzu, tahsis kapısı ve tahsisli emlakçılar">
     <defs>
       <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
@@ -168,6 +171,27 @@
     <rect x="632" y="504" width="14" height="12" rx="3" fill="#ffffff" stroke="#10243a" stroke-width="1" />
     <text x="652" y="513" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace">üretici · komuta</text>
   </svg>
+  </div>
+  </div>
+  <div class="da-fade" aria-hidden="true" style="pointer-events:none; position:absolute; top:1px; right:1px; bottom:1px; width:64px; border-radius:0 16px 16px 0; background:linear-gradient(to left, var(--paper), transparent); opacity:0; transition:opacity .3s;"></div>
+  <div class="da-hint" aria-hidden="true" style="pointer-events:none; position:absolute; bottom:12px; right:12px; display:inline-flex; align-items:center; gap:4px; border-radius:999px; border:1px solid var(--rule); background:rgba(255,255,255,.9); padding:4px 10px; font-family:'Geist Mono',monospace; font-size:10px; letter-spacing:.04em; color:var(--muted); opacity:0; transition:opacity .3s;">→ kaydır</div>
+  </div>
+
+  <script>
+    (function () {
+      var el = document.querySelector('.da-scroll');
+      var fade = document.querySelector('.da-fade');
+      var hint = document.querySelector('.da-hint');
+      function upd() {
+        var more = el.scrollWidth - el.clientWidth - el.scrollLeft > 4;
+        fade.style.opacity = more ? '1' : '0';
+        hint.style.opacity = more ? '1' : '0';
+      }
+      upd();
+      el.addEventListener('scroll', upd, { passive: true });
+      window.addEventListener('resize', upd);
+    })();
+  </script>
 
   <p class="caption">
     <b>Çift-satış kalkanı:</b> aktif opsiyon veritabanında benzersiz kilitle korunur; aynı daireye ikinci opsiyon yapısal olarak imkânsızdır.
