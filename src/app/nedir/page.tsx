@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Logo } from "@/components/Logo";
 import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
+import { KapanisFooter } from "@/components/KapanisFooter";
 import { Users, Building2, Radio, ShieldCheck, Layers, HandCoins, Network, ChevronRight } from "lucide-react";
 
 export const revalidate = 3600;
 const SITE = "https://projedar.com";
-const NAV = [
-  { etiket: "Müteahhitler için", href: "/muteahhit" },
-  { etiket: "Danışmanlar için", href: "/emlakci" },
-  { etiket: "Konut projeleri", href: "/konut-projeleri" },
-  { etiket: "Güven", href: "/guven" },
-];
 
 const SSS = [
   { s: "Projedar bir ilan portalı mı?", c: "Hayır. Projedar son kullanıcıya ilan sunmaz; kapalı devre, profesyoneller arası (B2B) bir ağdır. Fiyat ve canlı stok yalnız yetkili gayrimenkul danışmanlarına açılır." },
@@ -183,14 +177,7 @@ export default function Page() {
         </div>
       </section>
 
-      <footer className="border-t border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-3 px-5 py-10 text-center sm:px-6">
-          <Link href="/" aria-label="Projedar ana sayfa"><Logo size={22} wordmark /></Link>
-          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 font-mono text-[11.5px] text-ink-soft">
-            {NAV.map((n) => <Link key={n.href} href={n.href} className="hover:text-ink">{n.etiket}</Link>)}
-          </nav>
-        </div>
-      </footer>
+      <KapanisFooter />
     </main>
   );
 }

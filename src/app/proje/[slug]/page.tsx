@@ -6,11 +6,11 @@ import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
 import { okuOzellikler } from "@/lib/ozellikler";
-import { Logo } from "@/components/Logo";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { DavetPopup } from "@/components/seo/DavetPopup";
 import { type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
 import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
+import { KapanisFooter } from "@/components/KapanisFooter";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
@@ -743,24 +743,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </div>
       </section>
 
-      {/* ============ FOOTER (global) ============ */}
-      <footer className="mt-auto border-t border-[var(--cizgi)] bg-white/60 backdrop-blur-md">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-5 py-12 sm:px-6 md:flex-row md:justify-between">
-          <div className="flex flex-col items-center gap-3 md:items-start">
-            <Logo size={24} wordmark />
-            <p className="max-w-xs text-center text-xs leading-relaxed text-ink-soft md:text-left">Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı konut stoğu ağı.</p>
-          </div>
-          <nav aria-label="Bağlantılar" className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-medium text-ink-soft">
-            <Link href="/muteahhit" className="transition-colors hover:text-ink hover:underline">Müteahhitler için</Link>
-            <Link href="/emlakci" className="transition-colors hover:text-ink hover:underline">Danışmanlar için</Link>
-            <Link href="/konut-projeleri" className="transition-colors hover:text-ink hover:underline">Konut projeleri</Link>
-            <Link href="/kullanim-kosullari" className="transition-colors hover:text-ink hover:underline">Kullanım Koşulları</Link>
-            <Link href="/gizlilik" className="transition-colors hover:text-ink hover:underline">Gizlilik</Link>
-            <Link href="/kvkk-aydinlatma" className="transition-colors hover:text-ink hover:underline">KVKK</Link>
-          </nav>
-        </div>
-        <div className="border-t border-[var(--cizgi)] px-5 py-5 text-center text-[11px] text-[var(--ink-faint)] sm:px-6">© 2026 Projedar, Tüm hakları saklıdır.</div>
-      </footer>
+      {/* ============ FOOTER (global, ana sayfayla ortak) ============ */}
+      <KapanisFooter />
 
       <DavetPopup slug={slug} projeAd={p.ad} />
     </main>

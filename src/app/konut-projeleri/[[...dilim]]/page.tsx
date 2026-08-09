@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Logo } from "@/components/Logo";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
+import { KapanisFooter } from "@/components/KapanisFooter";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { tumHubProjeleri, illerOzet, ilcelerOzet, type HubProje } from "@/lib/seo/konut-hub";
 import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
@@ -15,12 +15,6 @@ export const revalidate = 3600;
 
 const SITE = "https://projedar.com";
 
-const NAV = [
-  { etiket: "Müteahhitler için", href: "/muteahhit" },
-  { etiket: "Danışmanlar için", href: "/emlakci" },
-  { etiket: "Konut projeleri", href: "/konut-projeleri" },
-  { etiket: "Güven", href: "/guven" },
-];
 
 type Kapsam =
   | { tur: "kok" }
@@ -213,15 +207,7 @@ export default async function Page({ params }: { params: Promise<{ dilim?: strin
         <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-6"><B2BCta /></div>
       </div>
 
-      <footer className="border-t border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-3 px-5 py-10 text-center sm:px-6">
-          <Link href="/" aria-label="Projedar ana sayfa"><Logo size={22} wordmark /></Link>
-          <p className="max-w-md text-xs leading-relaxed text-ink-soft">Tahsisli canlı proje satış ağı. İlan portalı değildir; fiyat ve stok her projenin kendi sayfasında canlı tutulur.</p>
-          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 font-mono text-[11.5px] text-ink-soft">
-            {NAV.map((n) => <Link key={n.href} href={n.href} className="hover:text-ink">{n.etiket}</Link>)}
-          </nav>
-        </div>
-      </footer>
+      <KapanisFooter />
     </main>
   );
 }
