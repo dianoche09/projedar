@@ -21,6 +21,7 @@ Kullanım:
 
 import argparse
 import csv
+import json
 import re
 import statistics
 from collections import defaultdict
@@ -84,6 +85,7 @@ def yaz_csv(yol, basliklar, satirlar):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--min-proje", type=int, default=3, help="kırılım için min proje sayısı")
+    ap.add_argument("--json", metavar="YOL", help="uygulama için kompakt JSON lookup yaz (ör. ../../src/data/bolge-benchmark.json)")
     a = ap.parse_args()
 
     girdi = CIKTI / "projeler.csv"
@@ -135,6 +137,25 @@ def main():
     print(f"İl kırılımı: {len(il_satir)} satır -> benchmark-il.csv")
     print(f"İlçe kırılımı: {len(ilce_satir)} satır -> benchmark-ilce.csv")
     print(f"Özet: benchmark.md")
+
+    # --- Uygulama için kompakt JSON lookup ---
+    if a.json:
+        veri = {
+            "kaynak": "emlakjet",
+            "olcu": "tl_m2_giris_medyan",
+            "not": "Liste/başlayan fiyattan türetilmiş yaklaşık ₺/m² medyanı; satış değil, benchmark.",
+            "proje_toplam": len(rows),
+            "min_proje": a.min_proje,
+            "il": {il: {"m2": giris, "proje": proje} for il, proje, konut, giris, ust in il_satir if giris != ""},
+            "ilce": {
+                f"{il}/{ilce}": {"m2": giris, "proje": proje}
+                for il, ilce, proje, konut, giris, ust in ilce_satir if giris != ""
+            },
+        }
+        yol = Path(a.json)
+        yol.parent.mkdir(parents=True, exist_ok=True)
+        yol.write_text(json.dumps(veri, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"JSON lookup: {len(veri['il'])} il + {len(veri['ilce'])} ilçe -> {yol}")
 
 
 if __name__ == "__main__":

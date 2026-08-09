@@ -1,0 +1,239 @@
+{
+  "kaynak": "emlakjet",
+  "olcu": "tl_m2_giris_medyan",
+  "not": "Liste/başlayan fiyattan türetilmiş yaklaşık ₺/m² medyanı; satış değil, benchmark.",
+  "proje_toplam": 1500,
+  "min_proje": 3,
+  "il": {
+    "İstanbul": {
+      "m2": 114944,
+      "proje": 672
+    },
+    "Ankara": {
+      "m2": 80000,
+      "proje": 177
+    },
+    "İzmir": {
+      "m2": 193540,
+      "proje": 130
+    },
+    "Bursa": {
+      "m2": 49635,
+      "proje": 82
+    },
+    "Muğla": {
+      "m2": 73675,
+      "proje": 61
+    },
+    "Antalya": {
+      "m2": 82714,
+      "proje": 50
+    },
+    "Kocaeli": {
+      "m2": 58780,
+      "proje": 42
+    },
+    "Kayseri": {
+      "m2": 14286,
+      "proje": 22
+    },
+    "Aydın": {
+      "m2": 62500,
+      "proje": 21
+    },
+    "Yalova": {
+      "m2": 68281,
+      "proje": 15
+    },
+    "Konya": {
+      "m2": 58659,
+      "proje": 11
+    },
+    "Trabzon": {
+      "m2": 74713,
+      "proje": 11
+    },
+    "Çanakkale": {
+      "m2": 80128,
+      "proje": 8
+    },
+    "Zonguldak": {
+      "m2": 40625,
+      "proje": 7
+    }
+  },
+  "ilce": {
+    "İzmir/Çeşme": {
+      "m2": 293103,
+      "proje": 11
+    },
+    "İstanbul/Kağıthane": {
+      "m2": 203256,
+      "proje": 48
+    },
+    "İzmir/Urla": {
+      "m2": 201064,
+      "proje": 11
+    },
+    "İzmir/Konak": {
+      "m2": 193540,
+      "proje": 12
+    },
+    "İstanbul/Üsküdar": {
+      "m2": 171988,
+      "proje": 35
+    },
+    "İzmir/Bayraklı": {
+      "m2": 169500,
+      "proje": 3
+    },
+    "İstanbul/Bağcılar": {
+      "m2": 164667,
+      "proje": 26
+    },
+    "İstanbul/Zeytinburnu": {
+      "m2": 160734,
+      "proje": 15
+    },
+    "İstanbul/Kadıköy": {
+      "m2": 143100,
+      "proje": 40
+    },
+    "İstanbul/Kartal": {
+      "m2": 139830,
+      "proje": 38
+    },
+    "İstanbul/Ümraniye": {
+      "m2": 138408,
+      "proje": 26
+    },
+    "Ankara/Çankaya": {
+      "m2": 121849,
+      "proje": 55
+    },
+    "İstanbul/Başakşehir": {
+      "m2": 120091,
+      "proje": 39
+    },
+    "İstanbul/Silivri": {
+      "m2": 117057,
+      "proje": 10
+    },
+    "İstanbul/Maltepe": {
+      "m2": 116655,
+      "proje": 20
+    },
+    "İstanbul/Eyüpsultan": {
+      "m2": 115748,
+      "proje": 26
+    },
+    "İstanbul/Bahçelievler": {
+      "m2": 114504,
+      "proje": 10
+    },
+    "Muğla/Fethiye": {
+      "m2": 114286,
+      "proje": 6
+    },
+    "Ankara/Yenimahalle": {
+      "m2": 107692,
+      "proje": 38
+    },
+    "İstanbul/Tuzla": {
+      "m2": 101229,
+      "proje": 14
+    },
+    "İstanbul/Büyükçekmece": {
+      "m2": 100672,
+      "proje": 21
+    },
+    "İstanbul/Küçükçekmece": {
+      "m2": 93333,
+      "proje": 29
+    },
+    "İstanbul/Avcılar": {
+      "m2": 85725,
+      "proje": 22
+    },
+    "İstanbul/Beylikdüzü": {
+      "m2": 84884,
+      "proje": 39
+    },
+    "İstanbul/Çekmeköy": {
+      "m2": 84810,
+      "proje": 21
+    },
+    "Antalya/Kepez": {
+      "m2": 82714,
+      "proje": 5
+    },
+    "İstanbul/Pendik": {
+      "m2": 82604,
+      "proje": 40
+    },
+    "İstanbul/Arnavutköy": {
+      "m2": 81790,
+      "proje": 10
+    },
+    "Çanakkale/Merkez": {
+      "m2": 80128,
+      "proje": 7
+    },
+    "Ankara/Gölbaşı": {
+      "m2": 80000,
+      "proje": 15
+    },
+    "İzmir/Narlıdere": {
+      "m2": 77236,
+      "proje": 3
+    },
+    "Trabzon/Akçaabat": {
+      "m2": 74713,
+      "proje": 3
+    },
+    "Ankara/Keçiören": {
+      "m2": 72101,
+      "proje": 15
+    },
+    "Ankara/Mamak": {
+      "m2": 70000,
+      "proje": 4
+    },
+    "Kocaeli/İzmit": {
+      "m2": 66867,
+      "proje": 15
+    },
+    "Kocaeli/Kartepe": {
+      "m2": 64196,
+      "proje": 8
+    },
+    "Aydın/Didim": {
+      "m2": 62500,
+      "proje": 8
+    },
+    "Bursa/Mudanya": {
+      "m2": 60606,
+      "proje": 12
+    },
+    "Konya/Selçuklu": {
+      "m2": 58659,
+      "proje": 9
+    },
+    "Ankara/Etimesgut": {
+      "m2": 53409,
+      "proje": 33
+    },
+    "Bursa/Nilüfer": {
+      "m2": 49635,
+      "proje": 60
+    },
+    "Zonguldak/Ereğli": {
+      "m2": 40625,
+      "proje": 4
+    },
+    "Kayseri/Kocasinan": {
+      "m2": 14286,
+      "proje": 8
+    }
+  }
+}

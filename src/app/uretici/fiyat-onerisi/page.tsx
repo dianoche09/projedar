@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { paraKisa } from "@/lib/stok";
 import { simdiMs } from "@/lib/zaman";
+import { bolgeMedyani, benchmarkKiyas, BENCHMARK_META } from "@/lib/bolgeBenchmark";
 
 /* =========================================================
    DİNAMİK FİYAT ÖNERİSİ — events talep sinyalinden fiyat nudge'u.
@@ -63,9 +64,12 @@ export default async function FiyatOnerisi() {
   const { data: firmalar } = await supabase.from("uretici").select("id").eq("sahip_id", user.id);
   const firmaIds = (firmalar ?? []).map((f) => f.id as string);
   const { data: projeler } = firmaIds.length
-    ? await supabase.from("proje").select("id, ad").in("uretici_id", firmaIds)
-    : { data: [] as { id: string; ad: string }[] };
+    ? await supabase.from("proje").select("id, ad, il, ilce").in("uretici_id", firmaIds)
+    : { data: [] as { id: string; ad: string; il: string | null; ilce: string | null }[] };
   const projeAd = new Map((projeler ?? []).map((p) => [p.id as string, p.ad as string]));
+  const projeKonum = new Map(
+    (projeler ?? []).map((p) => [p.id as string, { il: p.il as string | null, ilce: p.ilce as string | null }]),
+  );
   const projeIds = (projeler ?? []).map((p) => p.id as string);
 
   const admin = createAdminClient();
@@ -73,7 +77,7 @@ export default async function FiyatOnerisi() {
     ? await Promise.all([
         admin
           .from("birim")
-          .select("id, proje_id, tip_id, daire_no, kat, liste_fiyati, para_birimi, son_guncelleme")
+          .select("id, proje_id, tip_id, daire_no, kat, liste_fiyati, para_birimi, son_guncelleme, brut_m2, net_m2")
           .in("proje_id", projeIds)
           .eq("durum", "musait")
           .eq("satilabilir", true),
@@ -96,6 +100,8 @@ export default async function FiyatOnerisi() {
     liste_fiyati: number | null;
     para_birimi: string | null;
     son_guncelleme: string | null;
+    brut_m2: number | null;
+    net_m2: number | null;
   }[];
   const tipAd = new Map((tipler ?? []).map((t) => [t.id as string, (t.oda as string | null) ?? (t.ad as string | null)]));
 
@@ -126,7 +132,10 @@ export default async function FiyatOnerisi() {
       const peerMedyan = medyan(grup);
       const gunFark = b.son_guncelleme ? (simdi - new Date(b.son_guncelleme).getTime()) / 86_400_000 : 999;
       const oneri = oneriHesapla(demand, peerMedyan, grup.length, gunFark, b.liste_fiyati);
-      return { b, demand, kir: kirilim.get(b.id) ?? {}, oneri };
+      const konum = projeKonum.get(b.proje_id);
+      const bolge = bolgeMedyani(konum?.il, konum?.ilce);
+      const kiyas = benchmarkKiyas(b.liste_fiyati, b.brut_m2 ?? b.net_m2, bolge);
+      return { b, demand, kir: kirilim.get(b.id) ?? {}, oneri, bolge, kiyas };
     })
     // Önce eyleme değer öneriler (artır/düşür), talebe göre
     .sort((x, y) => {
@@ -164,6 +173,7 @@ export default async function FiyatOnerisi() {
                     <th>Proje · Daire</th>
                     <th>Tip</th>
                     <th className="text-right">Fiyat</th>
+                    <th className="text-right">Bölge ₺/m²</th>
                     <th className="text-right">Talep</th>
                     <th>Sinyal (30g)</th>
                     <th>Öneri</th>
@@ -171,7 +181,7 @@ export default async function FiyatOnerisi() {
                   </tr>
                 </thead>
                 <tbody>
-                  {satirlar.map(({ b, demand, kir, oneri }) => (
+                  {satirlar.map(({ b, demand, kir, oneri, bolge, kiyas }) => (
                     <tr key={b.id}>
                       <td>
                         <span className="block text-[12.5px] font-medium text-ink">{projeAd.get(b.proje_id) ?? "—"}</span>
@@ -180,6 +190,27 @@ export default async function FiyatOnerisi() {
                       <td className="text-[12.5px] text-ink-soft">{tipAd.get(b.tip_id ?? "") ?? "—"}</td>
                       <td className="mono text-right font-semibold">
                         {b.liste_fiyati ? paraKisa(b.liste_fiyati, b.para_birimi) : "—"}
+                      </td>
+                      <td className="text-right">
+                        {bolge ? (
+                          <div className="flex flex-col items-end gap-0.5">
+                            <span className="mono text-[12px] font-semibold text-ink" title={`${bolge.etiket} · ${bolge.proje} proje (emlakjet)`}>
+                              {paraKisa(bolge.m2, b.para_birimi)}
+                            </span>
+                            {kiyas ? (
+                              <span
+                                className={`rozet ${kiyas.pct > 8 ? "bg-amber-soft text-amber" : kiyas.pct < -8 ? "bg-green-soft text-teal-d" : "bg-card text-gray"}`}
+                                title={`Bu birim ${paraKisa(kiyas.birimM2, b.para_birimi)}/m² · bölge medyanının %${Math.abs(kiyas.pct)} ${kiyas.pct >= 0 ? "üstünde" : "altında"}`}
+                              >
+                                {kiyas.pct > 0 ? "+" : ""}{kiyas.pct}%
+                              </span>
+                            ) : (
+                              <span className="text-[11px] text-[var(--ink-faint)]">m² yok</span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-[12px] text-[var(--ink-faint)]">—</span>
+                        )}
                       </td>
                       <td className="mono text-right font-semibold text-ink">{demand}</td>
                       <td>
@@ -224,7 +255,8 @@ export default async function FiyatOnerisi() {
             </div>
           </div>
           <p className="mt-3 text-[11px] text-[var(--ink-faint)]">
-            Not: öneriler talep sinyalinin göreli yoğunluğuna dayanır (Endeksa/rayiç değil). Nihai fiyat kararı sende.
+            Not: öneriler talep sinyalinin göreli yoğunluğuna dayanır. Bölge ₺/m² sütunu {BENCHMARK_META.projeToplam.toLocaleString("tr-TR")}
+            {" "}emsal proje ilanından ({BENCHMARK_META.kaynak}) türetilmiş yaklaşık liste medyanıdır, satış/rayiç değil. Nihai fiyat kararı sende.
           </p>
         </>
       )}
