@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar · Dağıtım Ağı Topolojisi</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #eef1f6;
+    --ink: #10243a;
+    --muted: #46586b;
+    --soft: #7d8da0;
+    --rule: rgba(16, 36, 58, 0.08);
+    --teal: #1e9b8a;
+    --navy: #13314b;
+    --green: #2fb36b;
+    --amber: #e3a12c;
+    --red: #d15a4e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+    padding: 48px 20px 64px;
+  }
+  .wrap { width: 100%; max-width: 980px; }
+  .eyebrow {
+    font-family: "Geist Mono", monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-family: "Outfit", sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+  .sub {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0 0 28px;
+    max-width: 620px;
+  }
+  svg { width: 100%; height: auto; display: block; }
+  .caption {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-family: "Geist Mono", monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--soft);
+    letter-spacing: 0.02em;
+  }
+  .caption b { color: var(--muted); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Topoloji</p>
+  <h1>Tek doğru kaynak, tahsisli dağıtım</h1>
+  <p class="sub">Üretici stoğu, fiyatı ve kimin göreceğini tek noktadan yönetir. Fiyat ve durum yalnız canlı havuzda tutulur; her emlakçı bu havuzdan yalnızca kendisine tahsisli birimleri görür.</p>
+
+  <svg viewBox="0 0 960 560" role="img" aria-label="Projedar dağıtım ağı topolojisi: üretici, canlı stok havuzu, tahsis kapısı ve tahsisli emlakçılar">
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#46586b" />
+      </marker>
+      <marker id="arrow-navy" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="#13314b" />
+      </marker>
+    </defs>
+
+    <!-- background -->
+    <rect width="960" height="560" fill="#eef1f6" />
+
+    <!-- ============ ARROWS (drawn before boxes) ============ -->
+    <!-- üretici -> havuz -->
+    <line x1="216" y1="300" x2="300" y2="300" stroke="#13314b" stroke-width="1.2" marker-end="url(#arrow-navy)" />
+    <rect x="234" y="280" width="48" height="12" rx="2" fill="#eef1f6" />
+    <text x="258" y="289" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YÖNETİR</text>
+
+    <!-- havuz -> tahsis -->
+    <line x1="512" y1="300" x2="556" y2="300" stroke="#46586b" stroke-width="1.2" marker-end="url(#arrow)" />
+
+    <!-- tahsis -> emlakçı A (up) -->
+    <path d="M696,288 H712 Q720,288 720,280 V196 Q720,188 728,188 H740" fill="none" stroke="#46586b" stroke-width="1.2" marker-end="url(#arrow)" />
+    <!-- tahsis -> emlakçı B (straight) -->
+    <line x1="696" y1="300" x2="740" y2="300" stroke="#46586b" stroke-width="1.2" marker-end="url(#arrow)" />
+    <!-- tahsis -> emlakçı C (down) -->
+    <path d="M696,312 H712 Q720,312 720,320 V404 Q720,412 728,412 H740" fill="none" stroke="#46586b" stroke-width="1.2" marker-end="url(#arrow)" />
+
+    <!-- group label over emlakçılar -->
+    <text x="832" y="140" fill="#7d8da0" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">TAHSİSLİ GÖRÜNÜM</text>
+
+    <!-- ============ NODES ============ -->
+
+    <!-- ÜRETİCİ (aktör / backend) -->
+    <rect x="48" y="252" width="168" height="96" rx="8" fill="#eef1f6" />
+    <rect x="48" y="252" width="168" height="96" rx="8" fill="#ffffff" stroke="#10243a" stroke-width="1" />
+    <rect x="64" y="268" width="40" height="14" rx="2" fill="transparent" stroke="rgba(16,36,58,0.35)" stroke-width="0.8" />
+    <text x="84" y="278" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.1em">ROL</text>
+    <text x="132" y="308" fill="#10243a" font-size="16" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Üretici</text>
+    <text x="132" y="328" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">stok · fiyat · tahsis</text>
+
+    <!-- CANLI STOK HAVUZU (focal / teal) -->
+    <rect x="304" y="224" width="208" height="152" rx="8" fill="#eef1f6" />
+    <rect x="304" y="224" width="208" height="152" rx="8" fill="rgba(30,155,138,0.10)" stroke="#1e9b8a" stroke-width="1.2" />
+    <rect x="320" y="240" width="72" height="14" rx="2" fill="transparent" stroke="rgba(30,155,138,0.55)" stroke-width="0.8" />
+    <text x="356" y="250" fill="#1a8676" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.1em">VERİ · BİRİM</text>
+    <text x="408" y="296" fill="#10243a" font-size="16" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Canlı Stok Havuzu</text>
+    <text x="408" y="316" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">tek doğru kaynak</text>
+    <!-- freshness pill -->
+    <rect x="356" y="336" width="104" height="20" rx="10" fill="#ffffff" stroke="rgba(47,179,107,0.4)" stroke-width="0.8" />
+    <circle cx="374" cy="346" r="3.5" fill="#2fb36b" />
+    <text x="384" y="349" fill="#1f7a4a" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.04em">canlı · az önce</text>
+
+    <!-- TAHSİS (focal / security gate) -->
+    <rect x="560" y="272" width="136" height="56" rx="8" fill="#eef1f6" />
+    <rect x="560" y="272" width="136" height="56" rx="8" fill="rgba(30,155,138,0.05)" stroke="rgba(30,155,138,0.5)" stroke-width="1.2" stroke-dasharray="4,4" />
+    <text x="628" y="298" fill="#10243a" font-size="12" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Tahsis</text>
+    <text x="628" y="314" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">görünürlük kapısı</text>
+
+    <!-- EMLAKÇI A -->
+    <rect x="744" y="156" width="176" height="64" rx="8" fill="#eef1f6" />
+    <rect x="744" y="156" width="176" height="64" rx="8" fill="rgba(16,36,58,0.05)" stroke="#46586b" stroke-width="1" />
+    <text x="832" y="184" fill="#10243a" font-size="12" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Emlakçı A</text>
+    <text x="832" y="200" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">yalnız tahsisli</text>
+
+    <!-- EMLAKÇI B -->
+    <rect x="744" y="268" width="176" height="64" rx="8" fill="#eef1f6" />
+    <rect x="744" y="268" width="176" height="64" rx="8" fill="rgba(16,36,58,0.05)" stroke="#46586b" stroke-width="1" />
+    <text x="832" y="296" fill="#10243a" font-size="12" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Emlakçı B</text>
+    <text x="832" y="312" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">yalnız tahsisli</text>
+
+    <!-- EMLAKÇI C -->
+    <rect x="744" y="380" width="176" height="64" rx="8" fill="#eef1f6" />
+    <rect x="744" y="380" width="176" height="64" rx="8" fill="rgba(16,36,58,0.05)" stroke="#46586b" stroke-width="1" />
+    <text x="832" y="408" fill="#10243a" font-size="12" font-weight="600" font-family="'Inter', sans-serif" text-anchor="middle">Emlakçı C</text>
+    <text x="832" y="424" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.04em">yalnız tahsisli</text>
+
+    <!-- ============ LEGEND (horizontal strip) ============ -->
+    <line x1="48" y1="492" x2="912" y2="492" stroke="rgba(16,36,58,0.10)" stroke-width="0.8" />
+    <text x="48" y="512" fill="#7d8da0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">LEJANT</text>
+
+    <rect x="132" y="504" width="14" height="12" rx="3" fill="rgba(30,155,138,0.10)" stroke="#1e9b8a" stroke-width="1" />
+    <text x="152" y="513" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace">canlı · tek doğru kaynak</text>
+
+    <rect x="336" y="504" width="14" height="12" rx="3" fill="rgba(30,155,138,0.05)" stroke="rgba(30,155,138,0.5)" stroke-width="1" stroke-dasharray="3,3" />
+    <text x="356" y="513" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace">tahsis kapısı</text>
+
+    <rect x="484" y="504" width="14" height="12" rx="3" fill="rgba(16,36,58,0.05)" stroke="#46586b" stroke-width="1" />
+    <text x="504" y="513" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace">tahsisli emlakçı</text>
+
+    <rect x="632" y="504" width="14" height="12" rx="3" fill="#ffffff" stroke="#10243a" stroke-width="1" />
+    <text x="652" y="513" fill="#46586b" font-size="8" font-family="'Geist Mono', monospace">üretici · komuta</text>
+  </svg>
+
+  <p class="caption">
+    <b>Çift-satış kalkanı:</b> aktif opsiyon veritabanında benzersiz kilitle korunur; aynı daireye ikinci opsiyon yapısal olarak imkânsızdır.
+    <br /><b>Tazelik:</b> her yazışta son güncelleme damgalanır; paylaşımda fiyat o anki canlı değerden basılır.
+  </p>
+</div>
+</body>
+</html>
