@@ -387,12 +387,12 @@ export default function PitchV2() {
         />
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Banknote} baslik="Tur: $200K / %25" metin="Post-money ~$800K (pre-money ~$600K). 24 aylık büyümeyi ve saha kadrosunu fonlar." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={TrendingUp} baslik="$150K şirkete sermaye" metin="Primary: saha & concierge, ürün derinleşme, pazarlama & runway." />
-        <MaddeKart Ikon={Handshake} baslik="$50K kurucu karşılığı" metin="Secondary: kurucunun bugüne kadarki geliştirme ve yatırımının kısmi karşılığı." />
+        <MaddeKart Ikon={Banknote} baslik="$200K / %25 (post ~$800K)" metin="Ankor: cirosuz aşamanın fiyatı. Ürün canlı ve dış kaynaksız kuruldu; ilk ödeyen müteahhitle değerleme ~$1,2M+'a revize." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={TrendingUp} baslik="$150K primary → ekip" metin="Ana kullanım saha & concierge ekibi + ürün derinleşme. Gelir Ay 1'den başlar; sermaye runway değil, büyüme ateşlemesi." />
+        <MaddeKart Ikon={Handshake} baslik="$50K = kurucu IP/emek" metin="Secondary: kurucunun ürünü fikirden canlıya kendi kaynağıyla taşımasının kısmi karşılığı." />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        24 ay hedefi: ~100 proje · ~5.000 ödeyen danışman. Rakamlar muhafazakar bazdır, saha verisiyle güncellenir.
+        24 ay hedefi: ~100 proje · ~5.000 ödeyen danışman · ~150 ofis. Değerleme cirosuz aşamanın fiyatı; ilk gelirle yukarı revize edilir.
       </p>
     </Slayt>,
 

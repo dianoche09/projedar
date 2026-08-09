@@ -174,20 +174,20 @@ export default function FinansalV2() {
     </Slayt>,
 
     /* 8 · Yatırım */
-    <Slayt key="yatirim" kicker="Yatırım" baslik="$200K / %25 — sermaye büyümeye" alt="Ürün canlı ve dış kaynaksız kuruldu; tur, 24 aylık büyümeyi ve saha kadrosunu fonlar.">
+    <Slayt key="yatirim" kicker="Yatırım" baslik="$200K / %25 — ankor, ilk gelirle yukarı" alt="Ürün canlı ve dış kaynaksız kuruldu; değerin büyük kısmı zaten yaratıldı. $800K post-money, cirosuz aşamanın fiyatıdır; ilk ödeyen müteahhitle yukarı revize edilir.">
       <div className="mb-3 grid gap-3 sm:grid-cols-3">
-        <DevSayi deger="$200K" etiket="Tur büyüklüğü · %25 hisse karşılığı" renk="#2fd3bc" />
-        <DevSayi deger="~$800K" etiket="Post-money değerleme (pre-money ~$600K)" />
-        <DevSayi deger="$150K + $50K" etiket="Şirkete sermaye (primary) + kurucu emek/yatırım karşılığı (secondary)" renk="#2fd3bc" />
+        <DevSayi deger="$200K / %25" etiket="Tur · post-money ~$800K (pre ~$600K)" renk="#2fd3bc" />
+        <DevSayi deger="$150K + $50K" etiket="Şirkete sermaye (primary) + kurucu IP/emek karşılığı (secondary)" />
+        <DevSayi deger="→ ~$1,2M+" etiket="İlk ödeyen müteahhit imzalanınca değerleme revizyonu" renk="#2fd3bc" />
       </div>
-      <p className="deck-faint mono mb-3 text-[10.5px] uppercase tracking-wider">$150K sermaye kullanımı (aşağıdaki üç kalem):</p>
+      <p className="deck-faint mono mb-3 text-[10.5px] uppercase tracking-wider">$150K sermaye kullanımı — öncelik ekip büyütme:</p>
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Users} baslik="Saha & concierge" metin="Üretici/danışman kazanımı ve kurulum operasyonu: kazanım hızını belirleyen ana kalem." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Users} baslik="Saha & concierge ekibi" metin="Üretici/danışman kazanımı + kurulum operasyonu: turun ANA kullanımı, kazanım hızını belirleyen kalem." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Building2} baslik="Ürün derinleşme" metin="WhatsApp Cloud API, AI eşleştirme, ofis/Pro araçları, veri ürünleri altyapısı." />
-        <MaddeKart Ikon={Banknote} baslik="Pazarlama & runway" metin="Marka, sektör etkinlikleri, 24 aylık nakit tamponu." />
+        <MaddeKart Ikon={Banknote} baslik="Pazarlama & tampon" metin="Marka, sektör etkinlikleri, nakit tamponu. Gelir Ay 1'den başladığı için sermaye 24 ay runway değil, büyüme ateşlemesidir." />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        $50K, kurucunun bugüne kadarki geliştirme ve yatırımının kısmi karşılığıdır (secondary). Rakamlar muhafazakar bazdır ve saha verisiyle güncellenir.
+        $50K = kurucunun ürünü kendi kaynağıyla fikirden canlıya taşımasının kısmi IP/emek karşılığıdır (secondary). Değerleme cirosuz aşamanın fiyatı; ilk gelirle yukarı revize edilir.
       </p>
     </Slayt>,
 
