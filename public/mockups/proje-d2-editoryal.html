@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Uplife Kadıköy · Projedar /proje — D2 Editoryal Dosya</title>
+<!-- MOCKUP / tasarım yönü. Fiyat YOK, satılık dili YOK. Görselsiz editoryal; atmosfer sadece tipografi + ince ızgara. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10243a; --soft:#46586b; --faint:#7d8da0; --teal:#1e9b8a; --teald:#1a8676; --green:#2fb36b;
+    --paper:#eef1f6; --card:#fff; --line:rgba(16,36,58,.10); --line2:rgba(16,36,58,.16);
+    --disp:'Outfit',system-ui,sans-serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);color:var(--ink);background:linear-gradient(180deg,#f3f5f9,#eef1f6);min-height:100vh;-webkit-font-smoothing:antialiased;line-height:1.55}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .disp{font-family:var(--disp);letter-spacing:-.02em}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  a{color:inherit;text-decoration:none}
+
+  header{border-bottom:1px solid var(--line);background:rgba(255,255,255,.7);backdrop-filter:blur(12px);position:sticky;top:0;z-index:20}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{font-family:var(--disp);font-weight:800;font-size:20px}
+  .brand b{color:var(--teal)}
+  .barlink{font-size:13px;color:var(--soft)}
+
+  /* editorial masthead */
+  .mast{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+  .crumbs{font-size:12.5px;color:var(--faint);margin-bottom:26px;letter-spacing:.01em}
+  .grid-mast{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end}
+  .kicker{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--teald);letter-spacing:.02em;margin-bottom:18px}
+  h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,8vw,86px);line-height:.94;letter-spacing:-.035em}
+  .dev{margin-top:18px;font-size:17px;color:var(--soft)}
+  .dev b{color:var(--ink);font-weight:600}
+  .metaside{border-left:2px solid var(--teal);padding-left:20px}
+  .metaside .row{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .metaside .row:last-child{border-bottom:0}
+  .metaside .row span{color:var(--faint)}
+  .metaside .row b{font-weight:600;font-family:var(--mono);font-size:13.5px}
+
+  /* big lede */
+  .lede{padding:52px 0;border-bottom:1px solid var(--line)}
+  .lede p{font-family:var(--disp);font-weight:500;font-size:clamp(21px,3vw,30px);line-height:1.32;letter-spacing:-.015em;max-width:24ch}
+  .lede .drop{max-width:none;font-weight:400;font-family:var(--sans);font-size:17px;line-height:1.7;color:var(--soft);margin-top:26px;column-count:2;column-gap:44px}
+  @media(max-width:760px){.lede .drop{column-count:1}}
+
+  /* numbers band */
+  .figs{padding:46px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+  .fig .n{font-family:var(--disp);font-weight:800;font-size:44px;letter-spacing:-.03em;line-height:1}
+  .fig .l{font-size:13px;color:var(--faint);margin-top:8px;max-width:16ch}
+  .fig .n em{font-style:normal;color:var(--teal)}
+
+  /* two-col editorial sections */
+  .sec{padding:52px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:baseline}
+  .sec-head h2{font-family:var(--disp);font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--teald);text-transform:uppercase}
+  .sec-head .body{max-width:64ch;font-size:16.5px;line-height:1.72;color:var(--soft)}
+  .sec-head .body b{color:var(--ink);font-weight:600}
+  @media(max-width:760px){.sec-head{grid-template-columns:1fr;gap:14px}}
+
+  .typo-list{margin-top:26px;grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line)}
+  .typo-list .u{padding:20px 20px 20px 0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .typo-list .u:nth-child(3n){border-right:0}
+  .typo-list .u .t{font-family:var(--mono);font-weight:600;font-size:20px}
+  .typo-list .u .d{font-size:13px;color:var(--faint);margin-top:6px}
+  .typo-list .u .q{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--teal);margin-top:12px}
+  @media(max-width:640px){.typo-list{grid-template-columns:1fr}.typo-list .u{border-right:0}}
+
+  .poi-ed{grid-column:1/-1;margin-top:24px;columns:2;column-gap:44px}
+  .poi-ed li{list-style:none;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;break-inside:avoid;color:var(--soft)}
+  .poi-ed li b{color:var(--ink);font-weight:600}
+  @media(max-width:640px){.poi-ed{columns:1}}
+
+  .amen{grid-column:1/-1;margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 22px}
+  .amen span{font-size:15px;color:var(--soft);position:relative;padding-left:16px}
+  .amen span::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+
+  /* CTA editorial */
+  .cta{padding:60px 0;border-bottom:1px solid var(--line)}
+  .cta .k{font-family:var(--mono);font-size:12px;color:var(--teald);font-weight:600;margin-bottom:14px}
+  .cta h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;max-width:20ch;margin-bottom:12px}
+  .cta .sub{font-size:16.5px;color:var(--soft);max-width:60ch;margin-bottom:30px}
+  .ctarow{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .ccard{padding:26px 26px 24px;border:1px solid var(--line2);border-radius:18px;background:#fff}
+  .ccard .role{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .ccard h3{font-family:var(--disp);font-weight:700;font-size:22px;margin:10px 0 8px}
+  .ccard p{font-size:14px;color:var(--soft);margin-bottom:18px}
+  .btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 20px;border-radius:12px;font-weight:600;font-size:14px;border:0;cursor:pointer}
+  .btn-teal{background:var(--teald);color:#fff}
+  .btn-line{background:#fff;color:var(--ink);border:1px solid var(--line2)}
+  .note{margin-top:22px;font-size:13.5px;color:var(--faint)}
+  .note b{color:var(--teald)}
+  @media(max-width:640px){.ctarow{grid-template-columns:1fr}.figs{grid-template-columns:repeat(2,1fr)}}
+
+  footer{padding:38px 0 64px;color:var(--faint);font-size:12.5px}
+</style>
+</head>
+<body>
+<header><div class="wrap bar">
+  <div class="brand">Proje<b>dar</b></div>
+  <div class="barlink">Konut projeleri dosyası</div>
+</div></header>
+
+<div class="mast"><div class="wrap">
+  <div class="crumbs">Projedar · Konut projeleri · İstanbul · Kadıköy</div>
+  <div class="grid-mast">
+    <div>
+      <div class="kicker">TEKNİK YAPI · FİKİRTEPE · TESLİM ARALIK 2026</div>
+      <h1>Uplife<br>Kadıköy</h1>
+      <p class="dev">Fikirtepe'nin prestij aksında, <b>4 kule</b> ve <b>830 konut</b>. Deniz ve Adalar manzaralı yeni nesil rezidans dosyası.</p>
+    </div>
+    <div class="metaside">
+      <div class="row"><span>Geliştirici</span><b>Teknik Yapı</b></div>
+      <div class="row"><span>Konum</span><b>Kadıköy / Fikirtepe</b></div>
+      <div class="row"><span>Durum</span><b>İnşaat</b></div>
+      <div class="row"><span>Teslim</span><b>Aralık 2026</b></div>
+      <div class="row"><span>Kullanım</span><b>Karma</b></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="lede"><div class="wrap">
+  <p>Kentsel dönüşümün merkezinde, iki yakaya da dakikalarla bağlanan bir aks.</p>
+  <div class="drop">
+    <p>Uplife Kadıköy, Teknik Yapı imzasıyla İstanbul'un Anadolu Yakası'nda, Kadıköy'e bağlı Fikirtepe'nin Dumlupınar Mahallesi'nde yükseliyor. Yaklaşık 16 bin metrekarelik arsa üzerinde üçü 23, biri 22 katlı toplam dört kule; içinde 830 konut ve ticari birimler yer alıyor.</p>
+    <p>1+1, 2+1 ve 3+1 seçenekleriyle yaklaşık 58 metrekareden 129 metrekareye uzanan planlar sunuluyor. E5 karayolunun hemen yanında, metro ve Marmaray hattına yürüme mesafesindeki proje, deniz ve Adalar manzarasına açılan kuleleriyle Fikirtepe'nin prestij aksında modern bir yaşam kurgusu öneriyor.</p>
+  </div>
+</div></div>
+
+<div class="figs"><div class="wrap" style="display:contents">
+  <div class="fig"><div class="n">830</div><div class="l">konut birimi, 4 kulede</div></div>
+  <div class="fig"><div class="n">16.145<em> m²</em></div><div class="l">arsa alanı</div></div>
+  <div class="fig"><div class="n">58-129<em> m²</em></div><div class="l">daire büyüklük bandı</div></div>
+  <div class="fig"><div class="n">200<em> m</em></div><div class="l">Ünalan &amp; Göztepe metroya</div></div>
+</div></div>
+
+<div class="sec"><div class="wrap"><div class="sec-head">
+  <h2>Daire tipleri</h2>
+  <div class="body">Üç ana tip toplam 830 konutu oluşturuyor. Kompakt 1+1 daireler yatırımcı ve tek yaşayanlar için, 2+1 küçük aileler için dengeli, geniş 3+1 ise ferah alan arayanlar için tasarlandı. Rezidans daireleri ofis ve home-ofis kullanımına uygun.</div>
+  <div class="typo-list">
+    <div class="u"><div class="t">1+1</div><div class="d">yaklaşık 58 m²'den başlar</div><div class="q">526 adet</div></div>
+    <div class="u"><div class="t">2+1</div><div class="d">dengeli aile planı</div><div class="q">261 adet</div></div>
+    <div class="u"><div class="t">3+1</div><div class="d">129 m²'ye ulaşan geniş tip</div><div class="q">43 adet</div></div>
+  </div>
+</div></div></div>
+
+<div class="sec"><div class="wrap"><div class="sec-head">
+  <h2>Konum &amp; çevre</h2>
+  <div class="body">Proje E5'in bitişiğinde; M4 metro, Marmaray, metrobüs ve Avrasya Tüneli yakın çevrede. Günlük ihtiyaçlar için üniversite, hastane ve AVM'ler yürüme mesafesinde.</div>
+  <ul class="poi-ed">
+    <li><b>Ünalan &amp; Göztepe Metro</b> (M4) yaklaşık 200 m</li>
+    <li><b>E5 karayolu</b> bitişik</li>
+    <li><b>Marmaray &amp; metrobüs</b> yakın</li>
+    <li><b>Avrasya Tüneli</b> ile iki yakaya geçiş</li>
+    <li><b>Medeniyet Üniversitesi</b> kampüsü</li>
+    <li><b>Acıbadem hastaneleri</b></li>
+    <li><b>Kozzy &amp; Tepe Nautilus AVM</b></li>
+    <li><b>Prestij Caddesi</b> ticari aksı</li>
+  </ul>
+</div></div></div>
+
+<div class="sec"><div class="wrap"><div class="sec-head">
+  <h2>Sosyal donatı</h2>
+  <div class="body">Site içinde spor, dinlenme ve güvenlik olanakları tek çatı altında.</div>
+  <div class="amen">
+    <span>Açık &amp; kapalı yüzme havuzu</span><span>Çocuk havuzu</span><span>Fitness</span><span>Sauna</span><span>Hamam</span>
+    <span>Güneşlenme terası</span><span>Çocuk oyun alanları</span><span>Peyzajlı yeşil alan</span><span>Çok katlı kapalı otopark</span>
+    <span>7/24 kameralı güvenlik</span><span>Jeneratör &amp; su deposu</span><span>Kafe &amp; restoran</span>
+  </div>
+</div></div></div>
+
+<div class="cta"><div class="wrap">
+  <div class="k">TAHSİSLİ CANLI AĞ</div>
+  <h2>Bağımsız danışman, tek hesapla birçok geliştiricinin stoğunda.</h2>
+  <p class="sub">Projedar açık pazar değil: erişim geliştirici kontrollü tahsisle yönetilir. Uplife Kadıköy ağa girdiğinde tahsisli birimleri tek canlı havuzdan görürsünüz.</p>
+  <div class="ctarow">
+    <div class="ccard">
+      <div class="role">Gayrimenkul danışmanı</div>
+      <h3>Bu projeyi ağda sat</h3>
+      <p>Canlı fiyat ve durumla tahsisli birimleri gör ve paylaş; stok tek doğru kaynaktan güncellenir.</p>
+      <button class="btn btn-teal">Danışman olarak katıl →</button>
+    </div>
+    <div class="ccard">
+      <div class="role">Geliştirici / müteahhit</div>
+      <h3>Bu proje senin mi? Ağa ekle</h3>
+      <p>Stoğunu, fiyatını ve dağıtımını tek noktadan yönet; yalnız yetkili danışmanlar satsın.</p>
+      <button class="btn btn-line">Projeni ağa ekle →</button>
+    </div>
+  </div>
+  <p class="note"><b>Projedar satış komisyonuna ortak olmaz.</b> Kazancınız tamamen sizde kalır.</p>
+</div></div>
+
+<footer><div class="wrap">Projedar · veriler kamuya açık kaynaklardan derlenmiştir; yatırım kararında güncel proje verileri doğrudan geliştiriciden teyit edilmelidir.</div></footer>
+</body>
+</html>
