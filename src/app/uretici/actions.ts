@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { ImportSatir, ImportOnizleme } from "./import-types";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
@@ -761,21 +762,16 @@ function hucre(r: Record<string, unknown>, ...anahtarlar: string[]): unknown {
   return undefined;
 }
 
-export async function excelImport(formData: FormData) {
-  const supabase = await createClient();
-  const proje_id = String(formData.get("proje_id"));
-  const file = formData.get("dosya") as File | null;
-  if (!file || file.size === 0) hataya(`/uretici/proje/${proje_id}`, "Excel/CSV dosyası seçilmedi");
-
-  let rows: Record<string, unknown>[];
-  try {
-    const buf = new Uint8Array(await file.arrayBuffer());
-    const wb = XLSX.read(buf, { type: "array" });
-    const sheet = wb.Sheets[wb.SheetNames[0]];
-    rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet);
-  } catch {
-    hataya(`/uretici/proje/${proje_id}`, "Dosya okunamadı (xlsx/xls/csv olmalı)");
-  }
+/** Dosyayı oku + eşle + çöz (INSERT ETMEZ). Hem önizleme hem gerçek import bunu kullanır (DRY). */
+async function stokDosyaCoz(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  proje_id: string,
+  file: File,
+): Promise<{ birimler: Record<string, unknown>[]; atlanan: number; mukerrer: number; toplamSatir: number; satirlar: ImportSatir[] }> {
+  const buf = new Uint8Array(await file.arrayBuffer());
+  const wb = XLSX.read(buf, { type: "array" });
+  const sheet = wb.Sheets[wb.SheetNames[0]];
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet);
 
   const [{ data: bloklar }, { data: tipler }, { data: mevcutlar }] = await Promise.all([
     supabase.from("blok").select("id, ad").eq("proje_id", proje_id),
@@ -790,20 +786,24 @@ export async function excelImport(formData: FormData) {
   );
 
   const birimler: Record<string, unknown>[] = [];
+  const satirlar: ImportSatir[] = [];
   let atlanan = 0;
   let mukerrer = 0;
-  for (const r of rows!) {
-    const blokAd = String(hucre(r, "blok", "blok adı", "block") ?? "").toLowerCase().trim();
+  rows.forEach((r, i) => {
+    const blokAdRaw = String(hucre(r, "blok", "blok adı", "block") ?? "").trim();
+    const blokAd = blokAdRaw.toLowerCase();
+    const daire_no = String(hucre(r, "daire_no", "daire no", "daire", "no") ?? "").trim() || null;
     const blok_id = blokMap.get(blokAd);
     if (!blok_id) {
       atlanan++;
-      continue;
+      satirlar.push({ no: i + 2, blok: blokAdRaw || "—", daire_no: daire_no ?? "—", durum: "eslesmeyen_blok" });
+      return;
     }
-    const daire_no = String(hucre(r, "daire_no", "daire no", "daire", "no") ?? "").trim() || null;
     const dupAnahtar = `${blok_id}|${(daire_no ?? "").toLowerCase().trim()}`;
     if (daire_no && dupSet.has(dupAnahtar)) {
       mukerrer++;
-      continue;
+      satirlar.push({ no: i + 2, blok: blokAdRaw, daire_no: daire_no ?? "—", durum: "mukerrer" });
+      return;
     }
     if (daire_no) dupSet.add(dupAnahtar); // aynı dosya içi tekrarları da yakala
     const tipAd = String(hucre(r, "tip", "daire tipi", "tip adı") ?? "").toLowerCase().trim();
@@ -825,21 +825,60 @@ export async function excelImport(formData: FormData) {
       yon,
       manzara,
     });
+    satirlar.push({ no: i + 2, blok: blokAdRaw, daire_no: daire_no ?? "—", durum: "eklenecek" });
+  });
+
+  return { birimler, atlanan, mukerrer, toplamSatir: rows.length, satirlar };
+}
+
+/** Dry-run önizleme — INSERT ETMEZ, akıbet özetini + ilk 50 satırı döndürür (client tablo). */
+export async function stokImportOnizle(formData: FormData): Promise<ImportOnizleme> {
+  const supabase = await createClient();
+  const proje_id = String(formData.get("proje_id"));
+  const file = formData.get("dosya") as File | null;
+  if (!file || file.size === 0) return { ok: false, hata: "Excel/CSV dosyası seçilmedi" };
+  try {
+    const s = await stokDosyaCoz(supabase, proje_id, file);
+    return {
+      ok: true,
+      eklenecek: s.birimler.length,
+      atlanan: s.atlanan,
+      mukerrer: s.mukerrer,
+      toplamSatir: s.toplamSatir,
+      satirlar: s.satirlar.slice(0, 50),
+    };
+  } catch {
+    return { ok: false, hata: "Dosya okunamadı (xlsx/xls/csv olmalı)" };
+  }
+}
+
+export async function excelImport(formData: FormData) {
+  const supabase = await createClient();
+  const proje_id = String(formData.get("proje_id"));
+  const file = formData.get("dosya") as File | null;
+  if (!file || file.size === 0) hataya(`/uretici/proje/${proje_id}`, "Excel/CSV dosyası seçilmedi");
+
+  let sonuc: Awaited<ReturnType<typeof stokDosyaCoz>>;
+  try {
+    sonuc = await stokDosyaCoz(supabase, proje_id, file!);
+  } catch {
+    hataya(`/uretici/proje/${proje_id}`, "Dosya okunamadı (xlsx/xls/csv olmalı)");
   }
 
-  if (birimler.length === 0) {
+  if (sonuc!.birimler.length === 0) {
     hataya(
       `/uretici/proje/${proje_id}`,
-      `Eklenecek yeni birim yok (${atlanan} eşleşmeyen blok, ${mukerrer} mükerrer atlandı). Blok adları mevcut bloklarla eşleşmeli. Sütunlar: blok, kat, daire_no, tip, durum, fiyat, net_m2, brut_m2, para_birimi, yon, manzara`,
+      `Eklenecek yeni birim yok (${sonuc!.atlanan} eşleşmeyen blok, ${sonuc!.mukerrer} mükerrer atlandı). Blok adları mevcut bloklarla eşleşmeli. Sütunlar: blok, kat, daire_no, tip, durum, fiyat, net_m2, brut_m2, para_birimi, yon, manzara`,
     );
   }
-  const { error } = await supabase.from("birim").insert(birimler);
+  const { error } = await supabase.from("birim").insert(sonuc!.birimler);
   if (error) hataya(`/uretici/proje/${proje_id}`, error.message);
   revalidatePath(`/uretici/proje/${proje_id}`);
   const uyari =
-    (atlanan ? `, ${atlanan} eşleşmeyen blok` : "") + (mukerrer ? `, ${mukerrer} mükerrer atlandı` : "");
+    (sonuc!.atlanan ? `, ${sonuc!.atlanan} eşleşmeyen blok` : "") +
+    (sonuc!.mukerrer ? `, ${sonuc!.mukerrer} mükerrer atlandı` : "");
   redirect(
-    `/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(`${birimler.length} birim eklendi${uyari}`)}`,
+    `/uretici/proje/${proje_id}?mesaj=${encodeURIComponent(`${sonuc!.birimler.length} birim eklendi${uyari}`)}`,
   );
 }
 

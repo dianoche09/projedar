@@ -6,9 +6,9 @@ import {
   tipGuncelle,
   tipSil,
   tipGorseliYukle,
-  excelImport,
 } from "@/app/uretici/actions";
 import { GeneratorForm } from "./GeneratorForm";
+import { StokImport } from "./StokImport";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 
 const inpCls =
@@ -150,19 +150,8 @@ export function StokKurulumu({
         )}
       </div>
 
-      {/* Excel/CSV */}
-      <div className="rounded-2xl border border-hair bg-card p-5">
-        <h3 className="font-medium text-ink">Excel/CSV ile toplu yükle</h3>
-        <p className="mt-1 text-xs text-gray">
-          Sütunlar: <span className="font-mono">blok · kat · daire_no · tip · durum · fiyat · net_m2</span> (blok adları
-          mevcut bloklarla eşleşmeli).
-        </p>
-        <form action={excelImport} className="mt-3 flex flex-wrap items-center gap-2">
-          <input type="hidden" name="proje_id" value={projeId} />
-          <input type="file" name="dosya" accept=".xlsx,.xls,.csv" required className="text-sm text-gray file:mr-2 file:rounded-lg file:border-0 file:bg-navy file:px-3 file:py-2 file:text-sm file:text-white" />
-          <SubmitButton>Yükle</SubmitButton>
-        </form>
-      </div>
+      {/* Excel/CSV — önizlemeli toplu yükleme + şablon indir */}
+      <StokImport projeId={projeId} bloklar={bloklar} tipler={tipler} />
     </div>
   );
 }
