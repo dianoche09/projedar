@@ -412,7 +412,7 @@ export default async function ProjeKurulum({
           </div>
         </div>
         <div className="mt-4">
-          <StokKurulumu projeId={id} bloklar={bloklar ?? []} tipler={tipler ?? []} />
+          <StokKurulumu projeId={id} bloklar={bloklar ?? []} tipler={tipler ?? []} il={proje?.il ?? null} ilce={proje?.ilce ?? null} />
         </div>
       </section>
 

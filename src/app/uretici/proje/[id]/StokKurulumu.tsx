@@ -10,6 +10,7 @@ import {
 import { GeneratorForm } from "./GeneratorForm";
 import { StokImport } from "./StokImport";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { bolgeMedyani, benchmarkKiyas } from "@/lib/bolgeBenchmark";
 
 const inpCls =
   "rounded-lg border border-hair bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
@@ -32,11 +33,16 @@ export function StokKurulumu({
   projeId,
   bloklar,
   tipler,
+  il = null,
+  ilce = null,
 }: {
   projeId: string;
   bloklar: Blok[];
   tipler: Tip[];
+  il?: string | null;
+  ilce?: string | null;
 }) {
+  const bolge = bolgeMedyani(il, ilce);
   return (
     <div className="space-y-5">
       <div className="grid gap-5 md:grid-cols-2">
@@ -83,6 +89,12 @@ export function StokKurulumu({
         {/* Daire tipleri */}
         <div className="rounded-2xl border border-hair bg-card p-5">
           <h3 className="font-medium text-ink">Daire tipleri ({tipler.length})</h3>
+          {bolge ? (
+            <p className="mt-0.5 text-[11px] text-gray">
+              Bölge referansı ({bolge.etiket}): <span className="font-semibold text-ink">{bolge.m2.toLocaleString("tr-TR")} ₺/m²</span>
+              {" "}· rozet, tipin ₺/m²'sinin bu medyandan sapmasıdır (emlakjet emsal, satış değil).
+            </p>
+          ) : null}
           <ul className="mt-2 space-y-1.5">
             {tipler.map((t) => (
               <li key={t.id}>
@@ -93,6 +105,18 @@ export function StokKurulumu({
                       {t.oda ? ` · ${t.oda}` : ""}
                       {t.net_m2 ? ` · ${t.net_m2}m²` : ""}
                       {t.taban_fiyat ? ` · ${Number(t.taban_fiyat).toLocaleString("tr-TR")}₺` : ""}
+                      {(() => {
+                        const k = benchmarkKiyas(Number(t.taban_fiyat) || null, Number(t.net_m2) || null, bolge);
+                        if (!k) return null;
+                        return (
+                          <span
+                            className={`ml-1.5 rounded px-1 py-0.5 text-[10px] font-semibold ${k.pct > 8 ? "bg-amber-soft text-amber" : k.pct < -8 ? "bg-green-soft text-teal-d" : "bg-paper text-gray"}`}
+                            title={`${bolge!.etiket}: ${bolge!.m2.toLocaleString("tr-TR")} ₺/m² · bu tip ${k.birimM2.toLocaleString("tr-TR")} ₺/m² (emlakjet emsal, satış değil)`}
+                          >
+                            bölge %{k.pct > 0 ? "+" : ""}{k.pct}
+                          </span>
+                        );
+                      })()}
                     </span>
                     <span className="text-xs text-teal-d">düzenle</span>
                   </summary>
