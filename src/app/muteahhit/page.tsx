@@ -167,7 +167,7 @@ export default function MuteahhitSayfasi() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd()) }} />
 
       {/* ============ ÜST MENÜ ============ */}
-      <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
+      <header className="sticky top-[var(--lansman-bar-h,0px)] z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
           <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
           <div className="hidden items-center gap-1 md:flex">

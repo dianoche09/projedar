@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Outfit, Inter, Geist_Mono } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { PwaKur } from "@/components/ui/PwaKur";
+import { LansmanBar } from "@/components/LansmanBar";
 import "./globals.css";
 
 // Spatial tipografi: Outfit (başlık/wordmark) + Inter (arayüz) + Geist Mono (veri/sayı)
@@ -73,6 +74,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-paper text-ink font-sans">
         <NextTopLoader color="#1e9b8a" height={3} shadow="0 0 8px #1e9b8a" showSpinner={false} speed={250} />
+        <LansmanBar />
         {children}
         <PwaKur />
       </body>
