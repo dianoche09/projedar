@@ -21,17 +21,18 @@ export const metadata: Metadata = {
   description: "24 aylık finansal plan (v2): gelir Ay 1'den (müteahhit-ölçekli), birim ekonomisi, senaryolar.",
 };
 
-type Ceyrek = { ad: string; ay: string; muteahhit: number; kumMuteahhit: number; gelir: number };
+type Ceyrek = { ad: string; ay: string; yeniProje: number; kumProje: number; kumDanisman: number; gelir: number };
 
+// 24 aylık hedef: Ay 24 → ~100 kümülatif proje + ~10.000 danışman; aylara göre artan.
 const CEYREKLER: Ceyrek[] = [
-  { ad: "Ç1", ay: "Ay 1-3", muteahhit: 16, kumMuteahhit: 16, gelir: 1.2 },
-  { ad: "Ç2", ay: "Ay 4-6", muteahhit: 10, kumMuteahhit: 26, gelir: 2.0 },
-  { ad: "Ç3", ay: "Ay 7-9", muteahhit: 11, kumMuteahhit: 37, gelir: 2.4 },
-  { ad: "Ç4", ay: "Ay 10-12", muteahhit: 11, kumMuteahhit: 48, gelir: 2.6 },
-  { ad: "Ç5", ay: "Ay 13-15", muteahhit: 12, kumMuteahhit: 60, gelir: 2.9 },
-  { ad: "Ç6", ay: "Ay 16-18", muteahhit: 13, kumMuteahhit: 73, gelir: 3.1 },
-  { ad: "Ç7", ay: "Ay 19-21", muteahhit: 13, kumMuteahhit: 86, gelir: 3.3 },
-  { ad: "Ç8", ay: "Ay 22-24", muteahhit: 14, kumMuteahhit: 100, gelir: 3.5 },
+  { ad: "Ç1", ay: "Ay 1-3", yeniProje: 16, kumProje: 16, kumDanisman: 300, gelir: 1.2 },
+  { ad: "Ç2", ay: "Ay 4-6", yeniProje: 10, kumProje: 26, kumDanisman: 900, gelir: 2.0 },
+  { ad: "Ç3", ay: "Ay 7-9", yeniProje: 11, kumProje: 37, kumDanisman: 1800, gelir: 2.4 },
+  { ad: "Ç4", ay: "Ay 10-12", yeniProje: 11, kumProje: 48, kumDanisman: 3000, gelir: 2.6 },
+  { ad: "Ç5", ay: "Ay 13-15", yeniProje: 12, kumProje: 60, kumDanisman: 4500, gelir: 2.9 },
+  { ad: "Ç6", ay: "Ay 16-18", yeniProje: 13, kumProje: 73, kumDanisman: 6200, gelir: 3.1 },
+  { ad: "Ç7", ay: "Ay 19-21", yeniProje: 13, kumProje: 86, kumDanisman: 8000, gelir: 3.3 },
+  { ad: "Ç8", ay: "Ay 22-24", yeniProje: 14, kumProje: 100, kumDanisman: 10000, gelir: 3.5 },
 ];
 
 /** 24 aylık çeyreklik gelir bar grafiği (koyu tema). Gelir Ç1'den başlar; kurucu aşama tamamlanınca ivmelenir. */
@@ -52,12 +53,17 @@ function ProjeksiyonBar() {
             />
             <span className="mono text-[10px] font-semibold text-white/70">{c.ad}</span>
             <span className="mono text-[8.5px] text-white/35">{c.ay}</span>
+            <span className="mono text-[8px] leading-tight text-[#2fd3bc]/70">
+              {c.kumProje} proje
+              <br />
+              {c.kumDanisman.toLocaleString("tr-TR")} dnş
+            </span>
           </div>
         ))}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3 text-[11px]">
-        <span className="mono text-white/50">Ç1: ilk ~10 müteahhit kurucu (ücretsiz); gelir paralı müteahhitle Ay 1&apos;den</span>
-        <span className="mono font-bold text-[#2fd3bc]">24 ay toplam tahsilat ~21M ₺ · ay 24 run-rate ~22M ₺</span>
+        <span className="mono text-white/50">Ç1: ilk müteahhitler kurucu (ücretsiz); gelir paralı müteahhitle Ay 1&apos;den</span>
+        <span className="mono font-bold text-[#2fd3bc]">Ay 24: ~100 proje · ~10.000 danışman · run-rate ~14M ₺ · 24-ay tahsilat ~21M ₺</span>
       </div>
     </div>
   );
@@ -77,7 +83,7 @@ export default function FinansalV2() {
       alt="Ürün canlı. İlk müteahhitler kurucu programıyla ücretsiz ve hızlı katılır; paralı müteahhit geliri Ay 1'den başlar, kurucu aşama tamamlanınca ivmelenir. Projedar satış komisyonundan pay almaz."
     >
       <p className="da da-4 mono mt-10 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2fd3bc]">
-        Muhafazakar baz senaryo · saha verisiyle güncellenir
+        Baz senaryo (24 ay hedefi) · saha verisiyle güncellenir
       </p>
     </GorselSlayt>,
 
@@ -99,9 +105,9 @@ export default function FinansalV2() {
     <Slayt key="kazanim" genis kicker="Kazanım" baslik="Referans-satış hızıyla büyüme">
       <div className="grid gap-3 sm:grid-cols-4">
         <DevSayi deger="Ay 13" etiket="İlk paralı gelir (kurucu dönem sonrası)" renk="#2fd3bc" />
-        <DevSayi deger="~10" etiket="Ay 12 kümülatif müteahhit (kurucu, ücretsiz)" />
-        <DevSayi deger="~44" etiket="Ay 24 kümülatif müteahhit" renk="#2fd3bc" />
-        <DevSayi deger="~12M ₺" etiket="Ay 24 yıllık gelir run-rate (müteahhit + Pro/ofis)" />
+        <DevSayi deger="~100" etiket="Ay 24 kümülatif proje (ağdaki aktif proje)" renk="#2fd3bc" />
+        <DevSayi deger="~10.000" etiket="Ay 24 kümülatif danışman" renk="#2fd3bc" />
+        <DevSayi deger="~14M ₺" etiket="Ay 24 yıllık gelir run-rate (müteahhit + Pro/ofis)" />
       </div>
       <p className="deck-kart deck-soft mt-4 px-5 py-4 text-[13.5px] leading-relaxed">
         İlk ~10 müteahhit kurucu programıyla ücretsiz kazanılır (referans + vaka + stok likiditesi): el-ile referans
@@ -135,9 +141,9 @@ export default function FinansalV2() {
     /* 7 · Senaryolar */
     <Slayt key="senaryo" genis kicker="Senaryolar" baslik="Üç patika, aynı model" alt="Baz senaryo referans-satış hızına dayanır; alt ve üst bantlar kazanım hızının çarpanıdır.">
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Target} baslik="Muhafazakar" metin="Ay 24 ~28 müteahhit, run-rate ~7,5M ₺. Yavaş kazanım; alt sınır güveni." />
-        <MaddeKart Ikon={Rocket} baslik="Baz (bu plan)" metin="Ay 24 ~44 müteahhit, run-rate ~12M ₺; 24 ay tahsilat ~10,8M ₺. Kurucu dönem sonrası referans-satış hızıyla gerçekçi." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={TrendingUp} baslik="Agresif" metin="Ay 24 ~80 müteahhit + hızlı ofis/Pro, run-rate ~25M ₺+. Erken 2. şehir ve güçlü referans döngüsü." />
+        <MaddeKart Ikon={Target} baslik="Muhafazakar" metin="Ay 24 ~60 proje · ~5.000 danışman, run-rate ~8M ₺. Yavaş kazanım; alt bant." />
+        <MaddeKart Ikon={Rocket} baslik="Baz (hedef)" metin="Ay 24 ~100 proje · ~10.000 danışman, run-rate ~14M ₺; 24 ay tahsilat ~21M ₺. Kurucu dönem sonrası referans-satış hızıyla." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={TrendingUp} baslik="Agresif" metin="Ay 24 ~150 proje · ~16.000 danışman + hızlı ofis/Pro, run-rate ~25M ₺+. Erken 2. şehir ve güçlü referans döngüsü." />
       </div>
     </Slayt>,
 
