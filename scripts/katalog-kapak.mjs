@@ -14,10 +14,12 @@ const FORCE = process.argv.includes("--force");
 // next.config.ts images.remotePatterns ile senkron: yalnız bu host'lar next/image ile optimize edilir.
 const IZINLI = new Map([
   ["imaj.emlakjet.com", "emlakjet.com"],
+  ["files.satisofisi.com", "satisofisi.com"],
   ["satisofisi.com", "satisofisi.com"],
   ["www.satisofisi.com", "satisofisi.com"],
 ]);
-const KOTU = /og-default|default\.|logo|placeholder|favicon|\.svg(\?|$)/i;
+// Junk kapak filtresi: default og, logo, site ikonu (icon-512/apple-touch), placeholder, svg.
+const KOTU = /og-default|default\.|logo|placeholder|favicon|icon-\d|apple-touch|\/icon|\.svg(\?|$)/i;
 const UA = { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36", "Accept-Language": "tr-TR" };
 
 function meta(html, prop) {

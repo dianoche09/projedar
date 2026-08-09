@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "imaj.emlakjet.com" },
+      { protocol: "https", hostname: "files.satisofisi.com" },
       { protocol: "https", hostname: "satisofisi.com" },
       { protocol: "https", hostname: "www.satisofisi.com" },
     ],
