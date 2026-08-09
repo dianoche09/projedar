@@ -11,6 +11,7 @@ import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { DavetPopup } from "@/components/seo/DavetPopup";
 import { type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
 import { AgdaGuvenSeridi } from "@/components/seo/ProjeGorsel";
+import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
@@ -21,13 +22,6 @@ import { MapPin, Building2, CalendarClock, TrendingUp, Layers, ShieldCheck, Chev
 export const revalidate = 3600; // proje meta yavaş değişir; canlı stok public'te yok
 
 const SITE = "https://projedar.com";
-
-const NAV = [
-  { etiket: "Müteahhitler için", href: "/muteahhit" },
-  { etiket: "Danışmanlar için", href: "/emlakci" },
-  { etiket: "Konut projeleri", href: "/konut-projeleri" },
-  { etiket: "Güven", href: "/guven" },
-];
 
 type TipRow = { ad?: string | null; oda: string | null; net_m2: number | null; brut_m2?: number | null; plan_url?: string | null; banyo?: number | null; balkon?: number | null; otopark?: number | null };
 type BenzerProje = { ad: string; public_slug: string; ilce: string | null; il: string | null; asama: string | null; odaTipleri: string[] };
@@ -362,23 +356,8 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
     <main className="flex min-h-screen flex-col bg-paper text-ink">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(p, u, veri.birimSayisi, odaTipleri, sss)) }} />
 
-      {/* ============ HEADER (global) ============ */}
-      <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
-        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
-          <div className="hidden items-center gap-1 md:flex">
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</Link>
-            ))}
-          </div>
-          <div className="flex items-center gap-2.5">
-            <span className="hidden sm:block"><Link href="/login" className="btn-ghost">Giriş yap</Link></span>
-            <Link href="/kayit" className="btn-action whitespace-nowrap hover:-translate-y-0.5">Ücretsiz başla</Link>
-          </div>
-        </nav>
-      </header>
-
-      <ProjedarBanner />
+      {/* ============ TOPBAR (şeffaf → scroll'da katı; hero üstüne biner) ============ */}
+      <ProjeTopbar />
 
       {/* ============ SİNEMATİK HERO ============ */}
       <section className="relative isolate flex min-h-[86svh] flex-col justify-end overflow-hidden bg-ink text-white">
@@ -429,6 +408,9 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
       {kaynak === "proje" ? (
         <AgdaGuvenSeridi dogrulanmis={dogrulanmis} asama={asama} ilerleme={ilerleme} teslim={teslim} />
       ) : null}
+
+      {/* ============ PROJEDAR TANITIM BANNER (hero altı) ============ */}
+      <ProjedarBanner />
 
       {/* ============ GENEL BAKIŞ (editoryal split + görsel) ============ */}
       <section className="px-5 py-16 sm:px-6 sm:py-20">
