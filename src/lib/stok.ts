@@ -36,6 +36,64 @@ export const DURUM_ROZET: Record<DurumKova, string> = {
   diger: "bg-navy-soft text-ink-soft",
 };
 
+/* ---------------------------------------------------------------------------
+   Müteahhit stok görünümü — 5 grup. "toplam daire" doğru okunsun diye
+   satışa AÇIK / OPSİYON / SATILDI / PLANLI (hiç satışa açılmamış) / KAPALI
+   (satılamaz arsa payı, stop, kiralandı) ayrı sayılır. Böylece müteahhit
+   "toplam" ile "satışa açık" arasındaki farkı görür, eksik açılmış stoğu fark eder.
+   --------------------------------------------------------------------------- */
+export type DurumGrup = "acik" | "opsiyon" | "satildi" | "planli" | "kapali";
+
+/** birim.durum (+ satilabilir) → müteahhit stok grubu. */
+export function durumGrup(d: string, satilabilir: boolean = true): DurumGrup {
+  if (!satilabilir) return "kapali"; // arsa payı / mal sahibi payı — kalıcı satılamaz
+  if (d === "musait") return "acik";
+  if (d === "opsiyonlu" || d === "satis_beklemede") return "opsiyon";
+  if (d === "satildi") return "satildi";
+  if (d === "planli") return "planli"; // henüz satışa açılmamış (dalga bekliyor)
+  return "kapali"; // stop / kiralandi / diğer
+}
+
+export const GRUP_AD: Record<DurumGrup, string> = {
+  acik: "Satışa açık",
+  opsiyon: "Opsiyon",
+  satildi: "Satıldı",
+  planli: "Planlı",
+  kapali: "Kapalı",
+};
+
+/** Grup nokta/rozet renk sınıfı (sinyal dili + planlı=navy bilgi, kapalı=gri). */
+export const GRUP_NOKTA: Record<DurumGrup, string> = {
+  acik: "bg-green",
+  opsiyon: "bg-amber",
+  satildi: "bg-red",
+  planli: "bg-navy",
+  kapali: "bg-gray",
+};
+
+export const GRUP_ROZET: Record<DurumGrup, string> = {
+  acik: "bg-green-soft text-green",
+  opsiyon: "bg-amber-soft text-amber",
+  satildi: "bg-red-soft text-red",
+  planli: "bg-navy-soft text-ink-soft",
+  kapali: "bg-soft text-[var(--ink-faint)]",
+};
+
+/** Proje bazlı stok özeti — para birimi projeye özgü (karışım yok). */
+export type ProjeOzet = {
+  id: string;
+  ad: string;
+  para: string;
+  toplam: number;
+  acik: number;
+  opsiyon: number;
+  satildi: number;
+  planli: number;
+  kapali: number;
+  minFiyat: number;
+  maxFiyat: number;
+};
+
 /** Para simgesi — para_birimi alanından. */
 export function sembol(birim: string | null): string {
   return birim === "USD" ? "$" : birim === "EUR" ? "€" : birim === "GBP" ? "£" : "₺";

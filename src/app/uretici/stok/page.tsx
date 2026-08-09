@@ -1,11 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
-import { paraKisa } from "@/lib/stok";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { durumGrup, type ProjeOzet } from "@/lib/stok";
 import { StokTablo, type StokSatir } from "./StokTablo";
 
 /* =========================================================
    STOK / FİYAT LİSTESİ — tüm birimlerin tek canlı tablosu (üretici).
-   KPI + proje/durum filtreleri (client alt-bileşen). Her satır → "Yönet" → DaireModal (popup).
-   Daire tek noktadan yönetilir; tüm bloklara/proje sayfasına gitmeye gerek yok.
+   Çoklu proje: KPI'lar proje-duyarlı (client), "Tümü"de proje-proje özet.
+   Fiyat/durum yalnız birim tablosundan (DEĞİŞMEZ #2). Her satır → "Yönet" → DaireModal.
+   Opsiyon/satılan satırlarda "kim tuttu/kim sattı" görünür (opsiyon.satici_id / hakedis.emlakci_id;
+   isim profiles_self RLS'i nedeniyle admin client ile çözülür — yalnız bu üreticinin satırları).
    ========================================================= */
 
 type BirimRaw = {
@@ -38,23 +41,25 @@ export default async function UreticiStok({
   searchParams: Promise<{ durum?: string }>;
 }) {
   const sp = await searchParams;
-  const baslangicDurum = (["musait", "opsiyon", "satildi"].includes(sp.durum ?? "") ? sp.durum : "tumu") as
-    | "musait"
-    | "opsiyon"
-    | "satildi"
-    | "tumu";
+  const baslangicDurum = (["acik", "opsiyon", "satildi", "planli", "kapali"].includes(sp.durum ?? "")
+    ? sp.durum
+    : "tumu") as "acik" | "opsiyon" | "satildi" | "planli" | "kapali" | "tumu";
   const supabase = await createClient();
 
-  const [{ data: projeler }, { data: birimRaw }, { data: bloklar }, { data: tipler }] =
+  const [{ data: projeler }, { data: birimRaw }, { data: bloklar }, { data: tipler }, { data: opsiyonRaw }, { data: hakedisRaw }] =
     await Promise.all([
       supabase.from("proje").select("id, ad, para_birimi").order("created_at", { ascending: false }),
       supabase
         .from("birim")
         .select(
-          "id, proje_id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, kira_bedeli, para_birimi, net_m2, brut_m2, satilabilir, yon, manzara, serefiye, odeme_plani, durum_notu, son_guncelleme",
+          "id, proje_id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, kira_bedeli, para_birimi, net_m2, brut_m2, satilabilir, yon, manzara, serefiye, odeme_plani, gorsel_url, durum_notu, son_guncelleme",
         ),
       supabase.from("blok").select("id, ad"),
       supabase.from("daire_tipi").select("id, ad, oda, net_m2, taban_fiyat, plan_url"),
+      // Aktif opsiyonlar → "kim tuttu" (RLS: üretici kendi projesinin opsiyonunu görür)
+      supabase.from("opsiyon").select("birim_id, satici_id, durum").in("durum", ["opsiyonlu", "satis_beklemede"]),
+      // Satışlar → "kim sattı" (hakedis tablosu; migration yoksa data null → graceful)
+      supabase.from("hakedis").select("birim_id, emlakci_id"),
     ]);
 
   const birimler = (birimRaw ?? []) as BirimRaw[];
@@ -70,19 +75,69 @@ export default async function UreticiStok({
   const tipPlan = new Map((tipler ?? []).map((t) => [t.id, (t.plan_url as string | null) ?? null]));
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
 
-  // KPI — eklentiler (otopark/depo) ana stok sayımına girmez; ana birimler üzerinden
-  const anaBirimler = birimler.filter((b) => b.ana_birim_id == null);
-  const toplam = anaBirimler.length;
-  const musait = anaBirimler.filter((b) => b.durum === "musait").length;
-  const opsiyon = anaBirimler.filter((b) => b.durum === "opsiyonlu" || b.durum === "satis_beklemede").length;
-  const satildi = anaBirimler.filter((b) => b.durum === "satildi").length;
+  // "Kim tuttu / kim sattı" — satici/emlakci id → ad (admin client; profiles_self RLS bypass, yalnız bu üreticinin satırlarındaki id'ler)
+  const opsBirimSatici = new Map((opsiyonRaw ?? []).map((o) => [o.birim_id as string, o.satici_id as string]));
+  const hakedisBirimEmlakci = new Map((hakedisRaw ?? []).map((h) => [h.birim_id as string, h.emlakci_id as string]));
+  const kisiIds = [...new Set([...opsBirimSatici.values(), ...hakedisBirimEmlakci.values()].filter(Boolean))];
+  let adById = new Map<string, string | null>();
+  if (kisiIds.length) {
+    const admin = createAdminClient();
+    const { data: prof } = await admin.from("profiles").select("id, ad").in("id", kisiIds);
+    adById = new Map((prof ?? []).map((p) => [p.id as string, (p.ad as string | null) ?? null]));
+  }
+  /** Bir birimin "kim" bilgisi: opsiyonluysa tutan danışman, satıldıysa satan danışman. */
+  const saticiAd = (b: BirimRaw): string | null => {
+    if (b.durum === "opsiyonlu" || b.durum === "satis_beklemede") {
+      const id = opsBirimSatici.get(b.id);
+      return id ? adById.get(id) ?? "Danışman" : null;
+    }
+    if (b.durum === "satildi") {
+      const id = hakedisBirimEmlakci.get(b.id);
+      return id ? adById.get(id) ?? "Danışman" : null;
+    }
+    return null;
+  };
 
-  const fiyatlar = anaBirimler
-    .map((b) => b.liste_fiyati)
-    .filter((f): f is number => f != null && f > 0);
-  const minFiyat = fiyatlar.length ? Math.min(...fiyatlar) : 0;
-  const maxFiyat = fiyatlar.length ? Math.max(...fiyatlar) : 0;
-  const anaPara = (projeler?.[0]?.para_birimi as string | null) ?? "TRY";
+  // ── Proje bazlı özet (para birimi karışımı YOK; her proje kendi bandı) ──
+  const anaBirimler = birimler.filter((b) => b.ana_birim_id == null);
+  const ozetMap = new Map<string, ProjeOzet>();
+  for (const p of projeler ?? []) {
+    ozetMap.set(p.id, {
+      id: p.id,
+      ad: p.ad as string,
+      para: (p.para_birimi as string | null) ?? "TRY",
+      toplam: 0,
+      acik: 0,
+      opsiyon: 0,
+      satildi: 0,
+      planli: 0,
+      kapali: 0,
+      minFiyat: 0,
+      maxFiyat: 0,
+    });
+  }
+  const projeFiyat = new Map<string, number[]>();
+  for (const b of anaBirimler) {
+    const o = ozetMap.get(b.proje_id);
+    if (!o) continue;
+    o.toplam++;
+    o[durumGrup(b.durum, b.satilabilir ?? true)]++;
+    if (b.liste_fiyati != null && b.liste_fiyati > 0) {
+      const arr = projeFiyat.get(b.proje_id) ?? [];
+      arr.push(b.liste_fiyati);
+      projeFiyat.set(b.proje_id, arr);
+    }
+  }
+  for (const [pid, fiyatlar] of projeFiyat) {
+    const o = ozetMap.get(pid);
+    if (o && fiyatlar.length) {
+      o.minFiyat = Math.min(...fiyatlar);
+      o.maxFiyat = Math.max(...fiyatlar);
+    }
+  }
+  // Yalnız birimi olan projeler önde; tablo/kesit için sıra proje listesiyle aynı
+  const projeOzetler: ProjeOzet[] = (projeler ?? []).map((p) => ozetMap.get(p.id)!).filter(Boolean);
+
   const kiraVar = birimler.some((b) => b.kira_bedeli != null && b.kira_bedeli > 0);
 
   // Tablo satırları — son güncellemeye göre yeni → eski
@@ -102,6 +157,7 @@ export default async function UreticiStok({
       kira_bedeli: b.kira_bedeli,
       para_birimi: b.para_birimi,
       durum: b.durum,
+      satici_ad: saticiAd(b),
       son_guncelleme: b.son_guncelleme,
       // DaireModal künyesi (üretici modu — popup ile tek tek yönet)
       satilabilir: b.satilabilir ?? true,
@@ -118,8 +174,6 @@ export default async function UreticiStok({
       ana_birim_id: b.ana_birim_id,
     }));
 
-  const projeFiltre = (projeler ?? []).map((p) => ({ id: p.id, ad: p.ad as string }));
-
   return (
     <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
       <header className="belir mb-5">
@@ -135,53 +189,12 @@ export default async function UreticiStok({
         </p>
       </header>
 
-      {/* KPI */}
-      <section className="kart belir belir-1 mb-5 p-1">
-        <div className="grid grid-cols-2 divide-x divide-y divide-[var(--cizgi)] md:grid-cols-3 lg:grid-cols-5 lg:divide-y-0">
-          <Kpi etiket="Toplam Birim" deger={String(toplam)} alt={`${projeFiltre.length} proje`} />
-          <Kpi etiket="Müsait" deger={String(musait)} renk="text-green" alt="satışa hazır" />
-          <Kpi etiket="Opsiyon" deger={String(opsiyon)} renk="text-amber" alt="karar bekliyor" />
-          <Kpi etiket="Satıldı" deger={String(satildi)} renk="text-red" alt={`${satildi} / ${toplam}`} />
-          <div className="px-5 py-4">
-            <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
-              Liste Aralığı
-            </div>
-            {fiyatlar.length ? (
-              <div className="mono text-[19px] font-semibold leading-tight text-ink">
-                {paraKisa(minFiyat, anaPara)}
-                <span className="text-[13px] text-[var(--ink-faint)]">
-                  –{paraKisa(maxFiyat, anaPara).replace(/^[₺$€£]/, "")}
-                </span>
-              </div>
-            ) : (
-              <div className="mono text-[19px] font-semibold leading-tight text-[var(--ink-faint)]">—</div>
-            )}
-            <div className="mt-2 text-[11.5px] text-[var(--ink-faint)]">birim fiyat bandı</div>
-          </div>
-        </div>
-      </section>
-
-      <StokTablo satirlar={satirlar} projeler={projeFiltre} kiraVar={kiraVar} baslangicDurum={baslangicDurum} />
-    </div>
-  );
-}
-
-function Kpi({
-  etiket,
-  deger,
-  alt,
-  renk = "text-ink",
-}: {
-  etiket: string;
-  deger: string;
-  alt?: string;
-  renk?: string;
-}) {
-  return (
-    <div className="px-5 py-4">
-      <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">{etiket}</div>
-      <div className={`mono text-[30px] font-semibold leading-none ${renk}`}>{deger}</div>
-      {alt ? <div className="mono mt-2 text-[11.5px] text-[var(--ink-faint)]">{alt}</div> : null}
+      <StokTablo
+        satirlar={satirlar}
+        projeOzetler={projeOzetler}
+        kiraVar={kiraVar}
+        baslangicDurum={baslangicDurum}
+      />
     </div>
   );
 }
