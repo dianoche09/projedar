@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   AlertTriangle,
+  Banknote,
   BarChart3,
   Building2,
   Copy,
@@ -385,8 +386,13 @@ export default function PitchV2() {
           metin="Marka, sektör etkinlikleri, destek operasyonu."
         />
       </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <MaddeKart Ikon={Banknote} baslik="Tur: $200K / %25" metin="Post-money ~$800K (pre-money ~$600K). 24 aylık büyümeyi ve saha kadrosunu fonlar." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={TrendingUp} baslik="$150K şirkete sermaye" metin="Primary: saha & concierge, ürün derinleşme, pazarlama & runway." />
+        <MaddeKart Ikon={Handshake} baslik="$50K kurucu karşılığı" metin="Secondary: kurucunun bugüne kadarki geliştirme ve yatırımının kısmi karşılığı." />
+      </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Tur büyüklüğü, değerleme ve kullanım planı: görüşmede paylaşılacaktır.
+        24 ay hedefi: ~100 proje · ~5.000 ödeyen danışman. Rakamlar muhafazakar bazdır, saha verisiyle güncellenir.
       </p>
     </Slayt>,
 
