@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 
 const KOK = join(dirname(fileURLToPath(import.meta.url)), "..");
 const CSV = join(KOK, "scripts", "emlakjet-envanteri", "cikti", "projeler.csv");
-const CIKTI = join(KOK, "scripts", "katalog-data", "emlakjet-buyuk.json");
+const CIKTI_VARSAYILAN = join(KOK, "scripts", "katalog-data", "emlakjet-buyuk.json");
 
 const AYLAR = { ocak: 1, şubat: 2, subat: 2, mart: 3, nisan: 4, mayıs: 5, mayis: 5, haziran: 6, temmuz: 7, ağustos: 8, agustos: 8, eylül: 9, eylul: 9, ekim: 10, kasım: 11, kasim: 11, aralık: 12, aralik: 12 };
 const SIMDI = { yil: 2026, ay: 8 }; // referans; teslim geçmiş→teslim, gelecek→insaat
@@ -70,6 +70,8 @@ function main() {
   const iller = new Set(arg("--iller", "İstanbul,Ankara,İzmir").split(",").map((s) => s.trim()));
   const minKonut = parseInt(arg("--min-konut", "0"), 10);
   const limit = parseInt(arg("--limit", "50"), 10);
+  const ciktiYol = arg("--cikti", null);
+  const CIKTI = ciktiYol ? join(KOK, ciktiYol) : CIKTI_VARSAYILAN;
   const kuru = process.argv.includes("--kuru");
 
   const konut = (r) => (/^\d+$/.test(r.konut_sayisi) ? parseInt(r.konut_sayisi, 10) : 0);

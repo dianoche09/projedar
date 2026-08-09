@@ -1,0 +1,4498 @@
+[
+  {
+    "ad": "İnnovia 4",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Yeşil GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 34,
+    "m2_max": 138,
+    "daire_sayisi": 5802,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/innovia-4"
+  },
+  {
+    "ad": "Rams Denizkent Bayramoğlu",
+    "il": "Kocaeli",
+    "ilce": "Darıca",
+    "gelistirici": "Rams Türkiye",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 79,
+    "m2_max": 283,
+    "daire_sayisi": 4500,
+    "durum": "insaat",
+    "teslim": "Ocak 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/rams-denizkent-bayramoglu"
+  },
+  {
+    "ad": "Hava Kent Akpınar",
+    "il": "İstanbul",
+    "ilce": "Eyüpsultan",
+    "gelistirici": "S.S CVS HAVA KENT YAPI KOOPERATİFİ",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 53,
+    "m2_max": 105,
+    "daire_sayisi": 4000,
+    "durum": "teslim",
+    "teslim": "Aralık 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hava-kent-akpinar"
+  },
+  {
+    "ad": "Ege Yapı Batışehir",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Ege Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 3700,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ege-yapi-batisehir"
+  },
+  {
+    "ad": "Tema İstanbul",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 50,
+    "m2_max": 148,
+    "daire_sayisi": 3531,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/tema-istanbul"
+  },
+  {
+    "ad": "Vadi Manzara Evleri",
+    "il": "Ankara",
+    "ilce": "Mamak",
+    "gelistirici": "Can Duran İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 50,
+    "m2_max": 140,
+    "daire_sayisi": 3400,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadi-manzara-evleri"
+  },
+  {
+    "ad": "Northgate Ankara",
+    "il": "Ankara",
+    "ilce": "Pursaklar",
+    "gelistirici": "HNN YAPI TEKNİK",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 3300,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/northgate-ankara"
+  },
+  {
+    "ad": "Zeray Mahal Kartepe",
+    "il": "Kocaeli",
+    "ilce": "Kartepe",
+    "gelistirici": "Zeray İnşaat",
+    "oda_tipleri": [
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 151,
+    "m2_max": 228,
+    "daire_sayisi": 3069,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zeray-mahal-kartepe"
+  },
+  {
+    "ad": "Taxim Hacıüsrev",
+    "il": "İstanbul",
+    "ilce": "Beyoğlu",
+    "gelistirici": "By Oktayöz İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 3000,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/taxim-haciusrev"
+  },
+  {
+    "ad": "Ödül İstanbul",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Özyurtlar İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 2683,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/odul-istanbul"
+  },
+  {
+    "ad": "Sinpaş Altınoran Çankaya",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [
+      "1+1"
+    ],
+    "m2_min": 82,
+    "m2_max": 82,
+    "daire_sayisi": 2647,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-altinoran-cankaya"
+  },
+  {
+    "ad": "Rams Park House Maslak",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Rams Türkiye",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 74,
+    "m2_max": 221,
+    "daire_sayisi": 2644,
+    "durum": "insaat",
+    "teslim": "Ocak 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/rams-park-house-maslak"
+  },
+  {
+    "ad": "Ankara Golfkent",
+    "il": "Ankara",
+    "ilce": "Etimesgut",
+    "gelistirici": "TURYAP",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 110,
+    "m2_max": 155,
+    "daire_sayisi": 2640,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ankara-golfkent"
+  },
+  {
+    "ad": "LaDorra",
+    "il": "Antalya",
+    "ilce": "Döşemealtı",
+    "gelistirici": "HELMANN GAYRİMENKUL GELİŞTİRME A.Ş",
+    "oda_tipleri": [
+      "5+1"
+    ],
+    "m2_min": 398,
+    "m2_max": 398,
+    "daire_sayisi": 2627,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ladorra"
+  },
+  {
+    "ad": "Kiptaş Evim Kadıköy",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Anka Group",
+    "oda_tipleri": [],
+    "m2_min": 46,
+    "m2_max": 365,
+    "daire_sayisi": 2500,
+    "durum": "teslim",
+    "teslim": "Nisan 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kiptas-evim-kadikoy"
+  },
+  {
+    "ad": "Natura Ferce",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Fırat Life Style & Üstün Yapı İnş. & BCM İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 104,
+    "m2_max": 160,
+    "daire_sayisi": 2482,
+    "durum": "insaat",
+    "teslim": "Nisan 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/natura-ferce"
+  },
+  {
+    "ad": "İstanbul Prestij Park",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Bak Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 2392,
+    "durum": "teslim",
+    "teslim": "Şubat 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/istanbul-prestij-park"
+  },
+  {
+    "ad": "Tema İstanbul 2",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Mesa, Artaş, Kartur - Akdaş Adi Ortaklığı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 2350,
+    "durum": "teslim",
+    "teslim": "Haziran 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/tema-istanbul-2"
+  },
+  {
+    "ad": "Emlak Konut Çınarköy Evleri",
+    "il": "İstanbul",
+    "ilce": "Çekmeköy",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 74,
+    "m2_max": 290,
+    "daire_sayisi": 2162,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/emlak-konut-cinarkoy-evleri"
+  },
+  {
+    "ad": "Meva Şehir",
+    "il": "Ankara",
+    "ilce": "Etimesgut",
+    "gelistirici": "Ünsal Group",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 80,
+    "m2_max": 210,
+    "daire_sayisi": 1800,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/meva-sehir"
+  },
+  {
+    "ad": "Öniz Center",
+    "il": "Ankara",
+    "ilce": "Sincan",
+    "gelistirici": "ASM Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1773,
+    "durum": "insaat",
+    "teslim": "Ekim 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/oniz-center"
+  },
+  {
+    "ad": "Kameroğlu Metrohome Residence",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Kameroğlu İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 86,
+    "m2_max": 233,
+    "daire_sayisi": 1692,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kameroglu-metrohome-residence"
+  },
+  {
+    "ad": "Meydan Ardıçlı",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Özyurtlar İnşaat",
+    "oda_tipleri": [],
+    "m2_min": 41,
+    "m2_max": 225,
+    "daire_sayisi": 1683,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/meydan-ardicli"
+  },
+  {
+    "ad": "Delta Dubai Tower",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Delta İzsiz Holding",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 95,
+    "m2_max": 140,
+    "daire_sayisi": 1606,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/delta-dubai-tower"
+  },
+  {
+    "ad": "Kent Plus Kadıköy",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Emay İnşaat",
+    "oda_tipleri": [],
+    "m2_min": 47,
+    "m2_max": 328,
+    "daire_sayisi": 1561,
+    "durum": "teslim",
+    "teslim": "Haziran 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kent-plus-kadikoy"
+  },
+  {
+    "ad": "Büyükyalı İstanbul",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "ÖZAK GYO",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 160,
+    "m2_max": 545,
+    "daire_sayisi": 1557,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/buyukyali-istanbul"
+  },
+  {
+    "ad": "Sky Residence İstanbul",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Eroğlu Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1500,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sky-residence-istanbul"
+  },
+  {
+    "ad": "3. İstanbul Başakşehir",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Asaf İş Adi Ortaklığı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1500,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/3-istanbul-basaksehir"
+  },
+  {
+    "ad": "Prestij Yeni Hayat",
+    "il": "Bursa",
+    "ilce": "Osmangazi",
+    "gelistirici": "Bak Yapı",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 106,
+    "m2_max": 115,
+    "daire_sayisi": 1500,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/prestij-yeni-hayat"
+  },
+  {
+    "ad": "Hilal Hill",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "FKG İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1450,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hilal-hill"
+  },
+  {
+    "ad": "Topkapı 29 Evleri",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Akzirve Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 78,
+    "m2_max": 258,
+    "daire_sayisi": 1441,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/topkapi-29-evleri"
+  },
+  {
+    "ad": "Göl Panorama Evleri",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Be-Ma İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 69,
+    "m2_max": 240,
+    "daire_sayisi": 1431,
+    "durum": "teslim",
+    "teslim": "Ekim 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/gol-panorama-evleri"
+  },
+  {
+    "ad": "Merkez Ankara",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Pasifik Gayrimenkul Yatırım İnşaat A.Ş.",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 114,
+    "m2_max": 228,
+    "daire_sayisi": 1421,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/merkez-ankara"
+  },
+  {
+    "ad": "Babacan Premium",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Babacan Yapı",
+    "oda_tipleri": [
+      "1",
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 42,
+    "m2_max": 165,
+    "daire_sayisi": 1400,
+    "durum": "teslim",
+    "teslim": "Ağustos 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/babacan-premium"
+  },
+  {
+    "ad": "Hayat Flora",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "ÖZAK GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1361,
+    "durum": "insaat",
+    "teslim": "Mart 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hayat-flora"
+  },
+  {
+    "ad": "Metropark",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 53,
+    "m2_max": 164,
+    "daire_sayisi": 1272,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/metropark"
+  },
+  {
+    "ad": "Algün Beylerbeyi",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "Algün İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1250,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/algun-beylerbeyi"
+  },
+  {
+    "ad": "AND Pastel",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "AND Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 44,
+    "m2_max": 223,
+    "daire_sayisi": 1243,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/and-pastel"
+  },
+  {
+    "ad": "Altın Orman",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Gordion Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1215,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/altin-orman"
+  },
+  {
+    "ad": "Prime Oran",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Dema Konut",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 120,
+    "m2_max": 180,
+    "daire_sayisi": 1214,
+    "durum": "teslim",
+    "teslim": "Haziran 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/prime-oran"
+  },
+  {
+    "ad": "Altın Orman İzmir",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Kalamış Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 49,
+    "m2_max": 110,
+    "daire_sayisi": 1212,
+    "durum": "teslim",
+    "teslim": "Ocak 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/altin-orman-izmir"
+  },
+  {
+    "ad": "Şehr-i Bağcılar",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Başak A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1201,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sehr-i-bagcilar"
+  },
+  {
+    "ad": "Emaar Square",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "AB HOLDİNG",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 61,
+    "m2_max": 423,
+    "daire_sayisi": 1200,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/emaar-square"
+  },
+  {
+    "ad": "HP4 Beylikdüzü Konakları",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Hayat Park Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1200,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hp4-beylikduzu-konaklari"
+  },
+  {
+    "ad": "Larissa Göl Evleri",
+    "il": "İzmir",
+    "ilce": "Menemen",
+    "gelistirici": "Erden İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1200,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/larissa-gol-evleri"
+  },
+  {
+    "ad": "Nivo İstanbul",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Cathay Group",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 53,
+    "m2_max": 137,
+    "daire_sayisi": 1200,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nivo-istanbul"
+  },
+  {
+    "ad": "İncek Loft",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Akfen İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1199,
+    "durum": "teslim",
+    "teslim": "Aralık 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/incek-loft"
+  },
+  {
+    "ad": "Evora İzmir",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1195,
+    "durum": "teslim",
+    "teslim": "Ağustos 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/evora-izmir"
+  },
+  {
+    "ad": "Concord İstanbul",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 47,
+    "m2_max": 133,
+    "daire_sayisi": 1173,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/concord-istanbul"
+  },
+  {
+    "ad": "Köy",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Siyah Kalem",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1167,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/koy"
+  },
+  {
+    "ad": "Jewel Premium İncek",
+    "il": "Ankara",
+    "ilce": "Gölbaşı",
+    "gelistirici": "Ünsal Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1166,
+    "durum": "insaat",
+    "teslim": "Aralık 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/jewel-premium-incek"
+  },
+  {
+    "ad": "Viraİstanbul",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Gül Proje",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 48,
+    "m2_max": 150,
+    "daire_sayisi": 1156,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/viraistanbul"
+  },
+  {
+    "ad": "İstanbul 216",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Baysaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 65,
+    "m2_max": 160,
+    "daire_sayisi": 1121,
+    "durum": "teslim",
+    "teslim": "Nisan 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/istanbul-216"
+  },
+  {
+    "ad": "Vadistanbul",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1111,
+    "durum": "teslim",
+    "teslim": "Aralık 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadistanbul"
+  },
+  {
+    "ad": "Nef Çekmeköy Koruköy",
+    "il": "İstanbul",
+    "ilce": "Çekmeköy",
+    "gelistirici": "Nef",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1109,
+    "durum": "teslim",
+    "teslim": "Şubat 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nef-cekmekoy-korukoy"
+  },
+  {
+    "ad": "Espada İzmir",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Kılıçlar A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1100,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/espada-izmir"
+  },
+  {
+    "ad": "Mood Göksu",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Dinamik Life",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 50,
+    "m2_max": 90,
+    "daire_sayisi": 1100,
+    "durum": "insaat",
+    "teslim": "Aralık 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mood-goksu"
+  },
+  {
+    "ad": "Sunset Kartal",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "intAvrasya",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1100,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sunset-kartal"
+  },
+  {
+    "ad": "Avrupark Hayat",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1095,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupark-hayat"
+  },
+  {
+    "ad": "The Address Residence İstanbul",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "Emaar İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 78,
+    "m2_max": 645,
+    "daire_sayisi": 1074,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/the-address-residence-istanbul"
+  },
+  {
+    "ad": "Sembol İstanbul",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Karden İnşaat A.Ş - Bahaş Holding",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1066,
+    "durum": "teslim",
+    "teslim": "Haziran 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sembol-istanbul"
+  },
+  {
+    "ad": "We Haliç",
+    "il": "İstanbul",
+    "ilce": "Gaziosmanpaşa",
+    "gelistirici": "Ilgın İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 52,
+    "m2_max": 121,
+    "daire_sayisi": 1057,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/we-halic"
+  },
+  {
+    "ad": "Modda Bulvar",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Ontan Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1050,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/modda-bulvar"
+  },
+  {
+    "ad": "Fortis Sinanlı Yeni Kadıköy",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Sinanlı Yapı - Yiğit İDK Group",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 78,
+    "m2_max": 224,
+    "daire_sayisi": 1049,
+    "durum": "teslim",
+    "teslim": "Mart 2020",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/fortis-sinanli-yeni-kadikoy"
+  },
+  {
+    "ad": "Taksim 360",
+    "il": "İstanbul",
+    "ilce": "Beyoğlu",
+    "gelistirici": "Gap İnşaat",
+    "oda_tipleri": [
+      "1"
+    ],
+    "m2_min": 130,
+    "m2_max": 138,
+    "daire_sayisi": 1036,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/taksim-360"
+  },
+  {
+    "ad": "Ataşehir Modern",
+    "il": "İstanbul",
+    "ilce": "Ataşehir",
+    "gelistirici": "Lens Yapı Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 1023,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/atasehir-modern"
+  },
+  {
+    "ad": "Nuvo Dragos",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Özderici GYO",
+    "oda_tipleri": [
+      "1+1",
+      "3+1"
+    ],
+    "m2_min": 66,
+    "m2_max": 219,
+    "daire_sayisi": 1000,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nuvo-dragos"
+  },
+  {
+    "ad": "Velux Ankara",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Fırat Life Style & Ata Yıldız Grup & Acity",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 55,
+    "m2_max": 84,
+    "daire_sayisi": 1000,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/velux-ankara"
+  },
+  {
+    "ad": "Gölde Luxe Konutları",
+    "il": "Ankara",
+    "ilce": "Etimesgut",
+    "gelistirici": "Ata Yıldız Grup",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 60,
+    "m2_max": 169,
+    "daire_sayisi": 1000,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/golde-luxe-konutlari"
+  },
+  {
+    "ad": "Bursa Prestij Optimum",
+    "il": "Bursa",
+    "ilce": "Osmangazi",
+    "gelistirici": "Bak Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 990,
+    "durum": "teslim",
+    "teslim": "Ekim 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bursa-prestij-optimum"
+  },
+  {
+    "ad": "Mebuskent",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Aymor Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 990,
+    "durum": "teslim",
+    "teslim": "Nisan 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mebuskent"
+  },
+  {
+    "ad": "Skyland İstanbul",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Eroğlu Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 987,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/skyland-istanbul"
+  },
+  {
+    "ad": "Marina Ankara",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 978,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/marina-ankara"
+  },
+  {
+    "ad": "Mahall Ankara",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Türkerler Holding",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 976,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mahall-ankara"
+  },
+  {
+    "ad": "YDA Center",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "YDA İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 950,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yda-center"
+  },
+  {
+    "ad": "Avrupa Konutları Başakşehir",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 85,
+    "m2_max": 277,
+    "daire_sayisi": 941,
+    "durum": "teslim",
+    "teslim": "Ekim 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-basaksehir"
+  },
+  {
+    "ad": "Avangart İstanbul",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Gül Proje",
+    "oda_tipleri": [],
+    "m2_min": 45,
+    "m2_max": 289,
+    "daire_sayisi": 935,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avangart-istanbul"
+  },
+  {
+    "ad": "Avrupa Konutları Çamlıvadi",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 919,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-camlivadi"
+  },
+  {
+    "ad": "Natura Vadi",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Fırat Life Style & Rast Grup",
+    "oda_tipleri": [
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 170,
+    "m2_max": 240,
+    "daire_sayisi": 909,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/natura-vadi"
+  },
+  {
+    "ad": "Cubes Ankara",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Vakıf GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 905,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/cubes-ankara"
+  },
+  {
+    "ad": "Sinpaş Ege Vadisi",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 82,
+    "m2_max": 215,
+    "daire_sayisi": 893,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-ege-vadisi"
+  },
+  {
+    "ad": "Strada Bahçeşehir",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Akzirve Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 59,
+    "m2_max": 243,
+    "daire_sayisi": 880,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/strada-bahcesehir"
+  },
+  {
+    "ad": "Natura Port",
+    "il": "Ankara",
+    "ilce": "Akyurt",
+    "gelistirici": "Fırat Life Style",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 52,
+    "m2_max": 78,
+    "daire_sayisi": 880,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/natura-port"
+  },
+  {
+    "ad": "Avrupa Konutları Esentepe",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 130,
+    "m2_max": 212,
+    "daire_sayisi": 865,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-esentepe"
+  },
+  {
+    "ad": "Babacan Port Royal",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Babacan Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 859,
+    "durum": "teslim",
+    "teslim": "Ocak 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/babacan-port-royal"
+  },
+  {
+    "ad": "Yedi Mavi",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Kalkavan Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 77,
+    "m2_max": 325,
+    "daire_sayisi": 848,
+    "durum": "teslim",
+    "teslim": "Ocak 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yedi-mavi"
+  },
+  {
+    "ad": "Folkart Vega",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Folkart Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 79,
+    "m2_max": 339,
+    "daire_sayisi": 843,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/folkart-vega"
+  },
+  {
+    "ad": "Antares Konutları",
+    "il": "Ankara",
+    "ilce": "Keçiören",
+    "gelistirici": "Dolunay Avm Yatırım İşletme Konut İnşaat Tic. A.Ş.",
+    "oda_tipleri": [
+      "3+1",
+      "4+1",
+      "5+1",
+      "7+1"
+    ],
+    "m2_min": 119,
+    "m2_max": 380,
+    "daire_sayisi": 840,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/antares-konutlari"
+  },
+  {
+    "ad": "Uplife Kadıköy",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 58,
+    "m2_max": 129,
+    "daire_sayisi": 836,
+    "durum": "insaat",
+    "teslim": "Aralık 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/uplife-kadikoy"
+  },
+  {
+    "ad": "Metafor Ankara",
+    "il": "Ankara",
+    "ilce": "Altındağ",
+    "gelistirici": "View Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 827,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/metafor-ankara"
+  },
+  {
+    "ad": "Demir LIFE",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "Demir İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 827,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/demir-life"
+  },
+  {
+    "ad": "Yücel Park",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 53,
+    "m2_max": 158,
+    "daire_sayisi": 825,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yucel-park"
+  },
+  {
+    "ad": "Bulvar Loft",
+    "il": "Ankara",
+    "ilce": "Gölbaşı",
+    "gelistirici": "Akfen İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 820,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bulvar-loft"
+  },
+  {
+    "ad": "Mahall Bomonti İzmir",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Türkerler Holding",
+    "oda_tipleri": [],
+    "m2_min": 42,
+    "m2_max": 199,
+    "daire_sayisi": 813,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mahall-bomonti-izmir"
+  },
+  {
+    "ad": "Dünya Şehir Maltepe",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Dünya Şehir Gayrimenkul Geliştirme ve İnşaat A.Ş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 230,
+    "daire_sayisi": 808,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/dunya-sehir-maltepe"
+  },
+  {
+    "ad": "Elmar Towers",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Elmar Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 803,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/elmar-towers"
+  },
+  {
+    "ad": "Rams Garden",
+    "il": "İstanbul",
+    "ilce": "Bahçelievler",
+    "gelistirici": "Rams Türkiye",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 131,
+    "m2_max": 251,
+    "daire_sayisi": 796,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/rams-garden"
+  },
+  {
+    "ad": "Sukent Beytepe",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "S.S SUKENT KONUT YAPI KOOPERATİFİ",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 770,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sukent-beytepe"
+  },
+  {
+    "ad": "Vadistanbul Park",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 82,
+    "m2_max": 266,
+    "daire_sayisi": 762,
+    "durum": "teslim",
+    "teslim": "Aralık 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadistanbul-park"
+  },
+  {
+    "ad": "Essenora",
+    "il": "İstanbul",
+    "ilce": "Gaziosmanpaşa",
+    "gelistirici": "Atik&Akın- Enga- Yimta",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 72,
+    "m2_max": 207,
+    "daire_sayisi": 758,
+    "durum": "teslim",
+    "teslim": "Haziran 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/essenora"
+  },
+  {
+    "ad": "Avrupa Konutları Yenimahalle",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 754,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-yenimahalle"
+  },
+  {
+    "ad": "Yuvam Bahçeşehir Evleri",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Akar Grup",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 95,
+    "m2_max": 125,
+    "daire_sayisi": 752,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yuvam-bahcesehir-evleri"
+  },
+  {
+    "ad": "Meva Anadolu",
+    "il": "Kocaeli",
+    "ilce": "Çayırova",
+    "gelistirici": "Zeray İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 91,
+    "m2_max": 261,
+    "daire_sayisi": 750,
+    "durum": "teslim",
+    "teslim": "Nisan 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/meva-anadolu"
+  },
+  {
+    "ad": "5. Levent Korupark",
+    "il": "İstanbul",
+    "ilce": "Eyüpsultan",
+    "gelistirici": "Torunlar GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 84,
+    "m2_max": 216,
+    "daire_sayisi": 744,
+    "durum": "teslim",
+    "teslim": "Mart 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/5-levent-korupark"
+  },
+  {
+    "ad": "My Way Wins Blue",
+    "il": "İzmir",
+    "ilce": "Çiğli",
+    "gelistirici": "Gözde Grubu",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 743,
+    "durum": "teslim",
+    "teslim": "Ekim 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/my-way-wins-blue"
+  },
+  {
+    "ad": "AP İst Port",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Şani İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 735,
+    "durum": "teslim",
+    "teslim": "Aralık 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ap-ist-port"
+  },
+  {
+    "ad": "Moment İstanbul",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "AC Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 731,
+    "durum": "teslim",
+    "teslim": "Haziran 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/moment-istanbul"
+  },
+  {
+    "ad": "Folkart Orion",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Folkart Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 75,
+    "m2_max": 1109,
+    "daire_sayisi": 725,
+    "durum": "insaat",
+    "teslim": "Eylül 2028",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/folkart-orion"
+  },
+  {
+    "ad": "Ebruli Ispartakule",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Torkam İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 84,
+    "m2_max": 155,
+    "daire_sayisi": 724,
+    "durum": "teslim",
+    "teslim": "Ekim 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ebruli-ispartakule"
+  },
+  {
+    "ad": "Gamador Parla",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Gamador İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 721,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/gamador-parla"
+  },
+  {
+    "ad": "Jewel Premium Beytepe",
+    "il": "Ankara",
+    "ilce": "Gölbaşı",
+    "gelistirici": "Ünsal Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 720,
+    "durum": "insaat",
+    "teslim": "Aralık 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/jewel-premium-beytepe"
+  },
+  {
+    "ad": "G Yoo",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Mar Yapı",
+    "oda_tipleri": [],
+    "m2_min": 46,
+    "m2_max": 108,
+    "daire_sayisi": 720,
+    "durum": "teslim",
+    "teslim": "Mayıs 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/g-yoo"
+  },
+  {
+    "ad": "BizimEvler Güzelce",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "İhlas Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 709,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bizimevler-guzelce"
+  },
+  {
+    "ad": "Bizim Evler Güzelce",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "İhlas Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 123,
+    "m2_max": 214,
+    "daire_sayisi": 709,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bizim-evler-guzelce"
+  },
+  {
+    "ad": "DAP İzmir",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "DAP Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 707,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/dap-izmir"
+  },
+  {
+    "ad": "Maslak Koru",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Invest İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 76,
+    "m2_max": 298,
+    "daire_sayisi": 704,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/maslak-koru"
+  },
+  {
+    "ad": "Nezihpark Bahçekent",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 700,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nezihpark-bahcekent"
+  },
+  {
+    "ad": "Yedimavi",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Kalkavan Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 684,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yedimavi"
+  },
+  {
+    "ad": "Zer Göztepe",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Ceylan İnşaat",
+    "oda_tipleri": [],
+    "m2_min": 60,
+    "m2_max": 380,
+    "daire_sayisi": 675,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zer-goztepe"
+  },
+  {
+    "ad": "Semt Bahçekent",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 669,
+    "durum": "teslim",
+    "teslim": "Aralık 2020",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/semt-bahcekent"
+  },
+  {
+    "ad": "Akın 688 Eryaman",
+    "il": "Ankara",
+    "ilce": "Etimesgut",
+    "gelistirici": "Akın İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 48,
+    "m2_max": 107,
+    "daire_sayisi": 664,
+    "durum": "teslim",
+    "teslim": "Mart 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/akin-688-eryaman"
+  },
+  {
+    "ad": "Gül Proje Express",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Gül Proje",
+    "oda_tipleri": [],
+    "m2_min": 55,
+    "m2_max": 114,
+    "daire_sayisi": 658,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/gul-proje-express"
+  },
+  {
+    "ad": "Vaat Center",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Vaat Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 653,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vaat-center"
+  },
+  {
+    "ad": "Bizim Evler 10",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "İhlas Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 131,
+    "m2_max": 226,
+    "daire_sayisi": 650,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bizim-evler-10"
+  },
+  {
+    "ad": "Siltaş Panorama",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Siltaş Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 99,
+    "m2_max": 215,
+    "daire_sayisi": 650,
+    "durum": "teslim",
+    "teslim": "Şubat 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/siltas-panorama"
+  },
+  {
+    "ad": "Marmara Evleri 4",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "İhlas Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 126,
+    "m2_max": 204,
+    "daire_sayisi": 644,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/marmara-evleri-4"
+  },
+  {
+    "ad": "Avrupa Konutları Ispartakule 3",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 644,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-ispartakule-3"
+  },
+  {
+    "ad": "Relax Cadde",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "SF YILDIZ İNŞAAT",
+    "oda_tipleri": [
+      "1+1"
+    ],
+    "m2_min": 52,
+    "m2_max": 52,
+    "daire_sayisi": 643,
+    "durum": "teslim",
+    "teslim": "Nisan 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/relax-cadde"
+  },
+  {
+    "ad": "Ticarethane Dudullu",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Akyapı Ticarethane",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 636,
+    "durum": "teslim",
+    "teslim": "Haziran 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ticarethane-dudullu"
+  },
+  {
+    "ad": "Vema Tuzla",
+    "il": "İstanbul",
+    "ilce": "Tuzla",
+    "gelistirici": "Vema İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 82,
+    "m2_max": 214,
+    "daire_sayisi": 634,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vema-tuzla"
+  },
+  {
+    "ad": "Ege Yapı Kordon İstanbul",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "Ege Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 634,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ege-yap-kordon-istanbul"
+  },
+  {
+    "ad": "Natura Batıkent",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Fırat Life Style",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 613,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/natura-batikent"
+  },
+  {
+    "ad": "Batıyakası",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 67,
+    "m2_max": 184,
+    "daire_sayisi": 611,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/batiyakasi"
+  },
+  {
+    "ad": "Self İstanbul",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Karden İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 609,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/self-istanbul"
+  },
+  {
+    "ad": "As Concept",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "AS YAPI",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 130,
+    "daire_sayisi": 605,
+    "durum": "insaat",
+    "teslim": "Mart 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/as-concept"
+  },
+  {
+    "ad": "Rams City Haliç",
+    "il": "İstanbul",
+    "ilce": "Eyüpsultan",
+    "gelistirici": "Rams Türkiye",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 603,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/rams-city-halic"
+  },
+  {
+    "ad": "MevaCity Alanya",
+    "il": "Antalya",
+    "ilce": "Alanya",
+    "gelistirici": "Ünsal Group",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 60,
+    "m2_max": 221,
+    "daire_sayisi": 600,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mevacity-alanya"
+  },
+  {
+    "ad": "Tersane İstanbul",
+    "il": "İstanbul",
+    "ilce": "Beyoğlu",
+    "gelistirici": "Sembol inşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 600,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/tersane-istanbul"
+  },
+  {
+    "ad": "11. Mahalle",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Gül İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "3+2"
+    ],
+    "m2_min": 99,
+    "m2_max": 330,
+    "daire_sayisi": 600,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/11-mahalle"
+  },
+  {
+    "ad": "Kale Avrupa Konutları",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 54,
+    "m2_max": 149,
+    "daire_sayisi": 599,
+    "durum": "teslim",
+    "teslim": "Haziran 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kale-avrupa-konutlari"
+  },
+  {
+    "ad": "Baharyaka Eyüpsultan",
+    "il": "İstanbul",
+    "ilce": "Eyüpsultan",
+    "gelistirici": "Oferka İnşaat Yatırım A.Ş.",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 87,
+    "m2_max": 300,
+    "daire_sayisi": 593,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/baharyaka-eyupsultan"
+  },
+  {
+    "ad": "Karat 34",
+    "il": "İstanbul",
+    "ilce": "Bahçelievler",
+    "gelistirici": "Baş Yapı",
+    "oda_tipleri": [],
+    "m2_min": 28,
+    "m2_max": 267,
+    "daire_sayisi": 592,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/karat-34"
+  },
+  {
+    "ad": "Kiptaş Kartal Kaper Sitesi",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Kiptaş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 97,
+    "m2_max": 156,
+    "daire_sayisi": 590,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kiptas-kartal-kaper-sitesi"
+  },
+  {
+    "ad": "Quattro İstanbul",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Rams Türkiye",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 579,
+    "durum": "teslim",
+    "teslim": "Haziran 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/quattro-istanbul"
+  },
+  {
+    "ad": "Emporia İstanbul",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "AKS Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 61,
+    "m2_max": 102,
+    "daire_sayisi": 576,
+    "durum": "teslim",
+    "teslim": "Haziran 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/emporia-istanbul"
+  },
+  {
+    "ad": "İki Yaka Fikirtepe",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Barsan Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 72,
+    "m2_max": 175,
+    "daire_sayisi": 575,
+    "durum": "teslim",
+    "teslim": "Aralık 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/iki-yaka-fikirtepe"
+  },
+  {
+    "ad": "Deniz İstanbul Bahar Rezidans",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Keleşoğlu Holding",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 574,
+    "durum": "teslim",
+    "teslim": "Haziran 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/deniz-istanbul-bahar-rezidans"
+  },
+  {
+    "ad": "Valentium",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Aşçıoğlu İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 574,
+    "durum": "teslim",
+    "teslim": "Mart 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/valentium"
+  },
+  {
+    "ad": "Serra Cadde",
+    "il": "Ankara",
+    "ilce": "Sincan",
+    "gelistirici": "Salihoğulları İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 569,
+    "durum": "teslim",
+    "teslim": "Eylül 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/serra-cadde"
+  },
+  {
+    "ad": "Park Residences Cadde",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Birleşik Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 67,
+    "m2_max": 242,
+    "daire_sayisi": 568,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/park-residences-cadde"
+  },
+  {
+    "ad": "1071 Ankara",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Usta İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 556,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/1071-ankara"
+  },
+  {
+    "ad": "35. Sokak",
+    "il": "İzmir",
+    "ilce": "Menemen",
+    "gelistirici": "Akşan A.Ş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 81,
+    "m2_max": 272,
+    "daire_sayisi": 555,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/35-sokak"
+  },
+  {
+    "ad": "Başka Ankara",
+    "il": "Ankara",
+    "ilce": "Keçiören",
+    "gelistirici": "Kocalar Yatırım",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 71,
+    "m2_max": 291,
+    "daire_sayisi": 554,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/baska-ankara"
+  },
+  {
+    "ad": "Metrolife Sancaktepe",
+    "il": "İstanbul",
+    "ilce": "Sancaktepe",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 62,
+    "m2_max": 264,
+    "daire_sayisi": 554,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/metrolife-sancaktepe"
+  },
+  {
+    "ad": "Four Winds Residence",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "TAŞYAPI",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 550,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/four-winds-residence"
+  },
+  {
+    "ad": "Benesta Acıbadem",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "Benesta",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 550,
+    "durum": "teslim",
+    "teslim": "Aralık 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/benesta-acibadem"
+  },
+  {
+    "ad": "Optimist Residence",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Mist İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 64,
+    "m2_max": 186,
+    "daire_sayisi": 550,
+    "durum": "teslim",
+    "teslim": "Ağustos 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/optimist-residence"
+  },
+  {
+    "ad": "Sinpaş Koru Aura",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 544,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-koru-aura"
+  },
+  {
+    "ad": "Başkent Yonca Evleri",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "S.S. Faras Panorama Konut Yapı Kooperatifi",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 543,
+    "durum": "teslim",
+    "teslim": "Aralık 2020",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/baskent-yonca-evleri"
+  },
+  {
+    "ad": "Park Yaşam Santorini",
+    "il": "İzmir",
+    "ilce": "Çiğli",
+    "gelistirici": "İzka İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 539,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/park-yasam-santorini"
+  },
+  {
+    "ad": "Referans Beylikdüzü",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Kiler GYO",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 95,
+    "m2_max": 324,
+    "daire_sayisi": 535,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/referans-beylikduzu"
+  },
+  {
+    "ad": "Kırlangıç Evler",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Kiptaş - İBB",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 535,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kirlangic-evler"
+  },
+  {
+    "ad": "İki Konak",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Vakıf GYO & İlk İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 65,
+    "m2_max": 400,
+    "daire_sayisi": 524,
+    "durum": "teslim",
+    "teslim": "Ağustos 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/iki-konak"
+  },
+  {
+    "ad": "Natura Orman",
+    "il": "Ankara",
+    "ilce": "Gölbaşı",
+    "gelistirici": "Fırat Life Style",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 524,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/natura-orman"
+  },
+  {
+    "ad": "3s Firuze Konakları",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "3S Kale Holding",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 523,
+    "durum": "teslim",
+    "teslim": "Eylül 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/3s-firuze-konaklari"
+  },
+  {
+    "ad": "Nidapark İstinye",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Tahincioğlu Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 522,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nidapark-istinye"
+  },
+  {
+    "ad": "New Eyüp",
+    "il": "İstanbul",
+    "ilce": "Eyüpsultan",
+    "gelistirici": "Dem İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 520,
+    "durum": "teslim",
+    "teslim": "Ocak 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/new-eyup"
+  },
+  {
+    "ad": "Ege Yapı ModernYaka",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Ege Yapı",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 169,
+    "m2_max": 169,
+    "daire_sayisi": 515,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ege-yapi-modernyaka"
+  },
+  {
+    "ad": "Limonlu Bahçe Konakları",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "AKYAPI",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 80,
+    "m2_max": 202,
+    "daire_sayisi": 509,
+    "durum": "teslim",
+    "teslim": "Aralık 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/limonlu-bahce-konaklari"
+  },
+  {
+    "ad": "Prestij Panora",
+    "il": "Bursa",
+    "ilce": "Osmangazi",
+    "gelistirici": "Bak Yapı",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 115,
+    "m2_max": 115,
+    "daire_sayisi": 504,
+    "durum": "teslim",
+    "teslim": "Nisan 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/prestij-panora"
+  },
+  {
+    "ad": "Zeray Esil Kartepe",
+    "il": "Kocaeli",
+    "ilce": "Kartepe",
+    "gelistirici": "Zeray İnşaat",
+    "oda_tipleri": [
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 184,
+    "m2_max": 257,
+    "daire_sayisi": 501,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zeray-esil-kartepe"
+  },
+  {
+    "ad": "AcarVerde",
+    "il": "İstanbul",
+    "ilce": "Beykoz",
+    "gelistirici": "Acarlar Şirketler Topluluğu",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 101,
+    "m2_max": 190,
+    "daire_sayisi": 500,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/acarverde"
+  },
+  {
+    "ad": "İstova Kağıthane",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "Yamaç Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 60,
+    "m2_max": 234,
+    "daire_sayisi": 500,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/istova-kagithane"
+  },
+  {
+    "ad": "Coordinat Bornova",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "DRC Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 500,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/coordinat-bornova"
+  },
+  {
+    "ad": "Marmara Koru",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Marmaray insaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 498,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/marmara-koru"
+  },
+  {
+    "ad": "Akros İstanbul",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Ak Proje",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 496,
+    "durum": "teslim",
+    "teslim": "Aralık 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/akros-istanbul"
+  },
+  {
+    "ad": "Hilal Konakları",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Elit İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 495,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hilal-konaklari"
+  },
+  {
+    "ad": "Flamingo Alkent",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "Gül İnşaat, Delta Arazi Geliştirme",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 494,
+    "durum": "teslim",
+    "teslim": "Şubat 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/flamingo-alkent"
+  },
+  {
+    "ad": "YDA Parkline",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "YDA İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 493,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yda-parkline"
+  },
+  {
+    "ad": "Dream Of Silivri",
+    "il": "İstanbul",
+    "ilce": "Silivri",
+    "gelistirici": "Bayburtlu İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 109,
+    "m2_max": 137,
+    "daire_sayisi": 488,
+    "durum": "teslim",
+    "teslim": "Temmuz 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/dream-of-silivri"
+  },
+  {
+    "ad": "Duru Beytepe",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Safe Grup",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 136,
+    "m2_max": 260,
+    "daire_sayisi": 484,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/duru-beytepe"
+  },
+  {
+    "ad": "Tual Comfort",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Dağ Mühendislik A.Ş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 69,
+    "m2_max": 188,
+    "daire_sayisi": 480,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/tual-comfort"
+  },
+  {
+    "ad": "Elmas Kule",
+    "il": "İstanbul",
+    "ilce": "Bahçelievler",
+    "gelistirici": "Gençoğlu Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 480,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/elmas-kule"
+  },
+  {
+    "ad": "Shu 09 Balkan",
+    "il": "Bursa",
+    "ilce": "Nilüfer",
+    "gelistirici": "YB Yapı",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 191,
+    "m2_max": 191,
+    "daire_sayisi": 480,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/shu-09-balkan"
+  },
+  {
+    "ad": "Ticarethane Hadımköy",
+    "il": "İstanbul",
+    "ilce": "Arnavutköy",
+    "gelistirici": "Akyapı Ticarethane",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 479,
+    "durum": "teslim",
+    "teslim": "Haziran 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ticarethane-hadimkoy"
+  },
+  {
+    "ad": "Teka Kent",
+    "il": "Ankara",
+    "ilce": "Sincan",
+    "gelistirici": "Teka Grup",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 91,
+    "m2_max": 172,
+    "daire_sayisi": 472,
+    "durum": "insaat",
+    "teslim": "Aralık 2027",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/teka-kent"
+  },
+  {
+    "ad": "Sinpaş Boulevard Sefaköy",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 471,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-boulevard-sefakoy"
+  },
+  {
+    "ad": "Alya Konutları Merkezefendi",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "BOSS4 İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 467,
+    "durum": "teslim",
+    "teslim": "Şubat 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/alya-konutlari-merkezefendi"
+  },
+  {
+    "ad": "Makyol Yaşam Beylikdüzü",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Akyol İnşaat Dekorasyon",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 71,
+    "m2_max": 163,
+    "daire_sayisi": 465,
+    "durum": "teslim",
+    "teslim": "Temmuz 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/makyol-yasam-beylikduzu"
+  },
+  {
+    "ad": "Özak Dragos",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "ÖZAK GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 72,
+    "m2_max": 153,
+    "daire_sayisi": 458,
+    "durum": "insaat",
+    "teslim": "Aralık 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ozak-dragos"
+  },
+  {
+    "ad": "Divan Residence",
+    "il": "İzmir",
+    "ilce": "Konak",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 94,
+    "m2_max": 255,
+    "daire_sayisi": 455,
+    "durum": "insaat",
+    "teslim": "Aralık 2028",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/divan-residence"
+  },
+  {
+    "ad": "Zeray Dora Hill",
+    "il": "Kocaeli",
+    "ilce": "İzmit",
+    "gelistirici": "Zeray İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "3+1"
+    ],
+    "m2_min": 105,
+    "m2_max": 173,
+    "daire_sayisi": 450,
+    "durum": "teslim",
+    "teslim": "Haziran 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zeray-dora-hill"
+  },
+  {
+    "ad": "Trademark Pi Bornova",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Adnan Kılıçoğlu İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 450,
+    "durum": "teslim",
+    "teslim": "Mart 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/trademark-pi-bornova"
+  },
+  {
+    "ad": "Kayapark Sakura Evleri",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Famir Yapı & Başakşehir Belediyesi",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 445,
+    "durum": "teslim",
+    "teslim": "Eylül 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kayapark-sakura-evleri"
+  },
+  {
+    "ad": "Azur Marmara",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Batıbeyler Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 126,
+    "m2_max": 236,
+    "daire_sayisi": 442,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/azur-marmara"
+  },
+  {
+    "ad": "Avrupa Konutları Atakent 4",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 49,
+    "m2_max": 139,
+    "daire_sayisi": 441,
+    "durum": "teslim",
+    "teslim": "Aralık 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-atakent-4"
+  },
+  {
+    "ad": "Rota Aydınoğlu",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Aydınoğlu İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+2"
+    ],
+    "m2_min": 71,
+    "m2_max": 151,
+    "daire_sayisi": 439,
+    "durum": "teslim",
+    "teslim": "Ağustos 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/rota-aydinoglu"
+  },
+  {
+    "ad": "Emlak Konut Saraçoğlu",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Emlak Konut GYO",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 435,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/emlak-konut-saracoglu"
+  },
+  {
+    "ad": "Vadi İzmit",
+    "il": "Kocaeli",
+    "ilce": "İzmit",
+    "gelistirici": "Bektaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 433,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadi-izmit-1"
+  },
+  {
+    "ad": "Nef Kağıthane 11",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "Nef",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 431,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nef-kagithane-11"
+  },
+  {
+    "ad": "Arte Borgo",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Arte İnşaat",
+    "oda_tipleri": [
+      "5+1"
+    ],
+    "m2_min": 250,
+    "m2_max": 290,
+    "daire_sayisi": 430,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/arte-borgo"
+  },
+  {
+    "ad": "Avend Beytepe",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Rast Grup",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 430,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avend-beytepe"
+  },
+  {
+    "ad": "Anadolum İdol",
+    "il": "İstanbul",
+    "ilce": "Tuzla",
+    "gelistirici": "Anadolum İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 55,
+    "m2_max": 85,
+    "daire_sayisi": 428,
+    "durum": "teslim",
+    "teslim": "Haziran 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/anadolum-idol"
+  },
+  {
+    "ad": "Avrasya Konutları Cadde",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Fuzul Yapı, Emlak Konut, Toki",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 56,
+    "m2_max": 129,
+    "daire_sayisi": 427,
+    "durum": "insaat",
+    "teslim": "Nisan 2029",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrasya-konutlari-cadde"
+  },
+  {
+    "ad": "Central Balat",
+    "il": "Bursa",
+    "ilce": "Nilüfer",
+    "gelistirici": "Taşkayan",
+    "oda_tipleri": [],
+    "m2_min": 49,
+    "m2_max": 225,
+    "daire_sayisi": 426,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/central-balat"
+  },
+  {
+    "ad": "Sinpaş Gökorman",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [],
+    "m2_min": 48,
+    "m2_max": 187,
+    "daire_sayisi": 426,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-gokorman"
+  },
+  {
+    "ad": "Asoy Bahçeşehir",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Asoy Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 425,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/asoy-bahcesehir"
+  },
+  {
+    "ad": "Kılıç Gold Residence",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Kılıç İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 425,
+    "durum": "teslim",
+    "teslim": "Haziran 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/kilic-gold-residence"
+  },
+  {
+    "ad": "Bosspoint",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Boskon İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 60,
+    "m2_max": 149,
+    "daire_sayisi": 425,
+    "durum": "teslim",
+    "teslim": "Aralık 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bosspoint"
+  },
+  {
+    "ad": "Vadi Konakları 2",
+    "il": "Antalya",
+    "ilce": "Döşemealtı",
+    "gelistirici": "S.S. Antalya Pal City Konakları 2 Arsa ve Konut Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "3+2"
+    ],
+    "m2_min": 154,
+    "m2_max": 501,
+    "daire_sayisi": 420,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadi-konaklari-2"
+  },
+  {
+    "ad": "Hezarfen Konutları",
+    "il": "İstanbul",
+    "ilce": "Arnavutköy",
+    "gelistirici": "Vefakar Yapı",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 135,
+    "m2_max": 135,
+    "daire_sayisi": 420,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hezarfen-konutlari"
+  },
+  {
+    "ad": "İnvest Vadi",
+    "il": "İstanbul",
+    "ilce": "Sarıyer",
+    "gelistirici": "Invest İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 73,
+    "m2_max": 486,
+    "daire_sayisi": 419,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/invest-vadi"
+  },
+  {
+    "ad": "Sarissa İstanbul",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "AKS Grup İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 49,
+    "m2_max": 258,
+    "daire_sayisi": 417,
+    "durum": "teslim",
+    "teslim": "Haziran 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sarissa-istanbul"
+  },
+  {
+    "ad": "GENYAP LINK KAĞITHANE",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "GenYap",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 414,
+    "durum": "teslim",
+    "teslim": "Mart 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/genyap-link-kagithane"
+  },
+  {
+    "ad": "Avrupa Konutları TEM 2",
+    "il": "İstanbul",
+    "ilce": "Gaziosmanpaşa",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 74,
+    "m2_max": 190,
+    "daire_sayisi": 414,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-tem-2"
+  },
+  {
+    "ad": "AND Frekans",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "AND Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 413,
+    "durum": "teslim",
+    "teslim": "Eylül 2020",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/and-frekans"
+  },
+  {
+    "ad": "Başakşehir Avrasya Konutları 2",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Fuzul Yapı, Emlak Konut, Toki",
+    "oda_tipleri": [
+      "2+1",
+      "4+1"
+    ],
+    "m2_min": 117,
+    "m2_max": 227,
+    "daire_sayisi": 410,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/basaksehir-avrasya-konutlari-2"
+  },
+  {
+    "ad": "Başakşehir Avrasya Konutları 3",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Fuzul Yapı, Emlak Konut, Toki",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 131,
+    "m2_max": 260,
+    "daire_sayisi": 410,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/basaksehir-avrasya-konutlari-3"
+  },
+  {
+    "ad": "Nef 03 Kağıthane",
+    "il": "İstanbul",
+    "ilce": "Şişli",
+    "gelistirici": "Nef - Timur Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 43,
+    "m2_max": 85,
+    "daire_sayisi": 410,
+    "durum": "teslim",
+    "teslim": "Ocak 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nef-03-kagithane"
+  },
+  {
+    "ad": "Santra",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Uzelli Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 410,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/santra"
+  },
+  {
+    "ad": "Loft Valentine",
+    "il": "İstanbul",
+    "ilce": "Bahçelievler",
+    "gelistirici": "Yemenoğlu Gayrimenkul İnşaat - Ruz Proje",
+    "oda_tipleri": [
+      "1+1"
+    ],
+    "m2_min": 73,
+    "m2_max": 73,
+    "daire_sayisi": 407,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/loft-valentine"
+  },
+  {
+    "ad": "Makyol Santral",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Akyol İnşaat Dekorasyon",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 407,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/makyol-santral"
+  },
+  {
+    "ad": "Nef Reserve Kandilli",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "Nef",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 406,
+    "durum": "teslim",
+    "teslim": "Ocak 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nef-reserve-kandilli"
+  },
+  {
+    "ad": "Sega Life",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Sega Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 406,
+    "durum": "teslim",
+    "teslim": "Ocak 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sega-life"
+  },
+  {
+    "ad": "Pruva 34",
+    "il": "İstanbul",
+    "ilce": "Bakırköy",
+    "gelistirici": "Doğa Şehircilik",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 406,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/pruva-34"
+  },
+  {
+    "ad": "Benesta Podio",
+    "il": "İstanbul",
+    "ilce": "Bahçelievler",
+    "gelistirici": "Benesta",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 400,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/benesta-podio"
+  },
+  {
+    "ad": "Vadipark Seyrantepe",
+    "il": "İstanbul",
+    "ilce": "Şişli",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 400,
+    "durum": "teslim",
+    "teslim": "Temmuz 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vadipark-seyrantepe-1"
+  },
+  {
+    "ad": "HP3 Paradise",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Hayat Park Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 397,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hp3-paradise"
+  },
+  {
+    "ad": "Royal Garden Kartal",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Royal Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 397,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/royal-garden-kartal"
+  },
+  {
+    "ad": "Collet Avcılar",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Batı Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 396,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/collet-avcilar"
+  },
+  {
+    "ad": "Bahçe Bahçeşehir",
+    "il": "İstanbul",
+    "ilce": "Başakşehir",
+    "gelistirici": "Mutlu İnşaat & Sezer Öngel İnşaat & Ceylan Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 71,
+    "m2_max": 228,
+    "daire_sayisi": 394,
+    "durum": "teslim",
+    "teslim": "Haziran 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bahce-bahcesehir"
+  },
+  {
+    "ad": "Selenium Retro",
+    "il": "İstanbul",
+    "ilce": "Bakırköy",
+    "gelistirici": "Aşçıoğlu İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 97,
+    "daire_sayisi": 394,
+    "durum": "teslim",
+    "teslim": "Haziran 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/selenium-retro"
+  },
+  {
+    "ad": "Sur Yapı Cevher",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Sur Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 391,
+    "durum": "insaat",
+    "teslim": "Aralık 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sur-yapi-cevher"
+  },
+  {
+    "ad": "Edonia Garden",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "karyapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 147,
+    "daire_sayisi": 388,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/edonia-garden"
+  },
+  {
+    "ad": "Helenium Wings",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Başarır İnşaat",
+    "oda_tipleri": [],
+    "m2_min": 33,
+    "m2_max": 257,
+    "daire_sayisi": 388,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/helenium-wings"
+  },
+  {
+    "ad": "AVCILAR EFFECT",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "AVCILAR İNŞAAT",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 388,
+    "durum": "teslim",
+    "teslim": "Eylül 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avcilar-effect"
+  },
+  {
+    "ad": "Fuzul Topraktan Yeni Esenler",
+    "il": "İstanbul",
+    "ilce": "Fatih",
+    "gelistirici": "Fuzul Topraktan",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 67,
+    "m2_max": 177,
+    "daire_sayisi": 387,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/fuzul-topraktan-yeni-esenler"
+  },
+  {
+    "ad": "Motto Ankara",
+    "il": "Ankara",
+    "ilce": "Mamak",
+    "gelistirici": "Ata Yıldız Grup",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 54,
+    "m2_max": 82,
+    "daire_sayisi": 387,
+    "durum": "teslim",
+    "teslim": "Eylül 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/motto-ankara"
+  },
+  {
+    "ad": "Note Premium",
+    "il": "Antalya",
+    "ilce": "Aksu",
+    "gelistirici": "Note İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 384,
+    "durum": "teslim",
+    "teslim": "Haziran 2024",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/note-premium"
+  },
+  {
+    "ad": "Avrupa Konutları Arıcılar 1. Etap",
+    "il": "İstanbul",
+    "ilce": "Kağıthane",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 384,
+    "durum": "teslim",
+    "teslim": "Aralık 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-aricilar-1-etap"
+  },
+  {
+    "ad": "Çelebi Nova",
+    "il": "Bursa",
+    "ilce": "Nilüfer",
+    "gelistirici": "Çelebi Group",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 135,
+    "m2_max": 142,
+    "daire_sayisi": 381,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/celebi-nova"
+  },
+  {
+    "ad": "HSN Beykoz Kentsel Dönüşüm Projesi",
+    "il": "İstanbul",
+    "ilce": "Beykoz",
+    "gelistirici": "Hasanoğlu İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 380,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/hsn-beykoz-kentsel-donusum-projesi"
+  },
+  {
+    "ad": "Zer Kartal",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Ceylan İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 380,
+    "durum": "teslim",
+    "teslim": "Aralık 2020",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zer-kartal"
+  },
+  {
+    "ad": "Crown Deluxe",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Babacan Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 82,
+    "m2_max": 191,
+    "daire_sayisi": 380,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/crown-deluxe"
+  },
+  {
+    "ad": "GATE OF ANATOLIA",
+    "il": "İstanbul",
+    "ilce": "Sancaktepe",
+    "gelistirici": "ACK GRUP",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 377,
+    "durum": "teslim",
+    "teslim": "Mart 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/gate-of-anatolia-1"
+  },
+  {
+    "ad": "Gate of Anatolia",
+    "il": "İstanbul",
+    "ilce": "Sancaktepe",
+    "gelistirici": "Mif Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 75,
+    "m2_max": 162,
+    "daire_sayisi": 377,
+    "durum": "teslim",
+    "teslim": "Mart 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/gate-of-anatolia"
+  },
+  {
+    "ad": "Yıldızlar Tepesi",
+    "il": "Kocaeli",
+    "ilce": "İzmit",
+    "gelistirici": "KH Ekşioğlu",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 80,
+    "m2_max": 280,
+    "daire_sayisi": 373,
+    "durum": "teslim",
+    "teslim": "Mart 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/yildizlar-tepesi"
+  },
+  {
+    "ad": "Aryom Koru",
+    "il": "İzmir",
+    "ilce": "Gaziemir",
+    "gelistirici": "Aryom İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 64,
+    "m2_max": 228,
+    "daire_sayisi": 373,
+    "durum": "teslim",
+    "teslim": "Aralık 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/aryom-koru"
+  },
+  {
+    "ad": "Beyazpark Topkapı",
+    "il": "İstanbul",
+    "ilce": "Zeytinburnu",
+    "gelistirici": "Beyaz İnşaat A.Ş.",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 41,
+    "m2_max": 135,
+    "daire_sayisi": 371,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/beyazpark-topkapi"
+  },
+  {
+    "ad": "Luxera Towers",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Luxera Gayrimenkul Geliştirme İnşaat A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 369,
+    "durum": "teslim",
+    "teslim": "Ocak 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/luxera-towers"
+  },
+  {
+    "ad": "Folkart Time",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Folkart Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 55,
+    "m2_max": 255,
+    "daire_sayisi": 369,
+    "durum": "teslim",
+    "teslim": "Ağustos 2018",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/folkart-time"
+  },
+  {
+    "ad": "Marina 24",
+    "il": "İstanbul",
+    "ilce": "Büyükçekmece",
+    "gelistirici": "24 Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 367,
+    "durum": "teslim",
+    "teslim": "Temmuz 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/marina-24"
+  },
+  {
+    "ad": "Livin İzmir",
+    "il": "İzmir",
+    "ilce": "Karşıyaka",
+    "gelistirici": "Cengiz İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 49,
+    "m2_max": 193,
+    "daire_sayisi": 366,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/livin-izmir"
+  },
+  {
+    "ad": "Atabek Konutları",
+    "il": "İstanbul",
+    "ilce": "Silivri",
+    "gelistirici": "Atabek Şirketler Grubu",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 89,
+    "m2_max": 129,
+    "daire_sayisi": 366,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/atabek-konutlari"
+  },
+  {
+    "ad": "Sinpaş Boulevard Çankaya",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Sinpaş",
+    "oda_tipleri": [
+      "3+1"
+    ],
+    "m2_min": 172,
+    "m2_max": 172,
+    "daire_sayisi": 364,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sinpas-boulevard-cankaya"
+  },
+  {
+    "ad": "Deluxia Park Residence",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Teknik Yapı",
+    "oda_tipleri": [
+      "1+1"
+    ],
+    "m2_min": 60,
+    "m2_max": 60,
+    "daire_sayisi": 364,
+    "durum": "teslim",
+    "teslim": "Ocak 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/deluxia-park-residence"
+  },
+  {
+    "ad": "Park Yaşam Bornova",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "İzka İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 71,
+    "m2_max": 208,
+    "daire_sayisi": 362,
+    "durum": "teslim",
+    "teslim": "Aralık 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/park-yasam-bornova"
+  },
+  {
+    "ad": "Deniz İstanbul Sedef Konakları 2",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Keleşoğlu Holding",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 361,
+    "durum": "teslim",
+    "teslim": "Temmuz 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/deniz-istanbul-sedef-konaklari-2"
+  },
+  {
+    "ad": "DAP Teras Kule",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "DAP Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 360,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/dap-teras-kule"
+  },
+  {
+    "ad": "Dünya Şehir Kartal",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Dünya Şehir Gayrimenkul Geliştirme ve İnşaat A.Ş",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 58,
+    "m2_max": 285,
+    "daire_sayisi": 360,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/dunya-sehir-kartal"
+  },
+  {
+    "ad": "Siltaş Cadde",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Siltaş Yapı",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 85,
+    "m2_max": 155,
+    "daire_sayisi": 351,
+    "durum": "insaat",
+    "teslim": "Eylül 2026",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/siltas-cadde"
+  },
+  {
+    "ad": "Flat 24",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "24 Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 351,
+    "durum": "teslim",
+    "teslim": "Mart 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/flat-24"
+  },
+  {
+    "ad": "Empire İstanbul",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Mert Holding A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 350,
+    "durum": "teslim",
+    "teslim": "Kasım 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/empire-istanbul"
+  },
+  {
+    "ad": "Nivo Ataköy",
+    "il": "İstanbul",
+    "ilce": "Bakırköy",
+    "gelistirici": "Cathay Group",
+    "oda_tipleri": [
+      "1+1"
+    ],
+    "m2_min": 55,
+    "m2_max": 55,
+    "daire_sayisi": 350,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/nivo-atakoy"
+  },
+  {
+    "ad": "Empire Paradise",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Mert Holding A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 349,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/empire-paradise"
+  },
+  {
+    "ad": "Acıbadem Konakları",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Yiğit Group & Bayer İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1",
+      "5+1"
+    ],
+    "m2_min": 77,
+    "m2_max": 314,
+    "daire_sayisi": 348,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/acibadem-konaklari"
+  },
+  {
+    "ad": "İkon Tower",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Özmeksan İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 69,
+    "m2_max": 195,
+    "daire_sayisi": 346,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/ikon-tower"
+  },
+  {
+    "ad": "Narlı Bahçe Evleri",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Eyg Gayrimenkul",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 100,
+    "m2_max": 317,
+    "daire_sayisi": 342,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/narli-bahce-evleri"
+  },
+  {
+    "ad": "Empire Beylikdüzü",
+    "il": "İstanbul",
+    "ilce": "Esenyurt",
+    "gelistirici": "Mert Holding A.Ş.",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 340,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/empire-beylikduzu"
+  },
+  {
+    "ad": "Piyalepaşa İstanbul",
+    "il": "İstanbul",
+    "ilce": "Beyoğlu",
+    "gelistirici": "Piyalepaşa Gayrimenkul",
+    "oda_tipleri": [
+      "2+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 85,
+    "daire_sayisi": 340,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/piyalepasa-istanbul"
+  },
+  {
+    "ad": "Zeray Future Deluxe City",
+    "il": "Ankara",
+    "ilce": "Etimesgut",
+    "gelistirici": "Zeray İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 338,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/zeray-future-deluxe-city"
+  },
+  {
+    "ad": "Arte Blue",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Arte İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "4+1"
+    ],
+    "m2_min": 110,
+    "m2_max": 210,
+    "daire_sayisi": 336,
+    "durum": "teslim",
+    "teslim": "Ekim 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/arte-blue"
+  },
+  {
+    "ad": "Sapphire Hill Kurtköy",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Akpınar - Balkan - Hane Konut",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 336,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sapphire-hill-kurtkoy"
+  },
+  {
+    "ad": "Mira Kurtköy",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Beşyıldız Ekşioğlu İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 68,
+    "m2_max": 171,
+    "daire_sayisi": 335,
+    "durum": "teslim",
+    "teslim": "Haziran 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mira-kurtkoy"
+  },
+  {
+    "ad": "The Love Collection",
+    "il": "Antalya",
+    "ilce": "Aksu",
+    "gelistirici": "KA Collection",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 331,
+    "durum": "teslim",
+    "teslim": "Aralık 2025",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/the-love-collection"
+  },
+  {
+    "ad": "Metropark Sefaköy",
+    "il": "İstanbul",
+    "ilce": "Küçükçekmece",
+    "gelistirici": "Torkam İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 330,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/metropark-sefakoy"
+  },
+  {
+    "ad": "Palm Marin",
+    "il": "İstanbul",
+    "ilce": "Beylikdüzü",
+    "gelistirici": "Mutlu İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 103,
+    "m2_max": 224,
+    "daire_sayisi": 330,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/palm-marin"
+  },
+  {
+    "ad": "Altower",
+    "il": "İstanbul",
+    "ilce": "Kadıköy",
+    "gelistirici": "Altınbaş Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 75,
+    "m2_max": 151,
+    "daire_sayisi": 330,
+    "durum": "teslim",
+    "teslim": "Aralık 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/altower"
+  },
+  {
+    "ad": "Harmony Towers",
+    "il": "Bursa",
+    "ilce": "Nilüfer",
+    "gelistirici": "Eroğlu Gayrimenkul",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 109,
+    "m2_max": 257,
+    "daire_sayisi": 323,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/harmony-towers"
+  },
+  {
+    "ad": "Selenium Ataköy",
+    "il": "İstanbul",
+    "ilce": "Bakırköy",
+    "gelistirici": "Aşçıoğlu İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 97,
+    "m2_max": 216,
+    "daire_sayisi": 321,
+    "durum": "teslim",
+    "teslim": "Temmuz 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/selenium-atakoy"
+  },
+  {
+    "ad": "Mopaş Bahçe Evler",
+    "il": "Kocaeli",
+    "ilce": "Çayırova",
+    "gelistirici": "Mopaş A.Ş.",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 53,
+    "m2_max": 211,
+    "daire_sayisi": 320,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mopas-bahce-evler"
+  },
+  {
+    "ad": "Sur Yapı Bahçeyaka Ispartakule",
+    "il": "İstanbul",
+    "ilce": "Avcılar",
+    "gelistirici": "Sur Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 320,
+    "durum": "teslim",
+    "teslim": "Eylül 2021",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/sur-yapi-bahceyaka-ispartakule"
+  },
+  {
+    "ad": "The Adress Residence İstanbul",
+    "il": "İstanbul",
+    "ilce": "Üsküdar",
+    "gelistirici": "Emaar İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 320,
+    "durum": "teslim",
+    "teslim": "Kasım 2017",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/the-adress-residence-istanbul"
+  },
+  {
+    "ad": "Wanda Vista İstanbul",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Mar Yapı",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 320,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/wanda-vista-istanbul"
+  },
+  {
+    "ad": "Parlamenterler Golf Life",
+    "il": "Ankara",
+    "ilce": "Yenimahalle",
+    "gelistirici": "Portaş",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 320,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/parlamenterler-golf-life"
+  },
+  {
+    "ad": "Selective Port",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Alper İnşaat - İtibar İnşaat",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 56,
+    "m2_max": 299,
+    "daire_sayisi": 320,
+    "durum": "teslim",
+    "teslim": "Kasım 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/selective-port"
+  },
+  {
+    "ad": "TradeMark Studio Bornova",
+    "il": "İzmir",
+    "ilce": "Bornova",
+    "gelistirici": "Adnan Kılıçoğlu İnşaat - Katal İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 320,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/trademark-studio-bornova"
+  },
+  {
+    "ad": "High Hill İncek",
+    "il": "Ankara",
+    "ilce": "Gölbaşı",
+    "gelistirici": "S.S. Faras Panorama Konut Yapı Kooperatifi",
+    "oda_tipleri": [
+      "4+1"
+    ],
+    "m2_min": 225,
+    "m2_max": 225,
+    "daire_sayisi": 318,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/high-hill-incek"
+  },
+  {
+    "ad": "Heran İstanbul",
+    "il": "İstanbul",
+    "ilce": "Kartal",
+    "gelistirici": "Destek Group",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 318,
+    "durum": "teslim",
+    "teslim": "Aralık 2019",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/heran-istanbul"
+  },
+  {
+    "ad": "Mesa Panorama",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Mesa Mesken Sanayii A.Ş.",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 51,
+    "m2_max": 160,
+    "daire_sayisi": 317,
+    "durum": "teslim",
+    "teslim": "Eylül 2023",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/mesa-panorama"
+  },
+  {
+    "ad": "Triyanda Masal",
+    "il": "İzmir",
+    "ilce": "Torbalı",
+    "gelistirici": "Egesel İnşaat",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 317,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/triyanda-masal"
+  },
+  {
+    "ad": "Antasya Residence",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Ant Yapı",
+    "oda_tipleri": [
+      "1+1",
+      "2+1"
+    ],
+    "m2_min": 73,
+    "m2_max": 110,
+    "daire_sayisi": 317,
+    "durum": "teslim",
+    "teslim": "Mayıs 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/antasya-residence"
+  },
+  {
+    "ad": "Tablo Adalar",
+    "il": "İstanbul",
+    "ilce": "Maltepe",
+    "gelistirici": "Vakıf GYO",
+    "oda_tipleri": [
+      "2+1"
+    ],
+    "m2_min": 127,
+    "m2_max": 127,
+    "daire_sayisi": 316,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/tablo-adalar"
+  },
+  {
+    "ad": "Bilkent Nazende",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Rast Grup",
+    "oda_tipleri": [
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 113,
+    "m2_max": 459,
+    "daire_sayisi": 315,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/bilkent-nazende"
+  },
+  {
+    "ad": "Avrupa Konutları Yamanevler",
+    "il": "İstanbul",
+    "ilce": "Ümraniye",
+    "gelistirici": "Artaş İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 142,
+    "m2_max": 174,
+    "daire_sayisi": 312,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/avrupa-konutlari-yamanevler"
+  },
+  {
+    "ad": "VSancaktepe Merkez",
+    "il": "İstanbul",
+    "ilce": "Sancaktepe",
+    "gelistirici": "Vakıf GYO",
+    "oda_tipleri": [
+      "1+1",
+      "2+1",
+      "3+1",
+      "4+1"
+    ],
+    "m2_min": 75,
+    "m2_max": 376,
+    "daire_sayisi": 312,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/vsancaktepe-merkez"
+  },
+  {
+    "ad": "Helenium Garden",
+    "il": "İstanbul",
+    "ilce": "Pendik",
+    "gelistirici": "Başarır İnşaat",
+    "oda_tipleri": [],
+    "m2_min": 40,
+    "m2_max": 152,
+    "daire_sayisi": 312,
+    "durum": "teslim",
+    "teslim": "Mart 2016",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/helenium-garden"
+  },
+  {
+    "ad": "Adres Koru Evleri",
+    "il": "İstanbul",
+    "ilce": "Sancaktepe",
+    "gelistirici": "Bayraktar İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 85,
+    "m2_max": 115,
+    "daire_sayisi": 312,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/adres-koru-evleri"
+  },
+  {
+    "ad": "Crystal Tower Vadi",
+    "il": "Ankara",
+    "ilce": "Çankaya",
+    "gelistirici": "Aksur İnşaat",
+    "oda_tipleri": [
+      "2+1",
+      "3+1"
+    ],
+    "m2_min": 75,
+    "m2_max": 105,
+    "daire_sayisi": 311,
+    "durum": "teslim",
+    "teslim": "Aralık 2022",
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/crystal-tower-vadi"
+  },
+  {
+    "ad": "Balance Güneşli",
+    "il": "İstanbul",
+    "ilce": "Bağcılar",
+    "gelistirici": "Balance Gayrimenkul",
+    "oda_tipleri": [],
+    "m2_min": null,
+    "m2_max": null,
+    "daire_sayisi": 311,
+    "durum": null,
+    "teslim": null,
+    "kaynak_url": "https://www.emlakjet.com/projeler/proje/balance-gunesli"
+  }
+]

@@ -3,6 +3,9 @@ import { kayitlarYaz } from "@/lib/events";
 import { davetMaili, mailGonder } from "@/lib/mail";
 import { adayDavetToken } from "@/lib/davet";
 import { SEGMENT_ROL, type Segment } from "@/lib/kesif/tipler";
+import { projeSlug } from "@/lib/seo/slug";
+import { katalogIcerikUret } from "@/lib/katalog/uret";
+import katalogSeedHam from "@/data/katalog-seed.json";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
 const TAKIP_GUN = 3;
@@ -241,5 +244,91 @@ export async function kesifFollowupCalistir(): Promise<CronSonuc> {
   return {
     status: 200,
     govde: { basarili: true, hatirlatilan, soguyan, mesaj: `${hatirlatilan} adaya hatırlatma; ${soguyan} aday 'soğuk'.` },
+  };
+}
+
+/**
+ * Katalog içerik üretimi (KADEMELİ): her gün en büyük N projeye SerpAPI+Claude ile
+ * ÖZGÜN metin üretir, katalog_proje'ye upsert eder, IndexNow'a bildirir.
+ * - Kaynak: src/data/katalog-seed.json (300 büyük proje, olgusal tohum).
+ * - İçeriği zaten olan slug'lar atlanır (resume). Zamanla ~300 sayfaya büyür.
+ * - Zaman-bütçeli: 300s cron limitini aşmamak için N ve süre sınırı var.
+ * - Kredi harcar (SERP+Claude); dispatcher'da EN SON çalışır (kritik işler önce).
+ */
+const KATALOG_GUNLUK = Number(process.env.KATALOG_GUNLUK ?? 10);
+const KATALOG_BUTCE_MS = 220_000;
+
+type KatalogTohum = {
+  ad: string; il: string; ilce: string;
+  gelistirici?: string | null; mahalle?: string | null;
+  oda_tipleri?: string[]; m2_min?: number | null; m2_max?: number | null;
+  daire_sayisi?: number | null; durum?: string | null; teslim?: string | null; kaynak_url?: string | null;
+};
+
+export async function katalogUretCalistir(): Promise<CronSonuc> {
+  const supabase = createAdminClient();
+
+  const { data: mevcut } = await supabase.from("katalog_proje").select("slug").not("icerik", "is", null);
+  const iceriklu = new Set((mevcut ?? []).map((r) => r.slug as string));
+
+  const tohum = katalogSeedHam as KatalogTohum[];
+  const sirada = tohum
+    .map((p) => ({ ...p, slug: projeSlug(p.ad, p.ilce) }))
+    .filter((p) => !iceriklu.has(p.slug));
+
+  const baslangic = Date.now();
+  let uretilen = 0, hata = 0;
+  const yeniSluglar: string[] = [];
+  for (const p of sirada) {
+    if (uretilen >= KATALOG_GUNLUK) break;
+    if (Date.now() - baslangic > KATALOG_BUTCE_MS) break;
+    try {
+      const { veri, kaynaklar, kullanim } = await katalogIcerikUret(p);
+      const durum = veri.durum ?? (["lansman", "insaat", "teslim"].includes(p.durum ?? "") ? (p.durum as "lansman" | "insaat" | "teslim") : null);
+      const icerik = {
+        ad: p.ad, il: p.il, ilce: p.ilce, ...veri, kaynaklar,
+        uretim: { model: process.env.KATALOG_MODEL || "claude-sonnet-5", tarih: new Date().toISOString(), kaynak: "serpapi+claude", token: kullanim },
+      };
+      const satir = {
+        slug: p.slug, ad: p.ad, il: p.il, ilce: p.ilce,
+        mahalle: veri.mahalle ?? p.mahalle ?? null,
+        gelistirici: veri.gelistirici ?? p.gelistirici ?? null,
+        oda_tipleri: (veri.oda_tipleri?.length ? veri.oda_tipleri : p.oda_tipleri) ?? [],
+        m2_min: veri.m2_min ?? p.m2_min ?? null,
+        m2_max: veri.m2_max ?? p.m2_max ?? null,
+        daire_sayisi: veri.daire_sayisi ?? p.daire_sayisi ?? null,
+        durum, teslim: veri.teslim ?? p.teslim ?? null,
+        kaynak_url: p.kaynak_url ?? null,
+        icerik, updated_at: new Date().toISOString(),
+      };
+      const { error } = await supabase.from("katalog_proje").upsert(satir, { onConflict: "slug" });
+      if (error) { hata++; console.error("katalog upsert hatası:", p.slug, error.message); continue; }
+      uretilen++;
+      yeniSluglar.push(p.slug);
+    } catch (e) {
+      hata++;
+      console.error("katalog üretim hatası:", p.slug, (e as Error).message);
+    }
+  }
+
+  // IndexNow: yeni içerikli sayfaları Bing/Yandex'e bildir (Google sitemap tarar).
+  if (yeniSluglar.length) {
+    const KEY = process.env.INDEXNOW_KEY || "a3f5c9e1b7d2486fa3f5c9e1b7d2486f";
+    const HOST = "projedar.com";
+    try {
+      await fetch("https://api.indexnow.org/indexnow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({ host: HOST, key: KEY, keyLocation: `https://${HOST}/${KEY}.txt`, urlList: yeniSluglar.map((s) => `https://${HOST}/proje/${s}`) }),
+      });
+    } catch {
+      /* IndexNow önemsiz */
+    }
+  }
+
+  const kalan = sirada.length - uretilen;
+  return {
+    status: 200,
+    govde: { basarili: true, uretilen, hata, kalan, mesaj: `${uretilen} katalog sayfası üretildi (${hata} hata, ${kalan} sırada).` },
   };
 }
