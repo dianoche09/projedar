@@ -81,9 +81,13 @@ export default async function HavuzProjeDetay({
   for (const k of (kazancRaw ?? []) as { birim_id: string; kazanc: number | null }[]) {
     if (k.kazanc != null) kazancMap[k.birim_id] = Number(k.kazanc);
   }
-  const toplamKazanc = ((birimler ?? []) as { id: string; durum: string }[])
+  // Proje geneli: daire başına kazanç ARALIĞI (daireler farklı fiyat/komisyonla farklı
+  // kazandırır → tek toplam yanıltır). Daire özelinde net rakam listede gösterilir.
+  const musaitKazanclar = ((birimler ?? []) as { id: string; durum: string }[])
     .filter((b) => b.durum === "musait" && kazancMap[b.id] != null)
-    .reduce((s, b) => s + kazancMap[b.id], 0);
+    .map((b) => kazancMap[b.id]);
+  const kazancMin = musaitKazanclar.length ? Math.min(...musaitKazanclar) : 0;
+  const kazancMax = musaitKazanclar.length ? Math.max(...musaitKazanclar) : 0;
 
   // Üretici kurumsal profili (RLS: uretici_emlakci_select — tahsisli projenin üreticisi görünür).
   const { data: uretici } = await supabase
@@ -538,11 +542,15 @@ export default async function HavuzProjeDetay({
       {/* ===== FİYAT LİSTESİ · CANLI STOK ===== */}
       <div className="mt-8">
         <h2 className="font-display text-lg font-semibold text-ink">Fiyat Listesi · Canlı Stok</h2>
-        {toplamKazanc > 0 ? (
+        {kazancMax > 0 ? (
           <p className="mt-1.5 text-sm text-ink-soft">
-            Bu projede senin için potansiyel kazanç:{" "}
-            <span className="font-bold text-teal-d">{toplamKazanc.toLocaleString("tr-TR")} ₺</span>{" "}
-            <span className="text-xs text-gray">(müsait dairelerden, satış primin)</span>
+            Bu projede daire başına kazancın:{" "}
+            <span className="font-bold text-teal-d">
+              {kazancMin === kazancMax
+                ? `${kazancMin.toLocaleString("tr-TR")} ₺`
+                : `${kazancMin.toLocaleString("tr-TR")} – ${kazancMax.toLocaleString("tr-TR")} ₺`}
+            </span>{" "}
+            <span className="text-xs text-gray">(müsait dairelere göre, satış primin)</span>
           </p>
         ) : null}
         <div className="mt-4">
