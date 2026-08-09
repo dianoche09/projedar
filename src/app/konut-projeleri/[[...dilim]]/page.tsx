@@ -8,6 +8,7 @@ import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { tumHubProjeleri, illerOzet, ilcelerOzet, type HubProje } from "@/lib/seo/konut-hub";
 import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
+import { HubListe } from "@/components/seo/HubListe";
 import { MapPin, Building2, ChevronRight } from "lucide-react";
 
 export const revalidate = 3600;
@@ -20,12 +21,6 @@ const NAV = [
   { etiket: "Konut projeleri", href: "/konut-projeleri" },
   { etiket: "Güven", href: "/guven" },
 ];
-
-const ASAMA: Record<string, string> = {
-  planlama: "Planlama", temel: "Temel", kaba_insaat: "Kaba inşaat", ince_insaat: "İnce inşaat",
-  cevre_duzenleme: "Çevre düzenleme", tamamlandi: "Tamamlandı",
-  lansman: "Lansman", insaat: "İnşaat halinde", teslim: "Teslim edildi",
-};
 
 type Kapsam =
   | { tur: "kok" }
@@ -90,40 +85,6 @@ export async function generateMetadata({ params }: { params: Promise<{ dilim?: s
     openGraph: { title, description: desc, url: `${SITE}${yol}`, type: "website", siteName: "Projedar" },
     twitter: { card: "summary_large_image", title, description: desc },
   };
-}
-
-/** Görselli proje kartı (proje sayfalarındaki benzer-kart diliyle uyumlu). */
-function ProjeKarti({ p }: { p: HubProje }) {
-  const konum = [p.ilce, p.il].filter(Boolean).join(", ");
-  const asama = p.asama ? ASAMA[p.asama] ?? null : null;
-  const kapak = p.kapak ?? temaGorsel(p.il) ?? havuzGorsel(p.slug, "konum");
-  const govde = (
-    <>
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <Image src={kapak} alt="" fill sizes="(max-width: 1024px) 100vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-        <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.04) 0%, rgba(8,20,34,0.6) 100%)" }} />
-        {asama ? <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">{asama}</span> : null}
-        {p.kapak ? null : <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>}
-        <h3 className="absolute inset-x-3.5 bottom-3 font-display text-[15px] font-bold leading-snug tracking-tight text-white drop-shadow">{p.ad}</h3>
-      </div>
-      <div className="flex flex-1 flex-col p-4">
-        {konum ? <p className="flex items-center gap-1.5 text-[13px] text-ink-soft"><MapPin size={13} className="opacity-60" />{konum}</p> : null}
-        <div className="mt-3 flex items-center justify-between gap-2">
-          <div className="flex flex-wrap gap-1.5 font-mono text-[11px] text-ink-soft">
-            {p.odaTipleri.length ? <span className="rounded bg-[var(--color-teal-soft)] px-2 py-0.5 font-semibold text-teal-d">{p.odaTipleri.slice(0, 3).join(" · ")}</span> : null}
-            {p.m2 ? <span className="rounded border border-[var(--cizgi)] px-2 py-0.5">{p.m2}</span> : null}
-          </div>
-          {p.esik ? <ChevronRight size={16} className="flex-none text-ink-soft transition-transform group-hover:translate-x-0.5" aria-hidden /> : null}
-        </div>
-      </div>
-    </>
-  );
-  const cls = "kart kart-3d group flex h-full flex-col overflow-hidden p-0";
-  return p.esik ? (
-    <Link href={`/proje/${p.slug}`} className={cls}>{govde}</Link>
-  ) : (
-    <div className={cls}>{govde}</div>
-  );
 }
 
 function jsonLd(kapsam: Kapsam, liste: HubProje[], h1: string, yol: string) {
@@ -241,9 +202,7 @@ export default async function Page({ params }: { params: Promise<{ dilim?: strin
             {kapsam.tur === "kok" ? "Projeler" : kapsam.tur === "il" ? `${kapsam.il} projeleri` : `${kapsam.ilce} projeleri`}
           </h2>
           {projeler.length ? (
-            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {projeler.map((p) => <ProjeKarti key={`${p.kaynak}-${p.slug}`} p={p} />)}
-            </div>
+            <div className="mt-6"><HubListe projeler={projeler} ilFiltre={kapsam.tur === "kok"} /></div>
           ) : (
             <p className="mt-4 text-sm text-ink-soft">Bu bölgede henüz listelenen proje yok.</p>
           )}

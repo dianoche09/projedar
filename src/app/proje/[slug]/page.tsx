@@ -317,6 +317,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const amenityGorsel = havuzGorsel(slug, "amenity");
   const cevreGorsel = havuzGorsel(slug, "konum");
   const planlar = kaynak === "proje" ? veri.tipListe.filter((tp) => tp.plan_url) : []; // Ağda: gerçek daire/kat planları
+  const teslimEdildi = ["teslim", "tamamlandi"].includes(String(p.insaat_asamasi)); // teslim: satış/ağa-ekle CTA yok, bilgi amaçlı
 
   // ---- Zengin içerik metinleri (varsa) ----
   const t = (icerik?.metin ?? {}) as { ozet?: string | null; konum_cevre?: string | null; daire_tipleri?: string | null; ozellikler_metni?: string | null; yatirim_teslim?: string | null };
@@ -405,7 +406,9 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
           ) : null}
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            {kaynak === "proje" ? (
+            {teslimEdildi ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[13px] font-medium text-white/80 backdrop-blur-md">Teslim edildi · bilgi amaçlı</span>
+            ) : kaynak === "proje" ? (
               <>
                 <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action hover:-translate-y-0.5">Canlı stoğu gör</Link>
                 <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-white/75"><span className="size-2 rounded-full bg-green nabiz" />Canlı stok danışman panelinde</span>
@@ -637,7 +640,14 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
           <div className="komuta relative overflow-hidden rounded-[28px] p-8 shadow-[var(--golge-3)] sm:p-12">
             <div className="komuta-grid absolute inset-0" aria-hidden />
             <div className="relative text-white">
-              {kaynak === "proje" ? (
+              {teslimEdildi ? (
+                <>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 font-mono text-[12px] text-white/70 backdrop-blur-md">Teslim edildi · bilgi amaçlı</span>
+                  <h2 className="mt-4 max-w-[24ch] font-display text-3xl font-extrabold tracking-tight sm:text-[40px]">Bu proje teslim edilmiştir.</h2>
+                  <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-white/75 sm:text-base">Bu sayfa bilgi amaçlı listelenmektedir; proje künyesi, konumu ve daire yapısını içerir. Bu proje için aktif satış veya ağa ekleme işlemi bulunmaz.</p>
+                  <div className="mt-7"><Link href="/konut-projeleri" className="inline-flex min-h-[46px] items-center justify-center rounded-[13px] bg-white px-6 text-[14px] font-bold text-ink transition-all hover:-translate-y-0.5">Satıştaki projelere göz at →</Link></div>
+                </>
+              ) : kaynak === "proje" ? (
                 <>
                   <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[12.5px] font-semibold text-[#7fd4c4] backdrop-blur-md"><span className="size-2 rounded-full bg-green nabiz" />Bu proje Projedar ağında · canlı stok danışman panelinde</span>
                   <h2 className="mt-4 max-w-[24ch] font-display text-3xl font-extrabold tracking-tight sm:text-[40px]">Bu proje Projedar ağında. Stok canlı.</h2>
@@ -678,7 +688,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
                   </div>
                 </>
               )}
-              <p className="mt-7 border-t border-white/15 pt-5 text-center text-sm text-white/70"><span className="font-semibold text-[#7fd4c4]">Projedar satış komisyonuna ortak olmaz.</span> Kazancınız tamamen sizde kalır.</p>
+              {teslimEdildi ? null : <p className="mt-7 border-t border-white/15 pt-5 text-center text-sm text-white/70"><span className="font-semibold text-[#7fd4c4]">Projedar satış komisyonuna ortak olmaz.</span> Kazancınız tamamen sizde kalır.</p>}
             </div>
           </div>
         </div>
