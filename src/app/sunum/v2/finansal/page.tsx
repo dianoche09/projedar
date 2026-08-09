@@ -23,16 +23,17 @@ export const metadata: Metadata = {
 
 type Ceyrek = { ad: string; ay: string; yeniProje: number; kumProje: number; kumDanisman: number; gelir: number };
 
-// 24 aylık hedef: Ay 24 → ~100 kümülatif proje + ~10.000 danışman; aylara göre artan.
+// 24 aylık hedef: Ay 24 → ~100 kümülatif proje + ~5.000 ÖDEYEN danışman; aylara göre artan.
+// Not: danışman kurucu programda ücretsiz; ödeyen (Pro/ofis) danışman Yıl 2'de biner.
 const CEYREKLER: Ceyrek[] = [
-  { ad: "Ç1", ay: "Ay 1-3", yeniProje: 16, kumProje: 16, kumDanisman: 300, gelir: 1.2 },
-  { ad: "Ç2", ay: "Ay 4-6", yeniProje: 10, kumProje: 26, kumDanisman: 900, gelir: 2.0 },
-  { ad: "Ç3", ay: "Ay 7-9", yeniProje: 11, kumProje: 37, kumDanisman: 1800, gelir: 2.4 },
-  { ad: "Ç4", ay: "Ay 10-12", yeniProje: 11, kumProje: 48, kumDanisman: 3000, gelir: 2.6 },
-  { ad: "Ç5", ay: "Ay 13-15", yeniProje: 12, kumProje: 60, kumDanisman: 4500, gelir: 2.9 },
-  { ad: "Ç6", ay: "Ay 16-18", yeniProje: 13, kumProje: 73, kumDanisman: 6200, gelir: 3.1 },
-  { ad: "Ç7", ay: "Ay 19-21", yeniProje: 13, kumProje: 86, kumDanisman: 8000, gelir: 3.3 },
-  { ad: "Ç8", ay: "Ay 22-24", yeniProje: 14, kumProje: 100, kumDanisman: 10000, gelir: 3.5 },
+  { ad: "Ç1", ay: "Ay 1-3", yeniProje: 16, kumProje: 16, kumDanisman: 50, gelir: 1.2 },
+  { ad: "Ç2", ay: "Ay 4-6", yeniProje: 10, kumProje: 26, kumDanisman: 120, gelir: 2.0 },
+  { ad: "Ç3", ay: "Ay 7-9", yeniProje: 11, kumProje: 37, kumDanisman: 300, gelir: 2.4 },
+  { ad: "Ç4", ay: "Ay 10-12", yeniProje: 11, kumProje: 48, kumDanisman: 600, gelir: 2.6 },
+  { ad: "Ç5", ay: "Ay 13-15", yeniProje: 12, kumProje: 60, kumDanisman: 1200, gelir: 2.9 },
+  { ad: "Ç6", ay: "Ay 16-18", yeniProje: 13, kumProje: 73, kumDanisman: 2400, gelir: 3.1 },
+  { ad: "Ç7", ay: "Ay 19-21", yeniProje: 13, kumProje: 86, kumDanisman: 3600, gelir: 3.3 },
+  { ad: "Ç8", ay: "Ay 22-24", yeniProje: 14, kumProje: 100, kumDanisman: 5000, gelir: 3.5 },
 ];
 
 /** 24 aylık çeyreklik gelir bar grafiği (koyu tema). Gelir Ç1'den başlar; kurucu aşama tamamlanınca ivmelenir. */
@@ -56,21 +57,21 @@ function ProjeksiyonBar() {
             <span className="mono text-[8px] leading-tight text-[#2fd3bc]/70">
               {c.kumProje} proje
               <br />
-              {c.kumDanisman.toLocaleString("tr-TR")} dnş
+              {c.kumDanisman.toLocaleString("tr-TR")} öd. dnş
             </span>
           </div>
         ))}
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3 text-[11px]">
-        <span className="mono text-white/50">Ç1: ilk müteahhitler kurucu (ücretsiz); gelir paralı müteahhitle Ay 1&apos;den</span>
-        <span className="mono font-bold text-[#2fd3bc]">Ay 24: ~100 proje · ~10.000 danışman · run-rate ~14M ₺ · 24-ay tahsilat ~21M ₺</span>
+        <span className="mono text-white/50">Ç1: ilk müteahhitler kurucu (ücretsiz); danışman geliri Yıl 2&apos;de biner</span>
+        <span className="mono font-bold text-[#2fd3bc]">Ay 24: ~100 proje · ~5.000 ödeyen danışman · müteahhit run-rate ~14M ₺ · 24-ay tahsilat ~21M ₺</span>
       </div>
     </div>
   );
 }
 
-/* v2 · 9 slayt: kapak, gelir mimarisi, 24 aylık plan, kazanım, birim ekonomisi,
-   gider & ekip, senaryolar, yatırım, kapanış. */
+/* v2 · 10 slayt: kapak, gelir mimarisi, 24 aylık plan, kazanım, pazar payı,
+   birim ekonomisi, gider & ekip, senaryolar, yatırım, kapanış. */
 export default function FinansalV2() {
   const slides = [
     /* 1 · Kapak */
@@ -106,13 +107,25 @@ export default function FinansalV2() {
       <div className="grid gap-3 sm:grid-cols-4">
         <DevSayi deger="Ay 13" etiket="İlk paralı gelir (kurucu dönem sonrası)" renk="#2fd3bc" />
         <DevSayi deger="~100" etiket="Ay 24 kümülatif proje (ağdaki aktif proje)" renk="#2fd3bc" />
-        <DevSayi deger="~10.000" etiket="Ay 24 kümülatif danışman" renk="#2fd3bc" />
-        <DevSayi deger="~14M ₺" etiket="Ay 24 yıllık gelir run-rate (müteahhit + Pro/ofis)" />
+        <DevSayi deger="~5.000" etiket="Ay 24 ödeyen danışman (Pro/ofis)" renk="#2fd3bc" />
+        <DevSayi deger="~14M ₺" etiket="Ay 24 müteahhit run-rate (danışman geliri üstüne biner)" />
       </div>
       <p className="deck-kart deck-soft mt-4 px-5 py-4 text-[13.5px] leading-relaxed">
         İlk ~10 müteahhit kurucu programıyla ücretsiz kazanılır (referans + vaka + stok likiditesi): el-ile referans
         satışı, dijital reklam değil, karar verici tek kişi, kurulum concierge ile bizde. Paralı müteahhit akışı ve
         danışman Pro/ofis geliri Yıl 2&apos;de üst üste biner.
+      </p>
+    </Slayt>,
+
+    /* 4b · Pazar payı / penetrasyon */
+    <Slayt key="pazar-payi" genis kicker="Pazar payı" baslik="Hedef, pazarın küçük bir kesiti" alt="24 aylık hedeflerimiz toplam pazarın çok küçük bir yüzdesi: talep yaratmıyoruz, mevcut hacmin küçük bir dilimine erişiyoruz.">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart Ikon={Building2} baslik="~100 proje = pazarın ~%1-2'si" metin="Yıllık ~540.786 ilk-el konut satışı (TÜİK 2025); proje başına ~100-200 birimle ~3.000-5.000 yeni proje/yıl (tahmin). 24 ayda ~100 proje ≈ ~%1-2." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Users} baslik="~5.000 danışman = MYK'nın ~%8'i" metin="62.000+ MYK belgeli danışman; 88.572 yetki belgeli emlak işletmesi (Tic. Bak. 2025). ~5.000 ödeyen danışman ≈ MYK tabanının ~%8'i." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Layers} baslik="Pazar büyüklüğü" metin="Yıllık ilk-el konut cirosu ~2,7 trilyon ₺; TR PropTech ~1,4 milyar $ (2024). Biz bu cironun satış-dağıtım altyapısıyız." />
+      </div>
+      <p className="deck-kart deck-soft mt-4 px-5 py-4 text-[13.5px] leading-relaxed">
+        Kurumsal müteahhit evreni ~25-40K firma; ~100 proje ≈ ~50 firma ≈ ~%0,2. Penetrasyon düşük → hedef mütevazı ve ulaşılabilir; asıl kısıt talep değil, saha/concierge kapasitesi.
       </p>
     </Slayt>,
 
@@ -141,21 +154,27 @@ export default function FinansalV2() {
     /* 7 · Senaryolar */
     <Slayt key="senaryo" genis kicker="Senaryolar" baslik="Üç patika, aynı model" alt="Baz senaryo referans-satış hızına dayanır; alt ve üst bantlar kazanım hızının çarpanıdır.">
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Target} baslik="Muhafazakar" metin="Ay 24 ~60 proje · ~5.000 danışman, run-rate ~8M ₺. Yavaş kazanım; alt bant." />
-        <MaddeKart Ikon={Rocket} baslik="Baz (hedef)" metin="Ay 24 ~100 proje · ~10.000 danışman, run-rate ~14M ₺; 24 ay tahsilat ~21M ₺. Kurucu dönem sonrası referans-satış hızıyla." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={TrendingUp} baslik="Agresif" metin="Ay 24 ~150 proje · ~16.000 danışman + hızlı ofis/Pro, run-rate ~25M ₺+. Erken 2. şehir ve güçlü referans döngüsü." />
+        <MaddeKart Ikon={Target} baslik="Muhafazakar" metin="Ay 24 ~60 proje · ~2.500 ödeyen danışman, müteahhit run-rate ~8M ₺. Yavaş kazanım; alt bant." />
+        <MaddeKart Ikon={Rocket} baslik="Baz (hedef)" metin="Ay 24 ~100 proje · ~5.000 ödeyen danışman, müteahhit run-rate ~14M ₺; 24 ay tahsilat ~21M ₺. Danışman geliri Yıl 2'de biner." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={TrendingUp} baslik="Agresif" metin="Ay 24 ~150 proje · ~8.000 ödeyen danışman + hızlı ofis/Pro, müteahhit run-rate ~25M ₺+. Erken 2. şehir ve güçlü referans döngüsü." />
       </div>
     </Slayt>,
 
     /* 8 · Yatırım */
-    <Slayt key="yatirim" kicker="Yatırım" baslik="Sermaye ürüne değil, büyümeye" alt="Ürün canlı ve dış kaynaksız kuruldu; tur, 24 aylık büyümeyi ve saha kadrosunu fonlar.">
+    <Slayt key="yatirim" kicker="Yatırım" baslik="$200K / %25 — sermaye büyümeye" alt="Ürün canlı ve dış kaynaksız kuruldu; tur, 24 aylık büyümeyi ve saha kadrosunu fonlar.">
+      <div className="mb-3 grid gap-3 sm:grid-cols-3">
+        <DevSayi deger="$200K" etiket="Tur büyüklüğü · %25 hisse karşılığı" renk="#2fd3bc" />
+        <DevSayi deger="~$800K" etiket="Post-money değerleme (pre-money ~$600K)" />
+        <DevSayi deger="$150K + $50K" etiket="Şirkete sermaye (primary) + kurucu emek/yatırım karşılığı (secondary)" renk="#2fd3bc" />
+      </div>
+      <p className="deck-faint mono mb-3 text-[10.5px] uppercase tracking-wider">$150K sermaye kullanımı (aşağıdaki üç kalem):</p>
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart Ikon={Users} baslik="Saha & concierge" metin="Üretici/danışman kazanımı ve kurulum operasyonu: kazanım hızını belirleyen ana kalem." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Building2} baslik="Ürün derinleşme" metin="WhatsApp Cloud API, AI eşleştirme, ofis/Pro araçları, veri ürünleri altyapısı." />
         <MaddeKart Ikon={Banknote} baslik="Pazarlama & runway" metin="Marka, sektör etkinlikleri, 24 aylık nakit tamponu." />
       </div>
       <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        Tur büyüklüğü, değerleme ve kullanım detayı görüşmede paylaşılır. Yukarıdaki rakamlar muhafazakar bazdır ve saha verisiyle güncellenir.
+        $50K, kurucunun bugüne kadarki geliştirme ve yatırımının kısmi karşılığıdır (secondary). Rakamlar muhafazakar bazdır ve saha verisiyle güncellenir.
       </p>
     </Slayt>,
 
