@@ -3,15 +3,21 @@
 > Bu dosya, tüm proje dokümanlarının (35 sayfalık Ürün Analizi docx · Devir Dokümanı · Ekranlar.html · Marka Panosu · Özet-Brief · Rakip Analizleri · Yurtdışı Raporu · Tasarım Ruhu) damıtılmış, **bağlayıcı** özüdür.
 >
 > **KURAL:** Bundan sonraki HER geliştirme bu yapıyı **bozmadan, farklı yöne sapmadan** yapılır. Bir özellik/karar bu dosyayla çelişiyorsa **YAPILMAZ** — önce burada güncellenir, sonra inşa edilir. Yeni özellik talebinde önce "bu hangi role/panele/değişmeze ait, kapsam disiplini testini geçiyor mu?" sorulur.
+>
+> **KANONİK ÜRÜN/TEKNİK GERÇEĞİ (2026-08-09):** Kod-doğrulanmış tam envanter = `docs/projedar-intelligence/MASTER-PROJEDAR-IDENTITY-V2.md`. Sayı/özellik/claim çelişkisinde **V2 esastır** (ör. DB gerçeği: **26 tablo, 13 enum, 2 bucket**).
+>
+> **CLAIM POLİTİKASI (DEĞİŞMEZ):** "Ürün gerçeği" (koddan) ile "konumlandırma/pazarlama" ve "hukuki iddia" ayrı tutulur. Truth/AI-context'te şu absolutist ifadeler **koşulsuz kullanılmaz:** "%100 doğru", "imkânsız", "garanti", "muaf", "ilan değildir". Bunlar yalnız pazarlama yüzeyinde ve "iddia/hedef" olduğu açıkken geçebilir.
+>
+> **İKİ KANONİK CÜMLE:** Ürün gerçeği (factual) = "Projedar, birden fazla müteahhidin proje ve bağımsız bölüm stoklarını üretici-kontrollü tahsis kurallarıyla emlak danışmanlarına dağıtan B2B konut stoğu ağıdır." · Marka konumlandırması (copy) = "Projedar, yeni konut satışının dağıtım altyapısıdır."
 
 ---
 
 ## 0. Ürün özü (asla değişmez)
 **Çok-müteahhitli, üretici-kontrollü, canlı bir konut stoğu dağıtım ağı.** Üretici stoğunu/fiyatını/dağıtımını/lead'ini tek noktadan yönetir (Üretici Kokpiti = arz rampası); emlakçı yalnız kendine **tahsisli** projeleri tek canlı havuzdan görür, tek tıkla paylaşır, lead toplar. Ortada **tek doğru kaynak** durur.
 
-- **Çekirdek değer:** "Bu daire hâlâ satılık mı, fiyatı ne?" sorusuna her an %100 doğru cevap.
-- **Kazandıran konum:** "en hızlı satış yapılan ağ" / gayrimenkulün **güven protokolü** (sadece "tek doğru bilgi" giriş kapısıdır).
-- **Ne DEĞİLİZ:** tekil CRM (Novo/Yapısoft) değil · açık pazaryeri (Topli/Tapuva) değil · ilan portalı (Sahibinden) değil · 3D stüdyo (Relata) değil · broker değil. **Saf satış altyapısı — komisyona dokunmaz, sözleşmeye taraf olmaz.**
+- **Çekirdek değer:** "Bu daire hâlâ satılık mı, fiyatı ne?" için **tek referans stok kaynağı + verinin son güncellenme zamanı görünür.** (Mutlak doğruluk garanti edilmez — stok girişi manuel/Excel/concierge; tazelik sistemi bunu görünür kılar. "%100 doğru" ifadesi truth'ta kullanılmaz.)
+- **Kazandıran konum (KONUMLANDIRMA):** "en hızlı satış yapılan ağ" / gayrimenkulün güven protokolü — pazarlama iddiasıdır, ölçülmüş metrik değildir.
+- **Ne DEĞİLİZ:** tekil CRM (Novo/Yapısoft) değil · açık pazaryeri (Topli/Tapuva) değil · ilan portalı (Sahibinden) değil · 3D stüdyo (Relata) değil · broker değil. **Saf satış altyapısı — sözleşmeye taraf olmaz; müteahhidin emlak danışmanına tanımladığı satış komisyonundan Projedar pay almaz.**
 - **Asıl moat:** üretici kontrolü (granüler tahsis) + veri yerçekimi (events Faz-1'den birikir).
 
 ---
@@ -46,8 +52,9 @@ Admin minimal değildir; platformun yönetim katmanıdır (gelir modeli Bölüm 
 
 ---
 
-## 3. GELİR MODELİ (DEĞİŞMEZ ilke + fazlı kademe — docx Bölüm 19; 2026-06-18 güncellendi)
-İlke: **komisyona dokunmadan** yazılım/erişim/veriden gelir. (**KOMİSYON YOK = değişmez.**)
+## 3. GELİR MODELİ (DEĞİŞMEZ ilke + fazlı kademe — docx Bölüm 19; 2026-06-18 güncellendi; komisyon dili 2026-08-09 kanonikleşti)
+İlke: **komisyona dokunmadan** yazılım/erişim/veriden gelir.
+> **KANONİK KOMİSYON İFADESİ (DEĞİŞMEZ):** DB'de `tahsis.komisyon_tip/komisyon_deger` VAR — bu **müteahhidin emlak danışmanına tanımladığı komisyondur.** Projedar bu komisyondan **pay almaz.** Truth = *"Müteahhit tarafından emlak danışmanına tanımlanan satış komisyonundan Projedar pay almaz."* · Kısa = *"Projedar emlakçı komisyonuna ortak olmaz."* · Popup = *"Emlakçı komisyonundan Projedar pay almaz."* **KULLANMA:** çıplak "komisyon yok", "işlem komisyonundan pay almaz", truth olarak "kazancın %100'ü senin" (ofis/franchise payı olabilir → yalnız pazarlama copy'sinde).
 
 **ERKEN AŞAMA (MVP / şu an):**
 - **Ana gelir = MÜTEAHHİT ANLAŞMASI.** Müteahhitle birebir anlaşma ile para alınır (manuel/B2B deal; sabit SaaS paketi şart değil).
@@ -56,7 +63,7 @@ Admin minimal değildir; platformun yönetim katmanıdır (gelir modeli Bölüm 
 **SONRAKİ AŞAMA (değer kanıtlanınca — "o zaman bakarız"):**
 - **Emlakçı premium** — emlakçıya özel hizmetler (Paylaşım Stüdyosu / içerik vb.).
 - **Ofis / Franchise abonelik (SaaS)** — bütçe sahibi + ekip yönetimi + havuz erişimi.
-- **İşlem ücreti** — satış-başı küçük pay (opsiyonel, iz zinciri olgunlaşınca).
+- **İşlem ücreti** — satış-başı küçük pay (**KARARA BAĞLI DEĞİL** — henüz karar verilmedi; master truth'a ve dış/pazarlama iletişimine GİRMEZ; yalnız iz zinciri olgunlaşınca değerlendirilir).
 
 > Not: `abonelik_paketi` / `abonelik` şema tabloları **sonraki-faz iskeleti** olarak durur; erken aşamada müteahhit anlaşması Admin'de manuel yönetilir.
 
