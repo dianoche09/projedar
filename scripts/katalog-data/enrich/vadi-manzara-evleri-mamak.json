@@ -1,0 +1,71 @@
+{
+  "ad": "Vadi Manzara Evleri",
+  "il": "Ankara",
+  "ilce": "Mamak",
+  "mahalle": "Akşemsettin Mahallesi, Mamak",
+  "gelistirici": "Can Duran İnşaat",
+  "durum": "insaat",
+  "oda_tipleri": [
+    "1+1",
+    "2+1",
+    "3+1",
+    "4+1"
+  ],
+  "m2_min": 50,
+  "m2_max": 150,
+  "daire_sayisi": 3000,
+  "blok_sayisi": 40,
+  "ozellikler": [
+    "Kapalı yüzme havuzu",
+    "Spor salonu",
+    "Hamam",
+    "Sauna",
+    "7/24 güvenlik",
+    "Kapalı otopark",
+    "Çocuk parkları"
+  ],
+  "otopark": "Kapalı otopark",
+  "manzara": "Vadi/orman manzarası",
+  "cevre_noktalar": [
+    "Nata Vega AVM (bitişik konum)",
+    "Toplu ulaşım durakları (yürüme mesafesinde)",
+    "Dikimevi Metro İstasyonu (yakın çevre)"
+  ],
+  "metin": {
+    "ozet": "Vadi Manzara Evleri, Ankara Mamak'ın Doğukent bölgesinde Can Duran İnşaat tarafından geliştirilen büyük ölçekli bir konut projesidir. Proje, birden fazla etaptan oluşan bir yerleşim niteliğinde olup toplam blok ve daire sayısı bakımından bölgenin dikkat çeken gelişmelerinden biri olarak konumlanır. Etaplar farklı dönemlerde satışa ve teslimata konu olmuş; bazı bölümlerde oturum başlamış, bazı etaplarda inşaat süreci devam etmektedir. Proje genelinde 1+1'den 4+1'e kadar çeşitli daire tipleri sunulmakta, alıcıya farklı bütçe ve ihtiyaç düzeylerine göre seçenek sağlanmaktadır. Sosyal donatı çeşitliliği ve konumun Nata Vega AVM'ye yakınlığı, projeyi hem yaşam hem de ulaşım açısından öne çıkaran unsurlar arasında sayılabilir.",
+    "konum_cevre": "Proje, Ankara Mamak ilçesine bağlı Akşemsettin Mahallesi'nde, Doğukent olarak bilinen bölgede yer almaktadır. Vadi Manzara Evleri'nin en belirgin konum avantajı, Nata Vega AVM'ye bitişik denilebilecek yakınlıkta bulunmasıdır; bu sayede günlük alışveriş ve sosyal ihtiyaçlar kısa yürüme mesafesinde karşılanabilmektedir. Bölgede toplu ulaşım ağı gelişmiş durumda olup, çeşitli otobüs ve minibüs hatlarına ait duraklar projeye yakın konumdadır. Dikimevi Metro İstasyonu'na olan uzaklık ise şehir merkezine erişimde alternatif bir güzergah sunmaktadır. Bölgenin vadi topografyası, bazı bloklarda vadi veya orman cepheli manzara imkanı doğurmuş, bu da projenin adında da yansımasını bulmuştur. Doğukent'in gelişmekte olan bir semt olması, sosyal ve ticari donatıların zaman içinde artmasına da katkı sağlamaktadır.",
+    "daire_tipleri": "Vadi Manzara Evleri'nde 1+1, 2+1, 3+1 ve 4+1 olmak üzere geniş bir daire tipi yelpazesi bulunmaktadır. Konut büyüklükleri etaplara göre değişmekte olup, net ve brüt alanlar yaklaşık 50 metrekareden 150 metrekareye kadar uzanan bir aralıkta konumlanmaktadır. Örneğin bazı 3+1 dairelerde brüt 150, net 130 metrekare civarında kullanım alanı sunulduğu görülmektedir. Bloklar genellikle çok katlı yapılar olarak inşa edilmiş, bazı bölümlerde 15 kata varan yükseklikte binalar yer almaktadır. Daire iç donanımında asansör, balkon, vestiyer ve duşakabin gibi unsurlara rastlanmakta, bu da konfor seviyesini artıran detaylar arasında değerlendirilebilir.",
+    "ozellikler_metni": "Proje kapsamında sakinlere sunulan sosyal donatılar arasında kapalı yüzme havuzu, spor salonu, hamam ve sauna gibi wellness odaklı alanlar bulunmaktadır. Güvenlik tarafında 7/24 hizmet veren bir sistem söz konusudur ve araç sahipleri için kapalı otopark imkanı sağlanmaktadır. Çocuklu aileler için çeşitli çocuk parkları da site içi yaşam alanlarına dahil edilmiştir. Bu donatı çeşitliliği, projeyi sadece konut değil aynı zamanda sosyal yaşam sunan bir yerleşim olarak konumlandırmaktadır. Etaplar arasında donatı kapsamı farklılık gösterebileceğinden, ilgilenen alıcıların hangi etapta hangi imkanların yer aldığını ayrıca sorgulaması faydalı olacaktır.",
+    "yatirim_teslim": "Vadi Manzara Evleri çok etaplı bir proje olduğundan teslim durumu etaplara göre değişkenlik göstermektedir; bazı bölümlerde oturum çoktan başlamış, bazı etaplarda inşaat halen sürmektedir. Bu yapı, projeyi hem hazır teslim arayan hem de inşaat aşamasındaki fiyat avantajlarından yararlanmak isteyen alıcılar için farklı seçenekler sunar hale getirmektedir. Bölgenin gelişmekte olan bir semt olması ve AVM, ulaşım gibi altyapı unsurlarının olgunlaşmış olması, orta ve uzun vadede değer artışı beklentisi oluşturabilecek unsurlar arasında sayılabilir. Güncel proje detayları, teslim tarihleri, etap bazlı stok durumu ve fiyat bilgileri zaman içinde değişebileceğinden, doğrudan geliştirici Can Duran İnşaat'tan teyit alınması önerilir."
+  },
+  "kaynaklar": [
+    "https://www.vadimanzaraevleri.com/",
+    "https://www.sahibinden.com/satilik-daire/ankara-mamak-bogazici-aksemsettin-mh./vadi-manzara-evleri-4-etap?a103651=1139073",
+    "https://www.hepsiemlak.com/mamak-aksemsettin-satilik/daire-site-ici",
+    "https://www.vadimanzarapremium.com/",
+    "https://moovitapp.com/index/tr/toplu_ta%C5%9F%C4%B1ma-30352_Vadi_Manzara_Evleri-Ankara-stop_1192791-1723",
+    "https://www.hepsiemlak.com/ankara-mamak-aksemsettin-satilik/daire/154576-804",
+    "https://maps.apple.com/place?place-id=IE35D176805070F78",
+    "https://com.com.tr/ankara/mamak/tarihi-yapi/vadi-manzara-evleri-2-etap-e-blok"
+  ],
+  "uretim": {
+    "model": "claude-sonnet-5",
+    "tarih": "2026-08-09T18:37:55.155Z",
+    "kaynak": "serpapi+claude",
+    "token": {
+      "input_tokens": 4807,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 2421,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    }
+  }
+}

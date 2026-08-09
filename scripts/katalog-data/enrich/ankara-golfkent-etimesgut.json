@@ -1,0 +1,77 @@
+{
+  "ad": "Ankara Golfkent",
+  "il": "Ankara",
+  "ilce": "Etimesgut",
+  "blok_sayisi": 11,
+  "cevre_noktalar": [
+    "Eskişehir Yolu bağlantısı",
+    "Toplu taşıma/otobüs hatları (528, 581 vb.)",
+    "Metro istasyonlarına ulaşım (aktarmalı)",
+    "AVM ve spor tesisleri",
+    "Golf sahası çevresi"
+  ],
+  "daire_sayisi": 2640,
+  "durum": "teslim",
+  "gelistirici": "TURYAP",
+  "m2_max": 300,
+  "m2_min": 50,
+  "mahalle": "Turkuaz Mahallesi, Etimesgut",
+  "manzara": "Golf sahası ve yeşil alan manzarası",
+  "metin": {
+    "ozet": "Ankara Golfkent, TURYAP tarafından Etimesgut'ta Turkuaz Mahallesi sınırlarında geliştirilen büyük ölçekli bir konut projesidir. Yaklaşık 1.260.000 metrekarelik arazi üzerinde üç etap halinde planlanan projede toplam 2.640 bağımsız birim bulunuyor. Proje, kendi içinde sosyal donatı dengesini sağlayan, yaya erişimine öncelik veren bir yaşam alanı olarak tasarlanmış. Golf sahası, yürüyüş parkurları, yapay dereler ve yüzme havuzları gibi ortak kullanım alanlarıyla doğa ile iç içe bir yerleşim sunuyor. Proje tamamlanmış ve teslim edilmiş durumda, dolayısıyla hemen teslim seçeneği mevcut. Farklı etaplarda inşa edilen bloklarda 1+1'den 5+1'e kadar geniş bir daire tipi yelpazesi yer alıyor.",
+    "konum_cevre": "Ankara Golfkent, Etimesgut ilçesine bağlı Turkuaz Mahallesi'nde, Eskişehir Yolu aksı üzerinde konumlanıyor. Bölge, başkentin batı yönünde gelişim gösteren bir aks üzerinde yer aldığından ulaşım altyapısı zaman içinde güçlenmiştir. Proje çevresinde çeşitli otobüs hatları bulunuyor; Ümitköy Metro İstasyonu ve Koru Metro İstasyonu-Organize Sanayi Bölgesi hattı gibi güzergahlarla bağlantı sağlanabiliyor. Ankara'nın raylı sistem ağına (metro, Ankaray) aktarmalı ulaşım mümkün. Çevredeki AVM'ler ve spor tesisleri günlük ihtiyaçlara yakın erişim sunuyor. Proje kendi bünyesinde geniş bir golf sahası, göl ve dere peyzajı barındırdığından, konut alanı aynı zamanda geniş bir yeşil doku ile çevrili. Bu özellikleriyle proje, şehir merkezine bağlantısını korurken doğa ile iç içe bir yaşam alanı sunmayı hedeflemiş.",
+    "daire_tipleri": "Ankara Golfkent'te 1+1, 2+1, 3+1, 4+1 ve 5+1 olmak üzere geniş bir daire tipi seçeneği bulunuyor. Metrekare aralığı projenin farklı etap ve bloklarına göre değişkenlik gösteriyor; ilan bilgilerine göre daire büyüklükleri yaklaşık 50 ile 300 metrekare arasında değişmekte, bazı kaynaklarda üst sınırın daha da genişlediği görülüyor. Örneğin 2+1 tipte 110-116 metrekare, 3+1 tipte 155-162 metrekare civarında birimler mevcut. 4+1 tipte brüt alanın 220 metrekareyi aştığı planlar da bulunuyor. Bazı 2+1 daireler, balkon kapatma uygulamasıyla 3+1'e dönüştürülebiliyor. Daireler genel olarak çok cepheli ve balkonlu planlarla sunuluyor.",
+    "ozellikler_metni": "Proje, 450 dönüme yayılan uluslararası standartlarda 9 delikli bir golf sahasına ev sahipliği yapıyor. Bunun yanında olimpik ve yarı olimpik yüzme havuzları, yürüyüş ve koşu parkurları, yapay dereler ve göletler gibi peyzaj unsurları site içinde yer alıyor. Doğa dostu mimari anlayışla tasarlanan projede ısı yalıtımı uygulamaları ve açık otopark alanları da bulunuyor. Sosyal donatı alanları arasında spor tesisleri ve alışveriş imkanları da sayılabiliyor. Proje, kendi kendine yetebilen bir yerleşim modeli hedefiyle planlanmış; bu sayede günlük yaşam ihtiyaçlarının çoğu site içinden veya yakın çevreden karşılanabiliyor.",
+    "yatirim_teslim": "Ankara Golfkent projesi tamamlanmış ve teslim edilmiş durumda olduğundan, hemen teslim alınabilecek konut seçenekleri sunuyor. Bazı etaplarda teslimlerin farklı tarihlerde tamamlandığı, ikinci etap gibi bölümlerde inşaat sürecinin daha sonraki bir tarihte sonuçlandığı görülüyor. Proje, geniş arazi büyüklüğü ve toplam konut sayısıyla Ankara'nın batı aksındaki büyük ölçekli yerleşimlerden biri olarak öne çıkıyor. Yatırım açısından değerlendirilecek alıcılar için proje tamamlanmış olması ve satış oranının yüksek seyretmesi bir avantaj olarak görülebilir. Güncel proje ve fiyat verilerinin doğrudan geliştiriciden teyit edilmesi önerilir."
+  },
+  "oda_tipleri": [
+    "1+1",
+    "2+1",
+    "3+1",
+    "4+1",
+    "5+1"
+  ],
+  "otopark": "Açık otopark",
+  "ozellikler": [
+    "9 delikli golf sahası",
+    "Olimpik ve yarı olimpik yüzme havuzları",
+    "Yürüyüş ve koşu parkurları",
+    "Yapay dere ve göletler",
+    "Isı yalıtımı",
+    "Açık otopark",
+    "Doğa dostu mimari",
+    "Spor tesisleri"
+  ],
+  "proje_alani_m2": 1260000,
+  "teslim": "Teslim edildi",
+  "kaynaklar": [
+    "https://www.sahibinden.com/satilik-daire/ankara-etimesgut-merkez-turkuaz-mh./golfkent-sitesi?a103651=1139073",
+    "https://www.hepsiemlak.com/proje/ankara-etimesgut/ankara-golfkent-turyap-projesi-253",
+    "https://www.endeksa.com/tr/projects/ankara-golfkent/6951",
+    "https://www.emlakjet.com/projeler/proje/ankara-golfkent",
+    "https://eksisozluk.com/ankara-golfkent--3952186",
+    "https://www.projedefirsat.com/ankara-golfkent",
+    "https://www.portas.com.tr/proje/golf-life",
+    "https://emlakproject.com/gundem/baskentte-modern-yasamin-adi-ankara-golfkent/41356"
+  ],
+  "uretim": {
+    "model": "claude-sonnet-5",
+    "tarih": "2026-08-09T18:40:04.131Z",
+    "kaynak": "serpapi+claude",
+    "token": {
+      "input_tokens": 6228,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 2525,
+      "output_tokens_details": {
+        "thinking_tokens": 0
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    }
+  }
+}
