@@ -6,7 +6,7 @@ import { Logo } from "@/components/Logo";
  * Amaç: proje aramasıyla gelen trafiği "Projedar nedir + neden katıl" ile karşılayıp
  * emlakçı/müteahhit kaydına dönüştürmek. Koyu komuta zemini + canlı sinyal + güçlü CTA.
  */
-const CIPLER = ["Komisyon yok", "Canlı stok", "Tek panelden yönetim"];
+const CIPLER = ["Projedar komisyon almaz", "Canlı stok", "Tek panelden yönetim"];
 
 export function ProjedarBanner() {
   return (
@@ -46,7 +46,7 @@ export function ProjedarBanner() {
             <Link href="/kayit?rol=uretici&kaynak=banner" className="inline-flex min-h-[44px] flex-1 items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-4 text-[13.5px] font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20">
               Müteahhitsen projeni ekle
             </Link>
-            <Link href="/" className="whitespace-nowrap px-2 text-[13px] font-semibold text-[#7fd4c4] transition-colors hover:text-white">Nedir?</Link>
+            <Link href="/nedir" className="whitespace-nowrap px-2 text-[13px] font-semibold text-[#7fd4c4] transition-colors hover:text-white">Nedir?</Link>
           </div>
         </div>
       </div>

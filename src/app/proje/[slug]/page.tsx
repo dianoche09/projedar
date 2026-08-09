@@ -365,7 +365,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <Image src={gorsel} alt="" fill priority sizes="100vw" className="scale-105 object-cover object-[50%_45%]" aria-hidden />
         <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,16,28,0.55) 0%, rgba(6,16,28,0.12) 30%, rgba(6,16,28,0.5) 64%, rgba(6,16,28,0.94) 100%)" }} />
         <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 20% 32%, rgba(30,155,138,0.22) 0%, transparent 60%)" }} />
-        <span className="absolute bottom-4 right-4 z-10 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] text-white/70">{kapak ? `Görsel: ${p.kapak_kaynak ?? "kaynak"}` : "Temsili görsel"}</span>
+        {kapak ? null : <span className="absolute bottom-4 right-4 z-10 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] text-white/70">Temsili görsel</span>}
         <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-14 pt-24 sm:px-6">
           <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-white/60">
             <Link href="/" className="hover:text-white">Ana sayfa</Link>

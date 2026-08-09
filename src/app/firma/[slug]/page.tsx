@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
-import { B2BCta } from "@/components/seo/B2BCta";
-import { firmaGetir, type FirmaProje } from "@/lib/seo/firma";
+import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
+import { firmaGetir, type FirmaProje, type Firma } from "@/lib/seo/firma";
+import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
-import { MapPin, CalendarClock, ChevronRight, ShieldCheck, Building2, Globe } from "lucide-react";
+import { MapPin, ChevronRight, ShieldCheck, Building2, Globe } from "lucide-react";
 
 export const revalidate = 3600;
 
 const SITE = "https://projedar.com";
-
 const NAV = [
   { etiket: "Müteahhitler için", href: "/muteahhit" },
   { etiket: "Danışmanlar için", href: "/emlakci" },
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!firma) return {};
   const konum = [firma.profil.ilce, firma.profil.il].filter(Boolean).join(", ");
   const title = `${firma.ad} projeleri${konum ? ` · ${konum}` : ""} | Projedar`;
-  const desc = `${firma.ad} müteahhit firmasının yeni konut projeleri: konum, daire tipleri ve inşaat aşamasıyla. Projedar tahsisli canlı proje satış ağı.`;
+  const desc = `${firma.ad} müteahhit/geliştirici firmasının yeni konut projeleri: konum, daire tipleri ve inşaat aşamasıyla. Projedar tahsisli canlı proje satış ağı.`;
   return {
     title,
     description: desc,
@@ -35,33 +36,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+/** Görselli proje kartı (proje/hub kart diliyle uyumlu). */
 function ProjeKarti({ p }: { p: FirmaProje }) {
   const konum = [p.ilce, p.il].filter(Boolean).join(", ");
   const asama = p.asama ? ASAMA_ETIKET[p.asama as InsaatAsama] ?? null : null;
+  const kapak = p.kapak ?? temaGorsel(p.il) ?? havuzGorsel(p.slug, "konum");
   return (
-    <Link href={`/proje/${p.slug}`} className="kart block p-4 transition-transform hover:-translate-y-0.5 sm:p-5">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="font-display text-[15px] font-bold leading-snug tracking-tight text-ink">{p.ad}</h3>
-        <ChevronRight size={16} className="mt-0.5 flex-none text-teal" aria-hidden />
+    <Link href={`/proje/${p.slug}`} className="kart kart-3d group flex h-full flex-col overflow-hidden p-0">
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <Image src={kapak} alt="" fill sizes="(max-width: 1024px) 100vw, 380px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+        <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.04) 0%, rgba(8,20,34,0.58) 100%)" }} />
+        {asama ? <span className="absolute left-3 top-3 rounded-md bg-black/45 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur-sm">{asama}</span> : null}
+        {p.kapak ? null : <span className="absolute right-3 top-3 rounded bg-black/35 px-1.5 py-0.5 text-[9px] text-white/70 backdrop-blur-sm">Temsili</span>}
+        <h3 className="absolute inset-x-3.5 bottom-3 font-display text-[15px] font-bold leading-snug tracking-tight text-white drop-shadow">{p.ad}</h3>
       </div>
-      {konum ? <p className="mt-1.5 flex items-center gap-1.5 text-[13px] text-ink-soft"><MapPin size={13} className="opacity-60" />{konum}</p> : null}
-      <div className="mt-3 flex flex-wrap gap-1.5 font-mono text-[11px] text-ink-soft">
-        {asama ? <span className="inline-flex items-center gap-1 rounded-full border border-[var(--cizgi)] bg-white/60 px-2.5 py-1"><CalendarClock size={11} className="text-teal" />{asama}</span> : null}
-        {p.odaTipleri.length ? <span className="rounded-full border border-[var(--cizgi)] bg-white/60 px-2.5 py-1">{p.odaTipleri.slice(0, 4).join(" · ")}</span> : null}
+      <div className="flex flex-1 flex-col p-4">
+        <p className="flex items-center gap-1.5 text-[13px] text-ink-soft"><MapPin size={13} className="opacity-60" />{konum || "—"}</p>
+        <div className="mt-3 flex items-center justify-between gap-2">
+          {p.odaTipleri.length ? <div className="flex flex-wrap gap-1">{p.odaTipleri.slice(0, 4).map((o) => <span key={o} className="rounded bg-[var(--color-teal-soft)] px-2 py-0.5 font-mono text-[10.5px] font-semibold text-teal-d">{o}</span>)}</div> : <span />}
+          <ChevronRight size={16} className="flex-none text-ink-soft transition-transform group-hover:translate-x-0.5" />
+        </div>
       </div>
     </Link>
   );
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const firma = await firmaGetir(slug);
-  if (!firma) notFound();
-
-  const konum = [firma.profil.ilce, firma.profil.il].filter(Boolean).join(", ");
-  const kurulus = firma.profil.kurulus_yili ? String(firma.profil.kurulus_yili) : null;
-
-  const jsonLd = {
+function jsonLd(firma: Firma) {
+  return {
     "@context": "https://schema.org",
     "@graph": [
       {
@@ -77,11 +78,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         name: `${firma.ad} projeleri`,
         url: `${SITE}/firma/${firma.slug}`,
         isPartOf: { "@type": "WebSite", name: "Projedar", url: SITE },
-        mainEntity: {
-          "@type": "ItemList",
-          numberOfItems: firma.projeler.length,
-          itemListElement: firma.projeler.slice(0, 50).map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p.ad, url: `${SITE}/proje/${p.slug}` })),
-        },
+        mainEntity: { "@type": "ItemList", numberOfItems: firma.projeler.length, itemListElement: firma.projeler.slice(0, 50).map((p, i) => ({ "@type": "ListItem", position: i + 1, name: p.ad, url: `${SITE}/proje/${p.slug}` })) },
       },
       {
         "@type": "BreadcrumbList",
@@ -93,62 +90,81 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       },
     ],
   };
+}
+
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const firma = await firmaGetir(slug);
+  if (!firma) notFound();
+
+  const kurulus = firma.profil.kurulus_yili ? String(firma.profil.kurulus_yili) : null;
+  const heroGorsel = firma.projeler.find((p) => p.kapak)?.kapak ?? temaGorsel(firma.profil.il ?? firma.projeler[0]?.il) ?? havuzGorsel(firma.slug, "konum");
+  const iller = [...new Set(firma.projeler.map((p) => p.il).filter(Boolean))] as string[];
 
   return (
     <main className="flex min-h-screen flex-col bg-paper text-ink">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(firma)) }} />
 
-      <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
-        <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
-          <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
-          <div className="hidden items-center gap-1 md:flex">
-            {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="rounded-lg px-3.5 py-2 text-sm font-medium text-ink-soft transition-colors duration-200 hover:bg-[rgba(16,36,58,0.05)] hover:text-ink">{n.etiket}</Link>
-            ))}
-          </div>
-          <div className="flex items-center gap-2.5">
-            <span className="hidden sm:block"><Link href="/login" className="btn-ghost">Giriş yap</Link></span>
-            <Link href="/kayit" className="btn-action whitespace-nowrap hover:-translate-y-0.5">Ücretsiz başla</Link>
-          </div>
-        </nav>
-      </header>
+      <ProjeTopbar />
 
-      <ProjedarBanner />
-
-      <section className="relative border-b border-[var(--cizgi)] bg-white/55">
-        <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
-          <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-ink-soft">
-            <Link href="/" className="hover:text-ink">Ana sayfa</Link>
+      {/* ============ KOYU GÖRSELLİ HERO ============ */}
+      <section className="relative isolate flex min-h-[52svh] flex-col justify-end overflow-hidden bg-ink text-white">
+        <Image src={heroGorsel} alt="" fill priority sizes="100vw" className="scale-105 object-cover object-[50%_45%]" aria-hidden />
+        <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,16,28,0.55) 0%, rgba(6,16,28,0.2) 34%, rgba(6,16,28,0.92) 100%)" }} />
+        <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(60% 70% at 18% 30%, rgba(30,155,138,0.24) 0%, transparent 62%)" }} />
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-12 pt-24 sm:px-6">
+          <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-white/60">
+            <Link href="/" className="hover:text-white">Ana sayfa</Link>
             <ChevronRight size={12} className="opacity-50" />
-            <Link href="/konut-projeleri" className="hover:text-ink">Konut projeleri</Link>
+            <Link href="/konut-projeleri" className="hover:text-white">Konut projeleri</Link>
             <ChevronRight size={12} className="opacity-50" />
-            <span className="text-ink">{firma.ad}</span>
+            <span className="text-white/90">{firma.ad}</span>
           </nav>
-
-          <div className="mt-6 flex flex-wrap items-center gap-2 text-[11.5px] font-semibold">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--cizgi)] bg-white/70 px-3 py-1 text-ink-soft"><Building2 size={13} className="text-teal" /> Müteahhit firma</span>
-            {firma.dogrulanmis ? <span className="inline-flex items-center gap-1.5 rounded-full bg-teal/10 px-3 py-1 text-teal"><ShieldCheck size={13} /> Doğrulanmış</span> : null}
+          <div className="mt-8 flex flex-wrap items-center gap-2 text-[11.5px] font-semibold">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-white/85 backdrop-blur-md"><Building2 size={13} className="text-[#7fd4c4]" /> {firma.kaynak === "proje" ? "Müteahhit firma" : "Proje geliştiricisi"}</span>
+            {firma.dogrulanmis ? <span className="inline-flex items-center gap-1.5 rounded-full border border-[#2fd3bc]/50 bg-[#2fd3bc]/14 px-3 py-1 text-[#eafff6]"><ShieldCheck size={13} /> Doğrulanmış</span> : null}
           </div>
-          <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">{firma.ad}</h1>
-          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[12.5px] text-ink-soft">
-            {konum ? <span className="inline-flex items-center gap-1.5"><MapPin size={13} className="opacity-70" />{konum}</span> : null}
-            {kurulus ? <span>Kuruluş: {kurulus}</span> : null}
-            {firma.profil.web ? <a href={firma.profil.web} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1.5 text-teal hover:underline"><Globe size={13} /> Resmi site ↗</a> : null}
+          <h1 className="mt-4 font-display text-4xl font-extrabold tracking-tight [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] sm:text-5xl">{firma.ad}</h1>
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12.5px] text-white/80">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 backdrop-blur-md"><span className="size-1.5 rounded-full bg-[#2fd3bc]" />{firma.projeler.length} proje</span>
+            {iller.length ? <span className="inline-flex items-center gap-1.5"><MapPin size={13} className="opacity-70" />{iller.slice(0, 4).join(", ")}</span> : null}
+            {kurulus ? <span>Kuruluş {kurulus}</span> : null}
+            {firma.profil.web ? <a href={firma.profil.web} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1.5 text-[#7fd4c4] hover:text-white"><Globe size={13} /> Resmi site ↗</a> : null}
           </div>
-          {firma.profil.hakkinda ? <p className="mt-5 max-w-2xl text-pretty text-[15px] leading-relaxed text-ink-soft">{firma.profil.hakkinda}</p> : null}
-          <p className="mt-4 font-mono text-xs text-[var(--ink-faint)]">{firma.projeler.length} proje</p>
+          {firma.profil.hakkinda ? <p className="mt-5 max-w-2xl text-pretty text-[15px] leading-relaxed text-white/80">{firma.profil.hakkinda}</p> : null}
         </div>
       </section>
 
+      <ProjedarBanner />
+
       <div className="mx-auto w-full max-w-6xl flex-1 px-5 py-12 sm:px-6 sm:py-16">
         <h2 className="font-display text-xl font-bold tracking-tight text-ink">{firma.ad} projeleri</h2>
-        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {firma.projeler.map((p) => <ProjeKarti key={p.slug} p={p} />)}
         </div>
       </div>
 
-      <div className="border-t border-[var(--cizgi)]">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14 sm:px-6"><B2BCta /></div>
+      {/* Firma CTA (ağda: yönet · katalog: ağa aç) */}
+      <div className="border-t border-[var(--cizgi)] px-5 py-16 sm:px-6">
+        <div className="mx-auto max-w-4xl">
+          <div className="komuta relative overflow-hidden rounded-[26px] p-8 text-center sm:p-12">
+            <div className="komuta-grid absolute inset-0" aria-hidden />
+            <div className="relative text-white">
+              <h2 className="mx-auto max-w-[24ch] font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                {firma.kaynak === "proje" ? `${firma.ad} projelerini Projedar ağında satın.` : `${firma.ad} firmasının yetkilisi misiniz?`}
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl text-pretty text-[15px] leading-relaxed text-white/75">
+                {firma.kaynak === "proje"
+                  ? "Gayrimenkul danışmanıysan ücretsiz katıl, bu firmanın tahsisli projelerini canlı stoktan sat. Projedar satış komisyonuna ortak olmaz."
+                  : "Projelerinizi Projedar'ın tahsisli canlı satış ağına açın; stoğunuzu ve fiyatınızı tek panelden yönetin, yalnız yetkili danışmanlar satsın."}
+              </p>
+              <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link href="/kayit?rol=uretici&kaynak=firma-seo" className="inline-flex min-h-[48px] items-center justify-center rounded-[13px] bg-white px-7 text-[15px] font-bold text-ink transition-all hover:-translate-y-0.5">Projeni ağa ekle</Link>
+                <Link href="/kayit?rol=emlakci&kaynak=firma-seo" className="inline-flex min-h-[48px] items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-7 text-[15px] font-semibold text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/15">Danışman olarak katıl</Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <footer className="border-t border-[var(--cizgi)] bg-white/55">
