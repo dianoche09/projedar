@@ -5,20 +5,18 @@ import { notFound, redirect } from "next/navigation";
 import { after } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
-import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
-import { OzellikGoster } from "@/components/OzellikGoster";
+import { okuOzellikler } from "@/lib/ozellikler";
 import { Logo } from "@/components/Logo";
-import { B2BCta } from "@/components/seo/B2BCta";
 import { ProjedarBanner } from "@/components/seo/ProjedarBanner";
 import { DavetPopup } from "@/components/seo/DavetPopup";
-import { ProjeZenginIcerik, type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
+import { type ProjeIcerikVeri } from "@/components/seo/ProjeZenginIcerik";
+import { AgdaGuvenSeridi } from "@/components/seo/ProjeGorsel";
 import { ASAMA_ETIKET, type InsaatAsama } from "@/lib/types";
 import { projeIcerikBloklari } from "@/lib/seo/proje-icerik";
 import { projeIcerikSkoru, ICERIK_ESIGI, type ProjeIcerikGirdi } from "@/lib/seo/icerik-esigi";
 import { slugify } from "@/lib/seo/slug";
 import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
-import { AgdaGuvenSeridi, GorselBant } from "@/components/seo/ProjeGorsel";
-import { MapPin, Building2, CalendarClock, TrendingUp, Layers, ShieldCheck, ChevronRight } from "lucide-react";
+import { MapPin, Building2, CalendarClock, TrendingUp, Layers, ShieldCheck, ChevronRight, Ruler, TreePine, Compass } from "lucide-react";
 
 export const revalidate = 3600; // proje meta yavaş değişir; canlı stok public'te yok
 
@@ -191,7 +189,6 @@ async function veriGetir(slug: string): Promise<Veri | { forward: string } | nul
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-/** İki-mod SSS (arama niyeti + Projedar B2B). Görünür accordion + FAQPage JSON-LD tek kaynak. */
 /** Slug'dan deterministik varyant indeksi (thin-content: sabit cevaplar sayfadan sayfaya çeşitlensin). */
 function varyant(slug: string, n: number): number {
   let h = 0;
@@ -199,6 +196,7 @@ function varyant(slug: string, n: number): number {
   return h % n;
 }
 
+/** İki-mod SSS (arama niyeti + Projedar B2B). Görünür accordion + FAQPage JSON-LD tek kaynak. */
 function sssListesi(args: { ad: string; konum: string; gelistirici: string | null; teslim: string | null; odaTipleri: string[]; m2Band: string | null; kaynak: Kaynak; slug: string }): { s: string; c: string }[] {
   const { ad, konum, gelistirici, teslim, odaTipleri, m2Band, kaynak, slug } = args;
   const list: { s: string; c: string }[] = [];
@@ -279,17 +277,6 @@ function jsonLd(p: any, u: any, birimSayisi: number, odaTipleri: string[], sss: 
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
-/** Bölüm başlığı ritmi (landing deseni: teal etiket + büyük başlık + açıklama). */
-function BolumBaslik({ etiket, baslik, alt }: { etiket: string; baslik: string; alt?: string }) {
-  return (
-    <div className="mx-auto max-w-2xl text-center">
-      <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">{etiket}</p>
-      <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{baslik}</h2>
-      {alt ? <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">{alt}</p> : null}
-    </div>
-  );
-}
-
 export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const veri = await veriGetir(slug);
@@ -326,11 +313,46 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   const ilerleme = Number(p.ilerleme_yuzde ?? 0);
   const teslim = veri.teslimMetin;
   const kiraGetirisi = p.kira_getirisi_pct != null ? Number(p.kira_getirisi_pct) : null;
+
+  // ---- Görsel havuzu (temsili; il-bazlı hero + slug-hash rotasyon) ----
   const heroCity = temaGorsel(p.il);
   const gorsel = heroCity ?? havuzGorsel(slug, "konum"); // her sayfada hero görseli olsun
+  const detayGorsel = havuzGorsel(slug, "detay");
+  const interiorGorsel = havuzGorsel(slug, "ic");
   const amenityGorsel = havuzGorsel(slug, "amenity");
   const cevreGorsel = havuzGorsel(slug, "konum");
-  const showCevreBant = Boolean(heroCity); // hero şehir görseli ise ayrı çevre bandı; fallback konum'sa tekrarı önle
+
+  // ---- Zengin içerik metinleri (varsa) ----
+  const t = (icerik?.metin ?? {}) as { ozet?: string | null; konum_cevre?: string | null; daire_tipleri?: string | null; ozellikler_metni?: string | null; yatirim_teslim?: string | null };
+  const ozetMetin = (t.ozet ?? (aciklama || [bloklar.giris, bloklar.surec].filter(Boolean).join(" "))) as string;
+  const konumMetin = t.konum_cevre ?? null;
+  const daireMetin = t.daire_tipleri ?? null;
+  const donatiMetin = t.ozellikler_metni ?? null;
+  const yatirimMetin = t.yatirim_teslim ?? null;
+  const dagilim = (icerik?.ekstra?.daire_dagilimi ?? null) as Record<string, number> | null;
+  const dagilimMax = dagilim ? Math.max(...Object.values(dagilim)) : 0;
+  const cevre = (Array.isArray(icerik?.cevre_noktalar) ? icerik!.cevre_noktalar : []) as string[];
+  const donatiListe = (
+    Array.isArray(icerik?.ozellikler) && (icerik!.ozellikler as string[]).length
+      ? (icerik!.ozellikler as string[])
+      : (Object.values(ozellikler).flat().filter(Boolean) as string[])
+  ).slice(0, 14);
+
+  // ---- Hero istatistikleri + koyu rakam bandı ----
+  const heroStats: [string, string][] = [];
+  if (veri.birimSayisi > 0) heroStats.push([String(veri.birimSayisi), "konut birimi"]);
+  if (odaTipleri.length) heroStats.push([odaTipleri.join(" · "), "daire tipleri"]);
+  if (m2Band) heroStats.push([m2Band, "büyüklük"]);
+  heroStats.push([teslim ?? asama, teslim ? "teslim" : "durum"]);
+
+  const projeAlani = icerik?.proje_alani_m2 ?? (typeof kunye.arsa_alani === "number" ? (kunye.arsa_alani as number) : null);
+  const figuresBand: [string, string][] = [];
+  if (projeAlani) figuresBand.push([`${projeAlani.toLocaleString("tr-TR")} m²`, "proje alanı"]);
+  if (icerik?.blok_sayisi) figuresBand.push([String(icerik.blok_sayisi), "blok / kule"]);
+  if (veri.birimSayisi > 0) figuresBand.push([String(veri.birimSayisi), "konut birimi"]);
+  if (m2Band) figuresBand.push([m2Band, "daire büyüklüğü"]);
+  const showFigures = Boolean(projeAlani || icerik?.blok_sayisi) && figuresBand.length >= 2;
+
   const up = (u?.profil ?? {}) as Record<string, string | null>;
 
   after(() => kayitYaz({ tip: "goruntuleme", ...(kaynak === "proje" ? { projeId: p.id } : {}), payload: { kaynak: kaynak === "proje" ? "proje_seo" : "katalog_seo", slug } }));
@@ -339,7 +361,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
     <main className="flex min-h-screen flex-col bg-paper text-ink">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(p, u, veri.birimSayisi, odaTipleri, sss)) }} />
 
-      {/* ============ HEADER ============ */}
+      {/* ============ HEADER (global) ============ */}
       <header className="sticky top-0 z-50 border-b border-[var(--cizgi)] bg-white/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-6">
           <Link href="/" aria-label="Projedar ana sayfa" className="shrink-0"><Logo size={26} wordmark /></Link>
@@ -355,19 +377,16 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </nav>
       </header>
 
-      {/* ============ PROJEDAR TANITIM BANNER (her sayfanın başı) ============ */}
       <ProjedarBanner />
 
-      {/* ============ HERO ============ */}
-      <section className="relative isolate overflow-hidden bg-ink text-white">
-        {gorsel ? (
-          <Image src={gorsel} alt="" fill priority sizes="100vw" className="object-cover object-[50%_45%]" aria-hidden />
-        ) : null}
-        <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.72) 0%, rgba(8,20,34,0.45) 42%, rgba(8,20,34,0.86) 100%)" }} />
-        <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(58% 68% at 22% 38%, rgba(30,155,138,0.28) 0%, transparent 62%)" }} />
-        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-16 pt-8 sm:px-6 lg:pb-20">
-          {/* Breadcrumb (görünür) */}
-          <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-white/55">
+      {/* ============ SİNEMATİK HERO ============ */}
+      <section className="relative isolate flex min-h-[86svh] flex-col justify-end overflow-hidden bg-ink text-white">
+        <Image src={gorsel} alt="" fill priority sizes="100vw" className="scale-105 object-cover object-[50%_45%]" aria-hidden />
+        <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,16,28,0.55) 0%, rgba(6,16,28,0.12) 30%, rgba(6,16,28,0.5) 64%, rgba(6,16,28,0.94) 100%)" }} />
+        <div aria-hidden className="absolute inset-0" style={{ background: "radial-gradient(70% 60% at 20% 32%, rgba(30,155,138,0.22) 0%, transparent 60%)" }} />
+        <span className="absolute bottom-4 right-4 z-10 rounded-md border border-white/15 bg-black/40 px-2.5 py-1 text-[10px] text-white/70">Temsili görsel</span>
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-14 pt-24 sm:px-6">
+          <nav aria-label="Konum yolu" className="flex flex-wrap items-center gap-1.5 font-mono text-[11.5px] text-white/60">
             <Link href="/" className="hover:text-white">Ana sayfa</Link>
             <ChevronRight size={12} className="opacity-50" />
             <Link href="/konut-projeleri" className="hover:text-white">Konut projeleri</Link>
@@ -375,22 +394,33 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
             {p.ilce ? (<><ChevronRight size={12} className="opacity-50" /><Link href={`/konut-projeleri/${slugify(p.il)}/${slugify(p.ilce)}`} className="hover:text-white">{p.ilce}</Link></>) : null}
           </nav>
 
-          <div className="mt-10 max-w-3xl">
-            <div className="flex flex-wrap items-center gap-2 text-[11.5px] font-semibold">
-              <span className="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-[#7fd4c4]"><span className="size-2 rounded-full bg-green nabiz" />{bloklar.etiket}</span>
-              {dogrulanmis ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/90"><ShieldCheck size={13} strokeWidth={2} /> Doğrulanmış müteahhit</span> : null}
-              {gorsel ? <span className="rounded-full bg-black/25 px-3 py-1 text-white/50">Temsili görsel</span> : null}
-            </div>
-            <h1 className="mt-5 font-display text-[38px] font-extrabold leading-[1.04] tracking-tight sm:text-[54px]">{p.ad}</h1>
-            {konum ? <p className="mt-3 flex items-center gap-1.5 text-lg text-white/75"><MapPin size={17} className="opacity-70" />{konum}</p> : null}
-            <div className="mt-6 flex flex-wrap gap-2 font-mono text-[12.5px]">
-              {veri.birimSayisi > 0 ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm"><Layers size={13} className="text-[#7fd4c4]" />{veri.birimSayisi} bağımsız bölüm</span> : null}
-              {odaTipleri.length ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm">{odaTipleri.join(" · ")}</span> : null}
-              {m2Band ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm">{m2Band}</span> : null}
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-white/18 bg-[rgba(8,20,34,0.45)] px-3 py-1.5 text-white/85 backdrop-blur-sm"><CalendarClock size={13} className="text-[#7fd4c4]" />{asama}</span>
-              {p.proje_web ? <a href={p.proje_web} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1.5 rounded-full border border-teal/40 bg-teal/10 px-3 py-1.5 font-semibold text-[#7fd4c4] transition-colors hover:bg-teal/20">Resmi proje sitesi ↗</a> : null}
-            </div>
+          <div className="mt-8 flex flex-wrap items-center gap-2 text-[11.5px] font-semibold">
+            {kaynak === "proje" ? (
+              <span className="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-3 py-1 text-[#7fd4c4]"><span className="size-2 rounded-full bg-green nabiz" />Projedar ağında · canlı stok</span>
+            ) : (
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/80">Konut projesi dosyası</span>
+            )}
+            {dogrulanmis ? <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/90"><ShieldCheck size={13} strokeWidth={2} /> Doğrulanmış müteahhit</span> : null}
           </div>
+
+          <h1 className="mt-5 font-display font-black leading-[0.94] tracking-tight [text-shadow:0_2px_30px_rgba(0,0,0,0.35)] text-[clamp(2.6rem,8vw,5rem)]">{p.ad}</h1>
+
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-white/80">
+            {konum ? <span className="inline-flex items-center gap-1.5 text-lg"><MapPin size={17} className="opacity-70" />{konum}</span> : null}
+            {u?.ad ? <span className="inline-flex items-center gap-1.5 text-sm text-white/65"><Building2 size={14} className="opacity-70" />{u.ad}</span> : null}
+            {kiraGetirisi != null ? <span className="inline-flex items-center gap-1.5 text-sm text-[#7fd4c4]"><TrendingUp size={14} />%{kiraGetirisi} kira getirisi</span> : null}
+          </div>
+
+          {heroStats.length ? (
+            <div className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+              {heroStats.slice(0, 4).map(([v, l]) => (
+                <div key={l} className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+                  <p className="font-mono text-xl font-semibold tracking-tight sm:text-2xl">{v}</p>
+                  <p className="mt-1 text-[11.5px] text-white/70">{l}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
       </section>
 
@@ -399,127 +429,171 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         <AgdaGuvenSeridi dogrulanmis={dogrulanmis} asama={asama} ilerleme={ilerleme} teslim={teslim} />
       ) : null}
 
-      {/* ============ ZENGİN İÇERİK (icerik varsa) / NEDİR (yoksa varyant) ============ */}
-      {icerik ? (
-        <ProjeZenginIcerik icerik={icerik} ad={p.ad} />
-      ) : (
-        <section className="relative px-5 py-16 sm:px-6 sm:py-20">
-          <div className="mx-auto w-full max-w-3xl">
-            <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
-              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">{p.ad} hakkında</p>
-              <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.giris}</p>
-              <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{bloklar.surec}</p>
+      {/* ============ GENEL BAKIŞ (editoryal split + görsel) ============ */}
+      <section className="px-5 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.3fr_.9fr]">
+          <div>
+            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Genel bakış</p>
+            <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{p.ad}</h2>
+            <p className="mt-5 text-pretty text-[15.5px] leading-relaxed text-ink-soft sm:text-base">{ozetMetin}</p>
+            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-ink-soft">
+              {veri.birimSayisi > 0 ? <span className="inline-flex items-center gap-1.5"><Layers size={13} className="text-teal-d" />{veri.birimSayisi} bağımsız bölüm</span> : null}
+              {teslim ? <span className="inline-flex items-center gap-1.5"><CalendarClock size={13} className="text-teal-d" />Teslim {teslim}</span> : null}
+              {p.proje_web ? <a href={p.proje_web} target="_blank" rel="noopener nofollow" className="inline-flex items-center gap-1 font-semibold text-teal-d hover:underline">Resmi proje sitesi ↗</a> : null}
             </div>
           </div>
-        </section>
-      )}
-
-      {/* ============ YAŞAM (görsel bant, temsili) ============ */}
-      <GorselBant src={amenityGorsel} alt={`${p.ad} sosyal yaşam alanları (temsili görsel)`} etiket="Yaşam" baslik="Sosyal alanlar ve yaşam kalitesi" />
-
-      {/* ============ KÜNYE + İNŞAAT (yalnız icerik yoksa; icerik varsa zengin bölümler kapsar) ============ */}
-      {!icerik ? (
-      <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
-        <div className="mx-auto w-full max-w-6xl">
-          <div><BolumBaslik etiket="Proje bilgisi" baslik="Künye, inşaat ve daire yapısı" alt="Fiyat ve canlı stok bu sayfada gösterilmez; onlar yalnız ağdaki yetkili danışmanlara açılır." /></div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {/* İnşaat durumu */}
-            <div className="lg:col-span-1">
-              <div className="kart kart-3d flex h-full flex-col p-6">
-                <h3 className="font-display text-base font-bold text-ink">İnşaat durumu</h3>
-                {kaynak === "proje" ? (
-                  <>
-                    <div className="mt-4 flex items-center justify-between text-sm"><span className="font-medium text-ink">{asama}</span><span className="font-mono font-semibold text-teal-d">%{ilerleme}</span></div>
-                    <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-hair"><div className="h-full bg-teal transition-all" style={{ width: `${ilerleme}%` }} /></div>
-                  </>
-                ) : (
-                  <div className="mt-4 text-sm"><span className="font-medium text-ink">{asama}</span></div>
-                )}
-                {teslim ? <p className="mt-4 flex items-center gap-1.5 font-mono text-xs text-ink-soft"><CalendarClock size={13} /> Tahmini teslim: <span className="text-ink">{teslim}</span></p> : null}
-                {kiraGetirisi != null ? <p className="mt-2 flex items-center gap-1.5 font-mono text-xs text-teal-d"><TrendingUp size={13} /> %{kiraGetirisi} yıllık kira getirisi</p> : null}
-              </div>
-            </div>
-            {/* Künye */}
-            <div className="lg:col-span-2">
-              <div className="kart kart-3d h-full p-6">
-                <h3 className="font-display text-base font-bold text-ink">Proje künyesi</h3>
-                {kunyeSatir.length ? (
-                  <div className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
-                    {kunyeSatir.map(([k, v]) => (<div key={k} className="rounded-xl bg-paper p-3"><p className="text-xs text-ink-soft">{k}</p><p className="mt-1 font-semibold text-ink">{v}</p></div>))}
-                    {odaTipleri.length ? <div className="rounded-xl bg-paper p-3"><p className="text-xs text-ink-soft">Daire tipleri</p><p className="mt-1 font-semibold text-ink">{odaTipleri.join(", ")}</p></div> : null}
-                    {m2Band ? <div className="rounded-xl bg-paper p-3"><p className="text-xs text-ink-soft">Net alan</p><p className="mt-1 font-semibold text-ink">{m2Band}</p></div> : null}
-                  </div>
-                ) : <p className="mt-4 text-sm text-ink-soft">Künye bilgisi ağa eklendikçe zenginleşir.</p>}
-              </div>
-            </div>
-          </div>
+          <figure className="relative overflow-hidden rounded-[22px] shadow-[var(--golge-3)]">
+            <Image src={detayGorsel} alt={`${p.ad} (temsili görsel)`} width={900} height={1200} sizes="(max-width: 1024px) 100vw, 420px" className="aspect-[3/4] w-full object-cover" />
+            <span className="absolute bottom-2.5 left-2.5 rounded-md bg-black/45 px-2 py-1 text-[10px] text-white/80">Temsili görsel</span>
+          </figure>
         </div>
       </section>
-      ) : null}
 
-      {/* ============ PROJE HAKKINDA (kunye.aciklama, varsa) ============ */}
-      {aciklama ? (
-        <section className="px-5 py-16 sm:px-6">
-          <div className="mx-auto w-full max-w-3xl">
-            <div className="kart p-7 sm:p-9">
-              <h2 className="font-display text-xl font-bold tracking-tight text-ink">Proje hakkında</h2>
-              <p className="mt-4 whitespace-pre-line text-pretty text-[15px] leading-relaxed text-ink-soft">{aciklama}</p>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {/* ============ ÖZELLİKLER (varsa) ============ */}
-      {ozellikVarMi(ozellikler) || malzeme.length ? (
-        <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
-          <div className="mx-auto w-full max-w-5xl">
-            <div><BolumBaslik etiket="Olanaklar" baslik="Proje özellikleri" /></div>
-            <div className="mt-10">
-              <div className="kart p-7">
-                <OzellikGoster ozellikler={ozellikler} />
-                {malzeme.length ? (
-                  <div className="mt-6 border-t border-hair pt-5">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-faint)]">Yapı malzemeleri ve standartlar</p>
-                    <div className="mt-3 flex flex-wrap gap-1.5">{malzeme.map((m) => <span key={m} className="rounded-md bg-paper px-2.5 py-1 text-xs text-ink">{m}</span>)}</div>
+      {/* ============ KOYU RAKAM BANDI (zengin veri varsa) ============ */}
+      {showFigures ? (
+        <section className="px-5 sm:px-6">
+          <div className="mx-auto max-w-6xl">
+            <div className="komuta relative overflow-hidden rounded-[26px] px-7 py-10 sm:px-10">
+              <div className="komuta-grid absolute inset-0" aria-hidden />
+              <div className="relative grid grid-cols-2 gap-6 sm:grid-cols-4">
+                {figuresBand.slice(0, 4).map(([v, l]) => (
+                  <div key={l}>
+                    <p className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-[40px]">{v}</p>
+                    <p className="mt-2 text-[12.5px] text-white/65">{l}</p>
                   </div>
-                ) : null}
+                ))}
               </div>
             </div>
           </div>
         </section>
       ) : null}
 
-      {/* ============ KONUM (OSM, varsa) ============ */}
-      {p.lat != null && p.lng != null ? (
-        <section className="px-5 py-16 sm:px-6 sm:py-20">
-          <div className="mx-auto w-full max-w-5xl">
-            <div><BolumBaslik etiket="Konum" baslik={konum || "Proje konumu"} /></div>
-            <div className="mt-10">
-              <div className="kart overflow-hidden p-0">
+      {/* ============ DAİRE TİPLERİ (split + iç mekan görseli) ============ */}
+      {daireMetin || odaTipleri.length || dagilim ? (
+        <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[.95fr_1.05fr]">
+            <figure className="relative overflow-hidden rounded-[22px] shadow-[var(--golge-3)]">
+              <Image src={interiorGorsel} alt={`${p.ad} iç mekan (temsili görsel)`} width={1200} height={900} sizes="(max-width: 1024px) 100vw, 560px" className="aspect-[4/3] w-full object-cover" />
+              <span className="absolute bottom-2.5 left-2.5 rounded-md bg-black/45 px-2 py-1 text-[10px] text-white/80">Temsili görsel</span>
+            </figure>
+            <div>
+              <div className="flex items-center gap-2"><Ruler size={18} className="text-teal-d" /><p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Daire tipleri</p></div>
+              <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">Daire tipleri ve büyüklükler</h2>
+              {odaTipleri.length ? (
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {odaTipleri.map((o) => <span key={o} className="rounded-lg bg-[var(--color-teal-soft)] px-3 py-1.5 font-mono text-[13px] font-semibold text-teal-d">{o}</span>)}
+                  {m2Band ? <span className="rounded-lg bg-paper px-3 py-1.5 font-mono text-[13px] text-ink-soft">{m2Band}</span> : null}
+                </div>
+              ) : null}
+              {dagilim && dagilimMax > 0 ? (
+                <div className="mt-5 grid max-w-md gap-3">
+                  {Object.entries(dagilim).map(([tip, adet]) => (
+                    <div key={tip} className="grid grid-cols-[56px_1fr_auto] items-center gap-3">
+                      <span className="font-mono text-sm font-semibold text-ink">{tip}</span>
+                      <span className="h-2.5 overflow-hidden rounded-full bg-hair"><span className="block h-full rounded-full bg-gradient-to-r from-teal to-green" style={{ width: `${Math.round((adet / dagilimMax) * 100)}%` }} /></span>
+                      <span className="font-mono text-xs text-ink-soft">{adet.toLocaleString("tr-TR")} adet</span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {daireMetin ? <p className="mt-5 text-pretty text-[15px] leading-relaxed text-ink-soft">{daireMetin}</p> : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============ YAŞAM & SOSYAL DONATI (görsel bant + içerik) ============ */}
+      <section className="px-5 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="relative overflow-hidden rounded-[26px] shadow-[var(--golge-3)]">
+            <Image src={amenityGorsel} alt={`${p.ad} sosyal yaşam alanları (temsili görsel)`} width={1600} height={900} sizes="(max-width: 1200px) 100vw, 1152px" className="h-[300px] w-full object-cover sm:h-[400px]" />
+            <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(6,16,28,0.12) 0%, rgba(6,16,28,0.2) 42%, rgba(6,16,28,0.85) 100%)" }} />
+            <span className="absolute right-3 top-3 rounded-md bg-black/45 px-2 py-1 text-[10px] text-white/80">Temsili görsel</span>
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#7fd4c4]">Yaşam</p>
+              <h2 className="mt-2 max-w-2xl font-display text-2xl font-extrabold tracking-tight text-white sm:text-[32px]">Sosyal alanlar ve yaşam kalitesi</h2>
+            </div>
+          </div>
+          {donatiMetin || donatiListe.length || malzeme.length ? (
+            <div className="mt-6">
+              {donatiMetin ? <p className="max-w-3xl text-pretty text-[15px] leading-relaxed text-ink-soft">{donatiMetin}</p> : null}
+              {donatiListe.length ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {donatiListe.map((d) => (
+                    <span key={d} className="inline-flex items-center gap-1.5 rounded-lg border border-hair bg-paper px-3 py-1.5 text-[13px] text-ink"><TreePine size={13} className="text-teal-d" />{d}</span>
+                  ))}
+                </div>
+              ) : null}
+              {malzeme.length ? (
+                <div className="mt-5 border-t border-hair pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--ink-faint)]">Yapı malzemeleri ve standartlar</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">{malzeme.map((m) => <span key={m} className="rounded-md bg-paper px-2.5 py-1 text-xs text-ink">{m}</span>)}</div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      {/* ============ KONUM & ÇEVRE (görsel bant + metin + POI + OSM) ============ */}
+      {konum ? (
+        <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
+          <div className="mx-auto max-w-6xl">
+            <div className="relative overflow-hidden rounded-[26px] shadow-[var(--golge-3)]">
+              <Image src={cevreGorsel} alt={`${p.ad} çevresi ve ulaşım (temsili görsel)`} width={1600} height={900} sizes="(max-width: 1200px) 100vw, 1152px" className="h-[300px] w-full object-cover sm:h-[400px]" />
+              <div aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(6,16,28,0.88) 0%, rgba(6,16,28,0.5) 48%, rgba(6,16,28,0.22) 100%)" }} />
+              <span className="absolute right-3 top-3 rounded-md bg-black/45 px-2 py-1 text-[10px] text-white/80">Temsili görsel</span>
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[#7fd4c4]">Konum &amp; çevre</p>
+                <h2 className="mt-2 max-w-2xl font-display text-2xl font-extrabold tracking-tight text-white sm:text-[32px]">{konum}</h2>
+              </div>
+            </div>
+            {konumMetin ? <p className="mt-6 max-w-3xl text-pretty text-[15px] leading-relaxed text-ink-soft">{konumMetin}</p> : null}
+            {cevre.length ? (
+              <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                {cevre.map((c) => (
+                  <div key={c} className="flex items-start gap-2 rounded-xl bg-paper px-3.5 py-2.5 text-sm text-ink"><Compass size={15} className="mt-0.5 flex-none text-teal-d" /><span>{c}</span></div>
+                ))}
+              </div>
+            ) : null}
+            {p.lat != null && p.lng != null ? (
+              <div className="mt-6 kart overflow-hidden p-0">
                 <iframe src={`https://www.openstreetmap.org/export/embed.html?bbox=${Number(p.lng) - 0.008}%2C${Number(p.lat) - 0.005}%2C${Number(p.lng) + 0.008}%2C${Number(p.lat) + 0.005}&layer=mapnik&marker=${p.lat}%2C${p.lng}`} title={`${p.ad} konumu`} className="h-72 w-full" loading="lazy" />
               </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {/* ============ YATIRIM & TESLİM (icerik varsa) ============ */}
+      {yatirimMetin ? (
+        <section className="px-5 py-16 sm:px-6">
+          <div className="mx-auto max-w-3xl">
+            <div className="kart signal-top p-7 sm:p-9" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+              <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Yatırım &amp; teslim</p>
+              <p className="mt-3 text-pretty text-[15px] leading-relaxed text-ink-soft sm:text-base">{yatirimMetin}</p>
             </div>
           </div>
         </section>
       ) : null}
 
-      {/* ============ ÇEVRE & ULAŞIM (görsel bant, temsili; hero şehir görseli ise) ============ */}
-      {showCevreBant && konum ? (
-        <GorselBant src={cevreGorsel} alt={`${p.ad} çevresi ve ulaşım (temsili görsel)`} etiket="Çevre & ulaşım" baslik={konum} />
+      {/* ============ KÜNYE (imar/parsel, varsa) ============ */}
+      {kunyeSatir.length ? (
+        <section className="px-5 py-14 sm:px-6">
+          <div className="mx-auto max-w-5xl">
+            <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">Künye</p>
+            <h2 className="mt-3 font-display text-2xl font-extrabold tracking-tight text-ink">Proje künyesi</h2>
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {kunyeSatir.map(([k, v]) => (<div key={k} className="kart p-4"><p className="text-xs text-ink-soft">{k}</p><p className="mt-1 font-display font-bold text-ink">{v}</p></div>))}
+            </div>
+          </div>
+        </section>
       ) : null}
-
-      {/* ============ B2B SÜREÇ (danışman / müteahhit) ============ */}
-      <section className="border-y border-[var(--cizgi)] bg-white/55 px-5 py-16 sm:px-6 sm:py-20">
-        <div className="mx-auto w-full max-w-6xl">
-          <div><BolumBaslik etiket="Projedar ağı" baslik="Danışman mısın, müteahhit mi?" alt="Projedar, yeni konut projeleri için tahsisli canlı satış ağıdır. Fiyat ve stok yalnız yetkili danışmanlara açılır; bu sayfa son kullanıcıya ilan sunmaz." /></div>
-          <div className="mt-12"><B2BCta /></div>
-        </div>
-      </section>
 
       {/* ============ MÜTEAHHİT KARTI (varsa) ============ */}
       {u?.ad ? (
-        <section className="px-5 py-16 sm:px-6">
-          <div className="mx-auto w-full max-w-3xl">
+        <section className="px-5 py-14 sm:px-6">
+          <div className="mx-auto max-w-3xl">
             <div className="kart signal-top p-7" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
               <div className="flex items-start gap-4">
                 <span className="inline-grid size-12 flex-none place-items-center rounded-2xl bg-[rgba(19,49,75,0.08)]" aria-hidden><Building2 size={24} strokeWidth={1.6} color="var(--color-navy)" /></span>
@@ -537,6 +611,56 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
           </div>
         </section>
       ) : null}
+
+      {/* ============ İKİ-MOD CTA (Ağda: canlı stok/havuz · SEO: davet) ============ */}
+      <section className="px-5 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="relative overflow-hidden rounded-[26px] border border-[var(--cizgi)] bg-gradient-to-b from-white to-[#f6f9fc] p-8 shadow-[var(--golge-3)] sm:p-11">
+            {kaynak === "proje" ? (
+              <>
+                <span className="inline-flex items-center gap-2 rounded-full border border-teal/25 bg-[var(--color-teal-soft)] px-3 py-1.5 text-[12.5px] font-semibold text-teal-d"><span className="size-2 rounded-full bg-green nabiz" />Bu proje Projedar ağında · canlı stok danışman panelinde</span>
+                <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bu proje Projedar ağında. Stok canlı.</h2>
+                <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft sm:text-base">Tahsisli birimleri canlı fiyat ve durumla görür, müşterine tek dokunuşla paylaşırsın. Müsaitlik ve fiyat tek doğru kaynaktan anlık güncellenir; birim sayıları herkese açık gösterilmez.</p>
+                <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı</p>
+                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Canlı stoğu havuzda aç</h3>
+                    <p className="mt-2 text-sm text-ink-soft">Sana tahsisli birimleri havuz panelinde canlı gör, müşterine paylaş.</p>
+                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-action mt-4 hover:-translate-y-0.5">Havuzda aç</Link>
+                  </div>
+                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-amber)" }}>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Henüz tahsisli değil misin?</p>
+                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Tahsis talep et</h3>
+                    <p className="mt-2 text-sm text-ink-soft">Geliştiriciden bu projeye tahsis iste; onaylanınca canlı stok açılır.</p>
+                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-ghost mt-4">Tahsis talep et</Link>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-2 rounded-full border border-[var(--cizgi-2)] bg-paper px-3 py-1.5 font-mono text-[12px] text-ink-soft">Bu proje henüz Projedar ağında değil</span>
+                <h2 className="mt-4 max-w-[22ch] font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">Bu projeyi Projedar ağında sat.</h2>
+                <p className="mt-3 max-w-[62ch] text-pretty text-[15.5px] leading-relaxed text-ink-soft sm:text-base">Projedar açık pazar değil: erişim geliştirici kontrollü tahsisle yönetilen nötr bir ağdır. Proje ağa girdiğinde tahsisli birimler tek canlı havuzdan yönetilir.</p>
+                <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Geliştirici / müteahhit</p>
+                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu proje senin mi? Ağa ekle</h3>
+                    <p className="mt-2 text-sm text-ink-soft">Stoğunu, fiyatını ve dağıtımını tek noktadan yönet; yalnız yetkili danışmanlar satsın.</p>
+                    <Link href="/kayit?rol=uretici&kaynak=proje-seo" className="btn-primary mt-4 hover:-translate-y-0.5">Projeni ağa ekle</Link>
+                  </div>
+                  <div className="kart signal-top p-6" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
+                    <p className="font-mono text-[11px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Gayrimenkul danışmanı</p>
+                    <h3 className="mt-2 font-display text-lg font-bold text-ink">Bu projeyle ilgileniyor musun?</h3>
+                    <p className="mt-2 text-sm text-ink-soft">Kaydol; proje ağa girince tahsis önceliği ve canlı stok erişimi sende olsun.</p>
+                    <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="btn-ghost mt-4">Danışman olarak kaydol</Link>
+                  </div>
+                </div>
+              </>
+            )}
+            <p className="mt-6 border-t border-hair pt-5 text-center text-sm text-[var(--ink-faint)]"><span className="font-semibold text-teal-d">Projedar satış komisyonuna ortak olmaz.</span> Kazancınız tamamen sizde kalır.</p>
+          </div>
+        </div>
+      </section>
 
       {/* ============ İLGİLİ PROJELER (internal linking) ============ */}
       {veri.benzer.length ? (
@@ -576,27 +700,7 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
         </div>
       </section>
 
-      {/* ============ KAPANIŞ CTA (komuta) ============ */}
-      <section className="px-5 pb-24 pt-4 sm:px-6">
-        <div>
-          <div className="komuta relative mx-auto w-full max-w-5xl overflow-hidden rounded-[26px]">
-            <div className="komuta-grid absolute inset-0" aria-hidden />
-            <div className="relative px-6 py-14 text-center sm:px-10">
-              <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs">
-                {["Komisyon yok", "Tahsisli görünürlük", "Canlı fiyat"].map((t) => (<span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>))}
-              </div>
-              <h2 className="mx-auto max-w-2xl font-display text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Yeni konut projeleri, doğru satış ağında.</h2>
-              <p className="mx-auto mt-4 max-w-xl text-pretty text-base leading-relaxed text-white/75">Gayrimenkul danışmanıysan Projedar ağına ücretsiz katıl, yeni projeleri sat, komisyonun tamamı sende; müteahhitsen projeni ekle, tek panelden yönet.</p>
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link href="/kayit?rol=emlakci&kaynak=proje-seo" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] bg-white px-8 text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--golge-3)] sm:min-h-[44px] sm:w-auto">Danışman olarak katıl</Link>
-                <Link href="/kayit?rol=uretici&kaynak=proje-seo" className="inline-flex min-h-[52px] w-full items-center justify-center rounded-[13px] border border-white/25 bg-white/10 px-8 text-[15px] font-semibold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/15 sm:min-h-[44px] sm:w-auto">Projeni ağa ekle</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ FOOTER ============ */}
+      {/* ============ FOOTER (global) ============ */}
       <footer className="mt-auto border-t border-[var(--cizgi)] bg-white/60 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-6 px-5 py-12 sm:px-6 md:flex-row md:justify-between">
           <div className="flex flex-col items-center gap-3 md:items-start">
@@ -617,5 +721,16 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
       <DavetPopup slug={slug} projeAd={p.ad} />
     </main>
+  );
+}
+
+/** Bölüm başlığı ritmi (landing deseni: teal etiket + büyük başlık + açıklama). */
+function BolumBaslik({ etiket, baslik, alt }: { etiket: string; baslik: string; alt?: string }) {
+  return (
+    <div className="mx-auto max-w-2xl text-center">
+      <p className="font-display text-xs font-bold uppercase tracking-[0.16em] text-teal">{etiket}</p>
+      <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{baslik}</h2>
+      {alt ? <p className="mx-auto mt-4 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">{alt}</p> : null}
+    </div>
   );
 }
