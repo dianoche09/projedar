@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { SiteHeader, SiteFooter } from "@/components/icerik/SiteChrome";
+import { SiteHeader } from "@/components/icerik/SiteChrome";
+import { KapanisFooter } from "@/components/KapanisFooter";
 import { IcerikDamgasi } from "@/components/icerik/IcerikDamgasi";
 import { kategoriIcerikleri } from "@/lib/icerik/kayit";
 
@@ -85,7 +86,7 @@ export default function RehberIndex() {
         </div>
       </div>
 
-      <SiteFooter />
+      <KapanisFooter />
     </main>
   );
 }

@@ -2,11 +2,12 @@ import { Breadcrumb } from "./Breadcrumb";
 import { IcerikDamgasi } from "./IcerikDamgasi";
 import { KaynakBlok } from "./KaynakBlok";
 import { IlgiliSayfalar } from "./IlgiliSayfalar";
-import { IcerikCTA } from "./IcerikCTA";
 import { YazarInceleyen } from "./YazarInceleyen";
 import { IcerikToc, type TocOge } from "./IcerikToc";
+import { IcerikHero } from "./IcerikGorsel";
 import { IcerikGoruntuleme } from "./IcerikGoruntuleme";
-import { SiteHeader, SiteFooter } from "./SiteChrome";
+import { SiteHeader } from "./SiteChrome";
+import { KapanisFooter } from "@/components/KapanisFooter";
 import { icerikSchemas } from "@/lib/icerik/schema";
 import type { IcerikMeta } from "@/lib/icerik/tipler";
 
@@ -45,6 +46,13 @@ export function IcerikLayout({
                 <IcerikDamgasi updatedAt={meta.updatedAt} sourceCheckedAt={meta.sourceCheckedAt} />
               </div>
             </header>
+
+            {/* hero görsel */}
+            {meta.heroGorsel ? (
+              <div className="mt-6 max-w-3xl">
+                <IcerikHero src={meta.heroGorsel} alt={meta.heroAlt ?? ""} />
+              </div>
+            ) : null}
 
             {/* mobil içindekiler */}
             {toc.length ? (
@@ -85,14 +93,8 @@ export function IcerikLayout({
         </div>
       </div>
 
-      {/* ---- CTA ---- */}
-      <section className="px-5 pb-20 pt-2 sm:px-6">
-        <div className="mx-auto w-full max-w-4xl">
-          <IcerikCTA seviye={meta.ctaLevel} slug={meta.slug} />
-        </div>
-      </section>
-
-      <SiteFooter />
+      {/* ---- ortak kapanış (Ağ büyüyor CTA + footer) ---- */}
+      <KapanisFooter />
 
       {/* ---- JSON-LD (Organization + BreadcrumbList + Article) ---- */}
       <script

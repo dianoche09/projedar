@@ -40,6 +40,9 @@ export const ICERIKLER: IcerikMeta[] = [
       glossary: [],
     },
     ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt:
+      "Modern bir ofiste, pencereden konut projesi silüeti görünürken tablet üzerinde proje inceleyen gayrimenkul danışmanı",
     canonical: `${SITE}/rehber/eids-emlakci-rehberi`,
     index: true,
     published: true,

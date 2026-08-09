@@ -80,6 +80,9 @@ export type IcerikMeta = {
   iliskiler: IcerikIliskiler;
   ctaLevel: CtaSeviye;
 
+  heroGorsel?: string; // sayfa başı editoryal görsel (public path)
+  heroAlt?: string; // hero görsel alt metni (erişilebilirlik)
+
   canonical: string; // tam URL (self-referencing)
   index: boolean; // robots index/follow
   published: boolean; // yayında mı (linkleme + sitemap koşulu)

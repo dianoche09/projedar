@@ -1,8 +1,24 @@
+import {
+  CalendarClock,
+  ShieldCheck,
+  Users,
+  ClipboardCheck,
+  KeyRound,
+  Building2,
+  Share2,
+  FileText,
+  MessageSquareText,
+  AlertTriangle,
+} from "lucide-react";
 import { AnswerFirst } from "@/components/icerik/AnswerFirst";
 import { Bolum } from "@/components/icerik/Bolum";
 import { GuncelDurumTablosu } from "@/components/icerik/GuncelDurumTablosu";
 import { SenaryoKutusu } from "@/components/icerik/SenaryoKutusu";
 import { IcerikFAQ } from "@/components/icerik/IcerikFAQ";
+import { IstatistikSerit } from "@/components/icerik/IstatistikSerit";
+import { SurecAkisi } from "@/components/icerik/SurecAkisi";
+import { VurguKutusu } from "@/components/icerik/VurguKutusu";
+import { BolumGorsel } from "@/components/icerik/IcerikGorsel";
 import type { TocOge } from "@/components/icerik/IcerikToc";
 
 /**
@@ -12,6 +28,9 @@ import type { TocOge } from "@/components/icerik/IcerikToc";
  * (KaynakBlok'taki numaralara [n] ile atıf). Uydu konular (sosyal medya, yetki
  * belgesi başvurusu, yetki sözleşmesi karşılaştırması) burada TÜKETİLMEZ;
  * özetlenir, derinleşme ayrı sayfalara bırakılır.
+ *
+ * Görsel zenginlik: hero (layout'ta) + bölüm görselleri + veri-görsel modüller
+ * (KPI şeridi, süreç akışı, sinyal uyarısı) + bölüm ikonları.
  */
 
 /** Kaynak referansı — alttaki "Resmî kaynaklar" bölümüne götürür. */
@@ -57,7 +76,16 @@ export function Govde() {
         </p>
       </AnswerFirst>
 
-      <Bolum id="guncel-durum" baslik="2026 güncel durum">
+      <IstatistikSerit
+        ogeler={[
+          { deger: "1 Şub 2026", etiket: "Satılık ilanlarda zorunlu", renk: "amber" },
+          { deger: "286.206 ₺", etiket: "Doğrulanmamış sosyal medya paylaşımı, her ihlal (üst sınır)", renk: "red" },
+          { deger: "3 ay", etiket: "En az yetki süresi", renk: "teal" },
+          { deger: "e-Devlet", etiket: "Yetkilendirme kanalı", renk: "navy" },
+        ]}
+      />
+
+      <Bolum id="guncel-durum" baslik="2026 güncel durum" Ikon={CalendarClock}>
         <GuncelDurumTablosu
           baslik="EİDS uygulama takvimi ve temel kurallar"
           kolonlar={["Konu", "Durum"]}
@@ -79,7 +107,7 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="eids-nedir" baslik="EİDS nedir?">
+      <Bolum id="eids-nedir" baslik="EİDS nedir?" Ikon={ShieldCheck}>
         <p>
           EİDS, Ticaret Bakanlığı bünyesinde kurulan ve taşınmaz ilanı yayımlamak isteyen kişilerin
           kimliğini ve ilanı verme yetkisini elektronik ortamda doğrulayan sistemdir.<Kaynak n={1} />{" "}
@@ -99,7 +127,7 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="kimleri-ilgilendirir" baslik="Kimleri ilgilendirir?">
+      <Bolum id="kimleri-ilgilendirir" baslik="Kimleri ilgilendirir?" Ikon={Users}>
         <p>Sistem, taşınmaz ilanı yayımlayan hemen herkesi kapsar:</p>
         <ul>
           <li>
@@ -122,7 +150,7 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="danisman-sureci" baslik="Emlak danışmanı açısından süreç">
+      <Bolum id="danisman-sureci" baslik="Emlak danışmanı açısından süreç" Ikon={ClipboardCheck}>
         <p>
           Bir danışman için pratik akış, bir taşınmazı ilana çıkarmadan önce iki koşulun sağlanmasına
           dayanır: işletmenin yetki belgesinin olması ve ilgili taşınmaz için sahibinden EİDS yetkisi
@@ -141,25 +169,35 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="yetkilendirme" baslik="Yetkilendirme nasıl işler?">
+      <Bolum id="yetkilendirme" baslik="Yetkilendirme nasıl işler?" Ikon={KeyRound}>
         <p>
           Yetkilendirme e-Devlet üzerinden yapılır. Taşınmaz sahibi, ilgili hizmet üzerinden
           çalışacağı emlak işletmesini o taşınmaz için tanımlar. Verilen yetki belirli bir süre için
           geçerlidir; yetki süresi en az 3 ay olarak belirlenir ve bu süre boyunca işletme o taşınmaz
           için ilan yayımlayabilir.<Kaynak n={3} />
         </p>
+        <SurecAkisi
+          adimlar={[
+            { baslik: "Koşullar netleşir", aciklama: "Danışman ile taşınmaz sahibi çalışma koşullarını belirler." },
+            { baslik: "e-Devlet’ten yetki", aciklama: "Sahip, işletmeyi ilgili taşınmaz için yetkilendirir." },
+            { baslik: "Doğrulama bilgisi", aciklama: "Taşınmaza özgü kod/QR oluşur." },
+            { baslik: "İlan yayımlanır", aciklama: "İlan doğrulanmış olarak yayına alınır." },
+          ]}
+        />
+        <BolumGorsel
+          src="/generated/rehber/eids-edevlet.jpg"
+          alt="Bir dizüstü bilgisayar ekranında dijital doğrulama kalkanı ve onay işareti, yanında telefon tutan el"
+          caption="Yetkilendirme ve doğrulama e-Devlet üzerinden, taşınmaz bazında yapılır (temsilî görsel)."
+        />
         <p>
           Yetkilendirme işlemi tamamlandığında, taşınmaza özgü doğrulama bilgisi oluşur ve ilanların
           bu bilgiyle yayımlanması beklenir. Yetki süresinin dolması, işletmenin o taşınmaz için ilan
-          verme hakkını sonlandırır.
-        </p>
-        <p>
-          Taşınmaz Ticareti Yetki Belgesi başvurusu ve belgenin şartları ayrı bir süreçtir; bu rehber
-          EİDS yetkilendirmesine odaklanır.
+          verme hakkını sonlandırır. Taşınmaz Ticareti Yetki Belgesi başvurusu ise ayrı bir süreçtir;
+          bu rehber EİDS yetkilendirmesine odaklanır.
         </p>
       </Bolum>
 
-      <Bolum id="yeni-konut" baslik="Sıfır konut projelerinde dikkat edilmesi gerekenler">
+      <Bolum id="yeni-konut" baslik="Sıfır konut projelerinde dikkat edilmesi gerekenler" Ikon={Building2}>
         <p>
           Yeni ve sıfır konut projelerinde danışmanın en çok karıştırdığı nokta, iki farklı yetkinin
           aynı sanılmasıdır:
@@ -183,25 +221,32 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="sosyal-medya" baslik="Sosyal medya ve dijital paylaşım">
+      <Bolum id="sosyal-medya" baslik="Sosyal medya ve dijital paylaşım" Ikon={Share2}>
         <p>
           Ticaret Bakanlığı, denetimlerin kapsamını sosyal medyada paylaşım yapan işletmeleri de
           içerecek şekilde genişletmiştir. Instagram, Facebook ve WhatsApp dahil elektronik ortamda
           verilen ilanlar bu kapsamdadır.<Kaynak n={2} />
         </p>
-        <p>
-          Temel kural: Sosyal medyada doğrudan ilan niteliğinde görsel veya metin paylaşmak yerine,
-          yalnızca EİDS ile doğrulanmış ve resmî ilan platformunda yayımlanmış ilanın bağlantısı
-          paylaşılmalıdır. Sistem doğrulaması olmadan doğrudan ilan paylaşan işletmelere, tespit
-          edilen her ihlal için 286.206 TL’ye kadar idari para cezası uygulanabilir.<Kaynak n={2} />
-        </p>
+        <BolumGorsel
+          src="/generated/rehber/eids-sosyal-medya.jpg"
+          alt="Takım elbiseli bir profesyonel, telefonunda bir konut projesi görselini paylaşırken"
+          caption="Sosyal medyada doğrudan ilan yerine, doğrulanmış ilanın bağlantısı paylaşılır (temsilî görsel)."
+        />
+        <VurguKutusu tip="uyari" baslik="Doğrudan ilan paylaşımı ceza riski taşır">
+          <p>
+            Sistem doğrulaması olmadan doğrudan ilan niteliğinde görsel veya metin paylaşan
+            işletmelere, tespit edilen her ihlal için 286.206 TL’ye kadar idari para cezası
+            uygulanabilir. Sosyal medyada yalnızca EİDS ile doğrulanmış ilanın bağlantısını
+            paylaşın.<Kaynak n={2} />
+          </p>
+        </VurguKutusu>
         <p>
           Sosyal medya paylaşımının pratik kuralları, örnek durumlar ve karar adımları ayrıca ele
           alınması gereken bir konudur; bu rehber temel çerçeveyi verir.
         </p>
       </Bolum>
 
-      <Bolum id="yetki-sozlesmesi-farki" baslik="EİDS ile yetki sözleşmesi arasındaki kavramsal fark">
+      <Bolum id="yetki-sozlesmesi-farki" baslik="EİDS ile yetki sözleşmesi arasındaki kavramsal fark" Ikon={FileText}>
         <p>
           Danışmanların sık karıştırdığı iki kavramı ayırmak önemlidir. <strong>Emlak yetki
           sözleşmesi</strong>, danışman ile taşınmaz sahibi arasındaki ticari ilişkiyi (çalışma
@@ -215,7 +260,7 @@ export function Govde() {
         </p>
       </Bolum>
 
-      <Bolum id="senaryolar" baslik="Danışman senaryoları">
+      <Bolum id="senaryolar" baslik="Danışman senaryoları" Ikon={MessageSquareText}>
         <SenaryoKutusu baslik="Sahibi “ilanı hemen yayımla” diyor, henüz e-Devlet yetkisi verilmedi">
           <p>
             İşletmenizin yetki belgesi olsa bile, ilgili taşınmaz için sahibin e-Devlet üzerinden
@@ -232,7 +277,7 @@ export function Govde() {
         </SenaryoKutusu>
       </Bolum>
 
-      <Bolum id="sik-hatalar" baslik="Sık yapılan hatalar">
+      <Bolum id="sik-hatalar" baslik="Sık yapılan hatalar" Ikon={AlertTriangle}>
         <ul>
           <li>Ticari satış yetkisini EİDS yetkisiyle aynı sanmak.</li>
           <li>Yetkilendirme tamamlanmadan ilanı yayına almak.</li>
