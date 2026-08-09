@@ -34,7 +34,14 @@ Next.js (App Router, TypeScript, strict) + Tailwind · Supabase (Postgres + Auth
 
 ## Komutlar
 - `npm run dev` · `npm run build` · `npm run lint`
-- Supabase migration: `supabase db push` (veya MCP `apply_migration`).
+- **Supabase migration/SQL/RLS = HER ZAMAN browser Dashboard → SQL Editor.** MCP `apply_migration`/`execute_sql` bu projede `Unauthorized` (access token yok, non-interactive OAuth yok); `supabase db push` de yok. Migration dosyasını `db/` altına yaz, sonra kullanıcıya SQL'i **hazır kopyalanır blok** olarak ver — "browser'dan uygula" diye ayrıca uzun uzun anlatma, sadece bloğu sun. Detay: memory `supabase-apply-browser.md`.
+
+## Changelog / Memory (bu projeye özel)
+Her projenin **kendi** changelog'u vardır. Bu repoda anlamlı her değişiklikten sonra **yalnız bu projenin** changelog'unu güncelle; başka projenin (ör. KolayIMAR) changelog'una **yazma**.
+- Changelog: `~/.claude/projects/-Users-gurkankuzu-GK-MAC-D-GK-Proje-admin-ProjePazar/memory/projedar_changelog.md`
+- Index: aynı dizindeki `MEMORY.md` (yeni memory eklersen tek satır pointer ekle).
+- Format: dosyanın en üstüne `## YYYY-MM-DD HH:MM — [kısa başlık]` + madde. Aynı gün ise mevcut günün altına satır ekle, yeni tarih bloğu açma.
+- Trivial işleri (typo, import) yazma.
 
 ## Build sırası
 Devir Dokümanı Bölüm 16 (PR-1 → PR-10). Sırayla; her PR'da kabul kriterini doğrula (Bölüm 13).
