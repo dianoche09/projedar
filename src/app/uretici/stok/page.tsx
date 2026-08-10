@@ -52,7 +52,7 @@ export default async function UreticiStok({
       supabase
         .from("birim")
         .select(
-          "id, proje_id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, kira_bedeli, para_birimi, net_m2, brut_m2, satilabilir, yon, manzara, serefiye, odeme_plani, gorsel_url, durum_notu, son_guncelleme",
+          "id, proje_id, blok_id, tip_id, tur, ana_birim_id, kat, daire_no, durum, liste_fiyati, kira_bedeli, para_birimi, net_m2, brut_m2, satilabilir, yon, manzara, serefiye, odeme_plani, durum_notu, son_guncelleme",
         ),
       supabase.from("blok").select("id, ad"),
       supabase.from("daire_tipi").select("id, ad, oda, net_m2, taban_fiyat, plan_url"),
