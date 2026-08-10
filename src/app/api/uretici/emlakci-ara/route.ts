@@ -35,8 +35,15 @@ export async function GET(req: NextRequest) {
   }
 
   const admin = createAdminClient();
+  // belge_durumu='dogrulandi' ŞART: RLS canlı görünürlüğü buna bağlı (emlakci_proje_tahsisli).
+  // Doğrulanmamış danışman tahsisi asla göremez → "N danışmana açılacak" sayımı/listesi onları saymamalı (şişirme fix).
   const filtrele = () => {
-    let qb = admin.from("profiles").select("id, ad, ofis_id", { count: "exact" }).eq("rol", "emlakci").eq("durum", "aktif");
+    let qb = admin
+      .from("profiles")
+      .select("id, ad, ofis_id", { count: "exact" })
+      .eq("rol", "emlakci")
+      .eq("durum", "aktif")
+      .eq("belge_durumu", "dogrulandi");
     if (q.length >= 2) qb = qb.ilike("ad", `%${q.replace(/[%_\\]/g, "\\$&")}%`);
     if (marka) qb = qb.eq("marka", marka);
     if (il) qb = qb.eq("il", il);

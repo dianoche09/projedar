@@ -14,14 +14,19 @@ export default async function DavetPage() {
   const { data: profil } = await supabase.from("profiles").select("ad").eq("id", user.id).single();
   const ad = ((profil?.ad as string) || "").trim() || "Müteahhit";
 
-  const h = await headers();
-  const host = h.get("host") || "localhost:3000";
-  const proto = host.startsWith("localhost") ? "http" : "https";
+  // Davet linki: yapılandırılmış base URL (host-header poisoning kalkanı). Env yoksa host'a düş.
+  let base = (process.env.NEXT_PUBLIC_SITE_URL ?? "").trim().replace(/\/+$/, "");
+  if (!base) {
+    const h = await headers();
+    const host = h.get("host") || "localhost:3000";
+    const proto = host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https";
+    base = `${proto}://${host}`;
+  }
   // LEAD_SHARE_SECRET yoksa davetToken throw eder — 500 yerine bilgilendirici mesaj göster.
   let link: string | null = null;
   try {
     const token = davetToken(user.id, ad);
-    link = `${proto}://${host}/kayit?rol=emlakci&d=${user.id}&n=${encodeURIComponent(ad)}&t=${token}`;
+    link = `${base}/kayit?rol=emlakci&d=${user.id}&n=${encodeURIComponent(ad)}&t=${token}`;
   } catch {
     link = null;
   }
