@@ -411,6 +411,9 @@ export function StokTablo({
           projeId={acikSatir.proje_id}
           mod="uretici"
           projeAd={acikSatir.proje_ad}
+          opsiyonSaticiAd={
+            acikSatir.durum === "opsiyonlu" || acikSatir.durum === "satis_beklemede" ? acikSatir.satici_ad : null
+          }
           eklentiler={satirlar
             .filter((e) => e.ana_birim_id === acikSatir.id)
             .map((e) => ({

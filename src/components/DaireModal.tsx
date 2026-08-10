@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { useFormStatus } from "react-dom";
-import { birimDurumGuncelle, birimGuncelle, birimGorselSil, birimGorselYukle, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
+import { birimDurumGuncelle, birimGuncelle, birimGorselSil, birimGorselYukle, birimSatisKapat, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
 import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/havuz/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
@@ -101,6 +101,18 @@ function Kaydet() {
   );
 }
 
+function SatisiKapat() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      disabled={pending}
+      className="rounded-xl bg-red px-5 py-2.5 text-xs font-bold text-white transition-all duration-300 hover:bg-red/90 disabled:opacity-50 shadow-[0_0_12px_rgba(209,90,78,0.18)] cursor-pointer"
+    >
+      {pending ? "Kapatılıyor…" : "Satışı kapat"}
+    </button>
+  );
+}
+
 /**
  * Daire detay modalı — merkezi, scroll yaratmaz. Künye + şerefiye kırılımı + iz.
  * mod="uretici": durum/not değiştir. mod="emlakci": salt-okunur + paylaş + opsiyon (48s kilit).
@@ -116,11 +128,14 @@ export function DaireModal({
   opsiyonYontemi = "talep_kod",
   eklentiler = [],
   kazanc,
+  opsiyonSaticiAd = null,
 }: {
   birim: ModalBirim;
   projeId: string;
   onKapat: () => void;
   mod?: "uretici" | "emlakci";
+  /** Üretici modu: dairede aktif opsiyon varsa onu tutan danışman adı (satış kapatınca satıcı = bu kişi). */
+  opsiyonSaticiAd?: string | null;
   projeAd?: string;
   shareUrl?: string;
   /** Emlakçı modu: bu opsiyon bu emlakçıya mı ait (bırak butonu yalnız o zaman). */
@@ -440,53 +455,116 @@ export function DaireModal({
 
         {mod === "uretici" ? (
           <>
-          <form
-            action={async (fd) => {
-              await birimDurumGuncelle(fd);
-              onKapat();
-            }}
-            className="mt-4"
-          >
-            <input type="hidden" name="birim_id" value={birim.id} />
-            <input type="hidden" name="proje_id" value={projeId} />
+          <div className="mt-4">
             <p className="text-xs font-bold uppercase tracking-widest text-slate-400 font-mono mb-2">Birim Durumu</p>
+            {/* Durum seçimi (client) — 'Satıldı' seçilince satış-kapatma akışına düşer (satıcı atfı) */}
             <div className="mt-2 flex flex-wrap gap-1.5">
               {DURUMLAR.map((d) => (
-                <label
+                <button
                   key={d}
+                  type="button"
+                  onClick={() => setDurum(d)}
                   className={`cursor-pointer rounded-xl border px-3 py-2 text-xs font-bold transition-all duration-200 ${
                     durum === d
                       ? `border-transparent text-white font-extrabold ${DURUM_BG[d]}`
                       : "border-slate-200 bg-white text-slate-600 hover:border-teal/30 hover:bg-slate-50"
                   }`}
                 >
-                  <input
-                    type="radio"
-                    name="durum"
-                    value={d}
-                    checked={durum === d}
-                    onChange={() => setDurum(d)}
-                    className="sr-only"
-                  />
                   {DURUM_ETIKET[d]}
-                </label>
+                </button>
               ))}
             </div>
-            <textarea
-              name="durum_notu"
-              defaultValue={birim.durum_notu ?? ""}
-              rows={2}
-              placeholder="Durum notu — opsiyon: kim/ne zaman; satış: alıcı vb."
-              className="mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800 outline-none transition-all focus:border-teal focus:bg-white placeholder:text-slate-400"
-            />
-            <div className="mt-4 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-400 font-bold">
-                <span className={`size-2 rounded-full ${tazelikDot(birim.son_guncelleme)} shadow-sm`} />
-                {zamanOnce(birim.son_guncelleme)}
-              </span>
-              <Kaydet />
-            </div>
-          </form>
+
+            {durum === "satildi" ? (
+              /* SATIŞI KAPAT — satıcı = aktif opsiyon sahibi (sistem kaydı; tartışma-önleyici) veya doğrudan */
+              <form
+                action={async (fd) => {
+                  await birimSatisKapat(fd);
+                  onKapat();
+                }}
+                className="mt-3"
+              >
+                <input type="hidden" name="birim_id" value={birim.id} />
+                <input type="hidden" name="proje_id" value={projeId} />
+                <input type="hidden" name="geri_yol" value={pathname} />
+                {opsiyonSaticiAd ? (
+                  <div className="rounded-xl border border-teal/30 bg-teal/[0.06] p-3">
+                    <p className="text-[11px] font-bold text-teal-d">
+                      Satış <span className="font-extrabold">{opsiyonSaticiAd}</span> danışmanına yazılacak
+                    </p>
+                    <p className="mt-1 text-[10.5px] leading-snug text-slate-500">
+                      Atıf, daireyi opsiyonlayan danışmandan gelir (sistem kaydı). Değiştirilemez, böylece kim sattı tartışması olmaz.
+                    </p>
+                    <div className="mt-2.5">
+                      <label className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-slate-400 font-mono">
+                        Hakediş tutarı (boş = tahsis komisyonundan)
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          name="tutar"
+                          type="number"
+                          min="0"
+                          placeholder="Otomatik hesapla"
+                          className="w-40 rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-xs text-slate-800 outline-none focus:border-teal placeholder:text-slate-400"
+                        />
+                        <span className="text-[11px] font-bold text-slate-500">{birim.para_birimi}</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <p className="text-[11px] font-bold text-slate-600">Doğrudan satış — danışman atfı yok</p>
+                    <p className="mt-1 text-[10.5px] leading-snug text-slate-500">
+                      Bu dairede aktif opsiyon yok. Bir danışmana yazmak istersen önce o danışman daireyi opsiyonlamalı.
+                    </p>
+                  </div>
+                )}
+                <textarea
+                  name="durum_notu"
+                  defaultValue={birim.durum_notu ?? ""}
+                  rows={2}
+                  placeholder="Satış notu — alıcı, tarih vb. (opsiyonel)"
+                  className="mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800 outline-none transition-all focus:border-teal focus:bg-white placeholder:text-slate-400"
+                />
+                <div className="mt-4 flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setDurum(birim.durum)}
+                    className="text-[11.5px] font-bold text-slate-400 hover:text-slate-700"
+                  >
+                    Vazgeç
+                  </button>
+                  <SatisiKapat />
+                </div>
+              </form>
+            ) : (
+              /* Diğer durumlar — normal kaydet */
+              <form
+                action={async (fd) => {
+                  await birimDurumGuncelle(fd);
+                  onKapat();
+                }}
+              >
+                <input type="hidden" name="birim_id" value={birim.id} />
+                <input type="hidden" name="proje_id" value={projeId} />
+                <input type="hidden" name="durum" value={durum} />
+                <textarea
+                  name="durum_notu"
+                  defaultValue={birim.durum_notu ?? ""}
+                  rows={2}
+                  placeholder="Durum notu — opsiyon: kim/ne zaman; satış: alıcı vb."
+                  className="mt-3 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-800 outline-none transition-all focus:border-teal focus:bg-white placeholder:text-slate-400"
+                />
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-400 font-bold">
+                    <span className={`size-2 rounded-full ${tazelikDot(birim.son_guncelleme)} shadow-sm`} />
+                    {zamanOnce(birim.son_guncelleme)}
+                  </span>
+                  <Kaydet />
+                </div>
+              </form>
+            )}
+          </div>
 
           <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden transition-all duration-300">
             <summary className="cursor-pointer px-4 py-3 text-xs font-bold text-slate-700 hover:bg-slate-100/50 select-none">

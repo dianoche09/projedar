@@ -443,6 +443,85 @@ export async function birimGuncelle(formData: FormData) {
   revalidatePath("/uretici/stok");
 }
 
+// ---- Satışı kapat (durum→satildi) — satıcı atfı SİSTEM kaydından (tartışma-önleyici) ----
+// DEĞİŞMEZ: atıf = aktif opsiyon sahibi (danışman kilitlemiş). Müteahhit yeniden atayamaz →
+//   "kim sattı" tartışması çıkmaz. Aktif opsiyon yoksa doğrudan satış (danışman yok, hakediş yok).
+//   Tutar: müteahhit override veya tahsis komisyonundan (birim_satici_kazanci). Platform pay almaz.
+//   Ayrıca opsiyon yaşam döngüsünü kapatır (birim↔opsiyon desync + cron skor kirliliği fix).
+export async function birimSatisKapat(formData: FormData) {
+  const supabase = await createClient();
+  const birim_id = String(formData.get("birim_id"));
+  const proje_id = String(formData.get("proje_id"));
+  const geri = geriYol(formData) ?? "/uretici/stok";
+  if (!UUID_RE.test(birim_id) || !UUID_RE.test(proje_id)) hataya(geri, "Geçersiz birim");
+
+  const uid = await ureticiId(supabase);
+  if (!uid || !(await projeSahibiMi(supabase, proje_id))) hataya(geri, "Bu projeye erişim yok");
+
+  const notRaw = formData.get("durum_notu");
+  const durum_notu = typeof notRaw === "string" && notRaw.trim() ? notRaw.trim().slice(0, 280) : null;
+
+  // Aktif opsiyon → satıcı (sistem kaydı; client girdisine güvenilmez)
+  const { data: ops } = await supabase
+    .from("opsiyon")
+    .select("id, satici_id")
+    .eq("birim_id", birim_id)
+    .in("durum", ["opsiyonlu", "satis_beklemede"])
+    .maybeSingle();
+  const satici_id = (ops?.satici_id as string | undefined) ?? undefined;
+
+  if (satici_id) {
+    // Tutar: override varsa onu, yoksa tahsis komisyonundan hesapla (RPC yetki guard'lı)
+    const override = String(formData.get("tutar") ?? "").trim();
+    let tutar: number | null = override !== "" && Number.isFinite(Number(override)) ? Number(override) : null;
+    if (tutar == null) {
+      const { data: hesap } = await supabase.rpc("birim_satici_kazanci", { p_birim_id: birim_id, p_satici: satici_id });
+      tutar = typeof hesap === "number" ? hesap : null;
+    }
+    const { data: b } = await supabase.from("birim").select("para_birimi").eq("id", birim_id).single();
+    // Hakediş defteri: birim başına tek (unique birim_id) → upsert
+    await supabase.from("hakedis").upsert(
+      {
+        birim_id,
+        proje_id,
+        uretici_id: uid,
+        emlakci_id: satici_id,
+        tutar,
+        para_birimi: (b?.para_birimi as string | null) ?? "TRY",
+      },
+      { onConflict: "birim_id" },
+    );
+    // Opsiyon yaşam döngüsünü kapat (aktif → satildi; cron "süre doldu israf" saymasın)
+    await supabase
+      .from("opsiyon")
+      .update({ durum: "satildi", sonuc: "satildi", sonuc_at: new Date().toISOString() })
+      .eq("id", ops!.id);
+  }
+
+  const { error } = await supabase
+    .from("birim")
+    .update({ durum: "satildi", durum_notu, son_guncelleme: new Date().toISOString() })
+    .eq("id", birim_id)
+    .eq("proje_id", proje_id);
+  if (error) hataya(geri, error.message);
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  await kayitYaz({
+    tip: "satis",
+    profileId: user?.id ?? null,
+    projeId: proje_id,
+    birimId: birim_id,
+    payload: { eylem: "satis_kapat", satici_id: satici_id ?? null, dogrudan: !satici_id },
+  });
+
+  revalidatePath("/uretici/stok");
+  revalidatePath(`/uretici/proje/${proje_id}`);
+  revalidatePath("/uretici/opsiyonlar");
+  redirect(`${geri}${geri.includes("?") ? "&" : "?"}mesaj=${encodeURIComponent("Satış kapatıldı")}`);
+}
+
 // ---- Per-daire görsel yükle/sil (birim.gorsel_url; tip planının önüne geçer) ----
 export async function birimGorselYukle(formData: FormData) {
   const proje_id = String(formData.get("proje_id"));
