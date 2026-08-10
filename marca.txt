@@ -1,0 +1,55 @@
+MARCA / MARKA DOSYASI — Projedar
+(Tasarım kararları. Claude bir tasarım kararı vermeden ÖNCE bunu okur.
+ Burada olmayan bir şeyi uydurmaz; sorar. Kaynak: ProjePazar-Sistem-Kurallari.md,
+ ProjePazar-Tasarim-Ruhu.md, globals.css token'ları, memory tasarim-dili.)
+
+MARKA: Projedar  (yazım: "Proje" + teal renkli "dar")
+
+CLIENTE IDEAL / KİME:
+  - Müteahhit / geliştirici: stoğunu, fiyatını, dağıtımını tek yerden yönetmek ister;
+    dağınık ilan ve çift satıştan bıkmış. Profesyonel, para/kontrol odaklı.
+  - Gayrimenkul danışmanı (emlakçı): tek hesapla, kendisine tahsisli projeleri
+    CANLI görmek ve müşterisine hızlı paylaşmak ister. Sahada, hızlı, mobil.
+  - İkisi de son kullanıcı DEĞİL. B2B, profesyoneller arası.
+
+SENSACIÓN / HİS (3 sıfat, hiçbiri belirsiz):
+  - Canlı   (gerçek zamanlı stok, nabız, "3 sn önce")
+  - Kontrollü / operasyonel  (komuta merkezi; Bloomberg + Linear; veri disiplini)
+  - Güven-veren  (tek doğru kaynak, çift satış kalkanı; abartısız, ölçülü dil)
+
+ACCIÓN ÚNICA / TEK AKSİYON (sayfa başına bir tane):
+  - /nedir, /emlakci yüzeyleri: "Danışman olarak ücretsiz katıl" (birincil).
+  - /muteahhit yüzeyi: "Projeni ağa ekle" (birincil).
+
+TIPOGRAFÍAS / FONTLAR (globals.css — kilitli, değiştirme):
+  - Başlık/display: Outfit  (--font-display)
+  - Metin/arayüz:   Inter   (--font-sans)
+  - Veri/fiyat/işaret: Geist Mono  (--font-mono)
+  (Editoryal serif YALNIZ fotoğraf-öncelikli özel yüzeylerde; ürün UI'da değil.)
+
+COLORES / RENKLER (kilitli):
+  - Fon:   paper #eef1f6  / soft #f5f8fa
+  - Metin: ink #10243a  / ink-soft #46586b
+  - Aksan (TEK): teal #1e9b8a  (koyu: teal-d #1a8676)
+  - Koyu zemin (komuta): #0a1b2c → #102a44
+  - Sinyal (yalnız veri/durum): müsait green #2fb36b · opsiyon amber #e3a12c · satıldı red #d15a4e
+  - Kural: tek aksan (teal) kilitli; sinyal renkleri yalnız stok durumu için.
+
+PROHIBIDO / YASAKLAR:
+  - Uzun tire "—" (virgül / iki nokta kullan)
+  - "kapalı" tek başına  → "tahsisle yönetilen", "yalnız yetkili danışmana"
+  - "komisyonsuz" / "komisyon yok"  → "satış komisyonuna ortak olmaz"
+  - Rakip firma adı; kıtlık/kontenjan vaadi; süre vaadi ("ilk yıl")
+  - Absolutist iddia: %100, garanti, imkânsız, muaf
+  - AI-mor/menekşe glow; her yere glassmorphism; ortalı-hero-koyu-mesh
+  - Üç-eşit-kart ritmi; eyebrow→H2→3 kart; dipte klişe CTA bandı; Portal↔X kıyas tablosu (klişe)
+  - Stok/banka fotoğrafı klişesi; spesifik proje binası iddiası (temsili görselde)
+  - Emoji; pazarlama jargonu ("yenilikçi çözümler", "devrim")
+
+MASA / MEASURING STICK (ölçü çubuğu):
+  - Onaylı craft seviyesi = Projedar ANASAYFASI (projedar.com). Yeni yüzeyler onun
+    tipografi ölçeği, boşluk ritmi ve hareket diline UYUM sağlar. Kopyalama; seviye referansı.
+
+SES / DİL:
+  - Türkçe, saha dili, aktif fiil, kısa. Kod/yorum İngilizce.
+  - Metni insan yazar; Claude "doğru ama boş" metin üretmez.
