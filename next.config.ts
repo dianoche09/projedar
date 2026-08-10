@@ -45,6 +45,18 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        // Geçici köprü: Afet Sempozyumu kampanya maillerindeki "Bilgilerimi Tamamla" linki
+        // bir env hatası yüzünden projedar.com'a düşmüştü. Query (id & token) korunarak asıl
+        // kayıt sitesine yönlendirilir; böylece gönderilmiş linkler tekrar mail atmadan çalışır.
+        source: "/kayit/tamamla",
+        destination: "https://kayit.vercel.app/kayit/tamamla",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withSerwist(nextConfig);
