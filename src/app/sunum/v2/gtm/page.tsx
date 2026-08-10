@@ -113,7 +113,7 @@ export default function GtmV2() {
         <MaddeKart
           Ikon={MessageCircle}
           baslik="Ü2 · Geleneksel müteahhit"
-          metin="Panel öğrenmez: WhatsApp ve concierge ile çalışır, stoğu biz gireriz. Havuzu büyüten geniş taban."
+          metin="Panel öğrenmez: WhatsApp ve kurulum desteğiyle çalışır, stoğu biz gireriz. Havuzu büyüten geniş taban."
         />
       </div>
       <p className="deck-kart deck-soft mt-4 px-5 py-4 text-[13.5px] leading-relaxed">
@@ -143,7 +143,7 @@ export default function GtmV2() {
         <MaddeKart
           Ikon={Handshake}
           baslik="Satış döngüsü kısa tutulur"
-          metin="Karar verici tek kişi (patron/satış müdürü); teklif fiyat listesi değil kontrol ve hız vaadidir. Kurulum concierge ile bizde olduğu için 'evet' demenin maliyeti sıfıra iner."
+          metin="Karar verici tek kişi (patron/satış müdürü); teklif fiyat listesi değil kontrol ve hız vaadidir. Kurulum bizde olduğu için 'evet' demenin maliyeti sıfıra iner."
           sinyal="#2fd3bc"
         />
       </div>

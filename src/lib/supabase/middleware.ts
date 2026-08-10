@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { sunumTokenBeklenen } from "@/lib/sunumGate";
 
 /** Login'siz erişilebilen rotalar (paylaşım landing'i ve public microsite Faz/PR-7'de). */
 function herkeseAcik(pathname: string): boolean {
@@ -42,6 +43,22 @@ function herkeseAcik(pathname: string): boolean {
  * @supabase/ssr deseni: cookie'leri request+response arasında senkron tut.
  */
 export async function updateSession(request: NextRequest) {
+  // Sunum (yatırımcı/deck) alanı parola kapısı: linke sahip olmak yetmez.
+  // SUNUM_SIFRE env tanımlıysa, doğru parola çerezi olmayan istek /sunum-giris'e yönlenir.
+  {
+    const p = request.nextUrl.pathname;
+    if (p.startsWith("/sunum") && !p.startsWith("/sunum-giris")) {
+      const beklenen = sunumTokenBeklenen();
+      if (beklenen && request.cookies.get("sunum_ok")?.value !== beklenen) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/sunum-giris";
+        url.search = "";
+        url.searchParams.set("next", p);
+        return NextResponse.redirect(url);
+      }
+    }
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(

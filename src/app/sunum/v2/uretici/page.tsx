@@ -97,7 +97,7 @@ export default function UreticiSunumV2() {
         <MaddeKart
           Ikon={ShieldCheck}
           baslik="Opsiyon kilidi"
-          metin="Bir daire opsiyonlandığında veritabanı seviyesinde kilitlenir; çift satışın önüne yapısal olarak geçilir."
+          metin="Bir daire opsiyonlandığında veritabanı seviyesinde kilitlenir; aynı daireye eşzamanlı ikinci aktif opsiyon açılamaz."
         />
         <MaddeKart
           Ikon={Layers}
@@ -296,7 +296,7 @@ export default function UreticiSunumV2() {
       hiza="sol"
       kicker="Güven"
       baslik="Opsiyon bir söz değil. Kilittir."
-      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satışın önüne yapısal olarak geçilir."
+      alt="İki kapora, iki mağdur, bir mahkeme: bu hikâye burada bitiyor. Aynı daireye ikinci aktif opsiyon teknik olarak açılamaz; çift satış veritabanı seviyesinde engellenir."
     />,
 
     /* 8 · Özellik: opsiyon kilidi + demo */

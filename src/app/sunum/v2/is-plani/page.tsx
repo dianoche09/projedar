@@ -150,7 +150,7 @@ export default function IsPlaniV2() {
           ]}
         />
         <div className="flex flex-col gap-3">
-          <MaddeKart Ikon={Handshake} baslik="Değer nettir" metin="Hızlı stok erimesi, fiyat disiplini, çift satışa karşı veritabanı seviyesinde kalkan. Kurulum concierge ile bizde; 'evet' demenin maliyeti sıfır." sinyal="#2fd3bc" />
+          <MaddeKart Ikon={Handshake} baslik="Değer nettir" metin="Hızlı stok erimesi, fiyat disiplini, çift satışa karşı veritabanı seviyesinde kalkan. Kurulum bizde; 'evet' demenin maliyeti sıfır." sinyal="#2fd3bc" />
           <MaddeKart Ikon={BadgeCheck} baslik="Öngörülebilir" metin="Müteahhit daire adedini bilir, fiyatını net görür. Marjinal ücret büyük projede azalır (hacim avantajı)." />
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function IsPlaniV2() {
         <MaddeKart Ikon={Network} baslik="Tek özellik değil, kombinasyon" metin="Çok müteahhitli havuz + tahsisli erişim + DB kilidi + satış komisyonuna ortak olmama: her biri kopyalanabilir; dördü birden rakibin modelini bozmadan olmaz." sinyal="#2fd3bc" />
         <MaddeKart Ikon={Database} baslik="Veri birikimi" metin="Her paylaşım, görüntüleme ve opsiyon ilk günden kayıtta; geçmişe dönük üretilemez, ağ büyüdükçe derinleşir." />
         <MaddeKart Ikon={Handshake} baslik="İki tarafı da tutan model" metin="Üretici kontrolü kaybetmez, danışman komisyonunun tamamını kesintisiz kazanır; iki taraf da ağda kalmayı seçer." />
-        <MaddeKart Ikon={Gavel} baslik="Regülasyon kalkanı" metin="EİDS açık ilanı zorlaştırırken tahsisli birebir paylaşım kapsam dışı; mevzuat modeli koruyor." />
+        <MaddeKart Ikon={Gavel} baslik="Regülasyon uyumu" metin="EİDS açık ilan paylaşımını zorlaştırırken tahsisli, birebir, kapalı-devre model bu baskıdan daha az etkilenir. Nihai hukuki niteleme değerlendirmeye tabidir." />
       </div>
     </Slayt>,
 
@@ -232,11 +232,11 @@ export default function IsPlaniV2() {
     <Slayt key="ekip-risk" genis kicker="Ekip & risk" baslik="Tek elden kurulan sistem, bilinen riskler">
       <div className="grid gap-3 sm:grid-cols-3">
         <MaddeKart Ikon={Wrench} baslik="Kurucu: ürün + büyüme tek elde" metin="Platform dış kaynak olmadan uçtan uca kuruldu ve canlıda; gayrimenkul teknolojisinde yayında ürün deneyimi." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={Users} baslik="İlk ekip: saha + concierge" metin="Yatırımla ilk kadro: üretici/danışman kazanımı ve kurulum operasyonu." />
+        <MaddeKart Ikon={Users} baslik="İlk ekip: saha + kurulum" metin="Yatırımla ilk kadro: üretici/danışman kazanımı ve kurulum operasyonu." />
         <MaddeKart Ikon={Store} baslik="Kademeli büyüme" metin="Ürün mühendisliği, pazarlama ve destek ölçekle devreye alınır." />
       </div>
       <div className="mt-3 grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Rocket} baslik="Risk: soğuk başlangıç" metin="Azaltma: arz-önce sıralama + concierge kurulum; boş ağ riskini yapısal olarak eler." />
+        <MaddeKart Ikon={Rocket} baslik="Risk: soğuk başlangıç" metin="Azaltma: arz-önce sıralama + kurulum desteği; boş ağ riskini büyük ölçüde azaltır." />
         <MaddeKart Ikon={ShieldCheck} baslik="Risk: müteahhit ikna" metin="Azaltma: canlı demo + referans zinciri + regülasyon argümanı; karar verici tek kişi." />
         <MaddeKart Ikon={MapPin} baslik="Risk: coğrafi dağılım" metin="Azaltma: tek şehirde yoğunluk; ağ etkisi bölgesel, kanıt kapanmadan yeni şehir açılmaz." />
       </div>

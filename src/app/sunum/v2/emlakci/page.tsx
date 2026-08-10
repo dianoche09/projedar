@@ -85,7 +85,7 @@ export default function EmlakciSunumV2() {
         <MaddeKart
           Ikon={Lock}
           baslik="Opsiyon kilidi"
-          metin="Opsiyonladığın daire veritabanı seviyesinde sana kilitlenir; çift satışın önüne yapısal olarak geçilir."
+          metin="Opsiyonladığın daire veritabanı seviyesinde sana kilitlenir; aynı daireye eşzamanlı ikinci aktif opsiyon açılamaz."
         />
         <MaddeKart
           Ikon={ShieldCheck}
