@@ -11,15 +11,38 @@ import { tahsisEmlakcilari } from "@/lib/tahsis";
 type TahsisRaw = {
   id: string;
   proje_id: string;
-  kapsam: { bloklar?: string[]; katlar?: number[]; tipler?: string[] } | null;
+  kapsam: {
+    bloklar?: string[];
+    katlar?: (string | number)[];
+    tipler?: string[];
+    turler?: string[];
+    birimler?: string[];
+  } | null;
   hedef_tip: "herkes" | "ofis" | "danisman";
   hedef_id: string | null;
+  hedef_filtre: { marka?: string; il?: string; ilce?: string; uzmanlik?: string } | null;
   munhasir: boolean | null;
   kontenjan: number | null;
   fiyat_gorunur: boolean | null;
   komisyon_tip: "yuzde" | "sabit" | "yok";
   komisyon_deger: number | null;
+  bitis: string | null;
 };
+
+const TUR_AD: Record<string, string> = {
+  daire: "Daire",
+  ofis: "Ofis",
+  dukkan: "Dükkan",
+  villa: "Villa",
+  depo: "Depo",
+  otopark: "Otopark",
+};
+
+/** Süresi dolmuş tahsis emlakçıya (RLS) görünmez → müteahhit panelinde de "aktif" sayılmamalı.
+    Modül seviyesinde: server-component render pürlük kuralına takılmadan Date.now kullanılır. */
+function tahsisAktifMi(t: TahsisRaw): boolean {
+  return !t.bitis || new Date(t.bitis).getTime() > Date.now();
+}
 
 function komisyonMetin(t: TahsisRaw): string {
   if (t.komisyon_tip === "yok") return "yok";
@@ -30,16 +53,17 @@ function komisyonMetin(t: TahsisRaw): string {
 export default async function UreticiTahsis() {
   const supabase = await createClient();
 
-  const [{ data: projeler }, { data: tahsisRaw }, { data: ofisler }, { data: bloklar }] =
+  const [{ data: projeler }, { data: tahsisRaw }, { data: ofisler }, { data: bloklar }, { data: tipler }] =
     await Promise.all([
       supabase.from("proje").select("id, ad, il, ilce").order("created_at", { ascending: false }),
       supabase
         .from("tahsis")
         .select(
-          "id, proje_id, kapsam, hedef_tip, hedef_id, munhasir, kontenjan, fiyat_gorunur, komisyon_tip, komisyon_deger",
+          "id, proje_id, kapsam, hedef_tip, hedef_id, hedef_filtre, munhasir, kontenjan, fiyat_gorunur, komisyon_tip, komisyon_deger, bitis",
         ),
       supabase.from("ofis").select("id, ad"),
       supabase.from("blok").select("id, ad"),
+      supabase.from("daire_tipi").select("id, ad, oda"),
     ]);
   // Danışman adları: profiles_self RLS engeli → admin client (server-only)
   const emlakcilar = await tahsisEmlakcilari();
@@ -47,7 +71,9 @@ export default async function UreticiTahsis() {
   const tahsisler = (tahsisRaw ?? []) as TahsisRaw[];
   const ofisAd = new Map((ofisler ?? []).map((o) => [o.id, o.ad as string]));
   const blokAd = new Map((bloklar ?? []).map((b) => [b.id, b.ad as string | null]));
+  const tipAd = new Map((tipler ?? []).map((t) => [t.id, ((t.oda as string | null) ?? (t.ad as string | null)) ?? "Tip"]));
   const danismanAd = new Map(emlakcilar.map((e) => [e.id, e.ad]));
+  const aktifMi = tahsisAktifMi;
 
   // proje_id → tahsis listesi
   const projeTahsis = new Map<string, TahsisRaw[]>();
@@ -57,11 +83,23 @@ export default async function UreticiTahsis() {
     projeTahsis.set(t.proje_id, arr);
   }
 
+  /** hedef_filtre → okunur segment metni (marka/il/ilçe/uzmanlık). */
+  const segmentMetin = (f: TahsisRaw["hedef_filtre"]): string => {
+    if (!f) return "";
+    return [f.marka, f.ilce, f.il, f.uzmanlik].filter(Boolean).join(" · ");
+  };
+
   const hedefMetin = (t: TahsisRaw): string => {
-    if (t.hedef_tip === "herkes") return "Herkese açık";
+    if (t.hedef_tip === "herkes") {
+      const seg = segmentMetin(t.hedef_filtre);
+      return seg ? `Segment: ${seg}` : "Tüm ağa açık";
+    }
     if (t.hedef_tip === "ofis") return ofisAd.get(t.hedef_id ?? "") ?? "Ofis";
     return danismanAd.get(t.hedef_id ?? "") ?? "Danışman";
   };
+  /** Segment (kısıtlı herkes) mü — rozet rengi/beyan için. */
+  const segmentMi = (t: TahsisRaw): boolean =>
+    t.hedef_tip === "herkes" && segmentMetin(t.hedef_filtre) !== "";
 
   const kapsamMetin = (t: TahsisRaw): string => {
     const parcalar: string[] = [];
@@ -70,24 +108,34 @@ export default async function UreticiTahsis() {
     const katlar = t.kapsam?.katlar ?? [];
     if (katlar.length) parcalar.push(`Kat ${katlar.join(", ")}`);
     const tipler = t.kapsam?.tipler ?? [];
-    if (tipler.length) parcalar.push(`${tipler.join(", ")} tip`);
+    if (tipler.length) parcalar.push(`${tipler.map((id) => tipAd.get(id) ?? "Tip").join(", ")}`);
+    const turler = t.kapsam?.turler ?? [];
+    if (turler.length) parcalar.push(`${turler.map((tr) => TUR_AD[tr] ?? tr).join(", ")}`);
+    const birimler = t.kapsam?.birimler ?? [];
+    if (birimler.length) parcalar.push(`${birimler.length} daire (seçili)`);
     return parcalar.length ? parcalar.join(" · ") : "Tüm proje";
   };
 
-  /** Proje başına erişim özeti: kim görüyor? */
+  /** Proje başına erişim özeti: kim görüyor? (yalnız AKTİF tahsisler) */
   const erisimOzet = (liste: TahsisRaw[]): string => {
-    if (liste.some((t) => t.hedef_tip === "herkes")) return "Tüm ağa açık";
-    const ofisSay = new Set(liste.filter((t) => t.hedef_tip === "ofis").map((t) => t.hedef_id)).size;
-    const danSay = new Set(liste.filter((t) => t.hedef_tip === "danisman").map((t) => t.hedef_id)).size;
+    const aktif = liste.filter(aktifMi);
+    // "Tüm ağa açık" yalnız FİLTRESİZ herkes tahsisi varsa (segment değil)
+    if (aktif.some((t) => t.hedef_tip === "herkes" && !segmentMi(t))) return "Tüm ağa açık";
+    const segSay = aktif.filter(segmentMi).length;
+    const ofisSay = new Set(aktif.filter((t) => t.hedef_tip === "ofis").map((t) => t.hedef_id)).size;
+    const danSay = new Set(aktif.filter((t) => t.hedef_tip === "danisman").map((t) => t.hedef_id)).size;
     const p: string[] = [];
+    if (segSay) p.push(`${segSay} segment`);
     if (ofisSay) p.push(`${ofisSay} ofis`);
     if (danSay) p.push(`${danSay} danışman`);
     return p.length ? `${p.join(" · ")} görüyor` : "Kimse görmüyor";
   };
 
-  const toplamTahsis = tahsisler.length;
-  const tahsisliProje = projeTahsis.size;
-  const munhasirSay = tahsisler.filter((t) => t.munhasir).length;
+  const aktifTahsisler = tahsisler.filter(aktifMi);
+  const toplamTahsis = aktifTahsisler.length;
+  // Dağıtımda = en az bir AKTİF tahsisi olan proje
+  const tahsisliProje = new Set(aktifTahsisler.map((t) => t.proje_id)).size;
+  const munhasirSay = aktifTahsisler.filter((t) => t.munhasir).length;
   const kapsamDisi = (projeler?.length ?? 0) - tahsisliProje;
 
   return (
@@ -124,6 +172,7 @@ export default async function UreticiTahsis() {
       <div className="belir belir-2 flex flex-col gap-5">
         {(projeler ?? []).map((p) => {
           const liste = projeTahsis.get(p.id) ?? [];
+          const aktifListe = liste.filter(aktifMi);
           return (
             <section key={p.id} className="kart overflow-hidden">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--cizgi)] px-5 py-3.5">
@@ -136,7 +185,7 @@ export default async function UreticiTahsis() {
                     {liste.length} tahsis
                   </span>
                   <span
-                    className={`rozet ${liste.length ? "bg-teal-soft text-teal" : "bg-amber-soft text-[#9a6a12]"}`}
+                    className={`rozet ${aktifListe.length ? "bg-teal-soft text-teal" : "bg-amber-soft text-[#9a6a12]"}`}
                   >
                     {erisimOzet(liste)}
                   </span>
@@ -180,16 +229,23 @@ export default async function UreticiTahsis() {
                       </tr>
                     </thead>
                     <tbody>
-                      {liste.map((t) => (
-                        <tr key={t.id}>
+                      {liste.map((t) => {
+                        const suresiDoldu = !aktifMi(t);
+                        return (
+                        <tr key={t.id} className={suresiDoldu ? "opacity-45" : undefined}>
                           <td>
                             <span
                               className={`rozet ${
-                                t.hedef_tip === "herkes" ? "bg-navy-soft text-ink-soft" : "bg-teal-soft text-teal"
+                                t.hedef_tip === "herkes" && !segmentMi(t)
+                                  ? "bg-navy-soft text-ink-soft"
+                                  : "bg-teal-soft text-teal"
                               }`}
                             >
                               {hedefMetin(t)}
                             </span>
+                            {suresiDoldu ? (
+                              <span className="rozet ml-1.5 bg-red-soft text-red">Süresi doldu</span>
+                            ) : null}
                           </td>
                           <td className="text-[12.5px] text-ink-soft">{kapsamMetin(t)}</td>
                           <td className="mono">{komisyonMetin(t)}</td>
@@ -217,7 +273,8 @@ export default async function UreticiTahsis() {
                             </Link>
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

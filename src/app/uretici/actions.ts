@@ -1101,8 +1101,13 @@ export async function tahsisEkle(formData: FormData) {
     if (birimler.length) kapsam.birimler = birimler; // daire-bazlı (RLS emlakci_birim_gorebilir 2026-06-29d)
   }
 
+  // Süre (gün) — geçersiz/negatif/aşırı değerde çök(me)mesin: sanitize et (crafted POST kalkanı)
   const sureRaw = String(formData.get("bitis_gun") ?? "").trim();
-  const bitis = sureRaw ? new Date(Date.now() + Number(sureRaw) * 86_400_000).toISOString() : null;
+  const sureNum = sureRaw ? Number(sureRaw) : NaN;
+  const bitis =
+    Number.isFinite(sureNum) && sureNum > 0 && sureNum <= 3650
+      ? new Date(Date.now() + sureNum * 86_400_000).toISOString()
+      : null;
 
   const supabase = await createClient();
   const { error } = await supabase.from("tahsis").insert(
