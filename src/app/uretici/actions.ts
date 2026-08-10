@@ -384,6 +384,28 @@ export async function birimDurumGuncelle(formData: FormData) {
   const durum_notu =
     typeof notRaw === "string" && notRaw.trim() ? notRaw.trim().slice(0, 280) : null;
 
+  // birim↔opsiyon desync kalkanı: müteahhit opsiyonlu birimi başka duruma çekerse opsiyon
+  //   satırı hayalet kalmasın (emlakçı "Opsiyonlarım"da görür, unique index yeni opsiyonu reddeder).
+  //   Aktif→satildi: opsiyon yaşam döngüsünü kapat (cron "süre doldu israf" saymasın); diğer: serbest bırak.
+  if (durum.data !== "opsiyonlu" && durum.data !== "satis_beklemede") {
+    const { data: aktifOps } = await supabase
+      .from("opsiyon")
+      .select("id")
+      .eq("birim_id", birim_id)
+      .in("durum", ["opsiyonlu", "satis_beklemede"]);
+    const idler = (aktifOps ?? []).map((o) => o.id as string);
+    if (idler.length) {
+      if (durum.data === "satildi") {
+        await supabase
+          .from("opsiyon")
+          .update({ durum: "satildi", sonuc: "satildi", sonuc_at: new Date().toISOString() })
+          .in("id", idler);
+      } else {
+        await supabase.from("opsiyon").delete().in("id", idler);
+      }
+    }
+  }
+
   // Tek doğru kaynak: her yazışta son_guncelleme=now() (DEĞİŞMEZ #5)
   const { error } = await supabase
     .from("birim")
