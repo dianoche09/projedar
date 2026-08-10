@@ -57,7 +57,26 @@ export default function Gizlilik() {
         </p>
       </section>
 
-      <p className="pt-2 text-xs text-gray">Son güncelleme: 2026-06-18</p>
+      <section className="space-y-2">
+        <h2 className="font-display text-base font-semibold">Otomatik Karar ve Yurt Dışı Aktarım</h2>
+        <p>
+          Verileriniz, tümüyle otomatik sistemlerle profilleme veya aleyhinize otomatik karar üretmek için
+          kullanılmaz; kişisel verileriniz yurt dışına aktarılmaz.
+        </p>
+      </section>
+
+      <section className="space-y-2">
+        <h2 className="font-display text-base font-semibold">İletişim ve Başvuru</h2>
+        <p>
+          KVKK m.11 kapsamındaki talepleriniz ve gizlilikle ilgili sorularınız için Projedar iletişim
+          kanalları (projedar.com) üzerinden bize ulaşabilirsiniz. Müşteri adayı verisine ilişkin taleplerde,
+          size ulaşan emlak danışmanı/ofisi veri sorumlusu sıfatıyla muhataptır.
+        </p>
+      </section>
+
+      <p className="pt-2 text-xs text-gray">
+        Bu metin bilgilendirme amaçlıdır; güncel mevzuata tam uyum için hukuki danışmanlık alınması önerilir. Son güncelleme: 2026-08-11
+      </p>
     </main>
   );
 }
