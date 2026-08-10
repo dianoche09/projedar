@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar nedir? Sahadan (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* DESIGN READ: /nedir açıklama sayfası, kitle müteahhit + gayrimenkul danışmanı.
+   Fotoğraf-öncelikli EDİTORYAL dil (dergi kalibresi), konunun kendi dünyasından gerçek
+   görseller malzeme. Cesaret tek yerde: sinematik hero. Gerisi sakin.
+   VARIANCE 7 / MOTION 5 / DENSITY 3. Tek aksan: teal. Editoryal serif justified (foto-led). */
+:root{
+  --ink:#10243a; --ink-soft:#46586b; --ink-faint:#8493a3; --navy:#13314b;
+  --teal:#1a8676; --teal-2:#1e9b8a; --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --paper:#faf8f4; --paper-2:#f2efe8; --line:rgba(16,36,58,.12); --line-2:rgba(16,36,58,.2);
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55}
+.wrap{max-width:1220px;margin:0 auto;padding:0 28px}
+.serif{font-family:"Newsreader",Georgia,serif;font-weight:420;letter-spacing:-.01em}
+.mono{font-family:"Geist Mono",monospace}
+.eyebrow{font-family:"Geist Mono",monospace;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#fff}
+
+/* rozet */
+.rozet{position:fixed;left:14px;bottom:14px;z-index:60;background:var(--ink);color:#fff;font-family:"Geist Mono",monospace;font-size:11px;padding:6px 10px;border-radius:7px;opacity:.82}
+
+/* masthead */
+.mast{position:absolute;top:0;left:0;right:0;z-index:20;padding:22px 0}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between}
+.mark{font-family:"Hanken Grotesk";font-weight:800;font-size:20px;letter-spacing:-.02em;color:#fff}
+.mark b{color:var(--teal-2)}
+.mast nav{display:flex;gap:26px}
+.mast nav a{font-family:"Geist Mono",monospace;font-size:12.5px;color:rgba(255,255,255,.82)}
+.mast .cta{font-family:"Hanken Grotesk";font-weight:700;font-size:13px;color:var(--ink);background:#fff;padding:9px 16px;border-radius:999px;transition:transform .16s var(--ease)}
+.mast .cta:active{transform:scale(.97)}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;color:#fff}
+.hero .bg{position:absolute;inset:0;background:url('/gorseller/nedir/hero.jpg') center/cover no-repeat;animation:kb 22s ease-out both}
+@keyframes kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+.hero .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,30,.42) 0%,rgba(8,18,30,.05) 30%,rgba(8,18,30,.35) 62%,rgba(8,18,30,.82) 100%)}
+.hero .inner{position:relative;z-index:10;width:100%;padding:0 0 64px}
+.hero h1{font-family:"Newsreader",serif;font-weight:430;font-size:clamp(2.6rem,6vw,5.4rem);line-height:1.02;letter-spacing:-.02em;max-width:20ch;text-wrap:balance;margin:16px 0 0}
+.hero h1 em{font-style:italic;color:#8fe0d0}
+.hero .sub{max-width:44ch;margin-top:22px;font-size:clamp(1rem,1.3vw,1.18rem);color:rgba(255,255,255,.86);line-height:1.6}
+.hero .altbar{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-top:40px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:"Hanken Grotesk";font-weight:700;font-size:14.5px;padding:14px 22px;border-radius:12px;transition:transform .16s var(--ease),background .2s}
+.btn:active{transform:scale(.98)}
+.btn-p{background:var(--teal);color:#fff}
+.btn-p:hover{background:var(--teal-2)}
+.btn-g{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.32);backdrop-filter:blur(6px)}
+.btn-g:hover{background:rgba(255,255,255,.2)}
+
+/* canlı stok HUD (sahnenin içinde küçük gerçek ürün detayı) */
+.hud{width:270px;background:rgba(10,20,32,.62);border:1px solid rgba(255,255,255,.14);border-radius:14px;backdrop-filter:blur(14px);overflow:hidden;font-family:"Geist Mono",monospace}
+.hud .h{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.6)}
+.hud .row{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;font-size:12.5px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hud .row b{color:#fff;font-weight:500}
+.hud .tag{display:inline-flex;align-items:center;gap:6px;font-size:11px}
+.dot{width:7px;height:7px;border-radius:50%}
+.g{background:var(--green)}.a{background:var(--amber)}.r{background:var(--red)}
+.pulse{animation:pulse 1.8s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hud .f{padding:8px 13px;font-size:10.5px;color:rgba(255,255,255,.45);display:flex;gap:6px;align-items:center}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.hero .bg{animation:none}}
+
+/* THESIS */
+.thesis{padding:120px 0 90px}
+.thesis .lead{font-family:"Newsreader",serif;font-weight:400;font-size:clamp(1.6rem,3.2vw,2.5rem);line-height:1.32;letter-spacing:-.01em;max-width:24ch}
+.thesis .lead .k{color:var(--teal);font-style:italic}
+.thesis .cols{display:grid;grid-template-columns:1fr;gap:14px;margin-top:8px}
+.rule-top{border-top:1px solid var(--line);padding-top:16px}
+
+/* BEAT (foto + metin) */
+.beat{display:grid;grid-template-columns:1fr;gap:0;align-items:stretch;border-top:1px solid var(--line)}
+.beat .media{position:relative;overflow:hidden;min-height:62vh}
+.beat .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.beat .body{padding:64px 0}
+.beat .body .in{max-width:38ch}
+.beat h2{font-family:"Newsreader",serif;font-weight:440;font-size:clamp(1.9rem,3.6vw,3rem);line-height:1.08;letter-spacing:-.02em;margin:14px 0 0}
+.beat p{margin-top:18px;font-size:1.06rem;color:var(--ink-soft);line-height:1.62}
+.beat .note{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:.94rem;color:var(--ink-faint)}
+.idx{font-family:"Geist Mono",monospace;font-size:12px;color:var(--ink-faint);letter-spacing:.1em}
+
+/* TAHSİS (mekanik) — düz vektör diyagram değil, tipografi + gerçek ürün şeridi */
+.mech{border-top:1px solid var(--line);padding:96px 0}
+.mech h2{font-family:"Newsreader",serif;font-weight:440;font-size:clamp(1.9rem,3.8vw,3rem);line-height:1.1;letter-spacing:-.02em;max-width:20ch}
+.mech .flow{display:grid;grid-template-columns:1fr;gap:0;margin-top:44px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.mech .node{display:flex;align-items:center;gap:18px;padding:22px 24px;border-bottom:1px solid var(--line)}
+.mech .node:last-child{border-bottom:0}
+.mech .node .n{font-family:"Geist Mono",monospace;font-size:12px;color:var(--teal);width:34px;flex:none}
+.mech .node .t b{display:block;font-family:"Hanken Grotesk";font-weight:700;font-size:1.05rem;color:var(--ink)}
+.mech .node .t span{font-size:.95rem;color:var(--ink-soft)}
+.mech .node .live{margin-left:auto;display:flex;gap:8px;font-family:"Geist Mono",monospace;font-size:11.5px;color:var(--ink-soft)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;background:var(--paper-2)}
+
+/* DEĞER — tablo değil, editoryal üç ifade */
+.deger{border-top:1px solid var(--line);padding:96px 0}
+.deger .row{display:grid;grid-template-columns:56px 1fr;gap:20px;padding:30px 0;border-top:1px solid var(--line);align-items:baseline}
+.deger .row:first-of-type{border-top:0}
+.deger .row .n{font-family:"Geist Mono",monospace;font-size:13px;color:var(--teal)}
+.deger .row h3{font-family:"Newsreader",serif;font-weight:450;font-size:clamp(1.4rem,2.6vw,2rem);line-height:1.16;letter-spacing:-.01em;margin:0}
+.deger .row p{margin:10px 0 0;color:var(--ink-soft);max-width:52ch}
+
+/* KAPANIŞ */
+.close{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden;color:#fff}
+.close .bg{position:absolute;inset:0;background:url('/gorseller/nedir/gece.jpg') center/cover no-repeat}
+.close .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,30,.6),rgba(8,18,30,.86))}
+.close .inner{position:relative;z-index:10;width:100%;padding:80px 0}
+.close h2{font-family:"Newsreader",serif;font-weight:430;font-size:clamp(2.1rem,4.6vw,3.8rem);line-height:1.08;letter-spacing:-.02em;max-width:18ch;text-wrap:balance}
+.close h2 em{font-style:italic;color:#8fe0d0}
+.close p{margin-top:20px;max-width:46ch;color:rgba(255,255,255,.82);font-size:1.08rem}
+.close .actions{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px}
+
+/* footer minimal */
+.foot{background:var(--ink);color:rgba(255,255,255,.6);font-family:"Geist Mono",monospace;font-size:12px}
+.foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding:26px 28px}
+.foot a{color:rgba(255,255,255,.72)}
+
+@media(min-width:880px){
+  .thesis .cols{grid-template-columns:1.3fr .7fr;gap:60px;align-items:end}
+  .beat{grid-template-columns:1fr 1fr}
+  .beat.rev .media{order:2}
+  .beat .body{padding:96px 60px 96px 0}
+  .beat.rev .body{padding:96px 0 96px 60px}
+  .mech .flow{grid-template-columns:1fr}
+}
+@media(max-width:879px){
+  .wrap{padding:0 20px}
+  .mast{padding:16px 0}
+  .mast nav{display:none}
+  .hero{min-height:100svh}
+  .hero .inner{padding-bottom:40px}
+  .hero h1{font-size:clamp(2rem,8.4vw,2.8rem);line-height:1.05;max-width:16ch}
+  .hero .sub{font-size:1rem;margin-top:16px}
+  .hero .altbar{flex-direction:column;align-items:stretch;gap:18px;margin-top:28px}
+  .hero .actions{flex-direction:column}
+  .hero .actions .btn{width:100%;text-align:center}
+  .hud{width:100%}
+  .thesis{padding:72px 0 56px}
+  .beat .media{min-height:56vh}
+  .beat .body{padding:48px 0}
+  .mech,.deger{padding:64px 0}
+  .mech .node{flex-wrap:wrap}
+  .mech .node .live{margin-left:44px}
+  .deger .row{grid-template-columns:40px 1fr;gap:12px;padding:24px 0}
+  .close{min-height:78vh}
+}
+</style>
+</head>
+<body>
+<div class="rozet">MOCKUP · /nedir — Sahadan</div>
+
+<!-- MASTHEAD -->
+<header class="mast">
+  <div class="wrap">
+    <span class="mark">Proje<b>dar</b></span>
+    <nav>
+      <a href="#">Müteahhit</a><a href="#">Danışman</a><a href="#">Projeler</a>
+    </nav>
+    <a href="#" class="cta">Ağa katıl</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="bg"></div>
+  <div class="scrim"></div>
+  <div class="inner">
+    <div class="wrap">
+      <p class="eyebrow" style="color:#8fe0d0">Projedar · canlı konut ağı</p>
+      <h1>Proje yükselir. Stok, <em>doğru danışmanda</em> satılır.</h1>
+      <p class="sub">Projedar, yeni konut projelerini yetkili gayrimenkul danışmanlarıyla buluşturan, geliştirici kontrollü tahsisle yönetilen bir satış ağıdır. İlan portalı değil, bir altyapı.</p>
+      <div class="altbar">
+        <div class="actions">
+          <a href="#" class="btn btn-p">Danışman olarak ücretsiz katıl</a>
+          <a href="#" class="btn btn-g">Projeni ağa ekle</a>
+        </div>
+        <div class="hud">
+          <div class="h"><span><span class="dot g" style="display:inline-block;margin-right:6px"></span>Canlı stok</span><span>3 sn önce</span></div>
+          <div class="row"><b>A-12 · 3+1 · 142 m²</b><span class="tag"><span class="dot g"></span>Müsait</span></div>
+          <div class="row"><b>B-07 · 2+1 · 98 m²</b><span class="tag"><span class="dot a pulse"></span>Opsiyon</span></div>
+          <div class="row"><b>C-21 · 4+1 · 176 m²</b><span class="tag" style="opacity:.6"><span class="dot r"></span>Satıldı</span></div>
+          <div class="f">Fiyat yalnız yetkili danışmana açık</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section class="thesis">
+  <div class="wrap">
+    <div class="cols">
+      <p class="lead rv">Bir müteahhit stoğunu, fiyatını ve dağıtımını <span class="k">tek panelden</span> yönetir. Bir danışman, yalnız kendisine tahsisli daireleri canlı görür ve müşterisine paylaşır. Arada eskiyen ilan, çift satış ve dağınıklık yoktur.</p>
+      <div class="cols rv" style="display:block">
+        <p class="eyebrow">Nedir</p>
+        <p class="rule-top" style="margin-top:14px;color:var(--ink-soft);font-size:1rem">Projedar son kullanıcıya ilan sunmaz. Profesyoneller arası (B2B), tahsisle yönetilen bir satış altyapısıdır. Fiyat ve canlı stok yalnız yetkili danışmana açılır.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAT 1: MÜTEAHHİT -->
+<section class="beat rv" id="muteahhit">
+  <div class="media"><img src="/gorseller/nedir/komuta.jpg" alt="Müteahhit ekranlarında canlı stoğu izlerken, camdan yükselen projesine bakıyor" /></div>
+  <div class="body"><div class="in" style="margin-left:auto;max-width:38ch">
+    <span class="idx">01 / Müteahhit</span>
+    <h2>Tek panelden yönetir.</h2>
+    <p>Stok, fiyat ve dağıtım tek yerde. Müteahhit hangi daireyi kimin satacağını seçer; projesinin canlı görünümü her an elinin altındadır.</p>
+    <p class="note">Kim, neyi, hangi fiyata satıyor: tek doğru kaynak.</p>
+  </div></div>
+</section>
+
+<!-- MEKANİK: TAHSİS -->
+<section class="mech" id="tahsis">
+  <div class="wrap">
+    <span class="idx rv">02 / Mekanik</span>
+    <h2 class="serif rv" style="margin-top:12px">Erişim açık pazar değil. Müteahhit seçer: <span style="color:var(--teal);font-style:italic">tahsis</span>.</h2>
+    <div class="flow rv">
+      <div class="node"><span class="n">→</span><div class="t"><b>Müteahhit projeyi ekler</b><span>Stok, fiyat, daire tipleri tek panelde tanımlanır.</span></div><div class="live"><span class="chip"><span class="dot g"></span>24</span><span class="chip"><span class="dot a"></span>6</span><span class="chip"><span class="dot r"></span>12</span></div></div>
+      <div class="node"><span class="n">→</span><div class="t"><b>Danışmana tahsis eder</b><span>Hangi danışmanın hangi birimleri satacağını geliştirici belirler.</span></div><div class="live"><span class="chip">yetki: kontrollü</span></div></div>
+      <div class="node"><span class="n">→</span><div class="t"><b>Danışman canlı satar</b><span>Tahsisli daireleri canlı fiyat ve durumla görür, müşterisine paylaşır.</span></div><div class="live"><span class="chip"><span class="dot g pulse"></span>canlı</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAT 2: DANIŞMAN -->
+<section class="beat rev rv">
+  <div class="media"><img src="/gorseller/nedir/danisman.jpg" alt="Gayrimenkul danışmanı, model dairede müşteri çiftine tablette kat planını gösteriyor" /></div>
+  <div class="body"><div class="in" style="max-width:38ch">
+    <span class="idx">03 / Danışman</span>
+    <h2>Yalnız tahsislisini satar.</h2>
+    <p>Danışman tek hesapla birçok geliştiricinin kendisine tahsis ettiği projeleri görür. Müşterisine gönderdiği bağlantı canlı fiyatı gösterir, eskimez.</p>
+    <p class="note">Kazancın sende kalır. Projedar satış komisyonuna ortak olmaz.</p>
+  </div></div>
+</section>
+
+<!-- DEĞER -->
+<section class="deger" id="deger">
+  <div class="wrap">
+    <span class="idx rv">04 / Neden farklı</span>
+    <div style="margin-top:36px">
+      <div class="row rv"><span class="n">01</span><div><h3>Tek doğru kaynak, canlı.</h3><p>Fiyat ve stok tek yerde tutulur; eskiyen, çelişen ilan olmaz. Her yazışta güncellenir.</p></div></div>
+      <div class="row rv"><span class="n">02</span><div><h3>Çift satış sistemle engellenir.</h3><p>Bir daire aynı anda iki kişiye satılamaz. Opsiyon ve satış tek kaynaktan kilitlenir.</p></div></div>
+      <div class="row rv"><span class="n">03</span><div><h3>Projedar komisyona ortak olmaz.</h3><p>Danışman kendi komisyonunu alır. Gelir modeli müteahhit ile abonelik üzerinedir.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KAPANIŞ -->
+<section class="close" id="katil">
+  <div class="bg"></div>
+  <div class="scrim"></div>
+  <div class="inner">
+    <div class="wrap">
+      <h2 class="rv">Yeni konut, <em>doğru satış ağında</em>.</h2>
+      <p class="rv">Danışmansan ücretsiz katıl, kazancın sende. Müteahhitsen projeni ekle, tek panelden yönet.</p>
+      <div class="actions rv">
+        <a href="#" class="btn btn-p">Danışman olarak katıl</a>
+        <a href="#" class="btn btn-g">Projeni ağa ekle</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Projedar</span>
+    <span><a href="#">Müteahhit</a> · <a href="#">Danışman</a> · <a href="#">Konut projeleri</a> · <a href="#">Güven</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.rv');
+  if(location.search.indexOf('shot')>=0){
+    document.documentElement.style.scrollBehavior='auto';
+    var s=document.createElement('style');
+    s.textContent='.hero{min-height:780px!important}.close{min-height:640px!important}.beat .media{min-height:440px!important}';
+    document.head.appendChild(s);
+    els.forEach(function(e){e.classList.add('in')});
+    return;
+  }
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in')}); return; }
+  var io = new IntersectionObserver(function(en){ en.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); } }); }, {rootMargin:'0px 0px -12% 0px', threshold:.08});
+  els.forEach(function(e){ io.observe(e); });
+  // güvenlik ağı: 2.2s sonra her şeyi göster (screenshot/hızlı scroll)
+  setTimeout(function(){ els.forEach(function(e){ e.classList.add('in'); }); }, 2200);
+})();
+</script>
+</body>
+</html>
