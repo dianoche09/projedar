@@ -63,7 +63,9 @@ export async function stokAcilisCalistir(): Promise<CronSonuc> {
 
   const { data, error } = await supabase
     .from("birim")
-    .update({ durum: "musait", son_guncelleme: simdi, stale: false })
+    // satisa_acilis=null: açıldıktan sonra temizle → birim sonradan tekrar 'planli' yapılırsa
+    //   eski geçmiş tarih yüzünden bir sonraki cron'da ANINDA açılmasın (idempotent yeniden-planlama).
+    .update({ durum: "musait", satisa_acilis: null, son_guncelleme: simdi, stale: false })
     .eq("durum", "planli")
     .eq("satilabilir", true)
     .not("satisa_acilis", "is", null)
