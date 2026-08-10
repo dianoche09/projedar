@@ -6,7 +6,7 @@ export default async function Havuz() {
   const supabase = await createClient();
 
   // RLS: proje_emlakci_select + birim_emlakci_select → yalnız tahsisli projeler/birimler
-  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }, { data: kazancOzet }] = await Promise.all([
+  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }, { data: kazancOzet }, { data: fiyatOzet }] = await Promise.all([
     supabase
       .from("proje")
       .select("id, ad, il, ilce, mahalle, lat, lng, kunye, belge_dogrulandi, son_guncelleme, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, para_birimi, oturum_uygun, golden_visa_esik, kira_getirisi_pct")
@@ -17,16 +17,31 @@ export default async function Havuz() {
     // Emlakçı kazanç özeti (tahsisli projelerde daire başına min/max prim). Migration
     // yoksa hata → boş (graceful). Ham komisyon client'a çıkmaz.
     supabase.rpc("emlakci_kazanc_ozet"),
+    // Redakte fiyat özeti (fiyat_gorunur=false birimler banda girmez). Migration yoksa boş → ham fiyata düşülür.
+    supabase.rpc("emlakci_fiyat_ozet"),
   ]);
   const kapakMap = new Map((kapaklar ?? []).map((k) => [k.proje_id, k.url as string | null]));
+  // proje_id → redakte görünür fiyat bandı (varsa ham min/max yerine bu kullanılır)
+  const fiyatOzetMap = new Map<string, { min: number | null; max: number | null }>();
+  for (const f of (fiyatOzet ?? []) as { proje_id: string; fiyat_min: number | null; fiyat_max: number | null }[]) {
+    fiyatOzetMap.set(f.proje_id, {
+      min: f.fiyat_min == null ? null : Number(f.fiyat_min),
+      max: f.fiyat_max == null ? null : Number(f.fiyat_max),
+    });
+  }
   const kazancMap = new Map<string, { min: number; max: number }>();
   for (const k of (kazancOzet ?? []) as { proje_id: string; kazanc_min: number; kazanc_max: number }[]) {
     if (k.kazanc_max != null) kazancMap.set(k.proje_id, { min: Number(k.kazanc_min), max: Number(k.kazanc_max) });
   }
 
+  // RPC uygulandıysa (null değilse) redakte banda güven; uygulanmadıysa ham fiyata düş (graceful)
+  const fiyatRedakteVar = fiyatOzet != null;
   const kartlar: ProjeKart[] = (projeler ?? []).map((p) => {
     const bb = (birimler ?? []).filter((b) => b.proje_id === p.id);
     const fiyatlar = bb.map((b) => Number(b.liste_fiyati)).filter((f) => f > 0);
+    const oz = fiyatOzetMap.get(p.id);
+    const fiyatMin = fiyatRedakteVar ? oz?.min ?? null : fiyatlar.length ? Math.min(...fiyatlar) : null;
+    const fiyatMax = fiyatRedakteVar ? oz?.max ?? null : fiyatlar.length ? Math.max(...fiyatlar) : null;
     const tipSet = [
       ...new Set(
         (tipler ?? [])
@@ -53,8 +68,8 @@ export default async function Havuz() {
       musait: bb.filter((b) => b.durum === "musait").length,
       opsiyon: bb.filter((b) => b.durum === "opsiyonlu" || b.durum === "satis_beklemede").length,
       satildi: bb.filter((b) => b.durum === "satildi").length,
-      min: fiyatlar.length ? Math.min(...fiyatlar) : null,
-      max: fiyatlar.length ? Math.max(...fiyatlar) : null,
+      min: fiyatMin,
+      max: fiyatMax,
       kazancMin: kazancMap.get(p.id)?.min ?? null,
       kazancMax: kazancMap.get(p.id)?.max ?? null,
       tipler: tipSet,

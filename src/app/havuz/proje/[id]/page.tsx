@@ -81,6 +81,15 @@ export default async function HavuzProjeDetay({
   for (const k of (kazancRaw ?? []) as { birim_id: string; kazanc: number | null }[]) {
     if (k.kazanc != null) kazancMap[k.birim_id] = Number(k.kazanc);
   }
+  // Fiyat görünürlüğü: "Fiyat gizli" tahsiste liste_fiyati REDAKTE edilir (fiyat_gorunur sızıntısı fix).
+  // RPC yoksa (migration bekliyor) map boş → ham fiyata düşülür (graceful, kırılmaz).
+  const { data: fiyatRaw } = await supabase.rpc("emlakci_birim_fiyat", { p_proje_id: id });
+  const fiyatMap = new Map<string, number | null>();
+  for (const f of (fiyatRaw ?? []) as { birim_id: string; fiyat: number | null }[]) {
+    fiyatMap.set(f.birim_id, f.fiyat == null ? null : Number(f.fiyat));
+  }
+  const fiyatCoz = (bid: string, ham: number | null): number | null =>
+    fiyatMap.has(bid) ? fiyatMap.get(bid) ?? null : ham;
   // Proje geneli: daire başına kazanç ARALIĞI (daireler farklı fiyat/komisyonla farklı
   // kazandırır → tek toplam yanıltır). Daire özelinde net rakam listede gösterilir.
   const musaitKazanclar = ((birimler ?? []) as { id: string; durum: string }[])
@@ -131,8 +140,12 @@ export default async function HavuzProjeDetay({
     malzeme.length
   );
 
-  // Tahsisli stoktan KPI — fiyat aralığı yalnız müsait birimlerden
-  const stok = birimler ?? [];
+  // Tahsisli stoktan KPI — fiyat aralığı yalnız müsait birimlerden.
+  // liste_fiyati REDAKTE edilir (fiyat_gorunur=false → null); tüm downstream (KPI/katalog/EmlakciStok/paylaşım) gizli fiyatı görmez.
+  const stok = (birimler ?? []).map((b) => ({
+    ...b,
+    liste_fiyati: fiyatCoz(b.id as string, (b.liste_fiyati as number | null) ?? null),
+  }));
   const toplam = stok.length;
   const musait = stok.filter((b) => b.durum === "musait").length;
   const opsiyon = stok.filter((b) => b.durum === "opsiyonlu" || b.durum === "satis_beklemede").length;
