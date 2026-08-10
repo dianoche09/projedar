@@ -88,10 +88,10 @@ export async function opsiyonTalepGonder(
     .from("opsiyon_talep")
     .insert({ birim_id: b.data, talep_eden_id: user.id, durum: "beklemede" });
 
-  // TANI (geçici): insert reddedilirse gerçek Postgres hatasını yüzeye çıkar (RLS/constraint kök-neden).
+  // Insert reddedilirse: kök-neden yalnız sunucu loguna (RLS/constraint teşhisi); kullanıcıya jenerik mesaj (iç yapı ifşa etme).
   if (error) {
     console.error("[opsiyonTalepGonder] insert HATASI:", error.code, "|", error.message, "|", error.details, "|", error.hint);
-    return { ok: false, mesaj: `Talep gönderilemedi [${error.code ?? "?"}]: ${error.message}` };
+    return { ok: false, mesaj: "Talep gönderilemedi. Lütfen tekrar deneyin." };
   }
 
   // insert BAŞARILI → kayıt/bildirim best-effort: burada bir throw core aksiyonu ASLA düşürmemeli.
