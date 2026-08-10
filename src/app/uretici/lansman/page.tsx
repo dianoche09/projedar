@@ -18,9 +18,31 @@ const DURUM_RENK: Record<string, string> = {
 const inpCls =
   "w-full rounded-lg border border-[var(--cizgi)] bg-soft px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
 
+/** Yaklaşan (yakın→uzak) → tarihsiz → geçmiş (yeni→eski). Modül seviyesi: render pürlük kuralı. */
+function lansmanSirala<T extends { tarih: string | null }>(list: T[]): T[] {
+  const now = Date.now();
+  const faz = (iso: string | null): number => (iso == null ? 1 : new Date(iso).getTime() >= now ? 0 : 2);
+  return [...list].sort((a, b) => {
+    const fa = faz(a.tarih);
+    const fb = faz(b.tarih);
+    if (fa !== fb) return fa - fb;
+    if (fa === 0) return new Date(a.tarih!).getTime() - new Date(b.tarih!).getTime();
+    if (fa === 2) return new Date(b.tarih!).getTime() - new Date(a.tarih!).getTime();
+    return 0;
+  });
+}
+
 function tarihFmt(iso: string | null): string {
   if (!iso) return "";
-  return new Date(iso).toLocaleString("tr-TR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  // Sunucu UTC'de render eder → timeZone sabitle (TR), aksi halde 3 saat kayar gösterilir
+  return new Date(iso).toLocaleString("tr-TR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Istanbul",
+  });
 }
 
 export default async function UreticiLansman() {
@@ -34,7 +56,7 @@ export default async function UreticiLansman() {
   ]);
   const pl = (projeler ?? []) as { id: string; ad: string }[];
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const ll = (lansmanlar ?? []) as any[];
+  const ll = lansmanSirala((lansmanlar ?? []) as any[]);
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
   return (

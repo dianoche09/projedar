@@ -60,6 +60,24 @@ function basariya(varsayilan: string, formData: FormData, mesaj?: string): never
   redirect(mesaj ? `${yol}${ayrac}mesaj=${encodeURIComponent(mesaj)}` : yol);
 }
 
+/**
+ * <input type="datetime-local"> offset'siz "YYYY-MM-DDTHH:mm" verir. Ham olarak timestamptz'e
+ * yazılırsa Postgres sunucu TZ'sinde (Supabase=UTC) yorumlar → TR saati 3 saat kayar.
+ * TR sabit UTC+3 (DST yok) olduğundan naive değeri +03:00 kabul edip UTC ISO'ya çeviririz.
+ * Zaten offset/Z içeren string dokunulmaz. Geçersizde null.
+ */
+function trTarih(v: FormDataEntryValue | null): string | null {
+  const s = String(v ?? "").trim();
+  if (!s) return null;
+  const norm = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(s)
+    ? `${s}:00+03:00`
+    : /([+-]\d{2}:?\d{2}|Z)$/.test(s)
+      ? s
+      : `${s}+03:00`;
+  const d = new Date(norm);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
+
 // ---- Proje oluştur ----
 const INSAAT_ASAMA = [
   "planlama",
@@ -839,15 +857,14 @@ export async function dalgaPlanla(formData: FormData) {
   const idler = idListesi(formData);
   if (idler.length === 0) hataya(`/uretici/proje/${proje_id}`, "Birim seçilmedi.");
 
-  const ham = String(formData.get("satisa_acilis") ?? "").trim();
-  const t = ham ? new Date(ham) : null;
-  if (!t || Number.isNaN(t.getTime())) {
+  // datetime-local → TR (UTC+3) → UTC ISO (timezone kayması fix)
+  const acilisIso = trTarih(formData.get("satisa_acilis"));
+  if (!acilisIso) {
     hataya(`/uretici/proje/${proje_id}`, "Geçerli bir açılış tarihi seç.");
   }
-  if (t.getTime() <= Date.now()) {
+  if (new Date(acilisIso).getTime() <= Date.now()) {
     hataya(`/uretici/proje/${proje_id}`, "Açılış tarihi gelecekte olmalı.");
   }
-  const acilisIso = t.toISOString();
 
   // Yalnız müsait/planlı birimler dalgaya alınır (opsiyon/satış korunur).
   const { data: uygun } = await supabase
@@ -1500,13 +1517,16 @@ export async function lansmanEkle(formData: FormData) {
     const s = String(v ?? "").trim();
     return s === "" ? null : s;
   };
+  // durum allow-list (kolon serbest text, CHECK yok → crafted POST kalkanı)
+  const LANSMAN_DURUM = ["lansman", "on_talep", "satista", "etkinlik"];
+  const durumRaw = metin(formData.get("durum")) ?? "lansman";
   const { error } = await supabase.from("lansman").insert({
     proje_id,
     baslik,
     aciklama: metin(formData.get("aciklama")),
-    tarih: metin(formData.get("tarih")),
+    tarih: trTarih(formData.get("tarih")), // datetime-local → TR (UTC+3) → UTC ISO
     konum: metin(formData.get("konum")),
-    durum: metin(formData.get("durum")) ?? "lansman",
+    durum: LANSMAN_DURUM.includes(durumRaw) ? durumRaw : "lansman",
   });
   if (error) hataya("/uretici/lansman", error.message);
   revalidatePath("/uretici/lansman");
