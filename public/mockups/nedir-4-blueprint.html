@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar nedir? — Mimari blueprint (mockup)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* DESIGN READ: /nedir, mimari blueprint. Teknik çizim estetiği: ince grid, ölçü etiketleri, crosshair,
+   draw-in çizgiler. VARIANCE 6 / MOTION 4 / DENSITY 4. Güven-önce, sakin. Tek aksan: teal. */
+:root{
+  --zemin:#eef2f7; --kagit:#f7f9fc; --ink:#12283f; --ink-soft:#5a6b7d; --navy:#173a58;
+  --teal:#1a8676; --teal-2:#1e9b8a; --cizgi:#173a5820; --cizgi-2:#173a5836;
+  --musait:#2fb36b; --opsiyon:#e3a12c; --satildi:#d15a4e;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--zemin);color:var(--ink);font-family:"Archivo",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--cizgi) 1px,transparent 1px),linear-gradient(90deg,var(--cizgi) 1px,transparent 1px);
+  background-size:28px 28px}
+.mono{font-family:"Geist Mono",monospace}
+.gel{opacity:0;transform:translateY(18px);animation:gelUp .8s var(--ease-out) forwards}
+@keyframes gelUp{to{opacity:1;transform:none}}
+.ciz{stroke-dasharray:600;stroke-dashoffset:600;animation:ciz 1.6s var(--ease-out) .3s forwards}
+@keyframes ciz{to{stroke-dashoffset:0}}
+.ciz2{animation-delay:.55s}.ciz3{animation-delay:.8s}
+.pt{opacity:0;animation:ptIn .5s var(--ease-out) forwards}@keyframes ptIn{to{opacity:1}}
+.nab{animation:nab 2.2s infinite}@keyframes nab{0%,100%{opacity:1}50%{opacity:.4}}
+.lnk{transition:transform .16s var(--ease-out),box-shadow .16s var(--ease-out)}.lnk:active{transform:scale(.98)}
+a{text-decoration:none;color:inherit}
+/* köşe crosshair */
+.cross{position:relative}
+.cross::before,.cross::after{content:"";position:absolute;width:11px;height:11px;border-color:var(--cizgi-2);border-style:solid}
+.cross::before{top:-1px;left:-1px;border-width:1px 0 0 1px}
+.cross::after{bottom:-1px;right:-1px;border-width:0 1px 1px 0}
+::selection{background:var(--teal);color:#fff}
+.etiket{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase}
+</style>
+</head>
+<body>
+<div class="mono" style="position:fixed;left:12px;bottom:12px;z-index:50;background:var(--ink);color:#fff;font-size:11px;padding:6px 10px;border-radius:6px;opacity:.85">MOCKUP · /nedir — 4 · Mimari blueprint</div>
+
+<!-- TOPBAR -->
+<header class="sticky top-0 z-40" style="background:rgba(238,242,247,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--cizgi-2)">
+  <div class="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4">
+    <span class="text-[19px] font-extrabold tracking-tight">Proje<span style="color:var(--teal)">dar</span></span>
+    <nav class="mono hidden items-center gap-7 text-[12px] font-medium md:flex" style="color:var(--ink-soft)"><a href="#">Müteahhit</a><a href="#">Danışman</a><a href="#">Projeler</a></nav>
+    <a href="#" class="lnk rounded-md px-4 py-2 text-[13px] font-bold text-white" style="background:var(--navy)">Ağa katıl</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="mx-auto max-w-[1200px] px-6 pt-16 pb-10 md:pt-20">
+  <div class="grid gap-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-14">
+    <div>
+      <p class="etiket gel mb-5 flex items-center gap-2" style="animation-delay:.05s"><span class="nab inline-block h-1.5 w-1.5 rounded-full" style="background:var(--musait)"></span> canlı ağ · b2b · ölçek 1:1</p>
+      <h1 class="gel font-extrabold tracking-tight" style="font-size:clamp(2.6rem,6.6vw,4.8rem);line-height:.98;animation-delay:.12s">
+        Projedar<br>nedir?
+      </h1>
+      <p class="gel mt-6 max-w-md text-[17px] leading-relaxed" style="color:var(--ink-soft);animation-delay:.2s">
+        Yeni konut projelerini yetkili danışmanlarla buluşturan, <b style="color:var(--ink)">geliştirici kontrollü tahsisle</b> yönetilen nötr bir B2B ağ. İlan portalı değil; bir satış altyapısı; ölçülü, kontrollü, tek kaynak.
+      </p>
+      <div class="gel mt-8 flex flex-wrap gap-3.5" style="animation-delay:.3s">
+        <a href="#" class="lnk rounded-md px-6 py-3.5 text-[14.5px] font-bold text-white" style="background:var(--navy)">Danışman olarak ücretsiz katıl</a>
+        <a href="#" class="lnk rounded-md border px-6 py-3.5 text-[14.5px] font-semibold" style="border-color:var(--cizgi-2);color:var(--teal)">Projeni ağa ekle</a>
+      </div>
+    </div>
+    <!-- teknik çizim: tahsis şeması -->
+    <div class="cross gel rounded-lg p-5 md:p-7" style="background:var(--kagit);border:1px solid var(--cizgi-2);animation-delay:.24s">
+      <div class="etiket mb-3 flex items-center justify-between"><span>ŞEMA · tahsis-01</span><span>dağıtım / kontrol</span></div>
+      <svg viewBox="0 0 420 300" class="h-auto w-full">
+        <!-- ölçü çizgisi üst -->
+        <g stroke="var(--cizgi-2)" stroke-width="1">
+          <line x1="24" y1="24" x2="396" y2="24" class="pt" style="animation-delay:1.1s"/>
+          <line x1="24" y1="20" x2="24" y2="28" class="pt" style="animation-delay:1.1s"/><line x1="396" y1="20" x2="396" y2="28" class="pt" style="animation-delay:1.1s"/>
+        </g>
+        <text x="210" y="18" text-anchor="middle" class="etiket pt" style="animation-delay:1.2s" fill="var(--ink-soft)">tek kaynak → n danışman</text>
+        <!-- bağlantılar -->
+        <g fill="none" stroke="var(--teal)" stroke-width="2">
+          <path d="M132,160 C220,160 250,80 300,80" class="ciz"/>
+          <path d="M132,160 C230,160 250,160 300,160" class="ciz ciz2"/>
+          <path d="M132,160 C220,160 250,240 300,240" class="ciz ciz3"/>
+        </g>
+        <!-- müteahhit -->
+        <g class="pt" style="animation-delay:.2s">
+          <rect x="28" y="128" width="104" height="64" rx="6" fill="#fff" stroke="var(--navy)" stroke-width="1.5"/>
+          <text x="80" y="156" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)" font-family="Archivo">Müteahhit</text>
+          <text x="80" y="174" text-anchor="middle" font-size="9.5" fill="var(--ink-soft)" font-family="Geist Mono">tek panel</text>
+        </g>
+        <!-- danışmanlar -->
+        <g font-family="Archivo" font-size="12" font-weight="600" fill="var(--ink)">
+          <g class="pt" style="animation-delay:1.3s"><rect x="300" y="58" width="96" height="44" rx="6" fill="#fff" stroke="var(--teal)" stroke-width="1.25"/><circle cx="318" cy="80" r="4" fill="var(--musait)"/><text x="330" y="84">Danışman A</text></g>
+          <g class="pt" style="animation-delay:1.42s"><rect x="300" y="138" width="96" height="44" rx="6" fill="#fff" stroke="var(--teal)" stroke-width="1.25"/><circle cx="318" cy="160" r="4" fill="var(--opsiyon)"/><text x="330" y="164">Danışman B</text></g>
+          <g class="pt" style="animation-delay:1.54s"><rect x="300" y="218" width="96" height="44" rx="6" fill="#fff" stroke="var(--teal)" stroke-width="1.25"/><circle cx="318" cy="240" r="4" fill="var(--musait)"/><text x="330" y="244">Danışman C</text></g>
+        </g>
+        <!-- tahsis etiketi -->
+        <text x="238" y="150" text-anchor="middle" font-size="10" letter-spacing="1.5" fill="var(--teal)" font-family="Geist Mono" class="pt" style="animation-delay:1.6s">TAHSİS</text>
+      </svg>
+      <div class="etiket mt-2" style="color:var(--teal)">açık pazar yok · çift satış yok · eski fiyat yok</div>
+    </div>
+  </div>
+</section>
+
+<!-- NÖTR AĞ ifade -->
+<section class="mx-auto max-w-[1200px] px-6 py-16 md:py-24">
+  <div class="etiket mb-4">01 — model</div>
+  <p class="max-w-4xl text-[clamp(1.6rem,3.4vw,2.6rem)] font-bold leading-[1.12] tracking-tight">
+    Bağımsız danışman <span style="color:var(--teal)">tek hesapla</span> birçok geliştiricinin stoğuna erişir. Erişim açık pazar değil, <span style="color:var(--teal)">geliştirici kontrollü tahsisle</span> ölçülür.
+  </p>
+</section>
+
+<!-- KIYAS — teknik tablo -->
+<section class="mx-auto max-w-[1200px] px-6 pb-20">
+  <div class="etiket mb-4">02 — fark</div>
+  <div class="cross overflow-hidden rounded-lg" style="background:var(--kagit);border:1px solid var(--cizgi-2)">
+    <div class="mono grid grid-cols-[1.3fr_1fr_1fr] border-b text-[11px] font-semibold uppercase tracking-wider" style="border-color:var(--cizgi-2);color:var(--ink-soft)">
+      <div class="p-4">Ölçüt</div><div class="p-4 border-l" style="border-color:var(--cizgi-2)">İlan portalı</div><div class="p-4 border-l" style="border-color:var(--cizgi-2);color:var(--teal)">Projedar</div>
+    </div>
+    <div class="grid grid-cols-[1.3fr_1fr_1fr] border-b" style="border-color:var(--cizgi)"><div class="p-4 font-semibold">Erişim modeli</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi);color:var(--ink-soft)">Açık pazar, herkes görür</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi)">Geliştirici kontrollü tahsis</div></div>
+    <div class="grid grid-cols-[1.3fr_1fr_1fr] border-b" style="border-color:var(--cizgi)"><div class="p-4 font-semibold">Fiyat ve stok</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi);color:var(--ink-soft)">İlanlar eskir, çelişir</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi)">Tek doğru kaynak, canlı</div></div>
+    <div class="grid grid-cols-[1.3fr_1fr_1fr] border-b" style="border-color:var(--cizgi)"><div class="p-4 font-semibold">Komisyon</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi);color:var(--ink-soft)">Aracı zinciri pay alabilir</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi)">Projedar pay almaz</div></div>
+    <div class="grid grid-cols-[1.3fr_1fr_1fr]"><div class="p-4 font-semibold">Çift satış</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi);color:var(--ink-soft)">Elle takip, karışır</div><div class="p-4 border-l text-[14px]" style="border-color:var(--cizgi)">Sistemle engellenir</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="mx-auto max-w-[1200px] px-6 pb-28">
+  <div class="cross flex flex-col items-start gap-6 rounded-xl px-8 py-12 md:px-14" style="background:var(--navy);color:#fff">
+    <h2 class="text-[clamp(1.9rem,4.6vw,3.2rem)] font-extrabold leading-[1.0] tracking-tight" style="max-width:18ch">Yeni konut projeleri, doğru satış ağında.</h2>
+    <div class="flex flex-wrap gap-3.5">
+      <a href="#" class="lnk rounded-md px-7 py-3.5 text-[15px] font-bold" style="background:#fff;color:var(--navy)">Danışman olarak katıl</a>
+      <a href="#" class="lnk rounded-md border px-7 py-3.5 text-[15px] font-semibold text-white" style="border-color:rgba(255,255,255,.3)">Projeni ağa ekle</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

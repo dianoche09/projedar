@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar nedir? — Spatial / sinematik (mockup)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700;800&family=Space+Grotesk:wght@500;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* DESIGN READ: /nedir, spatial/sinematik. Ağ diyagramı = sayfanın kahramanı; dev rakamlar, parallax his,
+   akan tahsis çizgileri, spring giriş. VARIANCE 9 / MOTION 9 / DENSITY 3. Tek aksan: teal. */
+:root{
+  --teal:#35e0c6; --teal-2:#1e9b8a; --navy:#13314b; --musait:#33d17a; --opsiyon:#e3a12c; --satildi:#e05a4c;
+  --ln:rgba(255,255,255,.10);
+  --ease-out:cubic-bezier(0.16,1,0.3,1); --spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+*{box-sizing:border-box}
+body{margin:0;color:#eaf3f6;font-family:"Space Grotesk",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background:
+    radial-gradient(1100px 620px at 78% -6%, rgba(53,224,198,.20), transparent 62%),
+    radial-gradient(860px 520px at 8% 112%, rgba(30,110,150,.24), transparent 58%),
+    linear-gradient(160deg,#04121f 0%,#06182a 52%,#082238 100%);
+  min-height:100vh}
+.disp{font-family:"Sora",sans-serif}
+.mono{font-family:"Geist Mono",monospace}
+.glow{text-shadow:0 0 40px rgba(53,224,198,.35)}
+.gel{opacity:0;transform:translateY(26px) scale(.98);animation:gelUp .9s var(--ease-out) forwards}
+@keyframes gelUp{to{opacity:1;transform:none}}
+.pop{opacity:0;transform:scale(.6);animation:pop .7s var(--spring) forwards}
+@keyframes pop{to{opacity:1;transform:scale(1)}}
+.nab{animation:nab 2.4s ease-in-out infinite}@keyframes nab{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.7}}
+.akis{stroke-dasharray:6 10;animation:akis 1s linear infinite}@keyframes akis{to{stroke-dashoffset:-32}}
+.ciz{stroke-dasharray:520;stroke-dashoffset:520;animation:ciz 1.4s var(--ease-out) .3s forwards}@keyframes ciz{to{stroke-dashoffset:0}}
+.yuz{animation:yuz 6s ease-in-out infinite}@keyframes yuz{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.lnk{transition:transform .16s var(--ease-out)}.lnk:active{transform:scale(.96)}
+a{text-decoration:none;color:inherit}
+::selection{background:var(--teal);color:#04121f}
+.devrakam{font-family:"Sora",sans-serif;font-weight:800;line-height:.8;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(53,224,198,.25));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+<div class="mono" style="position:fixed;left:12px;bottom:12px;z-index:50;background:var(--teal);color:#04121f;font-size:11px;padding:6px 10px;border-radius:8px;font-weight:600">MOCKUP · /nedir — 3 · Spatial / sinematik</div>
+
+<!-- TOPBAR -->
+<header class="sticky top-0 z-40" style="background:rgba(4,18,31,.6);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)">
+  <div class="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-4">
+    <span class="disp text-[19px] font-extrabold tracking-tight">Proje<span style="color:var(--teal)">dar</span></span>
+    <nav class="mono hidden items-center gap-7 text-[12.5px] md:flex" style="color:#8fb0bd"><a href="#">Müteahhit</a><a href="#">Danışman</a><a href="#">Projeler</a></nav>
+    <a href="#" class="lnk rounded-full px-4 py-2 text-[13px] font-bold" style="background:var(--teal);color:#04121f">Ağa katıl</a>
+  </div>
+</header>
+
+<!-- HERO: başlık + kahraman ağ diyagramı -->
+<section class="relative mx-auto max-w-[1240px] px-6 pt-14 pb-10 md:pt-20 text-center">
+  <p class="gel mono mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em]" style="border:1px solid var(--ln);color:var(--teal)">
+    <span class="nab inline-block h-2 w-2 rounded-full" style="background:var(--musait)"></span> Canlı ağ · B2B
+  </p>
+  <h1 class="disp glow mx-auto max-w-[16ch] font-extrabold tracking-tight" style="font-size:clamp(2.8rem,8vw,6rem);line-height:.94;animation:gelUp .9s var(--ease-out) .05s both">
+    Bir ağ,<br>her satışın <span style="color:var(--teal)">tek kaynağı</span>.
+  </h1>
+  <p class="gel mx-auto mt-7 max-w-xl text-[18px] leading-relaxed" style="color:#b6cbd5;animation-delay:.18s">
+    Projedar; müteahhidin stoğunu tek panelde tutan, yalnız yetkilendirdiği danışmanlara tahsis eden nötr bir B2B ağ. İlan değil, canlı bir dağıtım katmanı.
+  </p>
+
+  <!-- KAHRAMAN AĞ DİYAGRAMI -->
+  <div class="relative mt-14 md:mt-16">
+    <svg viewBox="0 0 900 420" class="mx-auto h-auto w-full max-w-[880px]" role="img" aria-label="Müteahhit tek panelden danışmanlara tahsis eder">
+      <defs>
+        <radialGradient id="node" cx="50%" cy="35%" r="70%"><stop offset="0%" stop-color="#0e2c44"/><stop offset="100%" stop-color="#0a2036"/></radialGradient>
+        <filter id="soft"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- bağlantılar -->
+      <g fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round">
+        <path d="M250,210 C420,210 470,80 640,80" stroke-opacity=".2" class="ciz"/>
+        <path d="M250,210 C440,210 470,210 640,210" stroke-opacity=".2" class="ciz"/>
+        <path d="M250,210 C420,210 470,340 640,340" stroke-opacity=".2" class="ciz"/>
+        <path d="M250,210 C420,210 470,80 640,80" class="akis"/>
+        <path d="M250,210 C440,210 470,210 640,210" class="akis"/>
+        <path d="M250,210 C420,210 470,340 640,340" class="akis"/>
+      </g>
+      <!-- tahsis etiketi -->
+      <text x="452" y="196" text-anchor="middle" fill="var(--teal)" font-size="13" font-family="Geist Mono" letter-spacing="3" class="pop" style="animation-delay:.9s">TAHSİS</text>
+      <!-- müteahhit düğümü -->
+      <g class="pop yuz" style="animation-delay:.2s">
+        <circle cx="150" cy="210" r="86" fill="url(#node)" stroke="var(--teal)" stroke-opacity=".5"/>
+        <circle cx="150" cy="210" r="86" fill="none" stroke="var(--teal)" stroke-opacity=".15" filter="url(#soft)"/>
+        <text x="150" y="200" text-anchor="middle" fill="#fff" font-size="21" font-weight="700" font-family="Sora">Müteahhit</text>
+        <text x="150" y="228" text-anchor="middle" fill="#8fc9c0" font-size="12.5" font-family="Geist Mono">tek panel</text>
+      </g>
+      <!-- danışman düğümleri -->
+      <g class="pop" style="animation-delay:1s">
+        <rect x="640" y="46" width="230" height="68" rx="18" fill="#0b2135" stroke="var(--teal)" stroke-opacity=".4"/>
+        <circle cx="672" cy="80" r="6" fill="var(--musait)"/><text x="690" y="86" fill="#eaf3f6" font-size="17" font-weight="600" font-family="Sora">Danışman A</text>
+      </g>
+      <g class="pop" style="animation-delay:1.12s">
+        <rect x="640" y="176" width="230" height="68" rx="18" fill="#0b2135" stroke="var(--teal)" stroke-opacity=".4"/>
+        <circle cx="672" cy="210" r="6" fill="var(--opsiyon)"/><text x="690" y="216" fill="#eaf3f6" font-size="17" font-weight="600" font-family="Sora">Danışman B</text>
+      </g>
+      <g class="pop" style="animation-delay:1.24s">
+        <rect x="640" y="306" width="230" height="68" rx="18" fill="#0b2135" stroke="var(--teal)" stroke-opacity=".4"/>
+        <circle cx="672" cy="340" r="6" fill="var(--musait)"/><text x="690" y="346" fill="#eaf3f6" font-size="17" font-weight="600" font-family="Sora">Danışman C</text>
+      </g>
+    </svg>
+    <p class="gel mono mx-auto mt-2 max-w-xl text-[13px]" style="color:#7f9aa6;animation-delay:1.3s">1 müteahhit → n yetkili danışman → 0 çift satış · 0 eski fiyat</p>
+  </div>
+
+  <div class="gel mt-12 flex flex-wrap justify-center gap-4" style="animation-delay:.3s">
+    <a href="#" class="lnk disp rounded-full px-8 py-4 text-[15px] font-bold" style="background:var(--teal);color:#04121f">Danışman olarak ücretsiz katıl</a>
+    <a href="#" class="lnk disp rounded-full border px-8 py-4 text-[15px] font-semibold text-white" style="border-color:var(--ln)">Projeni ağa ekle →</a>
+  </div>
+</section>
+
+<!-- DEV RAKAMLI ADIMLAR -->
+<section class="mx-auto max-w-[1240px] px-6 py-24">
+  <div class="grid gap-14 md:grid-cols-3 md:gap-8">
+    <div><div class="devrakam" style="font-size:clamp(5rem,11vw,9rem)">01</div><h3 class="disp mt-2 text-2xl font-bold">Projeyi ağa ekle</h3><p class="mt-3 text-[15px] leading-relaxed" style="color:#a7bcc6">Müteahhit stoğunu, fiyatını, daire tiplerini tek panelden tanımlar.</p></div>
+    <div><div class="devrakam" style="font-size:clamp(5rem,11vw,9rem)">02</div><h3 class="disp mt-2 text-2xl font-bold">Danışmana tahsis et</h3><p class="mt-3 text-[15px] leading-relaxed" style="color:#a7bcc6">Hangi danışman neyi satacak geliştirici belirler; erişim kontrollü.</p></div>
+    <div><div class="devrakam" style="font-size:clamp(5rem,11vw,9rem)">03</div><h3 class="disp mt-2 text-2xl font-bold">Canlı sat</h3><p class="mt-3 text-[15px] leading-relaxed" style="color:#a7bcc6">Danışman canlı fiyat ve durumla görür, müşterine paylaşır; stok güncel kalır.</p></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="mx-auto max-w-[1240px] px-6 pb-28">
+  <div class="relative overflow-hidden rounded-[30px] px-8 py-16 text-center md:px-16" style="border:1px solid var(--ln);background:radial-gradient(60% 120% at 50% 0%,rgba(53,224,198,.16),transparent 60%),rgba(6,20,33,.6)">
+    <h2 class="disp glow mx-auto max-w-2xl text-[clamp(2rem,5vw,3.6rem)] font-extrabold leading-[.98] tracking-tight">Yeni konut projeleri, doğru satış ağında.</h2>
+    <div class="mt-9 flex flex-wrap justify-center gap-4">
+      <a href="#" class="lnk disp rounded-full px-8 py-4 text-[15px] font-bold" style="background:var(--teal);color:#04121f">Danışman olarak katıl</a>
+      <a href="#" class="lnk disp rounded-full border px-8 py-4 text-[15px] font-semibold text-white" style="border-color:var(--ln)">Projeni ağa ekle</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar nedir? — Editoryal kinetik (mockup)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* DESIGN READ: /nedir açıklama sayfası, kitle müteahhit+danışman, editoryal-kinetik dil.
+   VARIANCE 9 / MOTION 8 / DENSITY 3. Tek aksan: teal. Açık zemin, dev grotesk display, asimetrik. */
+:root{
+  --zemin:#f4f6fa; --zemin-2:#eaeef5; --ink:#0e2035; --ink-soft:#51637a; --navy:#13314b;
+  --teal:#1a8676; --teal-2:#1e9b8a; --musait:#2fb36b; --opsiyon:#e3a12c; --satildi:#d15a4e;
+  --cizgi:rgba(14,32,53,.10); --cizgi-2:rgba(14,32,53,.16);
+  --ease-out:cubic-bezier(0.16,1,0.3,1); --ease-io:cubic-bezier(0.77,0,0.175,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--zemin);color:var(--ink);font-family:"Instrument Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.disp{font-family:"Bricolage Grotesque",sans-serif}
+.mono{font-family:"Geist Mono",monospace}
+/* kinetik kelime maskesi */
+.satir{overflow:hidden;display:block}
+.kelime{display:inline-block;transform:translateY(112%);animation:yukari .9s var(--ease-out) forwards}
+@keyframes yukari{to{transform:translateY(0)}}
+.d1{animation-delay:.05s}.d2{animation-delay:.13s}.d3{animation-delay:.21s}.d4{animation-delay:.30s}.d5{animation-delay:.40s}.d6{animation-delay:.50s}
+/* teal el-çizimi altı */
+.alti{position:relative;color:var(--teal);white-space:nowrap}
+.alti svg{position:absolute;left:-2%;bottom:-.18em;width:104%;height:.4em;overflow:visible}
+.alti path{stroke:var(--teal);stroke-width:6;fill:none;stroke-linecap:round;stroke-dasharray:340;stroke-dashoffset:340;animation:ciz 1s var(--ease-out) .75s forwards}
+@keyframes ciz{to{stroke-dashoffset:0}}
+/* fade-up reveal */
+.gel{opacity:0;transform:translateY(22px);animation:gelUp .8s var(--ease-out) forwards}
+@keyframes gelUp{to{opacity:1;transform:none}}
+/* canlı sağ ray satırları */
+.tick{opacity:0;transform:translateX(14px);animation:tickIn .6s var(--ease-out) forwards}
+@keyframes tickIn{to{opacity:1;transform:none}}
+.nab{animation:nab 2s infinite}@keyframes nab{0%,100%{opacity:1}50%{opacity:.35}}
+.lnk{transition:transform .16s var(--ease-out)}.lnk:active{transform:scale(.97)}
+a{text-decoration:none;color:inherit}
+.rule{height:1px;background:var(--cizgi)}
+::selection{background:var(--teal);color:#fff}
+</style>
+</head>
+<body>
+<!-- MOCKUP ROZET -->
+<div class="mono" style="position:fixed;left:12px;bottom:12px;z-index:50;background:var(--ink);color:#fff;font-size:11px;padding:6px 10px;border-radius:8px;opacity:.85">MOCKUP · /nedir — 1 · Editoryal kinetik</div>
+
+<!-- TOPBAR -->
+<header class="sticky top-0 z-40" style="background:rgba(244,246,250,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--cizgi)">
+  <div class="mx-auto flex max-w-[1240px] items-center justify-between px-6 py-4">
+    <div class="flex items-center gap-2">
+      <span class="disp text-[19px] font-extrabold tracking-tight">Proje<span style="color:var(--teal)">dar</span></span>
+    </div>
+    <nav class="mono hidden items-center gap-7 text-[12.5px] font-medium md:flex" style="color:var(--ink-soft)">
+      <a href="#">Müteahhit</a><a href="#">Danışman</a><a href="#">Projeler</a>
+    </nav>
+    <a href="#" class="lnk mono rounded-full px-4 py-2 text-[12.5px] font-semibold text-white" style="background:var(--ink)">Ağa katıl →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="mx-auto max-w-[1240px] px-6 pt-16 pb-20 md:pt-24">
+  <div class="grid gap-12 md:grid-cols-[1fr_290px] md:gap-16">
+    <!-- sol: dev başlık -->
+    <div>
+      <p class="mono mb-8 flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.2em]" style="color:var(--teal)">
+        <span class="nab inline-block h-2 w-2 rounded-full" style="background:var(--musait)"></span> Canlı ağ · B2B
+      </p>
+      <h1 class="disp font-extrabold tracking-tight" style="font-size:clamp(2.9rem,8.4vw,6.6rem);line-height:.9;letter-spacing:-.03em">
+        <span class="satir"><span class="kelime d1">Bloklar</span></span>
+        <span class="satir"><span class="kelime d2">yükselir.</span></span>
+        <span class="satir" style="margin-top:.06em"><span class="kelime d3">Stok</span> <span class="kelime d4 alti">erimeden<svg viewBox="0 0 300 12" preserveAspectRatio="none"><path d="M3 8 Q 150 -2 297 7"/></svg></span></span>
+        <span class="satir"><span class="kelime d5">doğru</span> <span class="kelime d6">satılır.</span></span>
+      </h1>
+      <p class="gel mt-8 max-w-lg text-[18px] leading-relaxed" style="animation-delay:.7s;color:var(--ink-soft)">
+        Projedar; yeni konut projelerini yetkili danışmanlarla buluşturan, <b style="color:var(--ink)">geliştirici kontrollü tahsisle</b> yönetilen nötr bir B2B ağ. İlan portalı değil, bir satış altyapısı.
+      </p>
+      <div class="gel mt-9 flex flex-wrap items-center gap-4" style="animation-delay:.82s">
+        <a href="#" class="lnk disp rounded-full px-7 py-3.5 text-[15px] font-bold text-white" style="background:var(--ink)">Danışman olarak ücretsiz katıl</a>
+        <a href="#" class="lnk disp text-[15px] font-bold" style="color:var(--teal)">Projeni ağa ekle <span aria-hidden>→</span></a>
+      </div>
+    </div>
+    <!-- sağ: ince canlı ray (kutu değil, editoryal veri sütunu) -->
+    <aside class="md:border-l md:pl-8" style="border-color:var(--cizgi)">
+      <p class="mono mb-4 text-[11px] font-semibold uppercase tracking-[0.18em]" style="color:var(--ink-soft)">Canlı stok · şu an</p>
+      <div class="flex flex-col">
+        <div class="tick flex items-baseline justify-between border-b py-3" style="border-color:var(--cizgi);animation-delay:.9s">
+          <div><div class="disp text-lg font-bold">A-12</div><div class="mono text-[11px]" style="color:var(--ink-soft)">3+1 · 142 m²</div></div>
+          <span class="mono text-[12px] font-semibold" style="color:var(--musait)">● Müsait</span>
+        </div>
+        <div class="tick flex items-baseline justify-between border-b py-3" style="border-color:var(--cizgi);animation-delay:1.02s">
+          <div><div class="disp text-lg font-bold">B-07</div><div class="mono text-[11px]" style="color:var(--ink-soft)">2+1 · 98 m²</div></div>
+          <span class="mono text-[12px] font-semibold" style="color:var(--opsiyon)">● Opsiyon</span>
+        </div>
+        <div class="tick flex items-baseline justify-between border-b py-3" style="border-color:var(--cizgi);animation-delay:1.14s">
+          <div><div class="disp text-lg font-bold">C-21</div><div class="mono text-[11px]" style="color:var(--ink-soft)">4+1 · 176 m²</div></div>
+          <span class="mono text-[12px] font-semibold" style="color:var(--satildi)">● Satıldı</span>
+        </div>
+      </div>
+      <p class="tick mono mt-4 text-[11px] leading-relaxed" style="color:var(--ink-soft);animation-delay:1.25s">Fiyat yalnız yetkili danışmana açık. 3 sn önce güncellendi.</p>
+    </aside>
+  </div>
+</section>
+
+<div class="mx-auto max-w-[1240px] px-6"><div class="rule"></div></div>
+
+<!-- NÖTR AĞ — editoryal büyük ifade -->
+<section class="mx-auto max-w-[1240px] px-6 py-20 md:py-28">
+  <div class="grid gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+    <p class="mono text-[12px] font-semibold uppercase tracking-[0.18em]" style="color:var(--teal)">01 — Model</p>
+    <div>
+      <p class="disp text-[clamp(1.7rem,3.6vw,2.9rem)] font-bold leading-[1.08] tracking-tight">
+        Bağımsız danışman <span style="color:var(--teal)">tek hesapla</span> birçok geliştiricinin stoğuna erişir. Ama erişim açık pazar değil, <span style="color:var(--teal)">geliştirici kontrollü tahsisle</span> yönetilir.
+      </p>
+      <div class="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+        <div><div class="disp text-3xl font-extrabold">1</div><div class="mono text-[12px]" style="color:var(--ink-soft)">müteahhit · tek panel</div></div>
+        <div style="color:var(--teal)" class="self-center text-2xl">→</div>
+        <div><div class="disp text-3xl font-extrabold">n</div><div class="mono text-[12px]" style="color:var(--ink-soft)">yetkili danışman</div></div>
+        <div style="color:var(--teal)" class="self-center text-2xl">→</div>
+        <div><div class="disp text-3xl font-extrabold">0</div><div class="mono text-[12px]" style="color:var(--ink-soft)">çift satış · eski fiyat</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mx-auto max-w-[1240px] px-6"><div class="rule"></div></div>
+
+<!-- KIYAS satır satır (editoryal tablo) -->
+<section class="mx-auto max-w-[1240px] px-6 py-20 md:py-28">
+  <div class="grid gap-10 md:grid-cols-[220px_1fr] md:gap-16">
+    <p class="mono text-[12px] font-semibold uppercase tracking-[0.18em]" style="color:var(--teal)">02 — Fark</p>
+    <div>
+      <div class="mono mb-2 grid grid-cols-[1fr_1fr] gap-6 text-[11px] font-semibold uppercase tracking-wider" style="color:var(--ink-soft)">
+        <span>İlan portalı</span><span style="color:var(--teal)">Projedar</span>
+      </div>
+      <div class="rule mb-1"></div>
+      <div class="divide-y" style="border-color:var(--cizgi)">
+        <div class="grid grid-cols-[1fr_1fr] gap-6 py-4"><span style="color:var(--ink-soft)">Açık pazar, herkes görür</span><span class="font-semibold">Geliştirici kontrollü tahsis</span></div>
+        <div class="grid grid-cols-[1fr_1fr] gap-6 py-4"><span style="color:var(--ink-soft)">İlanlar eskir, çelişir</span><span class="font-semibold">Tek doğru kaynak, canlı</span></div>
+        <div class="grid grid-cols-[1fr_1fr] gap-6 py-4"><span style="color:var(--ink-soft)">Aracı zinciri pay alabilir</span><span class="font-semibold">Projedar pay almaz</span></div>
+        <div class="grid grid-cols-[1fr_1fr] gap-6 py-4"><span style="color:var(--ink-soft)">Elle takip, karışır</span><span class="font-semibold">Çift satış sistemle engellenir</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="mx-auto max-w-[1240px] px-6 pb-28">
+  <div class="disp flex flex-col items-start gap-6 rounded-[28px] px-8 py-14 md:px-14" style="background:var(--ink);color:#fff">
+    <h2 class="text-[clamp(2rem,5vw,3.4rem)] font-extrabold leading-[.98] tracking-tight" style="max-width:16ch">Yeni konut projeleri, doğru satış ağında.</h2>
+    <div class="flex flex-wrap gap-4">
+      <a href="#" class="lnk rounded-full px-7 py-3.5 text-[15px] font-bold" style="background:#fff;color:var(--ink)">Danışman olarak katıl</a>
+      <a href="#" class="lnk rounded-full border px-7 py-3.5 text-[15px] font-bold text-white" style="border-color:rgba(255,255,255,.3)">Projeni ağa ekle →</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>
