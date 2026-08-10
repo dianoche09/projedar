@@ -42,28 +42,33 @@ function ProjeksiyonBar() {
   const maxGelir = Math.max(...CEYREKLER.map((c) => c.gelir));
   return (
     <div className="deck-kart p-6 text-left">
-      <div className="flex items-end gap-3 sm:gap-4" style={{ height: 340 }}>
+      {/* Çubuk bölgesi: dibe hizalı, üstünde gelir etiketi */}
+      <div className="flex items-end gap-3 sm:gap-4" style={{ height: 290 }}>
         {CEYREKLER.map((c) => (
-          <div key={c.ad} className="flex flex-1 flex-col items-center justify-end gap-2.5">
+          <div key={c.ad} className="flex flex-1 flex-col items-center justify-end gap-2">
             <span className="mono text-[16px] font-bold text-[#2fd3bc]">{c.gelir.toLocaleString("tr-TR")}M ₺</span>
             <div
               className="w-full rounded-t-lg transition-all"
               style={{
-                height: `${Math.max(10, (c.gelir / maxGelir) * 270)}px`,
+                height: `${Math.max(10, (c.gelir / maxGelir) * 250)}px`,
                 background: "linear-gradient(180deg, #2fd3bc 0%, #1a8f7f 100%)",
               }}
             />
-            <span className="mono text-[13px] font-bold text-white/85">{c.ad}</span>
-            <span className="mono text-[10.5px] text-white/45">{c.ay}</span>
-            <span className="mono text-[10px] leading-snug text-[#2fd3bc]/80">
-              {c.kumProje} proje
-              <br />
-              {c.kumDanisman.toLocaleString("tr-TR")} ödeyen danışman
-            </span>
           </div>
         ))}
       </div>
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-4 text-[12px]">
+      {/* Etiket bölgesi: ayrı ve hizalı satır */}
+      <div className="mt-3 flex gap-3 border-t border-white/10 pt-3 sm:gap-4">
+        {CEYREKLER.map((c) => (
+          <div key={c.ad} className="flex flex-1 flex-col items-center gap-0.5 text-center">
+            <span className="mono text-[13px] font-bold text-white/85">{c.ad}</span>
+            <span className="mono text-[10.5px] text-white/40">{c.ay}</span>
+            <span className="mono mt-1 text-[10.5px] font-semibold text-[#2fd3bc]/85">{c.kumProje} proje</span>
+            <span className="mono text-[10.5px] text-white/55">{c.kumDanisman.toLocaleString("tr-TR")} danışman</span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-4 text-[12px]">
         <span className="mono text-white/50">Erken: 10 proje + ~750 danışman ilk ~1 yıl ücretsiz (destekçi); emlakçı + ofis geliri Yıl 2&apos;de biner</span>
         <span className="mono font-bold text-[#2fd3bc]">Ay 24: ~100 proje · ~5.000 ödeyen danışman · ~150 ofis · yıllık gelir hızı ~37M ₺</span>
       </div>
@@ -114,8 +119,8 @@ export default function FinansalV2() {
     /* 4 · Alıntı (vuruş) */
     <AlintiSlayt
       key="alinti"
-      metin="Gelir ilk aydan başlar; iş Yıl 2'de kendini besler."
-      alt="Sermaye 24 ay idare parası değil, büyümeyi hızlandıran yakıttır."
+      metin="Ürün hazır, model kurulu. Kalan tek değişken: hız."
+      alt="Gelir ilk aydan başlar, iş ikinci yılda kendini taşır; sermaye idare parası değil, büyümenin yakıtıdır."
     />,
 
     /* 5 · 24 aylık plan (büyük grafik) */
@@ -176,21 +181,18 @@ export default function FinansalV2() {
     </Slayt>,
 
     /* 11 · Yatırım (ask) */
-    <Slayt key="yatirim" kicker="Yatırım" baslik="10 milyon ₺ / %25 — başlangıç değeri, ilk gelirle yükselir" alt="Ürün canlı ve dış kaynaksız kuruldu; değerin büyük kısmı zaten yaratıldı. 40M ₺'lik yatırım-sonrası değer cirosuz aşamanın fiyatıdır; ilk ödeyen müteahhitle yükselir.">
-      <div className="mb-3 grid gap-3 sm:grid-cols-3">
-        <DevSayi deger="10M ₺ / %25" etiket="Turun büyüklüğü · yatırım sonrası değer ~40M ₺ (öncesi ~30M ₺)" renk="#2fd3bc" />
-        <DevSayi deger="7,5M + 2,5M ₺" etiket="Şirkete sermaye + kurucunun emeğinin/yatırımının kısmi karşılığı" />
-        <DevSayi deger="→ ~60M ₺+" etiket="İlk ödeyen müteahhit imzalanınca şirket değeri yükselir" renk="#2fd3bc" />
-      </div>
-      <p className="deck-faint mono mb-3 text-[10.5px] uppercase tracking-wider">7,5M ₺ sermaye kullanımı — öncelik ekip büyütme:</p>
+    <Slayt key="yatirim" genis kicker="Yatırım" baslik="10 milyon ₺ yatırım, %25 hisse" alt="Yatırım sonrası değer ~40M ₺ (öncesi ~30M ₺): cirosuz aşamanın fiyatı. Ürün canlı ve dış kaynaksız kuruldu; ilk ödeyen müteahhitle değer ~60M ₺+'a yükselir.">
       <div className="grid gap-3 sm:grid-cols-3">
-        <MaddeKart Ikon={Users} baslik="Saha & kurulum ekibi" metin="Müteahhit/danışman kazanımı + kurulum operasyonu: turun ana kullanımı, büyüme hızını belirleyen kalem." sinyal="#2fd3bc" />
-        <MaddeKart Ikon={Building2} baslik="Ürün derinleşme" metin="WhatsApp entegrasyonu, yapay zekâ eşleştirme, ofis/premium araçları, veri altyapısı." />
+        <DevSayi deger="10M ₺" etiket="Toplam tur · karşılığında %25 hisse" renk="#2fd3bc" />
+        <DevSayi deger="7,5M ₺" etiket="Şirkete sermaye · ekip ve büyümeye" renk="#2fd3bc" />
+        <DevSayi deger="2,5M ₺" etiket="Kurucunun emeğinin ve yatırımının kısmi karşılığı" />
+      </div>
+      <p className="deck-faint mono mt-6 mb-3 text-[10.5px] uppercase tracking-wider">7,5M ₺ nereye gidiyor · öncelik ekip büyütme</p>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <MaddeKart Ikon={Users} baslik="Saha & kurulum ekibi" metin="Müteahhit ve danışman kazanımı + kurulum operasyonu: turun ana kullanımı, büyüme hızını belirleyen kalem." sinyal="#2fd3bc" />
+        <MaddeKart Ikon={Building2} baslik="Ürün derinleşme" metin="WhatsApp entegrasyonu, yapay zekâ eşleştirme, ofis ve premium araçları, veri altyapısı." />
         <MaddeKart Ikon={Banknote} baslik="Pazarlama & nakit tamponu" metin="Marka, sektör etkinlikleri, nakit tamponu. Gelir ilk aydan başladığı için sermaye idare parası değil, büyüme yakıtıdır." />
       </div>
-      <p className="deck-faint mono mt-4 text-[10.5px] uppercase tracking-wider">
-        2,5M ₺ = kurucunun ürünü kendi kaynağıyla fikirden canlıya taşımasının kısmi karşılığıdır. Değerleme cirosuz aşamanın fiyatı; ilk gelirle yükselir.
-      </p>
     </Slayt>,
 
     /* 12 · Kapanış (görsel) */
