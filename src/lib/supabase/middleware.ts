@@ -47,7 +47,8 @@ export async function updateSession(request: NextRequest) {
   // SUNUM_SIFRE env tanımlıysa, doğru parola çerezi olmayan istek /sunum-giris'e yönlenir.
   {
     const p = request.nextUrl.pathname;
-    if (p.startsWith("/sunum") && !p.startsWith("/sunum-giris")) {
+    // Yalnız deck alt-yolları (/sunum/...) parolalı; /sunum indeks sayfası ve /sunum-giris açık.
+    if (p.startsWith("/sunum/")) {
       const beklenen = sunumTokenBeklenen();
       if (beklenen && request.cookies.get("sunum_ok")?.value !== beklenen) {
         const url = request.nextUrl.clone();
