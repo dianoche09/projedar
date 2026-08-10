@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Projedar nedir? Scroll ile kurulan ağ (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ================================================================
+   DESIGN READ: /nedir açıklama sayfası, B2B (müteahhit + danışman).
+   Konsept: TEK diyagram, scroll ile satır satır kuruluyor (scrollytelling).
+   Sahne sabit kalır; yanındaki 5 kısa cümle diyagramın aşamasını sürükler.
+   Dials -> VARIANCE 7 / MOTION 8 (açıklayıcı) / DENSITY 2.
+   Tek aksan: teal. Sinyal renkleri (yeşil/amber/kırmızı) yalnız stok durumu.
+   Palet: kilitli "Spatial Açık". Font: Outfit / Inter / Geist Mono.
+   ================================================================ */
+:root{
+  --paper:#eef1f6; --paper-2:#e9edf4; --soft:#f5f8fa;
+  --ink:#10243a; --ink-soft:#46586b; --faint:#7d8da0;
+  --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676; --teal-soft:#e2f3f0;
+  --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --rule:rgba(16,36,58,.10); --rule-2:rgba(16,36,58,.06);
+  --eo:cubic-bezier(0.16,1,0.3,1);
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--ink);
+  font-family:"Inter",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  background:
+    radial-gradient(1000px 640px at 82% -8%, rgba(30,155,138,.10), transparent 60%),
+    radial-gradient(880px 560px at -6% 108%, rgba(19,49,75,.10), transparent 58%),
+    linear-gradient(168deg,var(--paper) 0%, var(--paper-2) 100%);
+  background-attachment:fixed;
+}
+.disp{font-family:"Outfit",sans-serif}
+.mono{font-family:"Geist Mono",monospace}
+::selection{background:var(--teal);color:#fff}
+a{color:inherit;text-decoration:none}
+
+/* ---- mockup rozeti ---- */
+.mk{
+  position:fixed; left:14px; bottom:14px; z-index:80;
+  background:var(--navy); color:#eef4f2;
+  font-size:11px; letter-spacing:.02em; padding:7px 11px; border-radius:9px;
+  font-family:"Geist Mono",monospace; box-shadow:0 6px 20px rgba(16,36,58,.22);
+}
+
+/* ================= SCROLLY LAYOUT ================= */
+.scrolly{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  max-width:1240px; margin:0 auto; padding:0 clamp(20px,4vw,48px);
+  gap:clamp(24px,4vw,64px);
+}
+/* sahne: sabit, dikey ortalı */
+.scene{
+  position:sticky; top:0; height:100dvh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:24px 0;
+}
+.brand{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+.brand .wm{font-family:"Outfit",sans-serif; font-weight:700; font-size:19px; letter-spacing:-.01em}
+.brand .wm span{color:var(--teal-d)}
+.brand .pg{font-family:"Geist Mono",monospace; font-size:11px; color:var(--faint); letter-spacing:.06em}
+
+.stage-wrap{
+  position:relative;
+  background:#ffffff;
+  border:1px solid var(--rule);
+  border-radius:22px;
+  box-shadow:0 2px 6px rgba(16,36,58,.05), 0 18px 40px rgba(16,36,58,.08);
+  padding:18px 16px 14px;
+}
+svg.diagram{width:100%; height:auto; display:block; overflow:visible}
+
+/* alt: ilerleme rayı + senkron damgası */
+.scene-foot{
+  display:flex; align-items:center; justify-content:space-between;
+  margin-top:14px; padding-top:12px; border-top:1px solid var(--rule-2);
+}
+.rail{display:flex; gap:6px}
+.tick{width:26px; height:4px; border-radius:2px; background:var(--rule); transition:background .4s var(--eo)}
+.tick.act{background:var(--teal)}
+.sync{font-family:"Geist Mono",monospace; font-size:11px; color:var(--faint); letter-spacing:.02em; display:inline-flex; align-items:center; gap:6px}
+.sync .dot{width:7px; height:7px; border-radius:50%; background:var(--green)}
+
+/* ---- adım kolonu ---- */
+.steps{padding:6vh 0 4vh}
+.step{min-height:92vh; display:flex; flex-direction:column; justify-content:center; max-width:34ch}
+.step .kicker{
+  font-family:"Outfit",sans-serif; font-weight:600; font-size:15px; color:var(--teal-d);
+  margin:0 0 14px; display:inline-flex; align-items:center; gap:11px;
+}
+.step .kicker i{width:26px; height:2px; background:var(--teal); border-radius:2px; display:inline-block}
+.step h1{
+  font-family:"Outfit",sans-serif; font-weight:600;
+  font-size:clamp(2rem,4.4vw,3.3rem); line-height:1.02; letter-spacing:-.02em;
+  margin:0 0 18px;
+}
+.step h2{
+  font-family:"Outfit",sans-serif; font-weight:600;
+  font-size:clamp(1.6rem,3.3vw,2.5rem); line-height:1.06; letter-spacing:-.015em;
+  margin:0 0 16px;
+}
+.step h2 em, .step h1 em{font-style:normal; color:var(--teal-d)}
+.step p{font-size:clamp(16px,1.5vw,18px); line-height:1.6; color:var(--ink-soft); margin:0}
+.step .aside{
+  margin-top:22px; padding:12px 15px; border-left:2px solid var(--teal);
+  background:rgba(255,255,255,.5); border-radius:0 10px 10px 0;
+  font-size:14px; line-height:1.55; color:var(--ink-soft);
+}
+
+/* ---- kapanış ---- */
+.close{
+  max-width:1240px; margin:0 auto; padding:14vh clamp(20px,4vw,48px) 16vh;
+  border-top:1px solid var(--rule-2);
+}
+.close .k{
+  font-family:"Outfit",sans-serif; font-weight:600;
+  font-size:clamp(1.8rem,4vw,3rem); line-height:1.04; letter-spacing:-.02em;
+  max-width:20ch; margin:0 0 32px;
+}
+.cta{
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--navy); color:#eef4f2;
+  font-family:"Outfit",sans-serif; font-weight:600; font-size:16px;
+  padding:15px 26px; border-radius:12px;
+  transition:transform .16s var(--eo), box-shadow .2s var(--eo);
+  box-shadow:0 8px 22px rgba(19,49,75,.18);
+}
+.cta:hover{box-shadow:0 12px 30px rgba(19,49,75,.26)}
+.cta:active{transform:scale(.975)}
+.cta .arw{transition:transform .2s var(--eo)}
+.cta:hover .arw{transform:translateX(4px)}
+
+/* ================= SVG REVEAL SİSTEMİ =================
+   Düğümler scale(.96)+opacity ile belirir (scale(0) YOK).
+   Çizgiler pathLength=1 + stroke-dashoffset ile SATIR SATIR çizilir. */
+.rv{
+  opacity:0; transform:scale(.96);
+  transform-box:fill-box; transform-origin:center;
+  transition:opacity .6s var(--eo), transform .6s var(--eo);
+}
+.rv.on{opacity:1; transform:none}
+.ln{stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .85s var(--eo)}
+.ln.on{stroke-dashoffset:0}
+
+/* stok hücresi satıldıya döner (canlı tek kaynak) */
+#flip{fill:var(--green); transition:fill .45s var(--eo)}
+.scene[data-stage="5"] #flip{fill:var(--red)}
+.pulse{opacity:0}
+.scene[data-stage="5"] .pulse{opacity:1}
+
+/* ghost: kurulacak diyagramın soluk iskeleti (hep görünür) */
+.ghost{opacity:.5}
+
+/* canlı akış (yalnız hareket tercih edilirse) */
+@media (prefers-reduced-motion:no-preference){
+  .flow{stroke-dasharray:2 9; animation:flow 1.15s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-22}}
+  .scene[data-stage="5"] .pulse{animation:pulse 1.6s var(--eo) infinite}
+  @keyframes pulse{0%{transform:scale(.6);opacity:.9}70%{transform:scale(1.35);opacity:0}100%{opacity:0}}
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:880px){
+  .scrolly{grid-template-columns:1fr; gap:0}
+  .scene{
+    height:auto; min-height:44vh; top:0; padding:14px 0 10px;
+    background:linear-gradient(180deg,var(--paper) 78%, rgba(238,241,246,0));
+    z-index:5;
+  }
+  .stage-wrap{box-shadow:0 10px 24px rgba(16,36,58,.10); padding:12px 12px 10px}
+  .steps{padding:2vh 0 6vh}
+  .step{min-height:66vh; max-width:none}
+  .step h1{font-size:clamp(1.9rem,7.5vw,2.6rem)}
+  .step h2{font-size:clamp(1.5rem,6vw,2.1rem)}
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv,.ln,#flip,.cta,.cta .arw{transition:none}
+  .rv{opacity:1; transform:none}
+  .ln{stroke-dashoffset:0}
+  .pulse{opacity:0}
+}
+</style>
+</head>
+<body>
+
+<div class="mk mono">MOCKUP · /nedir · Scroll Diyagram</div>
+
+<main class="scrolly">
+
+  <!-- ===================== SABİT SAHNE ===================== -->
+  <div class="scene" data-stage="0">
+    <div class="brand">
+      <span class="wm">Proje<span>dar</span></span>
+      <span class="pg">/nedir</span>
+    </div>
+
+    <div class="stage-wrap">
+      <svg class="diagram" viewBox="0 0 800 600" role="img"
+        aria-label="Projedar dağıtım ağı: müteahhit tek panelden canlı stok havuzunu yönetir, tahsis kapısı üzerinden yalnız yetkili danışmanlara açar; bir daire satıldığında durum ağda anında güncellenir.">
+
+        <!-- ---------- GHOST İSKELET (planlanan ağ) ---------- -->
+        <g class="ghost" fill="none" stroke="rgba(16,36,58,.16)" stroke-width="1" stroke-dasharray="3 5">
+          <rect x="36" y="252" width="150" height="96" rx="14"/>
+          <rect x="262" y="192" width="232" height="216" rx="14"/>
+          <rect x="540" y="272" width="116" height="56" rx="14"/>
+          <rect x="672" y="150" width="120" height="60" rx="14"/>
+          <rect x="672" y="270" width="120" height="60" rx="14"/>
+          <rect x="672" y="390" width="120" height="60" rx="14"/>
+          <line x1="186" y1="300" x2="262" y2="300"/>
+          <line x1="494" y1="300" x2="540" y2="300"/>
+          <path d="M656,292 C668,292 672,220 672,182"/>
+          <line x1="656" y1="300" x2="672" y2="300"/>
+          <path d="M656,308 C668,308 672,378 672,418"/>
+        </g>
+
+        <!-- ---------- ÇİZGİLER (satır satır çizilir) ---------- -->
+        <!-- spine: canlı akış hattı -->
+        <g fill="none" stroke-linecap="round">
+          <line class="ln" data-appear="2" pathLength="1" x1="186" y1="300" x2="262" y2="300" stroke="var(--navy)" stroke-width="1.6"/>
+          <line class="flow rv" data-appear="2" x1="186" y1="300" x2="262" y2="300" stroke="var(--teal)" stroke-width="1.6"/>
+          <line class="ln" data-appear="3" pathLength="1" x1="494" y1="300" x2="540" y2="300" stroke="var(--teal-d)" stroke-width="1.6"/>
+          <line class="flow rv" data-appear="3" x1="494" y1="300" x2="540" y2="300" stroke="var(--teal)" stroke-width="1.6"/>
+          <!-- tahsis dalları -->
+          <path class="ln" data-appear="4" pathLength="1" d="M656,292 C668,292 672,220 672,182" stroke="var(--teal-d)" stroke-width="1.6"/>
+          <line class="ln" data-appear="4" pathLength="1" x1="656" y1="300" x2="672" y2="300" stroke="var(--teal-d)" stroke-width="1.6"/>
+          <path class="ln" data-appear="4" pathLength="1" d="M656,308 C668,308 672,378 672,418" stroke="var(--teal-d)" stroke-width="1.6"/>
+        </g>
+
+        <!-- ---------- 1 · MÜTEAHHİT (komuta) ---------- -->
+        <g class="rv" data-appear="1">
+          <rect x="36" y="252" width="150" height="96" rx="14" fill="#ffffff" stroke="var(--navy)" stroke-width="1.4"/>
+          <text x="56" y="278" fill="var(--faint)" font-size="9" font-family="'Geist Mono',monospace" letter-spacing=".12em">KOMUTA</text>
+          <text x="111" y="304" fill="var(--ink)" font-size="17" font-weight="600" font-family="'Outfit',sans-serif" text-anchor="middle">Müteahhit</text>
+          <text x="111" y="324" fill="var(--ink-soft)" font-size="9.5" font-family="'Geist Mono',monospace" text-anchor="middle" letter-spacing=".02em">tek panel</text>
+        </g>
+
+        <!-- ---------- 2 · CANLI STOK HAVUZU (tek doğru kaynak) ---------- -->
+        <g class="rv" data-appear="2">
+          <rect x="262" y="192" width="232" height="216" rx="14" fill="rgba(30,155,138,.08)" stroke="var(--teal)" stroke-width="1.5"/>
+          <text x="378" y="220" fill="var(--teal-d)" font-size="9" font-family="'Geist Mono',monospace" text-anchor="middle" letter-spacing=".14em">TEK DOĞRU KAYNAK</text>
+
+          <!-- stok grid: yeşil müsait / amber opsiyon / (kırmızı satıldı = flip) -->
+          <g>
+            <!-- r0 y238 -->
+            <rect x="285" y="238" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="311" y="238" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="337" y="238" width="20" height="16" rx="3" fill="var(--amber)"/>
+            <rect x="363" y="238" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="389" y="238" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="415" y="238" width="20" height="16" rx="3" fill="var(--green)"/>
+            <!-- r1 y264 -->
+            <rect x="285" y="264" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="311" y="264" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="337" y="264" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect id="flip" x="363" y="264" width="20" height="16" rx="3"/>
+            <rect x="389" y="264" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="415" y="264" width="20" height="16" rx="3" fill="var(--amber)"/>
+            <!-- r2 y290 -->
+            <rect x="285" y="290" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="311" y="290" width="20" height="16" rx="3" fill="var(--amber)"/>
+            <rect x="337" y="290" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="363" y="290" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="389" y="290" width="20" height="16" rx="3" fill="var(--green)"/>
+            <rect x="415" y="290" width="20" height="16" rx="3" fill="var(--green)"/>
+          </g>
+          <!-- satıldı nabzı -->
+          <circle class="pulse" cx="373" cy="272" r="15" fill="none" stroke="var(--red)" stroke-width="1.5" transform-box="fill-box" transform-origin="center"/>
+
+          <!-- tazelik rozeti -->
+          <rect x="326" y="330" width="104" height="22" rx="11" fill="#ffffff" stroke="rgba(47,179,107,.45)" stroke-width="1"/>
+          <circle cx="345" cy="341" r="3.5" fill="var(--green)"/>
+          <text x="356" y="344.5" fill="#1f7a4a" font-size="9" font-family="'Geist Mono',monospace" letter-spacing=".02em">canlı · az önce</text>
+        </g>
+
+        <!-- ---------- 3 · TAHSİS (görünürlük kapısı) ---------- -->
+        <g class="rv" data-appear="3">
+          <rect x="540" y="272" width="116" height="56" rx="14" fill="rgba(30,155,138,.05)" stroke="var(--teal-d)" stroke-width="1.4" stroke-dasharray="5 4"/>
+          <text x="598" y="297" fill="var(--ink)" font-size="13" font-weight="600" font-family="'Outfit',sans-serif" text-anchor="middle">Tahsis</text>
+          <text x="598" y="313" fill="var(--ink-soft)" font-size="8.5" font-family="'Geist Mono',monospace" text-anchor="middle" letter-spacing=".02em">görünürlük kapısı</text>
+        </g>
+
+        <!-- ---------- 4 · TAHSİSLİ DANIŞMANLAR ---------- -->
+        <g class="rv" data-appear="4">
+          <rect x="672" y="150" width="120" height="60" rx="14" fill="rgba(16,36,58,.05)" stroke="var(--ink-soft)" stroke-width="1"/>
+          <circle cx="692" cy="176" r="5" fill="var(--green)"/>
+          <text x="706" y="180" fill="var(--ink)" font-size="13" font-weight="600" font-family="'Outfit',sans-serif">Danışman A</text>
+          <text x="688" y="198" fill="var(--faint)" font-size="8.5" font-family="'Geist Mono',monospace" letter-spacing=".02em">yalnız tahsisli</text>
+        </g>
+        <g class="rv" data-appear="4">
+          <rect x="672" y="270" width="120" height="60" rx="14" fill="rgba(16,36,58,.05)" stroke="var(--ink-soft)" stroke-width="1"/>
+          <circle cx="692" cy="296" r="5" fill="var(--green)"/>
+          <text x="706" y="300" fill="var(--ink)" font-size="13" font-weight="600" font-family="'Outfit',sans-serif">Danışman B</text>
+          <text x="688" y="318" fill="var(--faint)" font-size="8.5" font-family="'Geist Mono',monospace" letter-spacing=".02em">yalnız tahsisli</text>
+        </g>
+        <g class="rv" data-appear="4">
+          <rect x="672" y="390" width="120" height="60" rx="14" fill="rgba(16,36,58,.05)" stroke="var(--ink-soft)" stroke-width="1"/>
+          <circle cx="692" cy="416" r="5" fill="var(--green)"/>
+          <text x="706" y="420" fill="var(--ink)" font-size="13" font-weight="600" font-family="'Outfit',sans-serif">Danışman C</text>
+          <text x="688" y="438" fill="var(--faint)" font-size="8.5" font-family="'Geist Mono',monospace" letter-spacing=".02em">yalnız tahsisli</text>
+        </g>
+
+        <!-- ---------- 5 · CANLI GÜNCELLEME yankısı (A üstünde) ---------- -->
+        <g class="rv" data-appear="5">
+          <circle cx="692" cy="176" r="5" fill="var(--red)"/>
+          <text x="706" y="196" fill="var(--red)" font-size="8.5" font-family="'Geist Mono',monospace" letter-spacing=".02em">stok güncellendi</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="scene-foot">
+      <div class="rail" aria-hidden="true">
+        <span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span><span class="tick"></span>
+      </div>
+      <span class="sync mono"><span class="dot"></span>son senkron · az önce</span>
+    </div>
+  </div>
+
+  <!-- ===================== SCROLL ADIMLARI ===================== -->
+  <div class="steps">
+
+    <section class="step" data-step="1">
+      <span class="kicker"><i></i>Projedar nedir</span>
+      <h1>Bu bir ilan sitesi <em>değil.</em></h1>
+      <p>Projedar, müteahhidin baştan sona kontrol ettiği canlı bir konut stoğu dağıtım ağı. Vitrin değil, satışın altyapısı.</p>
+    </section>
+
+    <section class="step" data-step="2">
+      <span class="kicker"><i></i>Tek doğru kaynak</span>
+      <h2>Stok, fiyat ve daireler <em>tek panelden</em> yönetilir.</h2>
+      <p>Fiyat ve durum yalnız canlı havuzda tutulur. Hiçbir yere kopyalanmaz, bu yüzden hiç eskimez. Paylaşımda fiyat o anki değerden basılır.</p>
+    </section>
+
+    <section class="step" data-step="3">
+      <span class="kicker"><i></i>Tahsis</span>
+      <h2>Kimin neyi göreceğini <em>tahsis belirler.</em></h2>
+      <p>Herkese açık değil: müteahhit her projeyi yalnız yetkilendirdiği danışmana açar. Görünürlük, tahsis kapısından geçer.</p>
+    </section>
+
+    <section class="step" data-step="4">
+      <span class="kicker"><i></i>Danışman görünümü</span>
+      <h2>Danışman yalnız <em>kendi</em> projelerini görür.</h2>
+      <p>Her danışman sadece kendisine tahsis edilmiş birimleri canlı fiyat ve durumla görür, müşterisine oradan paylaşır. Fazlasını değil.</p>
+    </section>
+
+    <section class="step" data-step="5">
+      <span class="kicker"><i></i>Canlı güncelleme</span>
+      <h2>Bir daire satıldığında <em>ağ anında</em> bilir.</h2>
+      <p>Durum tek kaynakta değiştiği an ağdaki herkes aynı gerçeği görür. Aynı daireye ikinci opsiyon yapısal olarak engellenir.</p>
+      <div class="aside">Satış komisyonu danışmanın kalır. Projedar bu komisyona ortak olmaz, satışın hızını ve güvenini sağlar.</div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ===================== KAPANIŞ ===================== -->
+<footer class="close">
+  <p class="k disp">Doğru proje, doğru danışmana, canlı stoktan.</p>
+  <a href="#" class="cta">Ağın işleyişini gör <span class="arw">&rarr;</span></a>
+</footer>
+
+<script>
+(function(){
+  var scene = document.querySelector('.scene');
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+  var revs  = Array.prototype.slice.call(document.querySelectorAll('[data-appear]'));
+  var ticks = Array.prototype.slice.call(document.querySelectorAll('.tick'));
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function setStage(n){
+    scene.setAttribute('data-stage', n);
+    for(var i=0;i<revs.length;i++){
+      var a = parseInt(revs[i].getAttribute('data-appear'),10);
+      if(a>0 && a<=n) revs[i].classList.add('on'); else revs[i].classList.remove('on');
+    }
+    for(var t=0;t<ticks.length;t++){
+      if(t < n) ticks[t].classList.add('act'); else ticks[t].classList.remove('act');
+    }
+  }
+
+  if(reduce){
+    // Hareketi azalt: tüm ağı kurulu göster.
+    setStage(steps.length);
+    return;
+  }
+
+  setStage(0);
+  var current = 0;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var s = parseInt(e.target.getAttribute('data-step'),10);
+        current = s;
+        setStage(s);
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+  steps.forEach(function(s){ io.observe(s); });
+})();
+</script>
+</body>
+</html>

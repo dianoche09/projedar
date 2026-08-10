@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar nedir? · Canlı Konsol (mockup)</title>
+<!--
+  DESIGN READ: /nedir sayfasi, B2B profesyoneller icin, "Canli Proje Satis Komuta Merkezi"
+  dili (Bloomberg + Linear), acik "Spatial" palet. Konsept: pazarlama sayfasi degil, urunun
+  canli bir kesiti. Ziyaretci "nedir?" sorusunu metin degil, urun yuzeyini gorerek anlar.
+  DIALS -> VARIANCE 8 (asimetrik uc-bolgeli konsol, esit kart yok) / MOTION 6 (tek imza
+  koreografi, dagilmis mikro-animasyon yok) / DENSITY 7 (kokpit, mono sayilar, siki grid).
+  IMZA AN: bir birimin (A-15) durumu iki panelde ayni anda musait->opsiyon donuyor (tek dogru
+  kaynak), ve tahsis paketi kapidan danisman panosuna akiyor (translateX + blur-mask + ease-out).
+  Tek aksan: teal. Sinyal renkleri yalniz veri icin. Fiyat gosterilmez.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#10243a; --ink-soft:#46586b; --soft-ink:#7d8da0; --navy:#13314b;
+  --teal:#1e9b8a; --teal-d:#1a8676; --teal-soft:#e2f3f0;
+  --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --paper:#eef1f6; --soft:#f5f8fa;
+  --line:rgba(16,36,58,.10); --rule:rgba(16,36,58,.07);
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --cycle:9s;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100dvh;
+  color:var(--ink);
+  font-family:"Instrument Sans",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1100px 540px at 88% -10%, rgba(30,155,138,.11), transparent 60%),
+    radial-gradient(880px 500px at -8% 108%, rgba(19,49,75,.06), transparent 55%),
+    linear-gradient(165deg,#eef1f6 0%,#e9edf4 100%);
+  background-attachment:fixed;
+  display:flex; align-items:center; justify-content:center;
+  padding:clamp(14px,2.4vw,34px);
+}
+.disp{font-family:"Bricolage Grotesque","Instrument Sans",sans-serif}
+.mono{font-family:"Geist Mono",monospace;font-variant-numeric:tabular-nums}
+.teal{color:var(--teal)}
+
+/* ---- mockup badge ---- */
+.mock{position:fixed;left:12px;bottom:12px;z-index:80;background:var(--ink);color:#fff;
+  font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.02em;padding:6px 10px;border-radius:9px}
+
+/* ================= CONSOLE ================= */
+.console{
+  width:100%;max-width:1200px;
+  background:#fff;border:1px solid var(--line);border-radius:24px;
+  box-shadow:0 2px 6px rgba(16,36,58,.05),0 26px 60px -28px rgba(16,36,58,.28);
+  overflow:hidden;display:flex;flex-direction:column;
+}
+.enter{opacity:0;transform:translateY(16px) scale(.994);animation:enter .8s var(--ease-out) .05s forwards}
+@keyframes enter{to{opacity:1;transform:none}}
+
+/* ---- header chrome ---- */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;
+  flex-wrap:wrap;padding:16px 20px;border-bottom:1px solid var(--rule);background:var(--soft)}
+.brand-q .mark{font-size:clamp(19px,2.2vw,25px);font-weight:700;letter-spacing:-.02em;line-height:1}
+.brand-q .q{color:var(--ink-soft);font-weight:500}
+.brand-q .ans{margin-top:6px;font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--soft-ink)}
+.head-right{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.legend{display:flex;align-items:center;gap:13px;font-family:"Geist Mono",monospace;font-size:10.5px;
+  letter-spacing:.04em;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.g{background:var(--green)}.dot.a{background:var(--amber)}.dot.r{background:var(--red)}
+.join{font-family:"Geist Mono",monospace;font-size:12px;font-weight:500;color:var(--teal-d);
+  border:1px solid var(--line);border-radius:999px;padding:6px 14px;text-decoration:none;
+  transition:transform .16s var(--ease-out),background .16s var(--ease-out)}
+.join:hover{background:var(--teal-soft)}.join:active{transform:scale(.97)}
+
+/* ---- body: three regions ---- */
+.body{display:grid;grid-template-columns:1.12fr 152px .96fr;flex:1;min-height:0}
+.col{padding:16px 18px;min-width:0}
+.col.mid{padding:16px 8px}
+.col.left{border-right:1px solid var(--rule)}
+.col.right{border-left:1px solid var(--rule);background:linear-gradient(180deg,rgba(30,155,138,.03),transparent 120px)}
+
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:3px}
+.panel-role{font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);font-weight:600}
+.panel-role b{color:var(--teal-d)}
+.panel-sub{font-family:"Geist Mono",monospace;font-size:10.5px;letter-spacing:.03em;color:var(--soft-ink);margin-top:3px}
+.fresh{display:inline-flex;align-items:center;gap:6px;font-family:"Geist Mono",monospace;font-size:10px;
+  letter-spacing:.03em;color:var(--teal-d);border:1px solid rgba(47,179,107,.35);border-radius:999px;padding:3px 9px;white-space:nowrap}
+.fresh .dot{width:7px;height:7px}
+.proj{margin:12px 0 8px;font-size:13px;font-weight:600;letter-spacing:-.01em}
+.proj span{color:var(--soft-ink);font-weight:500}
+
+/* ---- rows ---- */
+.rows{display:flex;flex-direction:column;gap:4px}
+.row{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 11px;border-radius:11px;border:1px solid var(--rule);background:#fff}
+.row.sold{opacity:.5}
+.row-id{font-size:13px;display:flex;align-items:baseline;gap:8px;min-width:0}
+.row-id b{font-family:"Geist Mono",monospace;font-weight:600;letter-spacing:.01em}
+.dim{color:var(--soft-ink);font-size:11.5px;font-family:"Geist Mono",monospace}
+.pill{font-family:"Geist Mono",monospace;font-size:10px;font-weight:600;letter-spacing:.06em;
+  padding:3px 8px;border-radius:6px;white-space:nowrap}
+.pill.g{color:var(--green);background:rgba(47,179,107,.12)}
+.pill.a{color:#b47a10;background:rgba(227,161,44,.15)}
+.pill.r{color:var(--red);background:rgba(209,90,78,.12)}
+
+/* source row (left A-15) ring */
+.row.src{background:var(--soft)}
+.src-ring{position:absolute;inset:-1px;border-radius:12px;border:1.5px solid var(--teal);opacity:0;pointer-events:none}
+
+/* flip pill (used in BOTH panels, in unison) */
+.flip{position:relative;display:inline-block}
+.flip .p-ops{position:absolute;inset:0;opacity:0}
+
+/* arrival row (right A-15) */
+.row.arr{overflow:hidden}
+.arr-flash{position:absolute;inset:0;background:var(--teal);opacity:0;pointer-events:none}
+.arr-body{position:relative;display:flex;align-items:center;gap:8px}
+.badge-live{font-family:"Geist Mono",monospace;font-size:9px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;background:var(--teal);border-radius:5px;padding:2px 6px;opacity:0}
+.share{font-family:"Geist Mono",monospace;font-size:10px;font-weight:500;color:var(--ink);
+  border:1px solid var(--line);background:#fff;border-radius:7px;padding:4px 9px;cursor:pointer;
+  transition:transform .14s var(--ease-out),background .14s var(--ease-out)}
+.share:hover{background:var(--soft)}.share:active{transform:scale(.96)}
+
+/* left mini distribution */
+.dist{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+.dist-bar{height:8px;border-radius:5px;overflow:hidden;display:flex;gap:2px}
+.dist-bar i{display:block;height:100%}
+.dist-meta{margin-top:7px;font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.03em;
+  color:var(--ink-soft);display:flex;gap:12px;flex-wrap:wrap}
+.dist-meta b{color:var(--ink)}
+.manage-note{margin-top:10px;font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.02em;color:var(--soft-ink)}
+
+/* ---- center gate ---- */
+.gate{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.gate-label{font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal-d);font-weight:600}
+.gate-lane{position:relative;width:100%;height:44px;display:flex;align-items:center}
+.gate-line{position:absolute;left:6px;right:6px;top:50%;height:0;border-top:1.5px dashed rgba(30,155,138,.5)}
+.packet{position:absolute;left:2px;top:50%;transform:translateY(-50%);
+  font-family:"Geist Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.01em;
+  color:#fff;background:var(--teal-d);border-radius:8px;padding:5px 9px;white-space:nowrap;
+  box-shadow:0 6px 16px -6px rgba(26,134,118,.7);opacity:0}
+.packet .ar{opacity:.7;margin:0 3px}
+.gate-note{font-family:"Geist Mono",monospace;font-size:9.5px;line-height:1.6;letter-spacing:.02em;color:var(--soft-ink);max-width:150px}
+.gate-note b{color:var(--ink-soft);font-weight:500}
+
+/* ---- footer caption ---- */
+.foot{display:flex;flex-wrap:wrap;gap:0 22px;padding:13px 20px;border-top:1px solid var(--rule);
+  background:var(--soft);font-family:"Geist Mono",monospace;font-size:10.5px;line-height:1.6;
+  letter-spacing:.01em;color:var(--ink-soft)}
+.foot i{color:var(--teal-d);font-style:normal;font-weight:600}
+.foot .seg{display:inline-flex;align-items:center;gap:7px}
+
+/* right panel price note */
+.price-note{margin-top:11px;display:inline-flex;align-items:center;gap:7px;
+  font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.02em;color:var(--teal-d);
+  background:var(--teal-soft);border-radius:8px;padding:6px 10px}
+.lock{width:11px;height:11px;flex:0 0 auto}
+
+/* ================= MOTION ================= */
+.pulse{animation:pulse 1.9s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.anim{will-change:transform,opacity}
+.a-packet{animation:packetFlow var(--cycle) linear infinite}
+.a-ring{animation:srcRing var(--cycle) linear infinite}
+.a-musait{animation:flipMusait var(--cycle) linear infinite}
+.a-ops{animation:flipOps var(--cycle) linear infinite}
+.a-flash{animation:arrFlash var(--cycle) linear infinite}
+.a-content{animation:arrContent var(--cycle) linear infinite}
+.a-badge{animation:badgeLive var(--cycle) linear infinite}
+
+@keyframes packetFlow{
+  0%,10%{opacity:0;transform:translate(-6px,-50%) scale(.96);filter:blur(3px)}
+  14%{opacity:1;transform:translate(0,-50%) scale(1);filter:blur(0)}
+  20%{filter:blur(2px)}
+  26%{opacity:1;transform:translate(112px,-50%) scale(.99);filter:blur(1px)}
+  30%{opacity:0;transform:translate(128px,-50%) scale(.97);filter:blur(3px)}
+  100%{opacity:0;transform:translate(-6px,-50%) scale(.96);filter:blur(3px)}
+}
+@keyframes srcRing{
+  0%,4%{opacity:0;transform:scale(.985)}
+  8%{opacity:.85;transform:scale(1)}
+  17%{opacity:0;transform:scale(1.012)}
+  100%{opacity:0}
+}
+@keyframes flipMusait{
+  0%,30%{opacity:1;filter:blur(0)}
+  34%{opacity:0;filter:blur(2px)}
+  90%{opacity:0;filter:blur(2px)}
+  95%{opacity:1;filter:blur(0)}
+  100%{opacity:1}
+}
+@keyframes flipOps{
+  0%,30%{opacity:0;filter:blur(2px)}
+  36%{opacity:1;filter:blur(0)}
+  90%{opacity:1;filter:blur(0)}
+  94%{opacity:0;filter:blur(2px)}
+  100%{opacity:0}
+}
+@keyframes arrFlash{
+  0%,26%{opacity:0}
+  32%{opacity:.15}
+  48%{opacity:.15}
+  62%{opacity:0}
+  100%{opacity:0}
+}
+@keyframes arrContent{
+  0%,26%{transform:translateX(0);filter:blur(0)}
+  30%{transform:translateX(-9px);filter:blur(2px)}
+  40%{transform:translateX(0);filter:blur(0)}
+  100%{transform:translateX(0)}
+}
+@keyframes badgeLive{
+  0%,26%{opacity:0;transform:translateY(2px)}
+  32%{opacity:1;transform:none}
+  66%{opacity:1}
+  78%{opacity:0}
+  100%{opacity:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .enter{animation:none;opacity:1;transform:none}
+  .pulse{animation:none}
+  .a-packet,.a-ring,.a-musait,.a-ops,.a-flash,.a-content,.a-badge{animation:none}
+  .packet{opacity:0}
+  .p-ops{opacity:0}
+  .arr-flash{opacity:0}
+  .badge-live{opacity:1}
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:880px){
+  body{align-items:flex-start}
+  .body{grid-template-columns:1fr}
+  .col.left{border-right:none;border-bottom:1px solid var(--rule)}
+  .col.right{border-left:none;border-top:1px solid var(--rule);background:linear-gradient(180deg,rgba(30,155,138,.04),transparent 90px)}
+  .col.mid{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--soft)}
+  .gate{flex-direction:row;justify-content:center;gap:16px;padding:6px 0}
+  .gate-lane{width:120px;height:34px}
+  .gate-note{text-align:left;max-width:180px}
+}
+</style>
+</head>
+<body>
+<div class="mock mono">MOCKUP · /nedir: Canlı Konsol</div>
+
+<section class="console enter" aria-label="Projedar canlı konsol">
+
+  <!-- HEADER CHROME -->
+  <header class="head">
+    <div class="brand-q">
+      <div class="mark disp">Proje<span class="teal">dar</span> <span class="q">nedir?</span></div>
+      <div class="ans">canlı konut stoğu dağıtım ağı</div>
+    </div>
+    <div class="head-right">
+      <div class="legend">
+        <span><i class="dot g"></i> müsait</span>
+        <span><i class="dot a"></i> opsiyon</span>
+        <span><i class="dot r"></i> satıldı</span>
+      </div>
+      <a class="join mono" href="#">ağa katıl →</a>
+    </div>
+  </header>
+
+  <!-- BODY: three regions -->
+  <div class="body">
+
+    <!-- LEFT · ÜRETİCİ -->
+    <div class="col left">
+      <div class="panel-head">
+        <div>
+          <div class="panel-role"><b>Üretici</b> · tek panel</div>
+          <div class="panel-sub">stok · fiyat · dağıtımı buradan yönetir</div>
+        </div>
+        <span class="fresh"><i class="dot g pulse"></i><span data-fresh>az önce</span></span>
+      </div>
+      <div class="proj">Meridyen Park <span>· İstanbul, Ataşehir</span></div>
+
+      <div class="rows">
+        <div class="row">
+          <div class="row-id"><b>A-12</b><span class="dim">3+1 · 142 m²</span></div>
+          <span class="pill g">MÜSAİT</span>
+        </div>
+
+        <!-- SIGNATURE SOURCE: A-15, ayni anda iki panelde doner -->
+        <div class="row src">
+          <span class="src-ring anim a-ring"></span>
+          <div class="row-id"><b>A-15</b><span class="dim">3+1 · 138 m²</span></div>
+          <span class="flip">
+            <span class="pill g anim a-musait">MÜSAİT</span>
+            <span class="pill a p-ops anim a-ops">OPSİYON</span>
+          </span>
+        </div>
+
+        <div class="row">
+          <div class="row-id"><b>B-07</b><span class="dim">2+1 · 98 m²</span></div>
+          <span class="pill a">OPSİYON</span>
+        </div>
+        <div class="row">
+          <div class="row-id"><b>B-09</b><span class="dim">2+1 · 96 m²</span></div>
+          <span class="pill g">MÜSAİT</span>
+        </div>
+        <div class="row sold">
+          <div class="row-id"><b>C-21</b><span class="dim">4+1 · 176 m²</span></div>
+          <span class="pill r">SATILDI</span>
+        </div>
+        <div class="row">
+          <div class="row-id"><b>C-04</b><span class="dim">1+1 · 64 m²</span></div>
+          <span class="pill g">MÜSAİT</span>
+        </div>
+      </div>
+
+      <div class="dist">
+        <div class="dist-bar">
+          <i style="flex:4;background:var(--green)"></i>
+          <i style="flex:2;background:var(--amber)"></i>
+          <i style="flex:1;background:var(--red)"></i>
+        </div>
+        <div class="dist-meta"><span><b>4</b> müsait</span><span><b>2</b> opsiyon</span><span><b>1</b> satıldı</span></div>
+        <div class="manage-note">fiyatı da tek noktadan yönetir, ekranda basılı fiyat tutulmaz</div>
+      </div>
+    </div>
+
+    <!-- CENTER · TAHSİS -->
+    <div class="col mid">
+      <div class="gate">
+        <div class="gate-label">tahsis</div>
+        <div class="gate-lane">
+          <div class="gate-line"></div>
+          <div class="packet anim a-packet">A-15 <span class="ar">→</span> Elif D.</div>
+        </div>
+        <div class="gate-note">görünürlük kapısı<br><b>üretici kimin göreceğine karar verir</b></div>
+      </div>
+    </div>
+
+    <!-- RIGHT · DANIŞMAN -->
+    <div class="col right">
+      <div class="panel-head">
+        <div>
+          <div class="panel-role"><b>Danışman</b> · Elif D.</div>
+          <div class="panel-sub">yalnız kendisine tahsisli birimleri görür</div>
+        </div>
+        <span class="fresh"><i class="dot g pulse"></i><span data-fresh>az önce</span></span>
+      </div>
+      <div class="proj">Meridyen Park <span>· sana tahsisli 2 birim</span></div>
+
+      <div class="rows">
+        <!-- ARRIVAL: A-15 kapidan gelir, ayni doner -->
+        <div class="row arr">
+          <span class="arr-flash anim a-flash"></span>
+          <div class="arr-body anim a-content">
+            <div class="row-id"><b>A-15</b><span class="dim">3+1 · 138 m²</span></div>
+            <span class="badge-live anim a-badge">canlı tahsis</span>
+          </div>
+          <span class="flip">
+            <span class="pill g anim a-musait">MÜSAİT</span>
+            <span class="pill a p-ops anim a-ops">OPSİYON</span>
+          </span>
+        </div>
+
+        <div class="row">
+          <div class="arr-body">
+            <div class="row-id"><b>B-07</b><span class="dim">2+1 · 98 m²</span></div>
+          </div>
+          <button class="share" type="button">Paylaş</button>
+        </div>
+      </div>
+
+      <div class="price-note">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="5" y="10.5" width="14" height="9.5" rx="2" stroke="currentColor" stroke-width="2"/>
+          <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        fiyat canlı: yalnız yetkili danışmana açık
+      </div>
+      <div class="manage-note" style="margin-top:9px">paylaşımda fiyat o anki canlı değerden basılır</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER CAPTION -->
+  <footer class="foot">
+    <span class="seg"><i>tek doğru kaynak:</i> fiyat ve stok tek yerde, eskimez</span>
+    <span class="seg"><i>tahsisli dağıtım:</i> danışman yalnız kendine ait birimleri görür</span>
+    <span class="seg"><i>çift satış:</i> aynı birim ikinci kez opsiyonlanamaz, sistem engeller</span>
+    <span class="seg"><i>gelir:</i> Projedar satış komisyonuna ortak olmaz</span>
+  </footer>
+
+</section>
+
+<script>
+  (function(){
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var stamps = document.querySelectorAll('[data-fresh]');
+    var t = 0;
+    // 9sn dongu ile gevsek senkron: tahsis ani (~0) "az once", sonra sn sayar
+    setInterval(function(){
+      t = (t + 1) % 9;
+      var label = t < 2 ? 'az önce' : (t + ' sn önce');
+      for (var i = 0; i < stamps.length; i++) stamps[i].textContent = label;
+    }, 1000);
+  })();
+</script>
+</body>
+</html>

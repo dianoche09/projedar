@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar nedir? — Editoryal Manifesto (mockup)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   DESIGN READ: /nedir açıklama sayfası, kitle üretici + emlak danışmanı (B2B),
+   editoryal-manifesto / kinetik tip dili. TİP = tasarım. Diyagram/tablo/kart YOK.
+   VARIANCE 9 · MOTION 8 · DENSITY 2. Tek aksan: teal. Tek köşe kuralı: buton pill,
+   grafik çubuk keskin, kutu yok. Marka tipografisi kilitli (Bricolage Grotesque).
+   ============================================================ */
+:root{
+  --paper:#eef1f6; --paper-2:#e7ebf3;
+  --ink:#10243a; --ink-soft:#46586b; --navy:#13314b;
+  --teal:#1e9b8a; --teal-d:#1a8676; --teal-ink:#0f5f55;
+  --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --line:rgba(16,36,58,.12); --line-soft:rgba(16,36,58,.07);
+  --eout:cubic-bezier(0.23,1,0.32,1);
+  --eio:cubic-bezier(0.77,0,0.175,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Instrument Sans",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* çok hafif spatial zemin — koyu mesh DEĞİL, kilitli açık ışıma */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 55% at 78% 8%, rgba(30,155,138,.09), transparent 60%),
+    radial-gradient(70% 60% at 12% 92%, rgba(19,49,75,.06), transparent 62%);
+}
+.disp{font-family:"Bricolage Grotesque",sans-serif;letter-spacing:-.028em}
+.mono{font-family:"Geist Mono",monospace;font-variant-numeric:tabular-nums}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--teal);color:#fff}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:1.5rem}
+@media(min-width:768px){.wrap{padding-inline:2.5rem}}
+.rule{height:1px;background:var(--line)}
+
+/* --- kinetik hero: clip-path kelime maskesi (emil) --- */
+.word{display:inline-block;will-change:clip-path,transform;
+  clip-path:inset(0 -0.05em 112% -0.05em);transform:translateY(.12em);
+  animation:wordIn .82s var(--eout) forwards}
+@keyframes wordIn{to{clip-path:inset(-0.06em -0.06em -0.16em -0.06em);transform:none}}
+
+/* akış çizgisi (tek craft detay) */
+.flow{position:relative;color:var(--teal-d);white-space:nowrap}
+.flow svg{position:absolute;left:-1%;bottom:-.16em;width:102%;height:.42em;overflow:visible}
+.flow path{stroke:var(--teal);stroke-width:6;fill:none;stroke-linecap:round;
+  stroke-dasharray:360;stroke-dashoffset:360;animation:draw 1.1s var(--eout) .95s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* canlı sinyal noktası — imza motifi, her "canlı"da */
+.dot{display:inline-block;width:.42em;height:.42em;border-radius:999px;
+  background:var(--green);vertical-align:middle;margin:0 .18em .12em 0;
+  box-shadow:0 0 0 0 rgba(47,179,107,.5);animation:pulse 2.4s var(--eout) infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,179,107,.45)}70%{box-shadow:0 0 0 7px rgba(47,179,107,0)}100%{box-shadow:0 0 0 0 rgba(47,179,107,0)}}
+
+/* scroll reveal */
+.rise{opacity:0;transform:translateY(26px);
+  transition:opacity .8s var(--eout),transform .8s var(--eout);
+  transition-delay:var(--d,0ms)}
+.rise.in{opacity:1;transform:none}
+
+/* eskiyen değer vs canlı değer — tipografik hamle */
+.stale{color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--red);
+  text-decoration-thickness:2px;opacity:.62}
+.livev{color:var(--amber);font-weight:700}
+
+/* buton */
+.btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;
+  font-family:"Bricolage Grotesque",sans-serif;font-weight:700;
+  transition:transform .16s var(--eout),background .2s var(--eout)}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:#fff;padding:.95rem 1.7rem;font-size:15px}
+.btn-ink:hover{background:#193150}
+.tlink{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;color:var(--teal-ink);
+  transition:transform .16s var(--eout)}
+.tlink:active{transform:scale(.97)}
+.tlink .arw{display:inline-block;transition:transform .22s var(--eout)}
+.tlink:hover .arw{transform:translateX(4px)}
+
+/* sinyal şeridi (tek görsel) */
+.seg{height:100%}
+.legdot{display:inline-block;width:.5rem;height:.5rem;border-radius:999px;margin-right:.4rem}
+
+@media (prefers-reduced-motion: reduce){
+  .word{clip-path:none;transform:none;animation:none}
+  .flow path{stroke-dashoffset:0;animation:none}
+  .dot{animation:none}
+  .rise{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- MOCKUP ROZET -->
+<div class="mono" style="position:fixed;left:12px;bottom:12px;z-index:60;background:var(--ink);color:#fff;font-size:11px;padding:6px 10px;border-radius:8px;opacity:.86">MOCKUP · /nedir — Editoryal Manifesto</div>
+
+<!-- MASTHEAD (essay başlığı — nav/CTA yığını DEĞİL) -->
+<header class="wrap" style="padding-top:2rem;padding-bottom:1.4rem">
+  <div class="flex items-baseline justify-between gap-4">
+    <span class="disp" style="font-size:20px;font-weight:800">Proje<span style="color:var(--teal-d)">dar</span></span>
+    <span class="mono" style="font-size:12px;color:var(--ink-soft)">/nedir · manifesto</span>
+  </div>
+</header>
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- =========================================================
+     I. AÇILIŞ İDDİASI  (manifestonun tezi, dev tip)
+     ========================================================= -->
+<section class="wrap" style="padding-top:clamp(3.5rem,9vw,7rem);padding-bottom:clamp(4rem,10vw,8rem)">
+  <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_260px] md:gap-16 md:items-end">
+    <div>
+      <p class="mono" style="font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-ink);margin-bottom:2.2rem">
+        <span class="dot"></span> Canlı ağ · B2B satış altyapısı
+      </p>
+
+      <h1 class="disp" style="font-weight:800;font-size:clamp(2.7rem,8.3vw,6.6rem);line-height:.92">
+        <span style="display:block;overflow:visible">
+          <span class="word" style="animation-delay:.05s">İlan</span>
+          <span class="word" style="animation-delay:.12s">yazıldığı</span>
+          <span class="word" style="animation-delay:.19s">an</span>
+        </span>
+        <span style="display:block;overflow:visible">
+          <span class="word" style="animation-delay:.27s">durur.</span>
+        </span>
+        <span style="display:block;overflow:visible;margin-top:.08em;color:var(--ink-soft)">
+          <span class="word" style="animation-delay:.42s">Stok</span>
+          <span class="word flow" style="animation-delay:.5s">akmaya<svg viewBox="0 0 300 14" preserveAspectRatio="none"><path d="M4 9 Q 74 1 150 8 T 296 7"/></svg></span>
+          <span class="word" style="animation-delay:.58s;color:var(--ink)">devam</span>
+          <span class="word" style="animation-delay:.66s;color:var(--ink)">eder.</span>
+        </span>
+      </h1>
+
+      <p class="rise in" style="--d:820ms;max-width:56ch;margin-top:2.2rem;font-size:clamp(17px,2vw,19px);line-height:1.62;color:var(--ink-soft)">
+        Projedar bir ilan portalı değil. Üretici kontrollü, tahsisle yönetilen bir satış altyapısı:
+        <b style="color:var(--ink);font-weight:600">fiyat ve stok tek yerde yaşar</b>, danışman yalnız kendisine tahsis edilmiş projeleri görür.
+      </p>
+
+      <div class="rise in" style="--d:960ms;margin-top:2.4rem;display:flex;flex-wrap:wrap;align-items:center;gap:1.4rem">
+        <a href="#" class="btn btn-ink">Ağa katıl</a>
+        <a href="#nasil" class="tlink" style="font-size:15px">nasıl çalıştığını aşağıda anlatıyoruz <span class="arw">↓</span></a>
+      </div>
+    </div>
+
+    <!-- asimetrik sağ nefes: tek satır mono not, yukarıda -->
+    <aside class="rise in mono" style="--d:1080ms;font-size:12.5px;line-height:1.7;color:var(--ink-soft);border-left:1px solid var(--line);padding-left:1.2rem;align-self:start;margin-top:.4rem">
+      Yeni konut projelerini<br>yetkili danışmanla buluşturan<br>nötr ağ. Fiyat yalnız<br>tahsisli danışmana görünür.
+    </aside>
+  </div>
+</section>
+
+<!-- =========================================================
+     II. KANIT — ilanın eskimesi (editoryal pasaj)
+     ========================================================= -->
+<section id="nasil" class="wrap" style="padding-block:clamp(4rem,9vw,7.5rem)">
+  <div class="md:pl-[7vw]">
+    <p class="rise disp" style="font-weight:700;font-size:clamp(1.9rem,5vw,3.5rem);line-height:1.04;max-width:20ch">
+      Fiyat perşembe 17:40'ta değişir. İlan çoğu zaman pazartesiyi görür.
+    </p>
+    <p class="rise" style="--d:120ms;max-width:52ch;margin-top:1.8rem;font-size:18px;line-height:1.62;color:var(--ink-soft)">
+      Arada geçen her saat, yanlış fiyatla yürüyen bir görüşme demek. İlan güncellenene kadar
+      sahadaki gerçek çoktan başka yerdedir.
+    </p>
+
+    <!-- imza: eskiyen değer vs canlı değer -->
+    <p class="rise disp" style="--d:220ms;margin-top:2.6rem;font-size:clamp(1.4rem,3.4vw,2.2rem);font-weight:600;line-height:1.3">
+      İlanda hâlâ <span class="stale">müsait</span>.
+      Sahada <span class="livev">opsiyonlu</span>.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     III. DÖNÜŞ — tek doğru kaynak
+     ========================================================= -->
+<section class="wrap" style="padding-block:clamp(4rem,9vw,7.5rem)">
+  <div class="md:ml-auto md:text-right md:max-w-[62%]">
+    <p class="rise disp" style="font-weight:800;font-size:clamp(2rem,5.4vw,3.7rem);line-height:1.02">
+      Tahsis, bağlı kaldıkça <span style="color:var(--teal-d)"><span class="dot"></span>canlı</span> kalır.
+    </p>
+    <p class="rise" style="--d:120ms;margin-top:1.8rem;font-size:18px;line-height:1.62;color:var(--ink-soft);max-width:50ch;margin-left:auto">
+      Fiyatı ve durumu yalnız birim kaydı taşır. Paylaşılan her bağlantı, o an canlı değerinden basılır.
+      Hiçbir yerde kopya tutulmaz; değişim, çelişki büyümeden görünür.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     TEK GÖRSEL — canlı sinyal şeridi
+     ========================================================= -->
+<section class="wrap" style="padding-block:clamp(2rem,4vw,3rem)">
+  <div class="rise" style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:1.8rem">
+    <div class="flex items-center justify-between" style="margin-bottom:1rem">
+      <span class="mono" style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)">Canlı stok</span>
+      <span class="mono" style="font-size:12px;color:var(--teal-ink)"><span class="dot"></span>3 sn önce güncellendi</span>
+    </div>
+    <div style="display:flex;height:16px;width:100%;gap:3px">
+      <div class="seg" style="flex:41;background:var(--green)"></div>
+      <div class="seg" style="flex:6;min-width:14px;background:var(--amber)"></div>
+      <div class="seg" style="flex:18;background:var(--red)"></div>
+    </div>
+    <div class="mono" style="display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:.95rem;font-size:13px;color:var(--ink-soft)">
+      <span><span class="legdot" style="background:var(--green)"></span>Müsait 41</span>
+      <span><span class="legdot" style="background:var(--amber)"></span>Opsiyon 6</span>
+      <span><span class="legdot" style="background:var(--red)"></span>Satıldı 18</span>
+      <span style="margin-left:auto;color:var(--ink)">Fiyat yalnız yetkili danışmana görünür.</span>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     IV. MEKANİK — kart değil, üç iddia (asimetrik dizi)
+     ========================================================= -->
+<section class="wrap" style="padding-block:clamp(4rem,9vw,7.5rem)">
+
+  <div class="rise" style="max-width:34ch">
+    <p class="disp" style="font-weight:700;font-size:clamp(1.7rem,4.4vw,2.9rem);line-height:1.06">Herkes her şeyi görmez.</p>
+    <p style="margin-top:1.1rem;font-size:17.5px;line-height:1.6;color:var(--ink-soft)">
+      Danışman yalnız kendisine tahsis edilmiş projeleri görür ve paylaşır. Görünürlük, üreticinin kararıdır.
+    </p>
+  </div>
+
+  <div class="rule" style="margin-block:clamp(2.4rem,5vw,3.6rem)"></div>
+
+  <div class="rise md:ml-[28%]" style="max-width:38ch">
+    <p class="disp" style="font-weight:700;font-size:clamp(1.7rem,4.4vw,2.9rem);line-height:1.06">Aynı daire iki danışmana aynı anda opsiyonlanamaz.</p>
+    <p style="margin-top:1.1rem;font-size:17.5px;line-height:1.6;color:var(--ink-soft)">
+      Opsiyon alındığı an birim kilitlenir. Çakışma uygulama katmanında değil, sistemin çekirdeğinde engellenir.
+    </p>
+  </div>
+
+  <div class="rule" style="margin-block:clamp(2.4rem,5vw,3.6rem)"></div>
+
+  <div class="rise md:ml-[12%]" style="max-width:34ch">
+    <p class="disp" style="font-weight:700;font-size:clamp(1.7rem,4.4vw,2.9rem);line-height:1.06">Kazancın <span style="color:var(--teal-d)">sana</span> kalır.</p>
+    <p style="margin-top:1.1rem;font-size:17.5px;line-height:1.6;color:var(--ink-soft)">
+      Üreticinin danışmana tanımladığı satış komisyonuna Projedar ortak olmaz. Ne kazanacağını üretici belirler, sen alırsın.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================================
+     V. SONUÇ — kapanış stanzası (dip CTA bandı DEĞİL, prose)
+     ========================================================= -->
+<section class="wrap" style="padding-top:clamp(3rem,6vw,5rem);padding-bottom:clamp(5rem,11vw,9rem)">
+  <div class="rise" style="border-top:2px solid var(--ink);padding-top:clamp(2.2rem,5vw,3.4rem)">
+    <p class="disp" style="font-weight:800;font-size:clamp(2.2rem,6.2vw,4.4rem);line-height:1.0;max-width:16ch">
+      Doğru danışman, doğru fiyat, doğru an.
+    </p>
+    <p style="margin-top:1.6rem;font-size:clamp(18px,2.2vw,21px);line-height:1.5;color:var(--ink-soft);max-width:44ch">
+      Yeni konut projeleri bu üçünü aynı anda tutan bir ağda buluşsun diye. Projedar bunun için var.
+    </p>
+    <div style="margin-top:2.6rem;display:flex;flex-wrap:wrap;align-items:center;gap:1.4rem">
+      <a href="#" class="btn btn-ink">Ağa katıl</a>
+      <a href="#" class="tlink" style="font-size:15px">projeni ağa ekle <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER minimal -->
+<footer class="wrap" style="padding-bottom:2.4rem">
+  <div class="rule" style="margin-bottom:1.2rem"></div>
+  <div class="flex flex-wrap items-baseline justify-between gap-3">
+    <span class="disp" style="font-size:15px;font-weight:800">Proje<span style="color:var(--teal-d)">dar</span></span>
+    <span class="mono" style="font-size:11.5px;color:var(--ink-soft)">Üretici kontrollü konut stoğu dağıtım ağı</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var risers = document.querySelectorAll('.rise:not(.in)');
+  if(reduce){ risers.forEach(function(el){ el.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold:0.18, rootMargin:'0px 0px -8% 0px' });
+  risers.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
