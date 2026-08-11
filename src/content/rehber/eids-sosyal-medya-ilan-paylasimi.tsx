@@ -1,7 +1,6 @@
 import {
   Share2,
   ShieldCheck,
-  Instagram,
   Link2,
   AlertTriangle,
   Ban,
@@ -90,7 +89,7 @@ export function Govde() {
         </ul>
       </Bolum>
 
-      <Bolum id="platformlar" baslik="Hangi platformlar kapsamda?" Ikon={Instagram}>
+      <Bolum id="platformlar" baslik="Hangi platformlar kapsamda?" Ikon={Share2}>
         <p>
           Denetimin kapsamı, elektronik ortamda ilan verilebilen tüm sosyal medya ve mesajlaşma
           kanallarını içerecek şekilde genişletilmiştir. Instagram, Facebook ve WhatsApp dahil elektronik
