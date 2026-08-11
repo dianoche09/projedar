@@ -2,6 +2,7 @@ import type { FC } from "react";
 import type { TocOge } from "@/components/icerik/IcerikToc";
 import { Govde as EidsGovde, toc as eidsToc } from "./eids-emlakci-rehberi";
 import { Govde as YetkiBelgesiGovde, toc as yetkiBelgesiToc } from "./tasinmaz-ticareti-yetki-belgesi";
+import { Govde as SosyalMedyaGovde, toc as sosyalMedyaToc } from "./eids-sosyal-medya-ilan-paylasimi";
 
 /**
  * Slug → gövde eşlemesi. Registry (meta) ile gövde ayrıktır: meta merkezî
@@ -13,4 +14,5 @@ export type RehberModul = { Govde: FC; toc: TocOge[] };
 export const REHBER_GOVDE: Record<string, RehberModul> = {
   "eids-emlakci-rehberi": { Govde: EidsGovde, toc: eidsToc },
   "tasinmaz-ticareti-yetki-belgesi": { Govde: YetkiBelgesiGovde, toc: yetkiBelgesiToc },
+  "eids-sosyal-medya-ilan-paylasimi": { Govde: SosyalMedyaGovde, toc: sosyalMedyaToc },
 };
