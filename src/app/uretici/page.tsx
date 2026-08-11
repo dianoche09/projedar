@@ -1,23 +1,15 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { zamanOnce } from "@/lib/types";
+import { durumGrup, GRUP_AD, GRUP_NOKTA, GRUP_ROZET } from "@/lib/stok";
 import { projeKapak } from "@/lib/gorsel";
 
 /* =========================================================
-   ÜRETİCİ KOKPİTİ — v2-muteahhit-A görünümü, gerçek Supabase verisi
-   Sinyal: yeşil=müsait, amber=opsiyon, kırmızı=satıldı.
+   ÜRETİCİ KOKPİTİ — v2-muteahhit-A görünümü, gerçek Supabase verisi.
+   Durum dili stok/kesit ile aynı 5 grup: satışa açık / opsiyon / satıldı / planlı / kapalı.
    ========================================================= */
 
-type DurumKova = "musait" | "opsiyon" | "satildi" | "diger";
-type Ozet = { toplam: number; musait: number; opsiyon: number; satildi: number };
-
-/** birim.durum → kokpit kovası (opsiyonlu+satis_beklemede = opsiyon). */
-function kova(d: string): DurumKova {
-  if (d === "musait") return "musait";
-  if (d === "opsiyonlu" || d === "satis_beklemede") return "opsiyon";
-  if (d === "satildi") return "satildi";
-  return "diger";
-}
+type Ozet = { toplam: number; acik: number; opsiyon: number; satildi: number; planli: number; kapali: number };
 
 /** Para — kısa biçim (₺8.75M). Simge para_birimi alanından. */
 function sembol(birim: string | null): string {
@@ -39,19 +31,6 @@ function tazelik(iso: string | null): { sinif: string; metin: string; gun: numbe
   return { sinif, metin: zamanOnce(iso), gun };
 }
 
-const DURUM_SINIF: Record<DurumKova, string> = {
-  musait: "d-musait",
-  opsiyon: "d-opsiyon",
-  satildi: "d-satildi",
-  diger: "d-musait",
-};
-const DURUM_AD: Record<DurumKova, string> = {
-  musait: "Müsait",
-  opsiyon: "Opsiyon",
-  satildi: "Satıldı",
-  diger: "—",
-};
-
 type BirimSatir = {
   proje_id: string;
   blok_id: string | null;
@@ -59,6 +38,7 @@ type BirimSatir = {
   kat: number | null;
   daire_no: string | null;
   durum: string;
+  satilabilir: boolean | null;
   liste_fiyati: number | null;
   para_birimi: string | null;
   net_m2: number | null;
@@ -80,7 +60,7 @@ export default async function UreticiKokpit() {
   const { data: birimRaw } = await supabase
     .from("birim")
     .select(
-      "proje_id, blok_id, tip_id, kat, daire_no, durum, liste_fiyati, para_birimi, net_m2, son_guncelleme",
+      "proje_id, blok_id, tip_id, kat, daire_no, durum, satilabilir, liste_fiyati, para_birimi, net_m2, son_guncelleme",
     );
   const birimler = (birimRaw ?? []) as BirimSatir[];
 
@@ -99,32 +79,36 @@ export default async function UreticiKokpit() {
   const kapakMap = new Map((kapaklar ?? []).map((k) => [k.proje_id, k.url as string | null]));
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
 
-  // — Proje başı özet —
+  // — Proje başı özet (durumGrup: 5 grup, satilabilir-duyarlı) —
   const ozet = new Map<string, Ozet>();
   for (const b of birimler) {
-    const o = ozet.get(b.proje_id) ?? { toplam: 0, musait: 0, opsiyon: 0, satildi: 0 };
+    const o = ozet.get(b.proje_id) ?? { toplam: 0, acik: 0, opsiyon: 0, satildi: 0, planli: 0, kapali: 0 };
     o.toplam++;
-    const k = kova(b.durum);
-    if (k === "musait") o.musait++;
-    else if (k === "opsiyon") o.opsiyon++;
-    else if (k === "satildi") o.satildi++;
+    o[durumGrup(b.durum, b.satilabilir ?? true)]++;
     ozet.set(b.proje_id, o);
   }
 
   // — Genel KPI —
   const toplamBirim = birimler.length;
-  const musait = birimler.filter((b) => kova(b.durum) === "musait").length;
-  const opsiyon = birimler.filter((b) => kova(b.durum) === "opsiyon").length;
-  const satildi = birimler.filter((b) => kova(b.durum) === "satildi").length;
-  const satisOrani = toplamBirim ? Math.round((satildi / toplamBirim) * 100) : 0;
-  const musaitPct = toplamBirim ? Math.round((musait / toplamBirim) * 100) : 0;
+  const grupSay = (g: string) => birimler.filter((b) => durumGrup(b.durum, b.satilabilir ?? true) === g).length;
+  const acik = grupSay("acik");
+  const opsiyon = grupSay("opsiyon");
+  const satildi = grupSay("satildi");
+  const planli = grupSay("planli");
+  const kapali = grupSay("kapali");
+  // Satış oranı yalnız SATILABİLİR evrene göre (planlı/kapalı paydaya girmez → gerçek absorpsiyon)
+  const satilabilirEvren = acik + opsiyon + satildi;
+  const satisOrani = satilabilirEvren ? Math.round((satildi / satilabilirEvren) * 100) : 0;
 
-  const fiyatlar = birimler
-    .map((b) => b.liste_fiyati)
-    .filter((f): f is number => f != null && f > 0);
+  // Fiyat bandı yalnız TEK para birimi varsa anlamlı (karışım gösterme)
+  const paraSet = new Set(birimler.filter((b) => b.liste_fiyati && b.liste_fiyati > 0).map((b) => b.para_birimi ?? "TRY"));
+  const tekPara = paraSet.size === 1 ? [...paraSet][0] : null;
+  const fiyatlar = tekPara
+    ? birimler.filter((b) => b.liste_fiyati != null && b.liste_fiyati > 0).map((b) => b.liste_fiyati as number)
+    : [];
   const minFiyat = fiyatlar.length ? Math.min(...fiyatlar) : 0;
   const maxFiyat = fiyatlar.length ? Math.max(...fiyatlar) : 0;
-  const anaPara = (projeler?.[0]?.para_birimi as string | null) ?? "TRY";
+  const anaPara = tekPara ?? "TRY";
 
   // — Stok dağılım barı (% genişlik) —
   const w = (n: number) => (toplamBirim ? (n / toplamBirim) * 100 : 0);
@@ -135,9 +119,9 @@ export default async function UreticiKokpit() {
   // — Talep Radarı (gerçek stok metrikleri; uydurma sayı YOK) —
   const eskiBirimSay = birimler.filter((b) => tazelik(b.son_guncelleme).gun > 15).length;
   const enCokMusaitId =
-    [...ozet.entries()].sort((a, b) => b[1].musait - a[1].musait)[0]?.[0] ?? null;
+    [...ozet.entries()].sort((a, b) => b[1].acik - a[1].acik)[0]?.[0] ?? null;
   const enCokMusaitAd = enCokMusaitId ? projeAd.get(enCokMusaitId) : null;
-  const enCokMusaitN = enCokMusaitId ? ozet.get(enCokMusaitId)?.musait ?? 0 : 0;
+  const enCokMusaitN = enCokMusaitId ? ozet.get(enCokMusaitId)?.acik ?? 0 : 0;
 
   // — Son senkron —
   const enYeni = birimler
@@ -197,10 +181,10 @@ export default async function UreticiKokpit() {
       <section className="kart belir belir-1 mb-4 p-1">
         <div className="grid grid-cols-2 divide-x divide-y divide-[var(--cizgi)] md:grid-cols-3 lg:grid-cols-6 lg:divide-y-0">
           <Kpi etiket="Toplam Birim" deger={String(toplamBirim)} alt={`${projeler?.length ?? 0} aktif proje`} />
-          <Kpi etiket="Müsait" deger={String(musait)} renk="text-green" alt={`%${musaitPct} stok`} />
+          <Kpi etiket="Satışa Açık" deger={String(acik)} renk="text-green" alt="satışa hazır" />
           <Kpi etiket="Opsiyon" deger={String(opsiyon)} renk="text-amber" alt="karar bekliyor" />
-          <Kpi etiket="Satıldı" deger={String(satildi)} renk="text-red" alt={`${satildi} / ${toplamBirim}`} />
-          <Kpi etiket="Satış Oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${toplamBirim} birim`} />
+          <Kpi etiket="Satıldı" deger={String(satildi)} renk="text-red" alt={planli || kapali ? `${planli} planlı · ${kapali} kapalı` : `${satildi} / ${satilabilirEvren}`} />
+          <Kpi etiket="Satış Oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${satilabilirEvren} satılabilir`} />
           <div className="px-5 py-4">
             <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">
               Liste Aralığı
@@ -227,15 +211,19 @@ export default async function UreticiKokpit() {
               <span className="mono text-[12px] text-[var(--ink-faint)]">{toplamBirim} birim</span>
             </div>
             <div className="stokbar" style={{ height: 14 }}>
-              <span style={{ width: `${w(musait)}%`, background: "linear-gradient(90deg,#37c178,#2fb36b)" }} />
+              <span style={{ width: `${w(acik)}%`, background: "var(--color-green)" }} />
               <span style={{ width: `${w(opsiyon)}%`, background: "var(--color-amber)" }} />
               <span style={{ width: `${w(satildi)}%`, background: "var(--color-red)" }} />
+              <span style={{ width: `${w(planli)}%`, background: "var(--color-navy)" }} />
+              <span style={{ width: `${w(kapali)}%`, background: "var(--color-gray)" }} />
             </div>
           </div>
-          <div className="flex items-center gap-5">
-            <LejantPunto renk="var(--color-green)" etiket="Müsait" deger={musait} />
+          <div className="flex flex-wrap items-center gap-4">
+            <LejantPunto renk="var(--color-green)" etiket="Satışa açık" deger={acik} />
             <LejantPunto renk="var(--color-amber)" etiket="Opsiyon" deger={opsiyon} />
             <LejantPunto renk="var(--color-red)" etiket="Satıldı" deger={satildi} />
+            {planli > 0 ? <LejantPunto renk="var(--color-navy)" etiket="Planlı" deger={planli} /> : null}
+            {kapali > 0 ? <LejantPunto renk="var(--color-gray)" etiket="Kapalı" deger={kapali} /> : null}
           </div>
         </div>
       </section>
@@ -247,7 +235,7 @@ export default async function UreticiKokpit() {
           {/* proje kartları — en fazla 3 yanyana */}
           <div className="belir belir-2 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {(projeler ?? []).map((p) => {
-              const o = ozet.get(p.id) ?? { toplam: 0, musait: 0, opsiyon: 0, satildi: 0 };
+              const o = ozet.get(p.id) ?? { toplam: 0, acik: 0, opsiyon: 0, satildi: 0, planli: 0, kapali: 0 };
               const t = tazelik(p.son_guncelleme);
               const sig =
                 o.opsiyon > o.satildi ? "var(--color-amber)" : o.satildi > 0 ? "var(--color-red)" : "var(--color-green)";
@@ -299,15 +287,17 @@ export default async function UreticiKokpit() {
 
                     <div className="mb-3 mt-3 grid grid-cols-4 gap-2">
                       <KutuSayi deger={o.toplam} etiket="birim" renk="text-ink" />
-                      <KutuSayi deger={o.musait} etiket="müsait" renk="text-green" />
+                      <KutuSayi deger={o.acik} etiket="açık" renk="text-green" />
                       <KutuSayi deger={o.opsiyon} etiket="opsiyon" renk="text-amber" />
                       <KutuSayi deger={o.satildi} etiket="satıldı" renk="text-red" />
                     </div>
 
                     <div className="stokbar mb-3">
-                      <span style={{ width: `${o.toplam ? (o.musait / o.toplam) * 100 : 0}%`, background: "var(--color-green)" }} />
+                      <span style={{ width: `${o.toplam ? (o.acik / o.toplam) * 100 : 0}%`, background: "var(--color-green)" }} />
                       <span style={{ width: `${o.toplam ? (o.opsiyon / o.toplam) * 100 : 0}%`, background: "var(--color-amber)" }} />
                       <span style={{ width: `${o.toplam ? (o.satildi / o.toplam) * 100 : 0}%`, background: "var(--color-red)" }} />
+                      <span style={{ width: `${o.toplam ? (o.planli / o.toplam) * 100 : 0}%`, background: "var(--color-navy)" }} />
+                      <span style={{ width: `${o.toplam ? (o.kapali / o.toplam) * 100 : 0}%`, background: "var(--color-gray)" }} />
                     </div>
 
                     <div className="flex items-center justify-between text-[11.5px]">
@@ -438,9 +428,9 @@ export default async function UreticiKokpit() {
                 </span>
               </div>
               <div className="ml-auto flex items-center gap-1.5">
-                <Link href="/uretici/stok?durum=musait" className="chip h-8 px-3 text-[12px]">
+                <Link href="/uretici/stok?durum=acik" className="chip h-8 px-3 text-[12px]">
                   <span className="size-[7px] rounded-full bg-green" />
-                  Müsait
+                  Satışa açık
                 </Link>
                 <Link href="/uretici/stok?durum=opsiyon" className="chip h-8 px-3 text-[12px]">
                   <span className="size-[7px] rounded-full bg-amber" />
@@ -470,13 +460,13 @@ export default async function UreticiKokpit() {
                 </thead>
                 <tbody>
                   {tabloSatirlar.map((b, i) => {
-                    const k = kova(b.durum);
+                    const g = durumGrup(b.durum, b.satilabilir ?? true);
                     const t = tazelik(b.son_guncelleme);
                     const net = b.net_m2 ?? tipNet.get(b.tip_id ?? "") ?? null;
                     const satir =
-                      k === "satildi"
+                      g === "satildi"
                         ? { background: "rgba(209,90,78,.035)" }
-                        : k === "opsiyon"
+                        : g === "opsiyon"
                           ? { background: "rgba(227,161,44,.045)" }
                           : undefined;
                     return (
@@ -491,14 +481,14 @@ export default async function UreticiKokpit() {
                         <td className="mono text-right">{net != null ? net : "—"}</td>
                         <td
                           className="mono text-right font-semibold"
-                          style={k === "satildi" ? { color: "var(--ink-faint)" } : undefined}
+                          style={g === "satildi" ? { color: "var(--ink-faint)" } : undefined}
                         >
                           {b.liste_fiyati ? paraKisa(b.liste_fiyati, b.para_birimi) : "—"}
                         </td>
                         <td>
-                          <span className={`durum ${DURUM_SINIF[k]}`}>
-                            <span className="nokta" />
-                            {DURUM_AD[k]}
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-[3px] text-[11px] font-semibold ${GRUP_ROZET[g]}`}>
+                            <span className={`size-[6px] rounded-full ${GRUP_NOKTA[g]}`} />
+                            {GRUP_AD[g]}
                           </span>
                         </td>
                         <td>
