@@ -7,6 +7,7 @@ import { tahsisEmlakcilari, tahsisSecenekleri } from "@/lib/tahsis";
 import { BinaKesiti } from "@/components/BinaKesiti";
 import { SecimDuzenle } from "@/components/SecimDuzenle";
 import { ProjeKomutBari } from "@/components/ProjeKomutBari";
+import { durumGrup } from "@/lib/stok";
 
 function Lejant({ renk, etiket }: { renk: string; etiket: string }) {
   return (
@@ -76,11 +77,15 @@ export default async function ProjeDetay({
   const ofisMap = new Map((ofisler ?? []).map((o) => [o.id, o.ad]));
   const emlakciMap = new Map(emlakcilar.map((e) => [e.id, e.ad]));
   const toplam = anaBirimler.length;
+  // Tek doğru kaynak: durumGrup (stok/kesit ile aynı 5 grup, satilabilir-duyarlı)
+  const grupSay = (g: string) => anaBirimler.filter((b) => durumGrup(b.durum, b.satilabilir ?? true) === g).length;
   const stats = {
     toplam,
-    musait: anaBirimler.filter((b) => b.durum === "musait").length,
-    opsiyon: anaBirimler.filter((b) => b.durum === "opsiyonlu" || b.durum === "satis_beklemede").length,
-    satildi: anaBirimler.filter((b) => b.durum === "satildi").length,
+    acik: grupSay("acik"),
+    opsiyon: grupSay("opsiyon"),
+    satildi: grupSay("satildi"),
+    planli: grupSay("planli"),
+    kapali: grupSay("kapali"),
   };
 
   return (
@@ -174,10 +179,11 @@ export default async function ProjeDetay({
           Birim ızgarası <span className="font-mono text-sm text-gray">({toplam})</span>
         </h2>
         <div className="flex flex-wrap gap-3 font-mono text-xs text-gray">
-          <Lejant renk="bg-green" etiket="müsait" />
+          <Lejant renk="bg-green" etiket="satışa açık" />
           <Lejant renk="bg-amber" etiket="opsiyon" />
           <Lejant renk="bg-red" etiket="satıldı" />
-          <Lejant renk="bg-navy/30" etiket="arsa payı" />
+          <Lejant renk="bg-navy" etiket="planlı" />
+          <Lejant renk="bg-gray" etiket="kapalı" />
         </div>
       </div>
 

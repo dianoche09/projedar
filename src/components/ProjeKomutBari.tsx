@@ -2,7 +2,14 @@ import Link from "next/link";
 import { projeTazele } from "@/app/uretici/actions";
 import { ASAMA_ETIKET, zamanOnce, type InsaatAsama } from "@/lib/types";
 
-type Stats = { toplam: number; musait: number; opsiyon: number; satildi: number };
+type Stats = {
+  toplam: number;
+  acik: number;
+  opsiyon: number;
+  satildi: number;
+  planli: number;
+  kapali: number;
+};
 type Proje = {
   id: string;
   ad: string;
@@ -123,11 +130,13 @@ export function ProjeKomutBari({
           </div>
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
           <Kpi etiket="Toplam" deger={stats.toplam} nokta="bg-white/60" />
-          <Kpi etiket="Müsait" deger={stats.musait} nokta="bg-green" />
+          <Kpi etiket="Satışa açık" deger={stats.acik} nokta="bg-green" />
           <Kpi etiket="Opsiyon" deger={stats.opsiyon} nokta="bg-amber" />
           <Kpi etiket="Satıldı" deger={stats.satildi} nokta="bg-red" />
+          <Kpi etiket="Planlı" deger={stats.planli} nokta="bg-navy" />
+          <Kpi etiket="Kapalı" deger={stats.kapali} nokta="bg-gray" />
         </div>
 
         <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1 border-t border-white/10 pt-3 text-xs text-white/60">
