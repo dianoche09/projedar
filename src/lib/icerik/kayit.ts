@@ -155,6 +155,33 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "musteri-kaydi-ve-hakedis-korumasi",
+    kategori: "rehber",
+    contentType: "rehber",
+    title: "Emlak Danışmanı Müşteri Kaydı ve Hak Ediş Koruması (2026)",
+    h1: "Müşteri Kaydı ve Hak Ediş Koruması: Danışman Komisyonu Nasıl Güvenceye Alınır?",
+    description:
+      "Emlak danışmanı hakedişini nasıl korur? Hizmet bedeli (KDV hariç en fazla %4), yetkilendirme sözleşmesi, zaman damgalı müşteri kaydı ve proje satışında alıcı iş sahibi durumu. Resmî kaynaklı rehber.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-tasinmaz-yonetmelik"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/proje-uzerinden-satis-nasil-yapilir", "rehber/tasinmaz-ticareti-yetki-belgesi"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt: "Bir gayrimenkul danışmanı, ofiste tablet üzerinde müşteri kaydını ve proje bilgisini incelerken",
+    canonical: `${SITE}/rehber/musteri-kaydi-ve-hakedis-korumasi`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */

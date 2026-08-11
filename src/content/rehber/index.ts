@@ -6,6 +6,7 @@ import { Govde as YetkiBelgesiGovde, toc as yetkiBelgesiToc, faq as yetkiBelgesi
 import { Govde as SosyalMedyaGovde, toc as sosyalMedyaToc, faq as sosyalMedyaFaq } from "./eids-sosyal-medya-ilan-paylasimi";
 import { Govde as EdevletYetkiGovde, toc as edevletYetkiToc, faq as edevletYetkiFaq } from "./e-devletten-emlakciya-eids-yetkisi";
 import { Govde as ProjeSatisGovde, toc as projeSatisToc, faq as projeSatisFaq } from "./proje-uzerinden-satis-nasil-yapilir";
+import { Govde as MusteriKaydiGovde, toc as musteriKaydiToc, faq as musteriKaydiFaq } from "./musteri-kaydi-ve-hakedis-korumasi";
 
 /**
  * Slug → gövde eşlemesi. Registry (meta) ile gövde ayrıktır: meta merkezî
@@ -21,4 +22,5 @@ export const REHBER_GOVDE: Record<string, RehberModul> = {
   "eids-sosyal-medya-ilan-paylasimi": { Govde: SosyalMedyaGovde, toc: sosyalMedyaToc, faq: sosyalMedyaFaq },
   "e-devletten-emlakciya-eids-yetkisi": { Govde: EdevletYetkiGovde, toc: edevletYetkiToc, faq: edevletYetkiFaq },
   "proje-uzerinden-satis-nasil-yapilir": { Govde: ProjeSatisGovde, toc: projeSatisToc, faq: projeSatisFaq },
+  "musteri-kaydi-ve-hakedis-korumasi": { Govde: MusteriKaydiGovde, toc: musteriKaydiToc, faq: musteriKaydiFaq },
 };
