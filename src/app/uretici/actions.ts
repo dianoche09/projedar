@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { kurallariDegerlendir } from "@/lib/fiyat-motor";
 import { kayitYaz, kayitlarYaz, durumTip } from "@/lib/events";
 import { bildirimYaz, bildirimlerYaz } from "@/lib/bildirim";
 import { UUID_RE, zUuid } from "@/lib/uuid";
@@ -443,6 +444,15 @@ export async function birimDurumGuncelle(formData: FormData) {
     payload: { eylem: "uretici_durum", durum: durum.data, durum_notu },
   });
 
+  // Dinamik fiyat: bu ızgara güncellemesi bir satışsa satış-adet/yüzde kurallarını değerlendir (best-effort)
+  if (durum.data === "satildi") {
+    try {
+      await kurallariDegerlendir(createAdminClient(), proje_id, { tetikTipleri: ["satis_adet", "satis_yuzde"] });
+    } catch {
+      /* best-effort */
+    }
+  }
+
   revalidatePath(`/uretici/proje/${proje_id}`);
   revalidatePath("/uretici/stok");
 }
@@ -555,6 +565,13 @@ export async function birimSatisKapat(formData: FormData) {
     birimId: birim_id,
     payload: { eylem: "satis_kapat", satici_id: satici_id ?? null, dogrudan: !satici_id },
   });
+
+  // Dinamik fiyat: satış-adet/yüzde kurallarını anında değerlendir (best-effort, migration yoksa no-op)
+  try {
+    await kurallariDegerlendir(createAdminClient(), proje_id, { tetikTipleri: ["satis_adet", "satis_yuzde"] });
+  } catch {
+    /* best-effort */
+  }
 
   revalidatePath("/uretici/stok");
   revalidatePath(`/uretici/proje/${proje_id}`);
@@ -1577,4 +1594,143 @@ export async function lansmanSil(formData: FormData) {
   if (!UUID_RE.test(id)) return;
   await supabase.from("lansman").delete().eq("id", id);
   revalidatePath("/uretici/lansman");
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// DİNAMİK FİYAT KURALLARI (2026-08-11) — kural CRUD + proje ayarı + öneri onay
+// ══════════════════════════════════════════════════════════════════════════
+const KURAL_TETIK = ["sure_gun", "satis_adet", "satis_yuzde", "tarih"] as const;
+const KURAL_AKSIYON = ["yuzde", "sabit_ekle", "sabit_fiyat"] as const;
+const KURAL_TEKRAR = ["tek", "periyodik"] as const;
+
+const kuralSemasi = z.object({
+  ad: z.string().trim().min(1, "Kural adı gerekli").max(80),
+  tip_id: z.string().trim().optional().nullable(),
+  tetik: z.enum(KURAL_TETIK),
+  esik: z.coerce.number().nonnegative().default(0),
+  tetik_tarih: z.string().trim().optional().nullable(),
+  aksiyon: z.enum(KURAL_AKSIYON),
+  deger: z.coerce.number(),
+  tekrar: z.enum(KURAL_TEKRAR).default("tek"),
+});
+
+/** Yeni fiyat kuralı ekle (proje kurulum). Düzenleme = sil + yeniden ekle (son_uygulanan_esik sıfırlanır). */
+export async function fiyatKuraliEkle(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const geri = `/uretici/proje/${proje_id}/kurulum`;
+  const supabase = await createClient();
+  if (!(await projeSahibiMi(supabase, proje_id))) hataya("/uretici", "Bu projeye erişim yok");
+  const s = kuralSemasi.safeParse({
+    ad: formData.get("ad"),
+    tip_id: formData.get("tip_id") || null,
+    tetik: formData.get("tetik"),
+    esik: formData.get("esik") ?? 0,
+    tetik_tarih: formData.get("tetik_tarih") || null,
+    aksiyon: formData.get("aksiyon"),
+    deger: formData.get("deger"),
+    tekrar: formData.get("tekrar") ?? "tek",
+  });
+  if (!s.success) hataya(geri, s.error.issues[0].message);
+  const d = s.data;
+  const tip_id = d.tip_id && UUID_RE.test(d.tip_id) ? d.tip_id : null;
+  const { error } = await supabase.from("fiyat_kurali").insert({
+    proje_id,
+    tip_id,
+    ad: d.ad,
+    tetik: d.tetik,
+    esik: d.esik,
+    tetik_tarih: d.tetik === "tarih" ? d.tetik_tarih || null : null,
+    aksiyon: d.aksiyon,
+    deger: d.deger,
+    tekrar: d.tekrar,
+  });
+  if (error) hataya(geri, error.message);
+  revalidatePath(geri);
+  basariya(geri, formData, "Kural eklendi");
+}
+
+export async function fiyatKuraliSil(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const id = zUuid.safeParse(formData.get("kural_id"));
+  if (!id.success) return;
+  const supabase = await createClient(); // RLS fiyat_kurali_owner sahipliği zorlar
+  await supabase.from("fiyat_kurali").delete().eq("id", id.data);
+  revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
+}
+
+export async function fiyatKuraliAcKapa(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const id = zUuid.safeParse(formData.get("kural_id"));
+  const aktif = String(formData.get("aktif")) === "true";
+  if (!id.success) return;
+  const supabase = await createClient();
+  await supabase.from("fiyat_kurali").update({ aktif }).eq("id", id.data);
+  revalidatePath(`/uretici/proje/${proje_id}/kurulum`);
+}
+
+/** Proje fiyat ayarı (mod + guardrail + baz). fiyat_ayar jsonb'yi komple yazar. */
+export async function projeFiyatAyar(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const geri = `/uretici/proje/${proje_id}/kurulum`;
+  const supabase = await createClient();
+  if (!(await projeSahibiMi(supabase, proje_id))) hataya("/uretici", "Bu projeye erişim yok");
+  const sayiOrNull = (v: FormDataEntryValue | null) => {
+    const s = String(v ?? "").trim();
+    return s === "" || !Number.isFinite(Number(s)) ? null : Number(s);
+  };
+  const fiyat_ayar = {
+    aktif: String(formData.get("aktif") ?? "") === "on",
+    mod: String(formData.get("mod")) === "otomatik" ? "otomatik" : "oneri",
+    baz_tarih: String(formData.get("baz_tarih") ?? "").trim() || null,
+    tavan_pct: sayiOrNull(formData.get("tavan_pct")),
+    adim_max_pct: sayiOrNull(formData.get("adim_max_pct")),
+    taban_override: sayiOrNull(formData.get("taban_override")),
+  };
+  const { error } = await supabase.from("proje").update({ fiyat_ayar }).eq("id", proje_id);
+  if (error) hataya(geri, error.message);
+  revalidatePath(geri);
+  basariya(geri, formData, "Fiyat ayarı kaydedildi");
+}
+
+/** Öneri kuyruğu (mod='oneri'): seçili önerileri birim fiyatına uygula. */
+export async function fiyatOneriUygula(formData: FormData) {
+  const supabase = await createClient();
+  const geri = "/uretici/fiyat-onerisi";
+  const idler = String(formData.get("oneri_idler") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => zUuid.safeParse(s).success);
+  if (idler.length === 0) hataya(geri, "Öneri seçilmedi");
+  const { data: oneriler } = await supabase
+    .from("fiyat_kural_oneri")
+    .select("id, birim_id, yeni_fiyat")
+    .in("id", idler)
+    .eq("durum", "bekliyor");
+  let uyg = 0;
+  for (const o of oneriler ?? []) {
+    const { error } = await supabase
+      .from("birim")
+      .update({ liste_fiyati: o.yeni_fiyat, son_guncelleme: new Date().toISOString() })
+      .eq("id", o.birim_id as string);
+    if (!error) {
+      await supabase.from("fiyat_kural_oneri").update({ durum: "uygulandi" }).eq("id", o.id as string);
+      uyg++;
+    }
+  }
+  revalidatePath(geri);
+  revalidatePath("/uretici/stok");
+  redirect(`${geri}?mesaj=${encodeURIComponent(`${uyg} öneri uygulandı`)}`);
+}
+
+export async function fiyatOneriReddet(formData: FormData) {
+  const supabase = await createClient();
+  const geri = "/uretici/fiyat-onerisi";
+  const idler = String(formData.get("oneri_idler") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => zUuid.safeParse(s).success);
+  if (idler.length === 0) return;
+  await supabase.from("fiyat_kural_oneri").update({ durum: "reddedildi" }).in("id", idler).eq("durum", "bekliyor");
+  revalidatePath(geri);
+  redirect(`${geri}?mesaj=${encodeURIComponent(`${idler.length} öneri reddedildi`)}`);
 }
