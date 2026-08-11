@@ -46,7 +46,7 @@ Kaynak: `src/lib/icerik/` (registry, tipler, kaynaklar, schema) + `src/content/<
 | # | Kategori | Slug | Niyet | Huni |
 |---|---|---|---|---|
 | ✅ | rehber | proje-uzerinden-satis-nasil-yapilir | "off-plan / projeden konut nasıl satılır" | üst | YAYINDA (2026-08-11) |
-| 6 | rehber | musteri-kaydi-ve-hakedis-korumasi | "emlakçı müşteri kaydı / hak ediş koruması" | orta |
+| ✅ | rehber | musteri-kaydi-ve-hakedis-korumasi | "emlakçı müşteri kaydı / hak ediş koruması" | orta | YAYINDA (2026-08-11) |
 | 7 | sozluk | opsiyon-tahsis-kapora-sereFiye | "opsiyon / tahsis / şerefiye ne demek" (terim kümesi) | orta |
 | 8 | karsilastirma | ilan-portali-vs-tahsisli-ag | "ilan sitesi mi tahsisli ağ mı" | orta |
 
