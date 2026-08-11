@@ -1,7 +1,7 @@
 # PROJEDAR — Sektörel SEO/GEO İçerik Planı (huni stratejisi)
 
 > Amaç: emlak danışmanının işini yaparken Google + AI aramalarında (ChatGPT/Perplexity/Gemini) Projedar'ı bulması → içerikle güven → ağa davet. Kapalı-devre B2B mimariyi bozmadan, üst-huni bilgilendirme ile ağ büyütme.
-> Durum (2026-08-11): içerik altyapısı KURULU, **1 makale yayında** (`rehber/eids-emlakci-rehberi`). Bu plan kalan içeriği önceliklendirir.
+> Durum (2026-08-11): içerik altyapısı KURULU, **5 makale yayında** (EİDS kümesi 4 + projeden-satış). FAQPage+Article schema ve dinamik llms.txt otomatik. Faz 1 TAMAM; sıradaki Faz 2 #6/#7/#8. Bu plan kalan içeriği önceliklendirir.
 
 ---
 
@@ -45,7 +45,7 @@ Kaynak: `src/lib/icerik/` (registry, tipler, kaynaklar, schema) + `src/content/<
 ### Faz 2 — Proje/off-plan satış süreci (Projedar'ın kalbi)
 | # | Kategori | Slug | Niyet | Huni |
 |---|---|---|---|---|
-| 5 | rehber | proje-uzerinden-satis-nasil-yapilir | "off-plan / projeden konut nasıl satılır" | üst |
+| ✅ | rehber | proje-uzerinden-satis-nasil-yapilir | "off-plan / projeden konut nasıl satılır" | üst | YAYINDA (2026-08-11) |
 | 6 | rehber | musteri-kaydi-ve-hakedis-korumasi | "emlakçı müşteri kaydı / hak ediş koruması" | orta |
 | 7 | sozluk | opsiyon-tahsis-kapora-sereFiye | "opsiyon / tahsis / şerefiye ne demek" (terim kümesi) | orta |
 | 8 | karsilastirma | ilan-portali-vs-tahsisli-ag | "ilan sitesi mi tahsisli ağ mı" | orta |
