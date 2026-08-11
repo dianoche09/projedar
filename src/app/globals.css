@@ -422,6 +422,9 @@ p {
 .h-satildi {
   background: linear-gradient(150deg, #dd6a5e, #d15a4e);
 }
+.h-planli {
+  background: linear-gradient(150deg, #1c4a70, #13314b);
+}
 .h-bos {
   background: rgba(16, 36, 58, 0.06);
   color: var(--ink-faint);

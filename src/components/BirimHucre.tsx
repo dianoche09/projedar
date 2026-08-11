@@ -2,15 +2,22 @@
 
 import { useState } from "react";
 import { DURUM_ETIKET } from "@/lib/types";
+import { durumGrup, type DurumGrup } from "@/lib/stok";
 import { DaireModal, type ModalBirim, type Eklenti } from "./DaireModal";
 import { useSecim } from "./SecimDuzenle";
 
-/** Birim durumu → bina kesiti hücre gradyan sınıfı (v2 .hucre). */
-function hucreSinif(durum: string): string {
-  if (durum === "musait") return "h-musait";
-  if (durum === "opsiyonlu" || durum === "satis_beklemede") return "h-opsiyon";
-  if (durum === "satildi") return "h-satildi";
-  return "h-bos";
+// Tek doğru kaynak: durumGrup (stok kesitiyle AYNI renk dili → aynı daire iki ekranda aynı renk).
+const GRUP_HUCRE: Record<DurumGrup, string> = {
+  acik: "h-musait",
+  opsiyon: "h-opsiyon",
+  satildi: "h-satildi",
+  planli: "h-planli",
+  kapali: "h-kilit", // satılamaz (arsa payı) / stop / kiralandı → kesikli gri
+};
+
+/** Birim durumu (+satilabilir) → bina kesiti hücre sınıfı (v2 .hucre). */
+function hucreSinif(durum: string, satilabilir: boolean): string {
+  return GRUP_HUCRE[durumGrup(durum, satilabilir)];
 }
 
 /**
@@ -49,9 +56,9 @@ export function BirimHucre({
         type="button"
         onClick={() => (secimModu ? secim!.toggle(birim.id) : setAcik(true))}
         title={`${birim.daire_no ?? ""} · ${DURUM_ETIKET[birim.durum]}${!birim.satilabilir ? " · arsa payı (satılamaz)" : ""}`}
-        className={`hucre min-w-[48px] shrink-0 ${hucreSinif(birim.durum)} ${
-          !birim.satilabilir ? "opacity-80 ring-1 ring-inset ring-white/55" : ""
-        } ${seciliMi ? "ring-2 ring-white" : ""}`}
+        className={`hucre min-w-[48px] shrink-0 ${hucreSinif(birim.durum, birim.satilabilir)} ${
+          seciliMi ? "ring-2 ring-white" : ""
+        }`}
       >
         {seciliMi ? (
           <span className="text-[14px] font-bold">✓</span>

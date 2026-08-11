@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BirimHucre } from "@/components/BirimHucre";
+import { durumGrup } from "@/lib/stok";
 import type { BirimDurum } from "@/lib/types";
 
 export type BinaBirim = {
@@ -75,7 +76,7 @@ export function BinaKesiti({
         <div className="flex flex-wrap gap-1.5 pb-1">
           {bloklar.map((blok) => {
             const bb = birimler.filter((b) => b.blok_id === blok.id && b.ana_birim_id == null);
-            const m = bb.filter((b) => b.durum === "musait").length;
+            const m = bb.filter((b) => durumGrup(b.durum, b.satilabilir) === "acik").length;
             const seciliMi = blok.id === aktifId;
             return (
               <button
@@ -102,9 +103,12 @@ export function BinaKesiti({
         const katlar = [...new Set(bb.map((b) => b.kat).filter((k): k is number => k != null))].sort(
           (a, b) => b - a,
         );
-        const musait = bb.filter((b) => b.durum === "musait").length;
-        const opsiyon = bb.filter((b) => b.durum === "opsiyonlu" || b.durum === "satis_beklemede").length;
-        const satildi = bb.filter((b) => b.durum === "satildi").length;
+        const grupSay = (g: string) => bb.filter((b) => durumGrup(b.durum, b.satilabilir) === g).length;
+        const musait = grupSay("acik");
+        const opsiyon = grupSay("opsiyon");
+        const satildi = grupSay("satildi");
+        const planli = grupSay("planli");
+        const kapali = grupSay("kapali");
 
         return (
           <div key={blok.id} className="kart overflow-hidden">
@@ -117,18 +121,30 @@ export function BinaKesiti({
                 </span>
               </div>
               <div className="flex items-center gap-3 font-mono text-[11px] font-medium text-ink-soft">
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5" title="Satışa açık">
                   <span className="size-2 rounded-full bg-green" />
                   {musait}
                 </span>
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5" title="Opsiyon">
                   <span className="size-2 rounded-full bg-amber" />
                   {opsiyon}
                 </span>
-                <span className="flex items-center gap-1.5">
+                <span className="flex items-center gap-1.5" title="Satıldı">
                   <span className="size-2 rounded-full bg-red" />
                   {satildi}
                 </span>
+                {planli > 0 ? (
+                  <span className="flex items-center gap-1.5" title="Planlı (henüz açılmamış)">
+                    <span className="size-2 rounded-full bg-navy" />
+                    {planli}
+                  </span>
+                ) : null}
+                {kapali > 0 ? (
+                  <span className="flex items-center gap-1.5" title="Kapalı (satılamaz/stop)">
+                    <span className="size-2 rounded-full bg-gray" />
+                    {kapali}
+                  </span>
+                ) : null}
               </div>
             </div>
 
