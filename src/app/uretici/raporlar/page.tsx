@@ -1,16 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
 import { YiginBar } from "@/components/ui/Grafik";
-import { paraKisa } from "@/lib/stok";
+import { paraKisa, durumGrup } from "@/lib/stok";
 import { zamanOnce } from "@/lib/types";
 
-const C = { green: "#2FB36B", amber: "#E3A12C", red: "#D15A4E" };
+// Sinyal renkleri tek kaynak (globals CSS değişkenleri; hardcode hex drift eder)
+const C = { green: "var(--color-green)", amber: "var(--color-amber)", red: "var(--color-red)" };
 
 /** Modül-kapsam yardımcı: g gün önce (ISO). Render gövdesinde Date.now yok (react-hooks/purity). */
 function gunOnce(g: number): string {
   return new Date(Date.now() - g * 86_400_000).toISOString();
 }
 
-type OdaOzet = { toplam: number; musait: number; opsiyon: number; satildi: number };
+type OdaOzet = { toplam: number; acik: number; opsiyon: number; satildi: number };
 
 function Stat({ etiket, deger, alt }: { etiket: string; deger: string; alt?: string }) {
   return (
@@ -43,11 +44,14 @@ export default async function Raporlar() {
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
   const projeIds = new Set(projeAd.keys()); // kod-scope: events RLS'e güvenme (talep-radari deseni)
   const toplam = B.length;
-  const say = (d: string[]) => B.filter((b) => d.includes(b.durum)).length;
-  const musait = say(["musait"]);
-  const opsiyon = say(["opsiyonlu", "satis_beklemede"]);
-  const satildi = say(["satildi"]);
-  const satisOrani = toplam ? Math.round((satildi / toplam) * 100) : 0;
+  // durumGrup (satilabilir-duyarlı): arsa-payı/planlı "satışa açık" sayılmaz
+  const grupSay = (g: string) => B.filter((b) => durumGrup(b.durum, b.satilabilir ?? true) === g).length;
+  const acik = grupSay("acik");
+  const opsiyon = grupSay("opsiyon");
+  const satildi = grupSay("satildi");
+  // Satış oranı yalnız SATILABİLİR evrene göre (planlı/kapalı paydaya girmez)
+  const satilabilirEvren = acik + opsiyon + satildi;
+  const satisOrani = satilabilirEvren ? Math.round((satildi / satilabilirEvren) * 100) : 0;
 
   // — ABSORPSİYON (satış temposu → tükeniş projeksiyonu) —
   // Satış tarihi vekili: durum='satildi' birimin son_guncelleme'i (trigger her durum
@@ -111,11 +115,12 @@ export default async function Raporlar() {
   for (const b of B) {
     const tip = b.tip_id ? tipMap.get(b.tip_id) : null;
     const oda = tip?.oda ?? tip?.ad ?? "Diğer";
-    const o = odalar.get(oda) ?? { toplam: 0, musait: 0, opsiyon: 0, satildi: 0 };
+    const o = odalar.get(oda) ?? { toplam: 0, acik: 0, opsiyon: 0, satildi: 0 };
     o.toplam++;
-    if (b.durum === "musait") o.musait++;
-    else if (b.durum === "opsiyonlu" || b.durum === "satis_beklemede") o.opsiyon++;
-    else if (b.durum === "satildi") o.satildi++;
+    const g = durumGrup(b.durum, b.satilabilir ?? true);
+    if (g === "acik") o.acik++;
+    else if (g === "opsiyon") o.opsiyon++;
+    else if (g === "satildi") o.satildi++;
     odalar.set(oda, o);
   }
   const odaListe = [...odalar.entries()].sort((a, b) => b[1].satildi - a[1].satildi);
@@ -124,14 +129,14 @@ export default async function Raporlar() {
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-8 sm:px-6">
       <div>
         <h1 className="font-display text-2xl font-semibold text-ink">Raporlar</h1>
-        <p className="mt-1 text-sm text-gray">Stok ve satış performansı — hangi tip satıyor, hangisi bekliyor.</p>
+        <p className="mt-1 text-sm text-gray">Stok ve satış performansı: hangi tip satıyor, hangisi bekliyor.</p>
       </div>
 
       {/* STOK ÖZETİ */}
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat etiket="Toplam birim" deger={String(toplam)} alt="tüm projeler" />
-        <Stat etiket="Satış oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${toplam}`} />
-        <Stat etiket="Müsait" deger={String(musait)} alt="satışa hazır" />
+        <Stat etiket="Satış oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${satilabilirEvren} satılabilir`} />
+        <Stat etiket="Satışa açık" deger={String(acik)} alt="satışa hazır" />
         <Stat etiket="Opsiyonda" deger={String(opsiyon)} alt="kilitli, karar bekliyor" />
       </section>
 
@@ -201,7 +206,7 @@ export default async function Raporlar() {
           <div className="mt-4 space-y-4">
             {odaListe.map(([oda, o]) => {
               const par = [
-                { etiket: "Müsait", deger: o.musait, renk: C.green },
+                { etiket: "Satışa açık", deger: o.acik, renk: C.green },
                 { etiket: "Opsiyon", deger: o.opsiyon, renk: C.amber },
                 { etiket: "Satıldı", deger: o.satildi, renk: C.red },
               ];
