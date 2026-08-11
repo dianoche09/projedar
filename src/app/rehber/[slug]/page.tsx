@@ -47,9 +47,9 @@ export default async function RehberSayfa({
   const modul = REHBER_GOVDE[slug];
   if (!meta || !modul) notFound();
 
-  const { Govde, toc } = modul;
+  const { Govde, toc, faq } = modul;
   return (
-    <IcerikLayout meta={meta} toc={toc}>
+    <IcerikLayout meta={meta} toc={toc} faq={faq}>
       <Govde />
     </IcerikLayout>
   );

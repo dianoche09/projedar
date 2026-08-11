@@ -8,7 +8,7 @@ import { IcerikHero } from "./IcerikGorsel";
 import { IcerikGoruntuleme } from "./IcerikGoruntuleme";
 import { AnaMenu } from "@/components/AnaMenu";
 import { KapanisFooter } from "@/components/KapanisFooter";
-import { icerikSchemas } from "@/lib/icerik/schema";
+import { icerikSchemas, type SssOgesi } from "@/lib/icerik/schema";
 import type { IcerikMeta } from "@/lib/icerik/tipler";
 
 /**
@@ -20,10 +20,12 @@ import type { IcerikMeta } from "@/lib/icerik/tipler";
 export function IcerikLayout({
   meta,
   toc = [],
+  faq,
   children,
 }: {
   meta: IcerikMeta;
   toc?: TocOge[];
+  faq?: SssOgesi[];
   children: React.ReactNode;
 }) {
   return (
@@ -96,10 +98,10 @@ export function IcerikLayout({
       {/* ---- ortak kapanış (Ağ büyüyor CTA + footer) ---- */}
       <KapanisFooter />
 
-      {/* ---- JSON-LD (Organization + BreadcrumbList + Article) ---- */}
+      {/* ---- JSON-LD (Organization + BreadcrumbList + Article + FAQPage) ---- */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(icerikSchemas(meta)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(icerikSchemas(meta, faq)) }}
       />
     </main>
   );

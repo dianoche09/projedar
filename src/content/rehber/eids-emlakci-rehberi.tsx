@@ -61,6 +61,30 @@ export const toc: TocOge[] = [
   { id: "sik-hatalar", baslik: "Sık yapılan hatalar" },
 ];
 
+/** Görünür SSS + FAQPage schema (tek kaynak). */
+export const faq = [
+  {
+    s: "EİDS satılık konut ilanlarında ne zaman zorunlu oldu?",
+    c: "Satılık konut dahil tüm satılık taşınmaz ilanlarında yetki doğrulaması 1 Şubat 2026’dan itibaren zorunludur. Kiralık ilanlarda zorunluluk 1 Ocak 2025’ten beri geçerlidir.",
+  },
+  {
+    s: "Müteahhidin verdiği satış yetkisi EİDS yetkisi yerine geçer mi?",
+    c: "Hayır. Müteahhidin ticari satış yetkisi taraflar arasındaki düzenlemedir; ilan yayımlamak için gereken EİDS yetkisi ise e-Devlet üzerinden taşınmaz bazında verilen resmî doğrulamadır. İkisi birlikte gözetilir.",
+  },
+  {
+    s: "Sosyal medyada emlak ilanı paylaşmak yasak mı?",
+    c: "Doğrudan ilan niteliğinde görsel veya metin paylaşımı risklidir. İşletmelerin, yalnızca EİDS ile doğrulanmış ve resmî platformda yayımlanmış ilanın bağlantısını paylaşması beklenir; aksi durumda her ihlal için 286.206 TL’ye kadar idari para cezası uygulanabilir.",
+  },
+  {
+    s: "Yetki süresi ne kadardır?",
+    c: "Taşınmaz sahibinin verdiği EİDS yetkisi en az 3 ay olarak belirlenir.",
+  },
+  {
+    s: "Hisseli taşınmazda tüm hissedarların yetki vermesi gerekir mi?",
+    c: "Hayır. Hisseli taşınmazlarda tek bir hissedarın EİDS yetkisi vermesi ilan için yeterli olabilir.",
+  },
+];
+
 export function Govde() {
   return (
     <>
@@ -287,54 +311,7 @@ export function Govde() {
         </ul>
       </Bolum>
 
-      <IcerikFAQ
-        sorular={[
-          {
-            s: "EİDS satılık konut ilanlarında ne zaman zorunlu oldu?",
-            c: (
-              <p>
-                Satılık konut dahil tüm satılık taşınmaz ilanlarında yetki doğrulaması 1 Şubat
-                2026’dan itibaren zorunludur. Kiralık ilanlarda zorunluluk 1 Ocak 2025’ten beri
-                geçerlidir.
-              </p>
-            ),
-          },
-          {
-            s: "Müteahhidin verdiği satış yetkisi EİDS yetkisi yerine geçer mi?",
-            c: (
-              <p>
-                Hayır. Müteahhidin ticari satış yetkisi taraflar arasındaki düzenlemedir; ilan
-                yayımlamak için gereken EİDS yetkisi ise e-Devlet üzerinden taşınmaz bazında verilen
-                resmî doğrulamadır. İkisi birlikte gözetilir.
-              </p>
-            ),
-          },
-          {
-            s: "Sosyal medyada emlak ilanı paylaşmak yasak mı?",
-            c: (
-              <p>
-                Doğrudan ilan niteliğinde görsel veya metin paylaşımı risklidir. İşletmelerin,
-                yalnızca EİDS ile doğrulanmış ve resmî platformda yayımlanmış ilanın bağlantısını
-                paylaşması beklenir; aksi durumda her ihlal için 286.206 TL’ye kadar idari para
-                cezası uygulanabilir.
-              </p>
-            ),
-          },
-          {
-            s: "Yetki süresi ne kadardır?",
-            c: <p>Taşınmaz sahibinin verdiği EİDS yetkisi en az 3 ay olarak belirlenir.</p>,
-          },
-          {
-            s: "Hisseli taşınmazda tüm hissedarların yetki vermesi gerekir mi?",
-            c: (
-              <p>
-                Hayır. Hisseli taşınmazlarda tek bir hissedarın EİDS yetkisi vermesi ilan için
-                yeterli olabilir.
-              </p>
-            ),
-          },
-        ]}
-      />
+      <IcerikFAQ sorular={faq} />
     </>
   );
 }

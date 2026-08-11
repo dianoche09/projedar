@@ -2,11 +2,15 @@
  * JSON-LD üretimi (server). Yalnız görünür içerikle tutarlı alanlar üretilir
  * (schema, sayfada olmayan veriyi iddia etmez).
  *
- * İlk aşama şemaları: Organization + BreadcrumbList + (uygun tiplerde) Article.
- * FAQPage/HowTo bilinçli olarak KULLANILMAZ (Google rich-result beklentisi
- * üzerine mimari kurulmaz).
+ * Şemalar: Organization + BreadcrumbList + (uygun tiplerde) Article + (gerçek
+ * SSS varsa) FAQPage. FAQPage yalnızca sayfada GÖRÜNEN gerçek soru-cevaptan
+ * üretilir (yapay soru yok); amaç Google rich-result değil, AI arama/asistan
+ * motorlarının (ChatGPT, Perplexity, Gemini) soru-cevabı açık okuyabilmesidir (GEO).
  */
 import type { IcerikMeta } from "./tipler";
+
+/** Sayfada görünen SSS öğesi (görünür FAQ ile FAQPage schema tek kaynağı paylaşır). */
+export type SssOgesi = { s: string; c: string };
 import { KATEGORI_ETIKET } from "./tipler";
 import { icerikYolu } from "./kayit";
 
@@ -54,6 +58,7 @@ export function articleSchema(m: IcerikMeta) {
     inLanguage: "tr-TR",
     datePublished: m.publishedAt,
     dateModified: m.updatedAt,
+    ...(m.heroGorsel ? { image: [`${SITE}${m.heroGorsel}`] } : {}),
     mainEntityOfPage: { "@type": "WebPage", "@id": m.canonical },
     author: { "@type": "Organization", name: m.author },
     publisher: {
@@ -64,10 +69,24 @@ export function articleSchema(m: IcerikMeta) {
   };
 }
 
-/** İçeriğe uygun tüm şemalar (tek <script> içinde @graph dizisi olarak basılır). */
-export function icerikSchemas(m: IcerikMeta): object[] {
+/** FAQPage — yalnız sayfada görünen gerçek soru-cevaptan (GEO odaklı). */
+export function faqSchema(sss: SssOgesi[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: sss.map((q) => ({
+      "@type": "Question",
+      name: q.s,
+      acceptedAnswer: { "@type": "Answer", text: q.c },
+    })),
+  };
+}
+
+/** İçeriğe uygun tüm şemalar (tek <script> içinde dizi olarak basılır). */
+export function icerikSchemas(m: IcerikMeta, sss?: SssOgesi[]): object[] {
   const list: object[] = [organizationSchema(), breadcrumbSchema(m)];
   if (ARTICLE_TIPLERI.has(m.contentType)) list.push(articleSchema(m));
+  if (sss && sss.length) list.push(faqSchema(sss));
   return list;
 }
 

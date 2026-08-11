@@ -51,6 +51,30 @@ export const toc: TocOge[] = [
   { id: "sik-hatalar", baslik: "Sık yapılan hatalar" },
 ];
 
+/** Görünür SSS + FAQPage schema (tek kaynak). */
+export const faq = [
+  {
+    s: "Taşınmaz ticareti yetki belgesi olmadan emlak ofisi açılır mı?",
+    c: "Hayır. Taşınmaz ticareti (alım, satım, kiralama aracılığı) faaliyeti için yetki belgesi zorunludur; belgesiz faaliyet idari yaptırıma tabidir.",
+  },
+  {
+    s: "Yetki belgesi için hangi mesleki yeterlilik belgesi gerekir?",
+    c: "İşletmede en az bir sorumlu emlak danışmanının Seviye 5 mesleki yeterlilik belgesine sahip olması gerekir.",
+  },
+  {
+    s: "Başvuru nereden yapılır?",
+    c: "Başvuru, Ticaret Bakanlığı’nın Taşınmaz Ticareti Bilgi Sistemi (TTBS) üzerinden çevrim içi yapılır; onay Ticaret İl Müdürlüğü tarafından verilir.",
+  },
+  {
+    s: "Yetki belgesinin süresi var mı?",
+    c: "Yetki belgesi şartlar korundukça süresizdir; ancak sorumlu danışmanın mesleki yeterlilik belgesi 5 yıl geçerlidir ve süresinde yenilenmelidir.",
+  },
+  {
+    s: "Yetki belgesi olan işletme ilan verebilir mi?",
+    c: "İlan yayımlamak için yetki belgesi tek başına yeterli değildir; ilgili taşınmaz için EİDS yetkilendirmesi de e-Devlet üzerinden alınmalıdır.",
+  },
+];
+
 export function Govde() {
   return (
     <>
@@ -213,55 +237,7 @@ export function Govde() {
         </ul>
       </Bolum>
 
-      <IcerikFAQ
-        sorular={[
-          {
-            s: "Taşınmaz ticareti yetki belgesi olmadan emlak ofisi açılır mı?",
-            c: (
-              <p>
-                Hayır. Taşınmaz ticareti (alım, satım, kiralama aracılığı) faaliyeti için yetki belgesi
-                zorunludur; belgesiz faaliyet idari yaptırıma tabidir.
-              </p>
-            ),
-          },
-          {
-            s: "Yetki belgesi için hangi mesleki yeterlilik belgesi gerekir?",
-            c: (
-              <p>
-                İşletmede en az bir sorumlu emlak danışmanının Seviye 5 mesleki yeterlilik belgesine sahip
-                olması gerekir.
-              </p>
-            ),
-          },
-          {
-            s: "Başvuru nereden yapılır?",
-            c: (
-              <p>
-                Başvuru, Ticaret Bakanlığı’nın Taşınmaz Ticareti Bilgi Sistemi (TTBS) üzerinden çevrim içi
-                yapılır; onay Ticaret İl Müdürlüğü tarafından verilir.
-              </p>
-            ),
-          },
-          {
-            s: "Yetki belgesinin süresi var mı?",
-            c: (
-              <p>
-                Yetki belgesi şartlar korundukça süresizdir; ancak sorumlu danışmanın mesleki yeterlilik
-                belgesi 5 yıl geçerlidir ve süresinde yenilenmelidir.
-              </p>
-            ),
-          },
-          {
-            s: "Yetki belgesi olan işletme ilan verebilir mi?",
-            c: (
-              <p>
-                İlan yayımlamak için yetki belgesi tek başına yeterli değildir; ilgili taşınmaz için EİDS
-                yetkilendirmesi de e-Devlet üzerinden alınmalıdır.
-              </p>
-            ),
-          },
-        ]}
-      />
+      <IcerikFAQ sorular={faq} />
     </>
   );
 }

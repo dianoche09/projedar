@@ -48,6 +48,26 @@ export const toc: TocOge[] = [
   { id: "sik-hatalar", baslik: "Sık yapılan hatalar" },
 ];
 
+/** Görünür SSS + FAQPage schema (tek kaynak). */
+export const faq = [
+  {
+    s: "Sosyal medyada emlak ilanı paylaşmak yasak mı?",
+    c: "Tamamen yasak değildir; ancak doğrudan ilan yerine, EİDS ile doğrulanmış ve resmî platformda yayımlanmış ilanın bağlantısı paylaşılmalıdır. Doğrulama olmadan doğrudan ilan paylaşımı ceza riski taşır.",
+  },
+  {
+    s: "Doğrulanmamış paylaşımın cezası nedir?",
+    c: "Doğrulama olmadan doğrudan ilan paylaşan işletmelere, tespit edilen her ihlal için 286.206 TL’ye kadar idari para cezası uygulanabilir.",
+  },
+  {
+    s: "WhatsApp’ta ilan paylaşmak kapsamda mı?",
+    c: "WhatsApp dahil elektronik ortamda ilan verilen kanallar denetim kapsamında değerlendirilebilir. Birebir iletişimde de doğrulanmış ilan bağlantısını paylaşmak daha güvenlidir.",
+  },
+  {
+    s: "Sadece görsel paylaşsam, iletişim koymasam olur mu?",
+    c: "Görselin doğrudan ilan niteliği (fiyat, konum, satılık/kiralık ibaresi) taşıması riski sürdürür. En güvenli yol, doğrulanmış ilanın bağlantısını paylaşmaktır.",
+  },
+];
+
 export function Govde() {
   return (
     <>
@@ -172,47 +192,7 @@ export function Govde() {
         </ul>
       </Bolum>
 
-      <IcerikFAQ
-        sorular={[
-          {
-            s: "Sosyal medyada emlak ilanı paylaşmak yasak mı?",
-            c: (
-              <p>
-                Tamamen yasak değildir; ancak doğrudan ilan yerine, EİDS ile doğrulanmış ve resmî platformda
-                yayımlanmış ilanın bağlantısı paylaşılmalıdır. Doğrulama olmadan doğrudan ilan paylaşımı ceza
-                riski taşır.
-              </p>
-            ),
-          },
-          {
-            s: "Doğrulanmamış paylaşımın cezası nedir?",
-            c: (
-              <p>
-                Doğrulama olmadan doğrudan ilan paylaşan işletmelere, tespit edilen her ihlal için 286.206
-                TL’ye kadar idari para cezası uygulanabilir.
-              </p>
-            ),
-          },
-          {
-            s: "WhatsApp’ta ilan paylaşmak kapsamda mı?",
-            c: (
-              <p>
-                WhatsApp dahil elektronik ortamda ilan verilen kanallar denetim kapsamında değerlendirilebilir.
-                Birebir iletişimde de doğrulanmış ilan bağlantısını paylaşmak daha güvenlidir.
-              </p>
-            ),
-          },
-          {
-            s: "Sadece görsel paylaşsam, iletişim koymasam olur mu?",
-            c: (
-              <p>
-                Görselin doğrudan ilan niteliği (fiyat, konum, satılık/kiralık ibaresi) taşıması riski
-                sürdürür. En güvenli yol, doğrulanmış ilanın bağlantısını paylaşmaktır.
-              </p>
-            ),
-          },
-        ]}
-      />
+      <IcerikFAQ sorular={faq} />
     </>
   );
 }

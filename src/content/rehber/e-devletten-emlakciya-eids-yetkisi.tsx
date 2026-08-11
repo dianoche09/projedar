@@ -49,6 +49,15 @@ export const toc: TocOge[] = [
   { id: "sik-hatalar", baslik: "Sık yapılan hatalar" },
 ];
 
+/** Görünür SSS + FAQPage schema (tek kaynak). */
+export const faq = [
+  { s: "EİDS yetkisini kim verir?", c: "Taşınmaz sahibi (malik), e-Devlet üzerinden ilgili emlak işletmesini o taşınmaz için yetkilendirir." },
+  { s: "Yetki nereden verilir?", c: "Yetkilendirme e-Devlet üzerinden, taşınmaz ilanı yetkilendirme hizmetiyle yapılır." },
+  { s: "Yetki süresi en az ne kadardır?", c: "Taşınmaz sahibinin verdiği EİDS yetkisi en az 3 ay olarak belirlenir." },
+  { s: "Her taşınmaz için ayrı yetki mi gerekir?", c: "Evet. Yetki taşınmaz bazındadır; her taşınmaz için ayrı yetkilendirme gerekir." },
+  { s: "Hisseli taşınmazda tüm hissedarların yetki vermesi gerekir mi?", c: "Hayır. Tek bir hissedarın EİDS yetkisi vermesi ilan için yeterli olabilir." },
+];
+
 export function Govde() {
   return (
     <>
@@ -174,30 +183,7 @@ export function Govde() {
         </ul>
       </Bolum>
 
-      <IcerikFAQ
-        sorular={[
-          {
-            s: "EİDS yetkisini kim verir?",
-            c: <p>Taşınmaz sahibi (malik), e-Devlet üzerinden ilgili emlak işletmesini o taşınmaz için yetkilendirir.</p>,
-          },
-          {
-            s: "Yetki nereden verilir?",
-            c: <p>Yetkilendirme e-Devlet üzerinden, taşınmaz ilanı yetkilendirme hizmetiyle yapılır.</p>,
-          },
-          {
-            s: "Yetki süresi en az ne kadardır?",
-            c: <p>Taşınmaz sahibinin verdiği EİDS yetkisi en az 3 ay olarak belirlenir.</p>,
-          },
-          {
-            s: "Her taşınmaz için ayrı yetki mi gerekir?",
-            c: <p>Evet. Yetki taşınmaz bazındadır; her taşınmaz için ayrı yetkilendirme gerekir.</p>,
-          },
-          {
-            s: "Hisseli taşınmazda tüm hissedarların yetki vermesi gerekir mi?",
-            c: <p>Hayır. Tek bir hissedarın EİDS yetkisi vermesi ilan için yeterli olabilir.</p>,
-          },
-        ]}
-      />
+      <IcerikFAQ sorular={faq} />
     </>
   );
 }
