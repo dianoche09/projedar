@@ -57,7 +57,20 @@ Kaynak: `src/lib/icerik/` (registry, tipler, kaynaklar, schema) + `src/content/<
 | 10 | araclar | odeme-plani-hesaplayici | peşinat/taksit/vade planı | alt |
 | 11 | sablonlar | musteri-sunum-ve-teklif-sablonu | indirilebilir sunum/teklif | alt |
 
-> Not: Faz 1 tamamlanınca registry'deki `iliskiler.siblings` doldurulup küme iç-bağlantısı kapanır (registry'de yorum olarak zaten planlı). karsilastirma/sozluk/araclar/sablonlar için **kategori route'ları** (`src/app/<kategori>/page.tsx` + `[slug]`) rehber deseniyle eklenecek (şu an yalnız `/rehber` var; hepsi middleware `herkeseAcik`'te).
+> Not: karsilastirma/sozluk **route'ları AÇILDI** (2026-08-11, `KategoriHub` ile). araclar/sablonlar route'ları Faz 3'te açılacak (KategoriHub hazır → trivial). Hepsi middleware `herkeseAcik`'te.
+
+### Faz 4 — Fırsat/Yatırım kümesi (emlakçı gözüyle) — YÜKSEK NİYET, çekirdek tema
+> Kullanıcı yönlendirmesi (2026-08-11): "en önemli konumuz sıfır konut, fırsat projeleri, nereye yatırım, gelişen bölgeler — ÇOK ŞEHİRDE, emlakçı gözüyle. Emlakçı ne arar / emlakçıya ne yarar."
+> **GÜVENLİ ÇERÇEVE (zorunlu):** yatırım/bölge içerikleri "nasıl DEĞERLENDİRİLİR" METODOLOJİSİ olarak yazılır; "şu bölgeyi al / kesin yükselir" YOK (SPK/sorumluluk + doğrulanamaz iddia). "Yatırım tavsiyesi değildir" şerhi + kesin getiri vaadi yasak. Emlakçı-odaklı (tüketici yatırım portalı değil). Somut şehir/bölge datası = programatik `/konut-projeleri/[il]/[ilçe]` hub'ı; metodoloji makaleleri oraya link verir (güvenli + ölçeklenebilir).
+
+| # | Kategori | Slug | Niyet | Durum |
+|---|---|---|---|---|
+| ✅ | rehber | sifir-konut-satmanin-emlakciya-avantajlari | "sıfır konut satmak emlakçıya ne kazandırır" (amiral) | YAYINDA (2026-08-11) |
+| 12 | rehber | gelisen-bolge-nasil-anlasilir | "gelişen/yükselen bölge nasıl belirlenir" (metodoloji) | sırada |
+| 13 | rehber | firsat-konut-projesi-nasil-secilir | "fırsat projesi nasıl seçilir" (kontrol listesi) | sırada |
+| 14 | rehber | yatirimlik-mi-oturmak-icin-mi-konut | "yatırımlık vs oturumluk konut danışmanlığı" | sırada |
+| 15 | rehber | emlakci-yeni-konut-satisinda-ne-arar | "emlakçının ihtiyaçları" (ürün-köprü, ne yarar) | sırada |
+> Multi-şehir: bu metodoloji makaleleri + programatik il/ilçe hub sayfaları birlikte "her şehir" kapsamasını verir. İleride il-bazlı "yeni konut projeleri — [il]" içerik/hub zenginleştirmesi (gerçek datadan).
 
 ---
 
