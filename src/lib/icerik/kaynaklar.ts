@@ -36,6 +36,22 @@ export const KAYNAKLAR: Record<string, Kaynak> = {
     tur: "resmi",
     oncelik: 2,
   },
+  "ticaret-tasinmaz-yonetmelik": {
+    id: "ticaret-tasinmaz-yonetmelik",
+    baslik: "Taşınmaz Ticareti Hakkında Yönetmelik (ve güncel değişiklikleri)",
+    kurum: "Ticaret Bakanlığı",
+    url: "https://www.mevzuat.gov.tr/",
+    tur: "resmi",
+    oncelik: 1,
+  },
+  "ttbs-yetki-belgesi": {
+    id: "ttbs-yetki-belgesi",
+    baslik: "Taşınmaz Ticareti Bilgi Sistemi (TTBS) — Yetki Belgesi Başvuru ve Sorgulama",
+    kurum: "Ticaret Bakanlığı",
+    url: "https://ttbs.gtb.gov.tr/",
+    tur: "resmi",
+    oncelik: 1,
+  },
 };
 
 /** id listesini kayda çözer, öncelik + kuruma göre sıralar. Tanımsız id atlanır. */

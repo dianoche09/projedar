@@ -35,7 +35,7 @@ export const ICERIKLER: IcerikMeta[] = [
       //   "rehber/tasinmaz-ticareti-yetki-belgesi"
       //   "karsilastirma/eids-vs-yetki-sozlesmesi"
       hub: null,
-      siblings: [],
+      siblings: ["rehber/tasinmaz-ticareti-yetki-belgesi"],
       tools: [],
       glossary: [],
     },
@@ -44,6 +44,33 @@ export const ICERIKLER: IcerikMeta[] = [
     heroAlt:
       "Modern bir ofiste, pencereden konut projesi silüeti görünürken tablet üzerinde proje inceleyen gayrimenkul danışmanı",
     canonical: `${SITE}/rehber/eids-emlakci-rehberi`,
+    index: true,
+    published: true,
+  },
+  {
+    slug: "tasinmaz-ticareti-yetki-belgesi",
+    kategori: "rehber",
+    contentType: "rehber",
+    title: "Taşınmaz Ticareti Yetki Belgesi Nasıl Alınır? (2026)",
+    h1: "Taşınmaz Ticareti Yetki Belgesi: Şartlar, Başvuru ve 2026 Güncel Durum",
+    description:
+      "Taşınmaz ticareti yetki belgesi nedir, işletme ve sorumlu emlak danışmanı şartları, Seviye 5 mesleki yeterlilik, TTBS başvurusu ve 2026 yıllık harç. Resmî kaynaklı, güncel rehber.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-tasinmaz-yonetmelik", "ttbs-yetki-belgesi"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/eids-emlakci-rehberi"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt: "Modern bir emlak ofisinde belge ve tablet üzerinde çalışan gayrimenkul danışmanı",
+    canonical: `${SITE}/rehber/tasinmaz-ticareti-yetki-belgesi`,
     index: true,
     published: true,
   },
