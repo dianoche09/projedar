@@ -5,6 +5,8 @@ import { adayDavetToken } from "@/lib/davet";
 import { SEGMENT_ROL, type Segment } from "@/lib/kesif/tipler";
 import { projeSlug } from "@/lib/seo/slug";
 import { katalogIcerikUret } from "@/lib/katalog/uret";
+import { kurallariDegerlendir } from "@/lib/fiyat-motor";
+import { ayarCoz } from "@/lib/fiyat-kurali";
 import katalogSeedHam from "@/data/katalog-seed.json";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://projedar.com";
@@ -117,6 +119,33 @@ function projeIdCoz(b: DolanOpsiyon["birim"]): string | null {
  * Opsiyon süre aşımı: süresi dolan aktif opsiyonları temizler
  * (trigger birimleri otomatik 'musait' yapar) ve audit kaydı yazar (MVP-17).
  */
+/**
+ * Dinamik fiyat kuralları (2026-08-11): fiyat_ayar.aktif projelerde aktif kuralları
+ * değerlendirir. mod='otomatik' → fiyatı uygular; mod='oneri' → öneri kuyruğuna düşer.
+ * Graceful: fiyat_ayar kolonu/tablolar yoksa (migration bekliyor) atlanır, cron kırılmaz.
+ */
+export async function fiyatKuraliCalistir(): Promise<CronSonuc> {
+  const supabase = createAdminClient();
+  try {
+    const { data: projeler, error } = await supabase.from("proje").select("id, fiyat_ayar");
+    if (error) return { status: 200, govde: { atlandi: true, mesaj: "Dinamik fiyat kapalı / migration bekliyor." } };
+    let uygulanan = 0;
+    let oneri = 0;
+    let aktifProje = 0;
+    for (const p of projeler ?? []) {
+      const ayar = ayarCoz((p as { fiyat_ayar?: unknown }).fiyat_ayar);
+      if (!ayar.aktif) continue;
+      aktifProje++;
+      const r = await kurallariDegerlendir(supabase, p.id as string);
+      uygulanan += r.uygulanan;
+      oneri += r.oneri;
+    }
+    return { status: 200, govde: { basarili: true, aktifProje, uygulanan, oneri } };
+  } catch (e) {
+    return { status: 200, govde: { atlandi: true, hata: e instanceof Error ? e.message : "?" } };
+  }
+}
+
 export async function opsiyonSuresiCalistir(): Promise<CronSonuc> {
   const supabase = createAdminClient();
   const simdi = new Date().toISOString();

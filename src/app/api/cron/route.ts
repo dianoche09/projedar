@@ -4,6 +4,7 @@ import {
   freshnessCalistir,
   opsiyonSuresiCalistir,
   stokAcilisCalistir,
+  fiyatKuraliCalistir,
   kesifFollowupCalistir,
   katalogUretCalistir,
   type CronSonuc,
@@ -30,6 +31,8 @@ export async function GET(request: Request) {
   const isler: Array<[string, () => Promise<CronSonuc>]> = [
     ["opsiyon_suresi", opsiyonSuresiCalistir],
     ["stok_acilis", stokAcilisCalistir],
+    // Stok açıldıktan sonra dinamik fiyat kuralları (yeni müsait birimler de değerlendirilsin)
+    ["fiyat_kurali", fiyatKuraliCalistir],
     ["freshness", freshnessCalistir],
     ["kesif_followup", kesifFollowupCalistir],
     // EN SON: kredi harcayan + yavaş katalog üretimi (kritik işler önce garanti olsun).
