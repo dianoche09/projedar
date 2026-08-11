@@ -20,7 +20,7 @@ export function useSecim(): SecimCtx | null {
 
 const inpCls =
   "rounded-lg border border-hair bg-paper px-2.5 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
-const DURUMLAR: BirimDurum[] = ["musait", "opsiyonlu", "satis_beklemede", "satildi", "stop"];
+const DURUMLAR: BirimDurum[] = ["musait", "planli", "opsiyonlu", "satis_beklemede", "satildi", "stop"];
 
 /**
  * Üretici ızgarasının çevresine sarılır: "Toplu düzenle" moduna geçince dairelere
