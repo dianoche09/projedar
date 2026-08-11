@@ -47,7 +47,7 @@ export default async function UreticiAyarlar() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
       <header className="belir mb-5">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className="font-display text-[27px] font-bold tracking-tight text-ink">Ayarlar</h1>
           <span
             className={`inline-flex items-center gap-2 rounded-full px-2.5 py-[5px] text-[11.5px] font-semibold ${
@@ -62,7 +62,7 @@ export default async function UreticiAyarlar() {
           </span>
         </div>
         <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
-          Hesap ve firma bilgilerin — güncelleme için platform yöneticinle (concierge) iletişime geç.
+          Hesap ve firma bilgilerin. Güncelleme için platform yöneticinle (concierge) iletişime geç.
         </p>
       </header>
 
@@ -89,7 +89,7 @@ export default async function UreticiAyarlar() {
               </div>
               <p className="text-[12px] text-[var(--ink-faint)]">
                 {dogrulanmis
-                  ? "Firman doğrulandı — projelerin güven rozetiyle paylaşılabilir."
+                  ? "Firman doğrulandı: projelerin güven rozetiyle paylaşılabilir."
                   : "Firma doğrulaması concierge tarafından tamamlanınca güven rozeti aktif olur."}
               </p>
             </div>
@@ -111,7 +111,7 @@ export default async function UreticiAyarlar() {
           <Satir etiket="Rol" deger={profil?.rol === "admin" ? "Admin (üretici görünümü)" : "Üretici"} />
           <Satir
             etiket="Hesap oluşturma"
-            deger={profil?.created_at ? new Date(profil.created_at).toLocaleDateString("tr-TR") : "—"}
+            deger={profil?.created_at ? new Date(profil.created_at).toLocaleDateString("tr-TR", { timeZone: "Europe/Istanbul" }) : "—"}
           />
         </section>
 
@@ -131,7 +131,7 @@ export default async function UreticiAyarlar() {
               <Satir etiket="Doğrulama" deger={dogrulanmis ? "Doğrulandı" : "Bekliyor"} />
               <Satir
                 etiket="Kayıt"
-                deger={firma.created_at ? new Date(firma.created_at).toLocaleDateString("tr-TR") : "—"}
+                deger={firma.created_at ? new Date(firma.created_at).toLocaleDateString("tr-TR", { timeZone: "Europe/Istanbul" }) : "—"}
               />
             </>
           ) : (
@@ -155,13 +155,13 @@ export default async function UreticiAyarlar() {
               Bu bilgiler, projelerini tahsis ettiğin emlakçılara üretici kartında gösterilir.
             </p>
             <form action={ureticiProfilGuncelle} className="grid gap-2.5 sm:grid-cols-2">
-              <input name="logo_url" defaultValue={fp.logo_url ?? ""} placeholder="Logo URL (https://...)" className={inpCls} />
-              <input name="web" defaultValue={fp.web ?? ""} placeholder="Web sitesi (https://...)" className={inpCls} />
-              <input name="kurulus_yili" defaultValue={fp.kurulus_yili ?? ""} placeholder="Kuruluş yılı (ör. 1996)" className={inpCls} />
-              <input name="telefon" defaultValue={fp.telefon ?? ""} placeholder="Telefon" className={inpCls} />
-              <input name="il" defaultValue={fp.il ?? ""} placeholder="İl" className={inpCls} />
-              <input name="ilce" defaultValue={fp.ilce ?? ""} placeholder="İlçe" className={inpCls} />
-              <textarea name="hakkinda" defaultValue={fp.hakkinda ?? ""} placeholder="Firma hakkında (kısa kurumsal tanıtım)" rows={4} className={`${inpCls} sm:col-span-2`} />
+              <input name="logo_url" type="url" aria-label="Logo URL" defaultValue={fp.logo_url ?? ""} placeholder="Logo URL (https://...)" className={inpCls} />
+              <input name="web" type="url" aria-label="Web sitesi" defaultValue={fp.web ?? ""} placeholder="Web sitesi (https://...)" className={inpCls} />
+              <input name="kurulus_yili" inputMode="numeric" aria-label="Kuruluş yılı" defaultValue={fp.kurulus_yili ?? ""} placeholder="Kuruluş yılı (ör. 1996)" className={inpCls} />
+              <input name="telefon" type="tel" aria-label="Firma telefonu" defaultValue={fp.telefon ?? ""} placeholder="Telefon" className={inpCls} />
+              <input name="il" aria-label="İl" defaultValue={fp.il ?? ""} placeholder="İl" className={inpCls} />
+              <input name="ilce" aria-label="İlçe" defaultValue={fp.ilce ?? ""} placeholder="İlçe" className={inpCls} />
+              <textarea name="hakkinda" aria-label="Firma hakkında" defaultValue={fp.hakkinda ?? ""} placeholder="Firma hakkında (kısa kurumsal tanıtım)" rows={4} className={`${inpCls} sm:col-span-2`} />
               <div className="sm:col-span-2"><SubmitButton>Firma profilini kaydet</SubmitButton></div>
             </form>
           </section>
