@@ -55,6 +55,11 @@ const YONETIM: NavItem[] = [
     ikon: ic(<><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" /><path d="M9 12l2 2 4-4" /></>),
   },
   {
+    href: "/admin/huni",
+    etiket: "Huni & Analitik",
+    ikon: ic(<><path d="M3 4h18l-7 8v6l-4 2v-8z" /></>),
+  },
+  {
     href: "/admin/hesap-silme",
     etiket: "KVKK Talepleri",
     ikon: ic(<><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></>),
