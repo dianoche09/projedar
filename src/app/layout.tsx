@@ -57,6 +57,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
+  // Google Search Console mülk doğrulaması: token env'de (GOOGLE_SITE_VERIFICATION).
+  // Tanımlı değilse Next bu meta etiketini basmaz — DNS/HTML dosyası ile de doğrulanabilir.
+  ...(process.env.GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 export const viewport: Viewport = {
