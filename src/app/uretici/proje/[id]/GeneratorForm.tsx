@@ -160,7 +160,7 @@ export function GeneratorForm({
           {gecerli ? (
             <span className="font-medium text-teal-d">≈ {adet} birim üretilecek</span>
           ) : adet > 500 ? (
-            <span className="font-medium text-red">{adet} birim — tek seferde en fazla 500.</span>
+            <span className="font-medium text-red">{adet} birim; tek seferde en fazla 500.</span>
           ) : (
             <span className="text-gray">Kat aralığını ve daire/kat sayısını gir.</span>
           )}

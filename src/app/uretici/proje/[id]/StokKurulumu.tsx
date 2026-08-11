@@ -92,7 +92,7 @@ export function StokKurulumu({
           {bolge ? (
             <p className="mt-0.5 text-[11px] text-gray">
               Bölge referansı ({bolge.etiket}): <span className="font-semibold text-ink">{bolge.m2.toLocaleString("tr-TR")} ₺/m²</span>
-              {" "}· rozet, tipin ₺/m²'sinin bu medyandan sapmasıdır (emlakjet emsal, satış değil).
+              {" "}· rozet, tipin ₺/m²&apos;sinin bu medyandan sapmasıdır (bölge ilan emsali, satış değil).
             </p>
           ) : null}
           <ul className="mt-2 space-y-1.5">
@@ -111,7 +111,7 @@ export function StokKurulumu({
                         return (
                           <span
                             className={`ml-1.5 rounded px-1 py-0.5 text-[10px] font-semibold ${k.pct > 8 ? "bg-amber-soft text-amber" : k.pct < -8 ? "bg-green-soft text-teal-d" : "bg-paper text-gray"}`}
-                            title={`${bolge!.etiket}: ${bolge!.m2.toLocaleString("tr-TR")} ₺/m² · bu tip ${k.birimM2.toLocaleString("tr-TR")} ₺/m² (emlakjet emsal, satış değil)`}
+                            title={`${bolge!.etiket}: ${bolge!.m2.toLocaleString("tr-TR")} ₺/m² · bu tip ${k.birimM2.toLocaleString("tr-TR")} ₺/m² (bölge ilan emsali, satış değil)`}
                           >
                             bölge %{k.pct > 0 ? "+" : ""}{k.pct}
                           </span>

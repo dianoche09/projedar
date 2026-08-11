@@ -76,7 +76,7 @@ export function StokImport({ projeId, bloklar, tipler }: { projeId: string; blok
     <div className="rounded-2xl border border-hair bg-card p-5">
       <h3 className="font-medium text-ink">Excel/CSV ile toplu yükleme</h3>
       <p className="mt-1 text-xs text-gray">
-        Bloklar önce tanımlı olmalı — dosyadaki blok adları mevcut bloklarla eşleşir. Yüklemeden önce önizleme gösterilir, mükerrer daireler atlanır.
+        Bloklar önce tanımlı olmalı; dosyadaki blok adları mevcut bloklarla eşleşir. Yüklemeden önce önizleme gösterilir, mükerrer daireler atlanır.
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">

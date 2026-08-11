@@ -168,7 +168,7 @@ export function ProjeWizard({
       </div>
       <h1 className="mt-2 font-display text-2xl font-semibold text-ink">Yeni proje sihirbazı</h1>
       <p className="text-sm text-gray">
-        Adım adım kur — her adım anında kaydedilir, sonradan Kurulum&apos;dan düzenlenebilir.
+        Adım adım kur; her adım anında kaydedilir, sonradan Kurulum&apos;dan düzenlenebilir.
       </p>
 
       {/* İLERLEME GÖSTERGESİ */}
@@ -288,7 +288,7 @@ export function ProjeWizard({
                 <div className="sm:col-span-2"><SubmitButton varyant="outline">İmar bilgisini kaydet</SubmitButton></div>
               </form>
               <p className="mt-3 text-xs text-gray">
-                Proje &quot;{proje.ad}&quot; oluşturuldu. İmar detayını doldur ya da atla — sonra düzenlenebilir.
+                Proje &quot;{proje.ad}&quot; oluşturuldu. İmar detayını doldur ya da atla; sonra düzenlenebilir.
               </p>
             </>
           )}
@@ -396,7 +396,7 @@ export function ProjeWizard({
         <div>
           <AdimKart
             baslik="Ödeme Planı"
-            aciklama="Proje geneli ödeme planı — tüm birimlere uygulanır. Aylık taksit her dairenin canlı fiyatından hesaplanır."
+            aciklama="Proje geneli ödeme planı; tüm birimlere uygulanır. Aylık taksit her dairenin canlı fiyatından hesaplanır."
           >
             <form action={projeOdemePlaniGuncelle} className="grid gap-3 sm:grid-cols-3">
               <input type="hidden" name="proje_id" value={proje.id} />
@@ -407,13 +407,13 @@ export function ProjeWizard({
               <div className="sm:col-span-3"><SubmitButton varyant="outline">Ödeme planını uygula</SubmitButton></div>
             </form>
             <p className="mt-2 text-xs text-gray">
-              Not: Önce <code className="rounded bg-soft px-1 font-mono">db/2026-06-28_odeme-plani.sql</code> migration&apos;ı çalışmalı.
+              Ödeme planı tüm birimlere uygulanır; aylık taksit her dairenin canlı fiyatından hesaplanır.
             </p>
           </AdimKart>
 
           <AdimKart
             baslik="Yatırım Bilgileri"
-            aciklama="Yıllık kira getirisi ve geri dönüş süresi — yurtiçi yatırımcı havuzunda gösterilir. (Faz-1: TRY; döviz/golden vize/oturum Faz-2.)"
+            aciklama="Yıllık kira getirisi ve geri dönüş süresi; yurtiçi yatırımcı havuzunda gösterilir. (Faz-1: TRY; döviz/golden vize/oturum Faz-2.)"
           >
             <form action={projeYatirimGuncelle} className="grid gap-3 sm:grid-cols-2">
               <input type="hidden" name="proje_id" value={proje.id} />
