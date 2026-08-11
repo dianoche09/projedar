@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { zamanOnce } from "@/lib/types";
 
 /* =========================================================
    HAKEDİŞ GÖRÜNÜMÜ (müteahhit) — kim ne sattı + hesaplanan danışman komisyonu.
@@ -45,10 +46,14 @@ export default async function UreticiHakedis() {
   const birimler = (birimRaw ?? []) as Birim[];
   const birimIdSet = new Set(birimler.map((b) => b.id));
 
-  // birim → satıcı (en son tamamlanmış satış)
+  // birim → satıcı + satış tarihi (en son tamamlanmış satış)
   const saticiMap = new Map<string, string>();
-  for (const o of (opsRaw ?? []) as { birim_id: string; satici_id: string }[]) {
-    if (birimIdSet.has(o.birim_id) && !saticiMap.has(o.birim_id)) saticiMap.set(o.birim_id, o.satici_id);
+  const satisTarihMap = new Map<string, string | null>();
+  for (const o of (opsRaw ?? []) as { birim_id: string; satici_id: string; sonuc_at: string | null }[]) {
+    if (birimIdSet.has(o.birim_id) && !saticiMap.has(o.birim_id)) {
+      saticiMap.set(o.birim_id, o.satici_id);
+      satisTarihMap.set(o.birim_id, o.sonuc_at ?? null);
+    }
   }
 
   // Satıcı adları
@@ -73,30 +78,43 @@ export default async function UreticiHakedis() {
   );
 
   const toplamSatis = birimler.length;
-  const toplamKomisyon = birimler.reduce((t, b) => t + (kazancMap.get(b.id) ?? 0), 0);
+  // Para birimi karışmasın: hakediş toplamını para_birimi bazında ayrı topla (TRY + USD tek sayıya karışmaz)
+  const toplamByPara = new Map<string, number>();
+  for (const b of birimler) {
+    const k = kazancMap.get(b.id);
+    if (k == null) continue;
+    const p = b.para_birimi ?? "TRY";
+    toplamByPara.set(p, (toplamByPara.get(p) ?? 0) + k);
+  }
+  const toplamMetin =
+    toplamByPara.size === 0
+      ? "—"
+      : [...toplamByPara.entries()].map(([p, t]) => `${fmt(t)} ${PARA_SIMGE[p] ?? p}`).join(" · ");
 
   return (
     <div className="mx-auto max-w-[1240px] px-4 py-6 text-ink sm:px-6">
       <header className="belir mb-6">
-        <h1 className="font-display text-[27px] font-bold tracking-tight text-navy md:text-[31px]">Hakediş Görünümü</h1>
+        <h1 className="font-display text-[27px] font-bold tracking-tight text-ink">Hakediş Görünümü</h1>
         <p className="mt-2 max-w-[640px] text-[13.5px] text-ink-soft">
           Satışı tamamlanan birimlerde hangi danışmanın sattığı ve tanımladığın tahsis komisyonundan hesaplanan hakediş
-          tutarı. Bu yalnız bir bilgi görünümüdür — Projedar ödemeye taraf değildir, komisyondan pay almaz ve ödeme
+          tutarı. Bu yalnız bir bilgi görünümüdür. Projedar ödemeye taraf değildir, komisyondan pay almaz ve ödeme
           takibi tutmaz; ödeme danışmanla aranızda gerçekleşir.
         </p>
       </header>
 
-      {/* KPI */}
-      <div className="belir belir-1 mb-6 grid grid-cols-2 gap-3.5 sm:max-w-[560px]">
-        <div className="kart kart-3d p-4">
-          <span className="text-[12px] font-semibold uppercase tracking-wide text-ink-soft">Tamamlanan Satış</span>
-          <div className="mono mt-3 text-[30px] font-semibold leading-none text-navy">{toplamSatis}</div>
+      {/* KPI — ortak şerit deseni (stok/opsiyonlar ile hizalı) */}
+      <section className="kart belir belir-1 mb-6 p-1 sm:max-w-[560px]">
+        <div className="grid grid-cols-2 divide-x divide-[var(--cizgi)]">
+          <div className="px-5 py-4">
+            <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">Tamamlanan Satış</div>
+            <div className="mono text-[30px] font-semibold leading-none text-ink">{toplamSatis}</div>
+          </div>
+          <div className="px-5 py-4">
+            <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">Toplam Hakediş (hesaplanan)</div>
+            <div className="mono text-[26px] font-semibold leading-none text-teal">{toplamMetin}</div>
+          </div>
         </div>
-        <div className="kart kart-3d p-4">
-          <span className="text-[12px] font-semibold uppercase tracking-wide text-ink-soft">Toplam Hakediş (hesaplanan)</span>
-          <div className="mono mt-3 text-[30px] font-semibold leading-none text-teal">{fmt(toplamKomisyon)} ₺</div>
-        </div>
-      </div>
+      </section>
 
       {toplamSatis === 0 ? (
         <BosDurum />
@@ -109,6 +127,7 @@ export default async function UreticiHakedis() {
                   <th>Proje</th>
                   <th>Daire</th>
                   <th>Satan Danışman</th>
+                  <th>Satış Tarihi</th>
                   <th>Hesaplanan Komisyon</th>
                 </tr>
               </thead>
@@ -117,11 +136,13 @@ export default async function UreticiHakedis() {
                   const k = kazancMap.get(b.id);
                   const ps = PARA_SIMGE[b.para_birimi ?? "TRY"] ?? "₺";
                   const satici = saticiMap.get(b.id);
+                  const tarih = satisTarihMap.get(b.id) ?? null;
                   return (
                     <tr key={b.id}>
                       <td className="font-semibold text-ink">{projeAd.get(b.proje_id) ?? "—"}</td>
                       <td className="mono font-semibold">{b.daire_no ?? "—"}</td>
                       <td className="text-ink-soft">{satici ? saticiAd.get(satici) ?? "Danışman" : "—"}</td>
+                      <td className="mono text-ink-soft">{tarih ? zamanOnce(tarih) : "—"}</td>
                       <td className="mono font-semibold text-navy">{k != null ? `${fmt(k)} ${ps}` : "—"}</td>
                     </tr>
                   );
@@ -132,7 +153,7 @@ export default async function UreticiHakedis() {
         </div>
       )}
 
-      <p className="mt-6 text-center text-[11.5px] text-slate-400">
+      <p className="mt-6 text-center text-[11.5px] text-[var(--ink-faint)]">
         Komisyon, satılan birimin liste fiyatı ve senin tanımladığın tahsis komisyonundan canlı hesaplanır. Projedar bu
         tutarı saklamaz, ödeme durumu tutmaz.
       </p>
