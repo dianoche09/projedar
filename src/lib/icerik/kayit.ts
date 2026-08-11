@@ -207,6 +207,33 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "ilan-portali-vs-tahsisli-ag",
+    kategori: "karsilastirma",
+    contentType: "karsilastirma",
+    title: "İlan Portalı mı, Tahsisli Ağ mı? Konut Satış Modelleri Karşılaştırması",
+    h1: "İlan Portalı ile Tahsisli Ağ: Konut Satış Modelleri Karşılaştırması",
+    description:
+      "Açık ilan portalı ile davetli tahsisli ağ modeli beş boyutta karşılaştırılıyor: fiyat tazeliği, çift satış koruması, görünürlük, tahsis ve dağıtım. Hangi model hangi ihtiyaca uygun?",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-on-odemeli-konut", "ticaret-eids-yetki"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/proje-uzerinden-satis-nasil-yapilir", "sozluk/proje-satis-terimleri"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt: "İki farklı konut satış modelini karşılaştıran bir gayrimenkul profesyoneli, ofiste ekran başında",
+    canonical: `${SITE}/karsilastirma/ilan-portali-vs-tahsisli-ag`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */
