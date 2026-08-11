@@ -182,6 +182,31 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "proje-satis-terimleri",
+    kategori: "sozluk",
+    contentType: "sozluk",
+    title: "Emlak ve Proje Satış Terimleri Sözlüğü: Opsiyon, Tahsis, Kapora, Şerefiye",
+    h1: "Proje ve Konut Satış Terimleri Sözlüğü",
+    description:
+      "Opsiyon, tahsis, kapora, şerefiye, kat irtifakı ve hizmet bedeli ne demek? Emlak danışmanları için proje ve konut satış terimlerinin net, doğru tanımları.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-tasinmaz-yonetmelik", "ticaret-on-odemeli-konut"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/musteri-kaydi-ve-hakedis-korumasi", "rehber/proje-uzerinden-satis-nasil-yapilir"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    canonical: `${SITE}/sozluk/proje-satis-terimleri`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */
