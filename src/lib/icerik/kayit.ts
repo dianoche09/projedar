@@ -234,6 +234,33 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "sifir-konut-satmanin-emlakciya-avantajlari",
+    kategori: "rehber",
+    contentType: "rehber",
+    title: "Sıfır Konut (Projeden) Satmak Emlak Danışmanına Ne Kazandırır? (2026)",
+    h1: "Sıfır Konut Satmanın Emlak Danışmanına Avantajları",
+    description:
+      "Sıfır (projeden) konut satmak emlakçıya ne kazandırır? Stok çeşitliliği, canlı fiyat, opsiyon koruması ve fırsat/gelişen bölge değerlendirme çerçevesi. Emlak danışmanları için rehber.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-tasinmaz-yonetmelik", "ticaret-on-odemeli-konut"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/proje-uzerinden-satis-nasil-yapilir", "karsilastirma/ilan-portali-vs-tahsisli-ag"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt: "Bir emlak danışmanı, ofiste tablet üzerinde konut projesi konum ve fiyat verilerini değerlendirirken",
+    canonical: `${SITE}/rehber/sifir-konut-satmanin-emlakciya-avantajlari`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */
