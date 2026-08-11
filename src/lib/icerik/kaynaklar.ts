@@ -52,6 +52,22 @@ export const KAYNAKLAR: Record<string, Kaynak> = {
     tur: "resmi",
     oncelik: 1,
   },
+  "ticaret-on-odemeli-konut": {
+    id: "ticaret-on-odemeli-konut",
+    baslik: "Ön Ödemeli Konut Satış Sözleşmeleri Hakkında Bilgilendirme",
+    kurum: "Ticaret Bakanlığı",
+    url: "https://tuketici.ticaret.gov.tr/yayinlar/tuketici-bilgi-rehberi/on-odemeli-konut-satis-sozlesmeleri-hakkinda-bilgilendirme",
+    tur: "resmi",
+    oncelik: 1,
+  },
+  "on-odemeli-konut-yonetmelik": {
+    id: "on-odemeli-konut-yonetmelik",
+    baslik: "Ön Ödemeli Konut Satışları Hakkında Yönetmelik",
+    kurum: "Resmî Gazete",
+    url: "https://www.mevzuat.gov.tr/MevzuatMetin/yonetmelik/7.5.20238.pdf",
+    tur: "resmi",
+    oncelik: 3,
+  },
 };
 
 /** id listesini kayda çözer, öncelik + kuruma göre sıralar. Tanımsız id atlanır. */

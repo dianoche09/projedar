@@ -128,6 +128,33 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "proje-uzerinden-satis-nasil-yapilir",
+    kategori: "rehber",
+    contentType: "rehber",
+    title: "Projeden Konut Nasıl Satılır? Danışman Süreci ve Yasal Çerçeve (2026)",
+    h1: "Projeden (Off-Plan) Konut Satışı: Danışman Süreci ve Ön Ödemeli Satış Kuralları",
+    description:
+      "Projeden konut satışı adım adım: stok/fiyat teyidi, opsiyon, ön ödemeli konut satış sözleşmesi, 14 gün cayma hakkı, 48 ay teslim süresi ve çift satış riski. Emlak danışmanları için resmî kaynaklı rehber.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-on-odemeli-konut", "on-odemeli-konut-yonetmelik"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/eids-emlakci-rehberi", "rehber/tasinmaz-ticareti-yetki-belgesi"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-hero.jpg",
+    heroAlt: "Bir gayrimenkul danışmanı, ofiste tablet üzerinde konut projesi planını müşteriye gösterirken",
+    canonical: `${SITE}/rehber/proje-uzerinden-satis-nasil-yapilir`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */
