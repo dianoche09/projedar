@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { KayitForm } from "./KayitForm";
+import { KayitOlay } from "./KayitOlay";
 import { AuthKabuk } from "@/components/ui/AuthKabuk";
 import { davetGecerli, adayDavetGecerli } from "@/lib/davet";
 
@@ -10,9 +11,9 @@ const ADAY_ROL = new Set(["uretici", "emlakci", "ofis_yetkili"]);
 export default async function KayitPage({
   searchParams,
 }: {
-  searchParams: Promise<{ hata?: string; rol?: string; d?: string; n?: string; t?: string; aday?: string }>;
+  searchParams: Promise<{ hata?: string; rol?: string; d?: string; n?: string; t?: string; aday?: string; kaynak?: string }>;
 }) {
-  const { hata, rol, d, n, t, aday } = await searchParams;
+  const { hata, rol, d, n, t, aday, kaynak } = await searchParams;
 
   const supabase = await createClient();
   const {
@@ -31,6 +32,7 @@ export default async function KayitPage({
 
   return (
     <AuthKabuk>
+      <KayitOlay rol={rol ?? null} kaynak={kaynak ?? null} />
       <div className="kart p-6 sm:p-8">
         <h1 className="font-display text-2xl font-extrabold tracking-tight text-ink">Hesap oluştur</h1>
         <p className="mt-2 text-sm font-medium text-ink-soft">

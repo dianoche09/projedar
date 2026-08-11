@@ -8,6 +8,15 @@ import { belgeleriKaydet } from "@/lib/belge";
 import { davetGecerli, adayDavetGecerli } from "@/lib/davet";
 import { profilDetayTopla, KOLON_ALANLARI } from "@/lib/kayitAlanlar";
 
+/** Birinci-parti kayıt hunisi olayı → events (best-effort; kaydı asla bloklamaz). PII yok. */
+async function olayYaz(tip: string, payload: Record<string, unknown>, profileId?: string | null) {
+  try {
+    await createAdminClient().from("events").insert({ tip, profile_id: profileId ?? null, payload });
+  } catch {
+    /* huni logu best-effort */
+  }
+}
+
 // Self-registration — rol seçimli. Kayıt 'onay_bekliyor' başlar (handle_new_user trigger).
 // Role-özel kapsamlı profil (firma/yetki/faaliyet) profil_detay jsonb'ye yazılır (lib/kayitAlanlar).
 const kayitSemasi = z.object({
@@ -27,6 +36,12 @@ export async function kayitOl(formData: FormData) {
     talep_rol: formData.get("talep_rol"),
   });
   if (!sonuc.success) {
+    await olayYaz("kayit_hata", {
+      asama: "dogrulama",
+      mesaj: sonuc.error.issues[0].message,
+      rol: (formData.get("talep_rol") as string) || null,
+      kaynak: (formData.get("kaynak") as string) || null,
+    });
     redirect(`/kayit?hata=${encodeURIComponent(sonuc.error.issues[0].message)}`);
   }
   const { email, password, ad, telefon, talep_rol } = sonuc.data;
@@ -52,8 +67,21 @@ export async function kayitOl(formData: FormData) {
     },
   });
   if (error) {
+    await olayYaz("kayit_hata", {
+      asama: "auth",
+      mesaj: error.message,
+      rol: talep_rol,
+      kaynak: (formData.get("kaynak") as string) || null,
+    });
     redirect(`/kayit?hata=${encodeURIComponent(error.message)}`);
   }
+
+  // Başarılı kayıt → huni kapanışı
+  await olayYaz(
+    "kayit_tamam",
+    { rol: talep_rol, oturum: !!data?.session, kaynak: (formData.get("kaynak") as string) || null },
+    data?.user?.id ?? null,
+  );
 
   // Admin keşif daveti huni kapanışı — (aday + t) imzası talep_rol'e karşı geçerliyse aday'ı
   // dönüşen olarak işaretle (service-role; aday RLS admin-only). Attribution KYC'yi atlamaz.
