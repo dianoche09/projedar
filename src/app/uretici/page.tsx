@@ -356,7 +356,7 @@ export default async function UreticiKokpit() {
                 <Insight renk="var(--color-amber)">
                   <span className="mono flex-none text-[15px] font-bold text-amber">{opsiyon}</span>
                   <p className="text-[12.5px] leading-snug text-ink-soft">
-                    <b className="text-ink">aktif opsiyon</b> karar bekliyor — teyit/serbest bırakma için takip et.
+                    <b className="text-ink">aktif opsiyon</b> karar bekliyor; teyit/serbest bırakma için takip et.
                   </p>
                 </Insight>
               ) : null}
@@ -365,7 +365,7 @@ export default async function UreticiKokpit() {
                 <Insight renk="var(--color-green)">
                   <span className="mono flex-none text-[15px] font-bold text-green">{enCokMusaitN}</span>
                   <p className="text-[12.5px] leading-snug text-ink-soft">
-                    En çok müsait stok <b className="text-ink">{enCokMusaitAd}</b> — paylaşıma en hazır proje.
+                    En çok satışa açık stok <b className="text-ink">{enCokMusaitAd}</b>, paylaşıma en hazır proje.
                   </p>
                 </Insight>
               ) : null}
@@ -377,7 +377,7 @@ export default async function UreticiKokpit() {
                     <circle cx="12" cy="12" r="9" />
                   </svg>
                   <p className="text-[12.5px] leading-snug text-ink-soft">
-                    <b className="mono text-ink">{eskiBirimSay} birim</b> 15 günden eski — fiyat/durum tazelenmesi öneriliyor.
+                    <b className="mono text-ink">{eskiBirimSay} birim</b> 15 günden eski; fiyat/durum tazelenmesi öneriliyor.
                   </p>
                 </Insight>
               ) : null}
@@ -400,7 +400,7 @@ export default async function UreticiKokpit() {
               <h2 className="font-display text-[15px] font-bold text-ink">Müşteri Sorgula</h2>
             </div>
             <p className="mb-3 text-[11.5px] text-[var(--ink-faint)]">
-              Telefon / TCKN ile çift-satış ve mevcut opsiyon kontrolü. Lead sana otomatik akmaz — yalnız sorgu.
+              Telefon / TCKN ile çift-satış ve mevcut opsiyon kontrolü. Lead sana otomatik akmaz; yalnız sorgu.
             </p>
             <Link href="/uretici/lead-sorgu" className="btn-primary h-[44px] w-full justify-center">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
