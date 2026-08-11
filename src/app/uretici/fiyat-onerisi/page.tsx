@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { OneriKuyrugu, type OneriKart } from "./OneriKuyrugu";
 import { paraKisa } from "@/lib/stok";
 import { simdiMs } from "@/lib/zaman";
 import { bolgeMedyani, benchmarkKiyas, BENCHMARK_META } from "@/lib/bolgeBenchmark";
@@ -105,6 +106,31 @@ export default async function FiyatOnerisi() {
   }[];
   const tipAd = new Map((tipler ?? []).map((t) => [t.id as string, (t.oda as string | null) ?? (t.ad as string | null)]));
 
+  // Kural-önerileri (mod='oneri' projelerden bekleyen) — graceful: tablo yoksa boş liste
+  const { data: kuralOneriRaw } = projeIds.length
+    ? await admin
+        .from("fiyat_kural_oneri")
+        .select("id, eski_fiyat, yeni_fiyat, birim:birim_id(daire_no, kat, para_birimi, proje_id), kural:kural_id(ad)")
+        .in("proje_id", projeIds)
+        .eq("durum", "bekliyor")
+        .order("created_at", { ascending: true })
+    : { data: [] };
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const kuralOnerileri: OneriKart[] = ((kuralOneriRaw ?? []) as any[]).map((o) => {
+    const birim = o.birim as any;
+    const kural = o.kural as any;
+    return {
+      id: o.id as string,
+      proje_ad: projeAd.get(birim?.proje_id) ?? "—",
+      daire: `Daire ${birim?.daire_no ?? "—"}${birim?.kat != null ? ` · K${birim.kat}` : ""}`,
+      kural_ad: (kural?.ad as string | null) ?? "Kural",
+      eski: (o.eski_fiyat as number | null) ?? null,
+      yeni: o.yeni_fiyat as number,
+      para: (birim?.para_birimi as string | null) ?? "TRY",
+    };
+  });
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
   // Birim başı talep skoru + kırılım
   const skor = new Map<string, number>();
   const kirilim = new Map<string, Record<string, number>>();
@@ -147,6 +173,9 @@ export default async function FiyatOnerisi() {
 
   return (
     <div className="mx-auto max-w-[1100px] px-4 py-6 sm:px-6">
+      {/* Kural-öneri onay kuyruğu (mod='oneri' deterministik kurallar) — heuristik önerinin üstünde */}
+      <OneriKuyrugu oneriler={kuralOnerileri} />
+
       <header className="belir mb-5">
         <h1 className="font-display text-[27px] font-bold tracking-tight text-ink">Dinamik Fiyat Önerisi</h1>
         <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
