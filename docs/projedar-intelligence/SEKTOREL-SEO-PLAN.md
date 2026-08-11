@@ -47,7 +47,7 @@ Kaynak: `src/lib/icerik/` (registry, tipler, kaynaklar, schema) + `src/content/<
 |---|---|---|---|---|
 | ✅ | rehber | proje-uzerinden-satis-nasil-yapilir | "off-plan / projeden konut nasıl satılır" | üst | YAYINDA (2026-08-11) |
 | ✅ | rehber | musteri-kaydi-ve-hakedis-korumasi | "emlakçı müşteri kaydı / hak ediş koruması" | orta | YAYINDA (2026-08-11) |
-| 7 | sozluk | opsiyon-tahsis-kapora-sereFiye | "opsiyon / tahsis / şerefiye ne demek" (terim kümesi) | orta |
+| ✅ | sozluk | proje-satis-terimleri | "opsiyon / tahsis / şerefiye ne demek" (terim kümesi) | orta | YAYINDA (2026-08-11) — /sozluk route açıldı |
 | 8 | karsilastirma | ilan-portali-vs-tahsisli-ag | "ilan sitesi mi tahsisli ağ mı" | orta |
 
 ### Faz 3 — Araçlar (alt huni, davet motoru)
