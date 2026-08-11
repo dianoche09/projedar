@@ -3,6 +3,7 @@ import type { TocOge } from "@/components/icerik/IcerikToc";
 import { Govde as EidsGovde, toc as eidsToc } from "./eids-emlakci-rehberi";
 import { Govde as YetkiBelgesiGovde, toc as yetkiBelgesiToc } from "./tasinmaz-ticareti-yetki-belgesi";
 import { Govde as SosyalMedyaGovde, toc as sosyalMedyaToc } from "./eids-sosyal-medya-ilan-paylasimi";
+import { Govde as EdevletYetkiGovde, toc as edevletYetkiToc } from "./e-devletten-emlakciya-eids-yetkisi";
 
 /**
  * Slug → gövde eşlemesi. Registry (meta) ile gövde ayrıktır: meta merkezî
@@ -15,4 +16,5 @@ export const REHBER_GOVDE: Record<string, RehberModul> = {
   "eids-emlakci-rehberi": { Govde: EidsGovde, toc: eidsToc },
   "tasinmaz-ticareti-yetki-belgesi": { Govde: YetkiBelgesiGovde, toc: yetkiBelgesiToc },
   "eids-sosyal-medya-ilan-paylasimi": { Govde: SosyalMedyaGovde, toc: sosyalMedyaToc },
+  "e-devletten-emlakciya-eids-yetkisi": { Govde: EdevletYetkiGovde, toc: edevletYetkiToc },
 };

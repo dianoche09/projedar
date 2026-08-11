@@ -101,6 +101,33 @@ export const ICERIKLER: IcerikMeta[] = [
     index: true,
     published: true,
   },
+  {
+    slug: "e-devletten-emlakciya-eids-yetkisi",
+    kategori: "rehber",
+    contentType: "rehber",
+    title: "e-Devlet'ten Emlakçıya EİDS Yetkisi Nasıl Verilir? (2026)",
+    h1: "e-Devlet Üzerinden EİDS Yetkilendirme: Adım Adım Rehber",
+    description:
+      "Taşınmaz sahibi e-Devlet üzerinden emlak işletmesine EİDS yetkisini nasıl verir? Adımlar, en az 3 ay süre, taşınmaz bazında yetki, hisseli durum ve yetki belgesinden farkı. Resmî kaynaklı rehber.",
+    publishedAt: "2026-08-11",
+    updatedAt: "2026-08-11",
+    sourceCheckedAt: "2026-08-11",
+    author: "Projedar Editoryal",
+    reviewer: null,
+    sources: ["ticaret-eids-yetki", "edevlet-tasinmaz-izin"],
+    iliskiler: {
+      hub: null,
+      siblings: ["rehber/eids-emlakci-rehberi", "rehber/tasinmaz-ticareti-yetki-belgesi"],
+      tools: [],
+      glossary: [],
+    },
+    ctaLevel: "medium",
+    heroGorsel: "/generated/rehber/eids-edevlet.jpg",
+    heroAlt: "Bir gayrimenkul danışmanı, dizüstü bilgisayarda e-Devlet üzerinden dijital yetkilendirme ekranını incelerken",
+    canonical: `${SITE}/rehber/e-devletten-emlakciya-eids-yetkisi`,
+    index: true,
+    published: true,
+  },
 ];
 
 /** Kategori-içi slug ile içerik bul (yalnız yayında). */
