@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type NavLink = {
+export type NavLink = {
   yol: string;
   etiket: string;
   ikon: string;
@@ -15,7 +15,7 @@ type NavLink = {
 
 // Tüm item'lar gerçek route'lara bağlı (dead-end yok). Kokpit tam eşleşme,
 // diğerleri startsWith (alt sayfalar da ilgili item'ı aktif tutar).
-const LINKLER: NavLink[] = [
+export const LINKLER: NavLink[] = [
   { yol: "/uretici", etiket: "Kokpit", ikon: "kokpit", tam: true },
   { yol: "/uretici/projeler", etiket: "Projeler", ikon: "projeler", tam: false, ekYol: "/uretici/proje/" },
   { yol: "/uretici/stok", etiket: "Stok", ikon: "stok", tam: false },
@@ -32,7 +32,7 @@ const LINKLER: NavLink[] = [
   { yol: "/uretici/ayarlar", etiket: "Ayarlar", ikon: "ayar", tam: false },
 ];
 
-function Ikon({ ad }: { ad: string }) {
+export function Ikon({ ad }: { ad: string }) {
   const ortak = { className: "nav-ic", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, "aria-hidden": true } as const;
   switch (ad) {
     case "kokpit":

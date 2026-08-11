@@ -5,6 +5,7 @@ import { cikisYap } from "@/app/(auth)/login/actions";
 import { Logo } from "@/components/Logo";
 import { ToastSaglayici } from "@/components/ui/Toast";
 import { UreticiNav } from "@/components/ui/UreticiNav";
+import { UreticiAltTab } from "@/components/ui/UreticiAltTab";
 
 /** Üretici workspace — yalnız 'uretici' rolü. Sidebar (masaüstü) + üst bar (mobil) + toast. */
 export default async function UreticiLayout({ children }: { children: React.ReactNode }) {
@@ -91,18 +92,18 @@ export default async function UreticiLayout({ children }: { children: React.Reac
               </button>
             </form>
           </header>
-          <div className="border-b border-[var(--cizgi)] bg-paper px-3 py-2 md:hidden">
-            <UreticiNav mobil bildirimSayi={bildirimSayi ?? 0} />
-          </div>
-
           {adminMi ? (
             <div className="flex items-center justify-between gap-2 border-b border-amber/20 bg-amber-soft px-4 py-2 text-xs text-[#9a6a12]">
               <span className="font-semibold">Admin olarak görüntülüyorsun: değişiklikler gerçek veriyi etkiler.</span>
               <Link href="/admin" className="shrink-0 font-bold text-[#9a6a12] hover:underline">← Admin paneli</Link>
             </div>
           ) : null}
-          <main className="min-w-0 flex-1">{children}</main>
+          {/* Mobilde alt sekme barının içeriği kapatmaması için alt boşluk */}
+          <main className="min-w-0 flex-1 pb-24 md:pb-0">{children}</main>
         </div>
+
+        {/* Mobil alt sekme (bottom-tab) — masaüstünde sidebar var */}
+        <UreticiAltTab bildirimSayi={bildirimSayi ?? 0} />
       </div>
     </ToastSaglayici>
   );
