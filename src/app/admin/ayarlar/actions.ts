@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidateTag, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -39,7 +39,8 @@ export async function metaAyarKaydet(formData: FormData) {
     redirect(`/admin/ayarlar?hata=${encodeURIComponent("Kaydedilemedi. Tablo uygulandı mı? " + error.message)}`);
   }
 
-  revalidateTag("site-ayar");
+  // Not: layout meta'sı site-ayar unstable_cache'i (revalidate 5 dk) ile yenilenir;
+  // token değişikliği en geç birkaç dakikada tüm sayfalara yansır.
   revalidatePath("/admin/ayarlar");
   redirect("/admin/ayarlar?ok=1");
 }

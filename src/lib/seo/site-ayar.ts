@@ -69,7 +69,7 @@ export const siteAyarGetir = unstable_cache(
     }
   },
   ["site-ayar"],
-  { tags: ["site-ayar"], revalidate: 3600 },
+  { revalidate: 300 },
 );
 
 /**
