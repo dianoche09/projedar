@@ -13,6 +13,16 @@ const LEAD_DURUM_ETIKET: Record<string, string> = {
   kaybedildi: "Kaybedildi",
 };
 
+// Statü renk dili (sinyal): kazanıldı=yeşil, opsiyon=amber, kaybedildi=gri, aktif=teal, yeni=navy
+const LEAD_DURUM_RENK: Record<string, string> = {
+  yeni: "bg-navy-soft text-navy",
+  arandi: "bg-teal-soft text-teal-d",
+  gorusme: "bg-teal-soft text-teal-d",
+  opsiyon: "bg-amber-soft text-[#9a6a12]",
+  kazanildi: "bg-green-soft text-[#1f7d4c]",
+  kaybedildi: "bg-soft text-[var(--ink-faint)]",
+};
+
 type Sonuc = {
   id: string;
   ad: string | null;
@@ -101,7 +111,7 @@ export default async function LeadSorgu({
         <p className="mt-1 text-sm text-gray">
           Bir müşteri sana doğrudan geldiyse ad veya telefonla sorgula: bu kişi ağda{" "}
           <b>ilk kimin lead&apos;i</b> olarak kaydedilmiş, gör. Sahiplik garantisi değildir; yalnız
-          şeffaflık — gerisi seninle danışman arasındadır.
+          şeffaflık, gerisi seninle danışman arasındadır.
         </p>
       </div>
 
@@ -109,13 +119,11 @@ export default async function LeadSorgu({
         <input
           name="q"
           defaultValue={sorgu}
+          aria-label="Müşteri ad soyad veya telefon"
           placeholder="Ad Soyad veya telefon (05xx…)"
           className="min-w-0 flex-1 rounded-xl border border-hair bg-card px-4 py-3 text-sm text-ink outline-none focus:border-teal"
         />
-        <button
-          type="submit"
-          className="btn rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-ink"
-        >
+        <button type="submit" className="btn-primary">
           Sorgula
         </button>
       </form>
@@ -124,17 +132,19 @@ export default async function LeadSorgu({
         sonuclar.length > 0 ? (
           <div className="space-y-2.5">
             {sonuclar.map((s) => (
-              <div key={s.id} className="rounded-2xl border border-hair bg-card p-4 shadow-card">
+              <div key={s.id} className="kart p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <p className="font-semibold text-ink">{s.ad ?? "—"}</p>
-                    <p className="font-mono text-sm text-gray">{s.telefon ?? "—"}</p>
+                    <p className="mono text-sm text-gray">{s.telefon ?? "—"}</p>
                     <p className="mt-1 text-xs text-gray">
                       {s.proje_ad ?? "—"}
                       {s.daire_no ? ` · Daire ${s.daire_no}` : ""} · {zamanOnce(s.created_at)}
                     </p>
                   </div>
-                  <span className="rounded-full bg-teal/10 px-2.5 py-0.5 text-xs font-semibold uppercase text-teal-d">
+                  <span
+                    className={`rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase ${LEAD_DURUM_RENK[s.durum] ?? "bg-teal-soft text-teal-d"}`}
+                  >
                     {LEAD_DURUM_ETIKET[s.durum] ?? s.durum}
                   </span>
                 </div>
