@@ -4,6 +4,7 @@ import NextTopLoader from "nextjs-toploader";
 import { PwaKur } from "@/components/ui/PwaKur";
 import { LansmanBar } from "@/components/LansmanBar";
 import { PostHogProvider } from "@/components/PostHogProvider";
+import { verificationMeta } from "@/lib/seo/site-ayar";
 import "./globals.css";
 
 // Spatial tipografi: Outfit (başlık/wordmark) + Inter (arayüz) + Geist Mono (veri/sayı)
@@ -23,7 +24,8 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  return {
   metadataBase: new URL("https://projedar.com"),
   // Sayfalar kendi tam başlığını yönetiyor (bazıları "… | Projedar" ile bitiyor);
   // bu yüzden template kullanmıyoruz — çift "Projedar" olmasın.
@@ -57,12 +59,11 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
   },
-  // Google Search Console mülk doğrulaması: token env'de (GOOGLE_SITE_VERIFICATION).
-  // Tanımlı değilse Next bu meta etiketini basmaz — DNS/HTML dosyası ile de doğrulanabilir.
-  ...(process.env.GOOGLE_SITE_VERIFICATION
-    ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
-    : {}),
-};
+  // Arama motoru doğrulama meta'ları admin panelinden (site_ayar) yönetilir;
+  // öncelik DB → env → sabit fallback. Token'lar yapıştırma hatasına karşı temizlenir.
+  verification: await verificationMeta(),
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#eef1f6",

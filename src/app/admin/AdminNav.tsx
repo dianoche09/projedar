@@ -80,6 +80,11 @@ const YONETIM: NavItem[] = [
     etiket: "SEO Sayfaları",
     ikon: ic(<><circle cx="12" cy="12" r="10" /><path d="M2 12h20" /><path d="M12 2c2.7 3 2.7 17 0 20M12 2c-2.7 3-2.7 17 0 20" /></>),
   },
+  {
+    href: "/admin/ayarlar",
+    etiket: "Site & Meta",
+    ikon: ic(<><path d="M4 7h11" /><path d="M18 7h2" /><circle cx="16" cy="7" r="2" /><path d="M4 17h2" /><path d="M9 17h11" /><circle cx="7" cy="17" r="2" /></>),
+  },
 ];
 
 const PANELLER = [
