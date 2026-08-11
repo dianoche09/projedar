@@ -56,7 +56,7 @@ export default async function UreticiLayout({ children }: { children: React.Reac
             <div className="flex items-center gap-3 px-1">
               <span
                 className="grid size-9 shrink-0 place-items-center rounded-xl font-display text-[14px] font-bold text-white"
-                style={{ background: "linear-gradient(150deg,var(--color-teal),#157a6c)" }}
+                style={{ background: "linear-gradient(150deg,var(--color-teal),var(--color-teal-d))" }}
               >
                 {ad.charAt(0).toUpperCase()}
               </span>
@@ -81,24 +81,24 @@ export default async function UreticiLayout({ children }: { children: React.Reac
         {/* İçerik kolonu */}
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Üst bar — mobil */}
-          <header className="sticky top-0 z-30 flex items-center justify-between border-b border-slate-200/60 bg-white/95 px-4 py-2.5 backdrop-blur md:hidden">
+          <header className="sticky top-0 z-30 flex items-center justify-between border-b border-[var(--cizgi)] bg-paper/95 px-4 py-2.5 backdrop-blur md:hidden">
             <Link href="/uretici" className="inline-flex">
               <Logo size={22} wordmark />
             </Link>
             <form action={cikisYap}>
-              <button className="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50">
+              <button className="btn-ghost h-11 min-h-0 px-4 text-xs">
                 Çıkış
               </button>
             </form>
           </header>
-          <div className="border-b border-slate-200/60 bg-white px-3 py-2 md:hidden">
+          <div className="border-b border-[var(--cizgi)] bg-paper px-3 py-2 md:hidden">
             <UreticiNav mobil bildirimSayi={bildirimSayi ?? 0} />
           </div>
 
           {adminMi ? (
-            <div className="flex items-center justify-between gap-2 border-b border-amber-200/50 bg-amber-soft px-4 py-2 text-xs text-amber-700">
-              <span className="font-semibold">Admin olarak görüntülüyorsun — değişiklikler gerçek veriyi etkiler.</span>
-              <Link href="/admin" className="shrink-0 font-bold text-amber-700 hover:underline">← Admin paneli</Link>
+            <div className="flex items-center justify-between gap-2 border-b border-amber/20 bg-amber-soft px-4 py-2 text-xs text-[#9a6a12]">
+              <span className="font-semibold">Admin olarak görüntülüyorsun: değişiklikler gerçek veriyi etkiler.</span>
+              <Link href="/admin" className="shrink-0 font-bold text-[#9a6a12] hover:underline">← Admin paneli</Link>
             </div>
           ) : null}
           <main className="min-w-0 flex-1">{children}</main>
