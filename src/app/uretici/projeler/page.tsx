@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { projeKapak } from "@/lib/gorsel";
-import { paraKisa, tazelik, bosOzet, type Ozet } from "@/lib/stok";
+import { paraKisa, tazelik, durumGrup } from "@/lib/stok";
 
 /* =========================================================
    PROJELER — kapaklı kart grid (üretici).
    Her kart canlı stok dağılımı + tazelik + fiyat aralığı taşır → /uretici/proje/[id].
-   Sinyal: yeşil=müsait, amber=opsiyon, kırmızı=satıldı.
+   Durum dili stok/kesit ile aynı 5 grup: satışa açık / opsiyon / satıldı / planlı / kapalı.
    ========================================================= */
 
-type BirimMini = { proje_id: string; durum: string; liste_fiyati: number | null };
+type BirimMini = { proje_id: string; durum: string; satilabilir: boolean | null; liste_fiyati: number | null };
+type Dagilim = { toplam: number; acik: number; opsiyon: number; satildi: number; planli: number; kapali: number };
+const bosDagilim = (): Dagilim => ({ toplam: 0, acik: 0, opsiyon: 0, satildi: 0, planli: 0, kapali: 0 });
 
 export default async function UreticiProjeler() {
   const supabase = await createClient();
@@ -23,7 +25,7 @@ export default async function UreticiProjeler() {
 
   const { data: birimRaw } = await supabase
     .from("birim")
-    .select("proje_id, durum, liste_fiyati");
+    .select("proje_id, durum, satilabilir, liste_fiyati");
   const birimler = (birimRaw ?? []) as BirimMini[];
 
   const { data: kapaklar } = await supabase
@@ -32,15 +34,14 @@ export default async function UreticiProjeler() {
     .eq("tip", "kapak");
   const kapakMap = new Map((kapaklar ?? []).map((k) => [k.proje_id, k.url as string | null]));
 
-  // Proje başı özet + fiyat aralığı (tek geçiş)
-  const ozet = new Map<string, Ozet>();
+  // Proje başı dağılım (durumGrup) + fiyat aralığı (tek geçiş)
+  const ozet = new Map<string, Dagilim>();
   const fiyatlar = new Map<string, number[]>();
+  let toplamAcik = 0;
   for (const b of birimler) {
-    const o = ozet.get(b.proje_id) ?? bosOzet();
+    const o = ozet.get(b.proje_id) ?? bosDagilim();
     o.toplam++;
-    if (b.durum === "musait") o.musait++;
-    else if (b.durum === "opsiyonlu" || b.durum === "satis_beklemede") o.opsiyon++;
-    else if (b.durum === "satildi") o.satildi++;
+    o[durumGrup(b.durum, b.satilabilir ?? true)]++;
     ozet.set(b.proje_id, o);
     if (b.liste_fiyati != null && b.liste_fiyati > 0) {
       const arr = fiyatlar.get(b.proje_id) ?? [];
@@ -48,10 +49,10 @@ export default async function UreticiProjeler() {
       fiyatlar.set(b.proje_id, arr);
     }
   }
+  for (const o of ozet.values()) toplamAcik += o.acik;
 
   const toplamProje = projeler?.length ?? 0;
   const toplamBirim = birimler.length;
-  const toplamMusait = birimler.filter((b) => b.durum === "musait").length;
 
   return (
     <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
@@ -67,7 +68,7 @@ export default async function UreticiProjeler() {
           </div>
           <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
             {toplamProje} proje · <span className="mono">{toplamBirim}</span> birim ·{" "}
-            <span className="mono text-green">{toplamMusait}</span> müsait
+            <span className="mono text-green">{toplamAcik}</span> satışa açık
           </p>
         </div>
         <Link href="/uretici/proje/yeni" className="btn-primary ml-auto h-[42px]">
@@ -80,7 +81,7 @@ export default async function UreticiProjeler() {
 
       <div className="belir belir-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {(projeler ?? []).map((p) => {
-          const o = ozet.get(p.id) ?? bosOzet();
+          const o = ozet.get(p.id) ?? bosDagilim();
           const t = tazelik(p.son_guncelleme);
           const sig =
             o.opsiyon > o.satildi
@@ -129,15 +130,18 @@ export default async function UreticiProjeler() {
 
                 <div className="mb-3 mt-3 grid grid-cols-4 gap-2">
                   <KutuSayi deger={o.toplam} etiket="birim" renk="text-ink" />
-                  <KutuSayi deger={o.musait} etiket="müsait" renk="text-green" />
+                  <KutuSayi deger={o.acik} etiket="açık" renk="text-green" />
                   <KutuSayi deger={o.opsiyon} etiket="opsiyon" renk="text-amber" />
                   <KutuSayi deger={o.satildi} etiket="satıldı" renk="text-red" />
                 </div>
 
+                {/* Dağılım barı — 5 grup (planlı/kapalı dahil → bar %100 dolar, "toplam vs açık" farkı görünür) */}
                 <div className="stokbar mb-3">
-                  <span style={{ width: `${o.toplam ? (o.musait / o.toplam) * 100 : 0}%`, background: "var(--color-green)" }} />
+                  <span style={{ width: `${o.toplam ? (o.acik / o.toplam) * 100 : 0}%`, background: "var(--color-green)" }} />
                   <span style={{ width: `${o.toplam ? (o.opsiyon / o.toplam) * 100 : 0}%`, background: "var(--color-amber)" }} />
                   <span style={{ width: `${o.toplam ? (o.satildi / o.toplam) * 100 : 0}%`, background: "var(--color-red)" }} />
+                  <span style={{ width: `${o.toplam ? (o.planli / o.toplam) * 100 : 0}%`, background: "var(--color-navy)" }} />
+                  <span style={{ width: `${o.toplam ? (o.kapali / o.toplam) * 100 : 0}%`, background: "var(--color-gray)" }} />
                 </div>
 
                 <div className="flex items-center justify-between text-[11.5px]">
