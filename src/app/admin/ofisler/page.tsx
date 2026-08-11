@@ -74,11 +74,10 @@ export default async function OfislerSayfasi({
             <input name="ilce" placeholder="İlçe" className={inp} />
             <div className="mt-1 text-xs font-semibold uppercase tracking-wide text-gray sm:col-span-2">Yetkili kullanıcı</div>
             <input name="yetkili_ad" required minLength={2} placeholder="Ad Soyad" className={inp} />
-            <input name="yetkili_email" type="email" required placeholder="E-posta" className={inp} />
-            <input name="yetkili_parola" type="text" required minLength={8} placeholder="Geçici parola (min 8)" className={`${inp} sm:col-span-2`} />
+            <input name="yetkili_email" type="email" required placeholder="E-posta" className={`${inp} sm:col-span-2`} />
             <button className="btn-primary sm:col-span-2">Ofis hesabı aç</button>
           </form>
-          <p className="mt-2.5 text-xs text-gray">Yetkili rol=ofis_yetkili, ofise bağlı + aktif oluşturulur.</p>
+          <p className="mt-2.5 text-xs text-gray">Yetkili rol=ofis_yetkili, ofise bağlı + aktif oluşturulur; kurulum bağlantısı e-postalanır, şifresini kendisi belirler.</p>
         </div>
       </details>
 

@@ -70,11 +70,10 @@ export default async function UreticilerSayfasi({
             <input name="vergi_no" placeholder="Vergi no (opsiyonel)" className={inp} />
             <div className="mt-1 text-xs font-semibold uppercase tracking-wide text-gray sm:col-span-2">Yetkili / sahip kullanıcı</div>
             <input name="sahip_ad" required minLength={2} placeholder="Ad Soyad" className={inp} />
-            <input name="sahip_email" type="email" required placeholder="E-posta" className={inp} />
-            <input name="sahip_parola" type="text" required minLength={8} placeholder="Geçici parola (min 8)" className={`${inp} sm:col-span-2`} />
+            <input name="sahip_email" type="email" required placeholder="E-posta" className={`${inp} sm:col-span-2`} />
             <button className="btn-primary sm:col-span-2">Üretici hesabı aç</button>
           </form>
-          <p className="mt-2.5 text-xs text-gray">Sahip doğrudan aktif + doğrulanmış oluşturulur; geçici parolayı ilet.</p>
+          <p className="mt-2.5 text-xs text-gray">Sahip doğrudan aktif + doğrulanmış oluşturulur; kurulum bağlantısı e-postalanır, şifresini kendisi belirler.</p>
         </div>
       </details>
 

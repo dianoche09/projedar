@@ -1,8 +1,27 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { ROL_ETIKET, type Rol } from "@/lib/roller";
 import { KullanicilarTablo, type Kullanici } from "./KullanicilarTablo";
 import { kullaniciOlustur } from "../actions";
 import { GeriLink, SayfaBaslik, Uyari } from "../_ortak";
+
+/** auth.users e-postalarını id→email haritasına topla (profiles'ta email yok). Service-role, yalnız server. */
+async function emailHaritasi(): Promise<Map<string, string>> {
+  const harita = new Map<string, string>();
+  try {
+    const admin = createAdminClient();
+    const perPage = 1000;
+    for (let page = 1; page <= 20; page++) {
+      const { data, error } = await admin.auth.admin.listUsers({ page, perPage });
+      if (error || !data?.users?.length) break;
+      for (const u of data.users) if (u.email) harita.set(u.id, u.email);
+      if (data.users.length < perPage) break;
+    }
+  } catch {
+    /* service-role yoksa e-posta kolonu boş gösterilir (akış bozulmaz) */
+  }
+  return harita;
+}
 
 const ATANABILIR_ROLLER: Rol[] = ["uretici", "emlakci", "ofis_yetkili", "marka_yetkili", "arsa_sahibi", "admin"];
 const inp = "rounded-lg border border-hair bg-soft px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
@@ -14,14 +33,18 @@ export default async function KullanicilarSayfasi({
 }) {
   const { hata, mesaj } = await searchParams;
   const supabase = await createClient();
-  const [{ data: kullanicilar }, { data: ofisler }] = await Promise.all([
+  const [{ data: kullanicilar }, { data: ofisler }, emailMap] = await Promise.all([
     supabase
       .from("profiles")
       .select("id, ad, rol, durum, ofis_id, telefon, son_giris, talep_rol, created_at, marka, il, ilce, uzmanlik")
       .order("created_at", { ascending: false }),
     supabase.from("ofis").select("id, ad").order("ad"),
+    emailHaritasi(),
   ]);
-  const liste = (kullanicilar ?? []) as Kullanici[];
+  const liste = ((kullanicilar ?? []) as Omit<Kullanici, "email">[]).map((k) => ({
+    ...k,
+    email: emailMap.get(k.id) ?? null,
+  })) as Kullanici[];
   const aktifSay = liste.filter((k) => k.durum === "aktif").length;
   const bekleyenSay = liste.filter((k) => k.durum === "onay_bekliyor").length;
 
@@ -66,7 +89,6 @@ export default async function KullanicilarSayfasi({
             <input name="ad" required minLength={2} placeholder="Ad Soyad" className={inp} />
             <input name="email" type="email" required placeholder="E-posta" className={inp} />
             <input name="telefon" placeholder="Telefon (opsiyonel)" className={inp} />
-            <input name="parola" type="text" required minLength={8} placeholder="Geçici parola (min 8)" className={inp} />
             <select name="rol" required defaultValue="emlakci" className={inp}>
               {ATANABILIR_ROLLER.map((r) => (
                 <option key={r} value={r}>{ROL_ETIKET[r]}</option>
@@ -81,7 +103,8 @@ export default async function KullanicilarSayfasi({
             <button className="btn-primary sm:col-span-2">Oluştur</button>
           </form>
           <p className="mt-2.5 text-xs text-gray">
-            Hesap doğrudan aktif oluşturulur. Geçici parolayı kullanıcıya ilet (girişte değiştirebilir).
+            Hesap doğrudan aktif oluşturulur. Kullanıcıya kurulum bağlantısı e-postalanır; şifresini
+            kendisi belirler. Parola tutulmaz.
           </p>
         </div>
       </details>

@@ -169,6 +169,49 @@ export function bildirimMaili(baslik: string, govde: string | null, link: string
   return bildirimMailiTipli("sistem", baslik, govde, link);
 }
 
+/* ── Hesap güvenliği: şifre sıfırlama + hesap kurulumu (admin tetikli, link'li) ── */
+
+/**
+ * Admin tetikli şifre sıfırlama maili — güvenli tek-kullanımlık kurtarma bağlantısı.
+ * Link /auth/callback → /sifre-yenile'ye düşer; kullanıcı KENDİ parolasını belirler.
+ * Düz-metin parola yok. Best-effort (mailGonder).
+ */
+export function parolaSifirlamaMaili(o: { ad: string | null; link: string }): string {
+  return mailKabuk({
+    preheader: "Şifre sıfırlama bağlantın hazır",
+    rozet: "Güvenlik",
+    renk: "#1e9b8a",
+    tint: "#e2f1ef",
+    baslik: o.ad ? `${o.ad}, şifreni yeniden belirle` : "Şifreni yeniden belirle",
+    govde:
+      "Projedar hesabın için şifre sıfırlama talebi alındı. Aşağıdaki butonla yeni şifreni sen belirle. " +
+      "Bağlantı tek kullanımlıktır ve kısa süre sonra geçersiz olur. Bu talebi sen yapmadıysan bu e-postayı yok say; şifren değişmez.",
+    ctaLabel: "Yeni şifre belirle",
+    ctaUrl: o.link,
+    altNot: "Buton çalışmazsa bağlantıyı kopyalayıp tarayıcına yapıştır.",
+  });
+}
+
+/**
+ * Admin tarafından açılan yeni hesap için kurulum maili — kullanıcı ilk girişte
+ * KENDİ parolasını belirler (aynı güvenli kurtarma bağlantısı akışı). Best-effort.
+ */
+export function hesapKurulumMaili(o: { ad: string | null; link: string }): string {
+  return mailKabuk({
+    preheader: "Projedar hesabın hazır — şifreni belirle",
+    rozet: "Hesap kurulumu",
+    renk: "#2fb36b",
+    tint: "#e4f5ec",
+    baslik: o.ad ? `${o.ad}, Projedar hesabın hazır` : "Projedar hesabın hazır",
+    govde:
+      "Senin için bir Projedar hesabı oluşturuldu. Başlamak için aşağıdaki butonla kendi şifreni belirle. " +
+      "Bağlantı tek kullanımlıktır ve kısa süre sonra geçersiz olur.",
+    ctaLabel: "Şifreni belirle ve başla",
+    ctaUrl: o.link,
+    altNot: "Buton çalışmazsa bağlantıyı kopyalayıp tarayıcına yapıştır.",
+  });
+}
+
 /* ── Keşif motoru: aday davet maili (ticari elektronik ileti) ───────────────── */
 const SEGMENT_METIN: Record<string, { rol: string; fayda: string }> = {
   muteahhit: { rol: "müteahhit/geliştirici", fayda: "konut stoğunuzu tek noktadan yönetip bağımsız emlakçı ağına canlı dağıtın" },

@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { ROL_ETIKET, type Rol } from "@/lib/roller";
 import { HESAP_DURUM_ETIKET, HESAP_DURUM_ROZET, zamanOnce, type HesapDurum } from "@/lib/types";
-import { parolaSifirla, hesapDurumDegistir } from "../../actions";
+import { hesapDurumDegistir } from "../../actions";
 import { Avatar, GeriLink, Uyari } from "../../_ortak";
+import { SifreSifirlaButon } from "./SifreSifirlaButon";
 
 const DURUMLAR: HesapDurum[] = ["aktif", "pasif", "askida", "arsivli"];
 
@@ -37,6 +39,20 @@ export default async function KullaniciDetay({
     ? await supabase.from("ofis").select("id, ad").eq("id", k.ofis_id).single()
     : { data: null };
 
+  // E-posta ve auth durumu auth.users'ta (profiles'ta yok) → service-role ile çek (yalnız server).
+  let email: string | null = null;
+  let emailDogrulandi = false;
+  let authSonGiris: string | null = null;
+  try {
+    const admin = createAdminClient();
+    const { data: au } = await admin.auth.admin.getUserById(id);
+    email = au?.user?.email ?? null;
+    emailDogrulandi = Boolean(au?.user?.email_confirmed_at);
+    authSonGiris = au?.user?.last_sign_in_at ?? null;
+  } catch {
+    /* service-role yoksa e-posta gösterilmez (akış bozulmaz) */
+  }
+
   const durum = k.durum as HesapDurum;
 
   return (
@@ -64,6 +80,25 @@ export default async function KullaniciDetay({
         <h2 className="font-display text-base font-semibold text-ink">Profil</h2>
         <div className="mt-2.5">
           <Satir etiket="Rol" deger={ROL_ETIKET[k.rol as Rol]} />
+          <Satir
+            etiket="E-posta"
+            deger={
+              email ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <a href={`mailto:${email}`} className="text-teal-d transition-colors hover:underline">
+                    {email}
+                  </a>
+                  {emailDogrulandi ? (
+                    <span className="rozet mono bg-green-soft text-teal-d">doğrulandı</span>
+                  ) : (
+                    <span className="rozet mono bg-amber-soft text-amber">doğrulanmadı</span>
+                  )}
+                </span>
+              ) : (
+                "—"
+              )
+            }
+          />
           <Satir etiket="Telefon" deger={k.telefon ?? "—"} />
           <Satir
             etiket="Ofis"
@@ -78,26 +113,25 @@ export default async function KullaniciDetay({
             }
           />
           <Satir etiket="Talep edilen rol" deger={k.talep_rol ? ROL_ETIKET[k.talep_rol as Rol] : "—"} />
-          <Satir etiket="Son giriş" deger={<span className="mono">{k.son_giris ? zamanOnce(k.son_giris) : "hiç"}</span>} />
+          <Satir
+            etiket="Son giriş"
+            deger={
+              <span className="mono">
+                {authSonGiris ?? k.son_giris ? zamanOnce((authSonGiris ?? k.son_giris) as string) : "hiç"}
+              </span>
+            }
+          />
           <Satir etiket="Kayıt" deger={<span className="mono">{zamanOnce(k.created_at)}</span>} />
         </div>
       </section>
 
       <section className="kart belir belir-2 p-5">
         <h2 className="font-display text-base font-semibold text-ink">Güvenlik</h2>
-        <p className="mt-1 text-xs text-gray">Yeni geçici parola ata (service-role). Kullanıcıya ilet.</p>
-        <form action={parolaSifirla} className="mt-3 flex flex-wrap items-center gap-2">
-          <input type="hidden" name="kullanici_id" value={k.id} />
-          <input
-            name="parola"
-            type="text"
-            required
-            minLength={8}
-            placeholder="Yeni parola (min 8)"
-            className="flex-1 rounded-lg border border-hair bg-soft px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal"
-          />
-          <button className="btn-ghost !min-h-0 !rounded-lg !px-4 !py-2 !text-[13px]">Parolayı sıfırla</button>
-        </form>
+        <p className="mt-1 text-xs text-gray">
+          Kullanıcıya güvenli şifre sıfırlama bağlantısı gönderir. Düz-metin parola tutulmaz;
+          kullanıcı kendi şifresini belirler.
+        </p>
+        <SifreSifirlaButon kullaniciId={k.id} />
       </section>
 
       <section className="kart belir belir-3 p-5">

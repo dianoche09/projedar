@@ -15,6 +15,7 @@ const sel = "rounded-lg border border-hair bg-soft px-2.5 py-1.5 text-[13px] tex
 export type Kullanici = {
   id: string;
   ad: string | null;
+  email: string | null;
   rol: Rol;
   durum: HesapDurum;
   ofis_id: string | null;
@@ -62,6 +63,7 @@ export function KullanicilarTablo({
     (k) =>
       (!q ||
         (k.ad ?? "").toLowerCase().includes(q.toLowerCase()) ||
+        (k.email ?? "").toLowerCase().includes(q.toLowerCase()) ||
         (k.telefon ?? "").includes(q)) &&
       (!rolF || k.rol === rolF) &&
       (!durumF || k.durum === durumF),
@@ -83,7 +85,7 @@ export function KullanicilarTablo({
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Ara: ad / telefon"
+            placeholder="Ara: ad / e-posta / telefon"
             className="w-full rounded-xl border border-hair bg-card py-2 pl-9 pr-3 text-sm text-ink shadow-card outline-none transition-colors focus:border-teal"
           />
         </div>
@@ -109,6 +111,7 @@ export function KullanicilarTablo({
             <thead>
               <tr>
                 <th>Kullanıcı</th>
+                <th>E-posta</th>
                 <th>Rol</th>
                 <th>Ofis</th>
                 <th>Son giriş</th>
@@ -130,6 +133,15 @@ export function KullanicilarTablo({
                           <span className="mono block text-[11px] text-gray">{k.telefon ?? "tel —"}</span>
                         </div>
                       </Link>
+                    </td>
+                    <td className="text-[12.5px] text-ink-soft">
+                      {k.email ? (
+                        <a href={`mailto:${k.email}`} className="text-teal-d transition-colors hover:underline">
+                          {k.email}
+                        </a>
+                      ) : (
+                        <span className="text-gray">—</span>
+                      )}
                     </td>
                     <td className="text-[12.5px] text-ink-soft">{ROL_ETIKET[k.rol]}</td>
                     <td className="text-[12.5px] text-ink-soft">{ofisAd(k.ofis_id)}</td>
@@ -156,7 +168,7 @@ export function KullanicilarTablo({
                   </tr>
                   {duzenle === k.id ? (
                     <tr>
-                      <td colSpan={6} className="!whitespace-normal bg-soft">
+                      <td colSpan={7} className="!whitespace-normal bg-soft">
                         <form action={kullaniciGuncelle} className="flex flex-wrap items-end gap-2.5">
                           <input type="hidden" name="kullanici_id" value={k.id} />
                           <label className="flex flex-col gap-1 text-[11px] font-medium text-gray">

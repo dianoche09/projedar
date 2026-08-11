@@ -1,11 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
+import { mailGonder, hesapKurulumMaili, parolaSifirlamaMaili } from "@/lib/mail";
 import { zUuid } from "@/lib/uuid";
 
 /** Çağıran oturumun admin olduğunu doğrula (service-role işlemleri öncesi şart). Admin id döner. */
@@ -18,6 +20,47 @@ async function adminGuard(): Promise<string> {
   const { data: profil } = await supabase.from("profiles").select("rol").eq("id", user.id).single();
   if (profil?.rol !== "admin") redirect("/");
   return user.id;
+}
+
+/**
+ * Güçlü rastgele geçici parola (yalnız server). Kullanıcıya ASLA gösterilmez; hesap
+ * güvenli kurtarma bağlantısıyla kurulur. Admin/plaintext parola tutmayı bitirir.
+ */
+function geciciParola(): string {
+  return `${crypto.randomUUID()}${crypto.randomUUID()}`;
+}
+
+/** İstek origin'i (mail içi mutlak link için). */
+async function istekOrigin(): Promise<string> {
+  const h = await headers();
+  return h.get("origin") ?? `https://${h.get("host") ?? "projedar.com"}`;
+}
+
+/**
+ * Tek-kullanımlık kurtarma bağlantısı üret (Supabase generateLink) + best-effort mail.
+ * Link /auth/callback → /sifre-yenile'ye düşer; kullanıcı KENDİ parolasını belirler.
+ * Üretilen linki döner (mail düşmezse admin elle iletebilsin — admin-in-the-loop fallback).
+ */
+async function kurulumLinkiGonder(
+  admin: ReturnType<typeof createAdminClient>,
+  origin: string,
+  email: string,
+  ad: string | null,
+  tur: "kurulum" | "sifirlama",
+): Promise<string | null> {
+  const { data, error } = await admin.auth.admin.generateLink({
+    type: "recovery",
+    email,
+    options: { redirectTo: `${origin}/auth/callback?next=/sifre-yenile` },
+  });
+  const link = data?.properties?.action_link ?? null;
+  if (error || !link) return null;
+  await mailGonder({
+    to: email,
+    konu: tur === "kurulum" ? "Projedar · hesabın hazır, şifreni belirle" : "Projedar · şifre sıfırlama",
+    html: tur === "kurulum" ? hesapKurulumMaili({ ad, link }) : parolaSifirlamaMaili({ ad, link }),
+  });
+  return link;
 }
 
 /** Üretici doğrulama / güven rozeti (admin yetkisi — RLS is_admin owner). */
@@ -410,10 +453,13 @@ const OlusturSchema = z.object({
   telefon: z.string().trim().max(20).optional(),
   rol: z.enum(["uretici", "emlakci", "ofis_yetkili", "marka_yetkili", "arsa_sahibi", "admin"]),
   ofis_id: z.union([zUuid, z.literal("")]),
-  parola: z.string().min(8, "Parola en az 8 karakter"),
 });
 
-/** Admin yeni kullanıcı oluşturur (createUser + profil rol/ofis/aktif). Service-role. */
+/**
+ * Admin yeni kullanıcı oluşturur (createUser + profil rol/ofis/aktif). Service-role.
+ * Düz-metin parola YOK: rastgele geçici parola atanır, kullanıcıya kurulum bağlantısı
+ * e-postalanır ve ilk girişte KENDİ şifresini belirler.
+ */
 export async function kullaniciOlustur(formData: FormData) {
   await adminGuard();
   const parsed = OlusturSchema.safeParse({
@@ -422,12 +468,11 @@ export async function kullaniciOlustur(formData: FormData) {
     telefon: (formData.get("telefon") as string) || undefined,
     rol: formData.get("rol"),
     ofis_id: formData.get("ofis_id") ?? "",
-    parola: formData.get("parola"),
   });
   if (!parsed.success) {
     redirect(`/admin/kullanicilar?hata=${encodeURIComponent(parsed.error.issues[0].message)}`);
   }
-  const { email, ad, telefon, rol, ofis_id, parola } = parsed.data;
+  const { email, ad, telefon, rol, ofis_id } = parsed.data;
 
   let admin: ReturnType<typeof createAdminClient>;
   try {
@@ -438,7 +483,7 @@ export async function kullaniciOlustur(formData: FormData) {
 
   const { data: created, error } = await admin.auth.admin.createUser({
     email,
-    password: parola,
+    password: geciciParola(),
     email_confirm: true,
     user_metadata: { ad, telefon: telefon ?? null },
   });
@@ -451,31 +496,55 @@ export async function kullaniciOlustur(formData: FormData) {
     .from("profiles")
     .update({ ad, telefon: telefon ?? null, rol, ofis_id: ofis_id || null, durum: "aktif" })
     .eq("id", created.user.id);
+
+  // Kurulum bağlantısı e-postala (best-effort). Mail düşmezse detay sayfasından tekrar gönderilebilir.
+  const link = await kurulumLinkiGonder(admin, await istekOrigin(), email, ad, "kurulum");
   revalidatePath("/admin/kullanicilar");
-  redirect(`/admin/kullanicilar?mesaj=${encodeURIComponent(`${email} oluşturuldu`)}`);
+  redirect(
+    `/admin/kullanicilar?mesaj=${encodeURIComponent(
+      link
+        ? `${email} oluşturuldu · kurulum bağlantısı e-postasına gönderildi`
+        : `${email} oluşturuldu · e-posta gönderilemedi, detay sayfasından sıfırlama linki gönder`,
+    )}`,
+  );
 }
 
-/** Kullanıcının parolasını sıfırla (admin → yeni geçici parola). Service-role. */
-export async function parolaSifirla(formData: FormData) {
-  await adminGuard();
+/**
+ * Kullanıcıya şifre sıfırlama bağlantısı gönder (admin tetikli). Düz-metin parola YOK:
+ * güvenli tek-kullanımlık link e-postalanır, kullanıcı KENDİ şifresini belirler.
+ * useActionState imzası — sonuç + fallback link'i UI'da gösterir (redirect'te link sızmaz).
+ */
+export type SifreLinkState = { ok: boolean; mesaj: string; link?: string | null } | null;
+
+export async function parolaSifirlamaLinkiGonder(
+  _prev: SifreLinkState,
+  formData: FormData,
+): Promise<SifreLinkState> {
+  const adminId = await adminGuard();
   const id = zUuid.safeParse(formData.get("kullanici_id"));
-  const parola = z.string().min(8).safeParse(formData.get("parola"));
-  if (!id.success || !parola.success) {
-    redirect(`/admin/kullanicilar?hata=${encodeURIComponent("Parola en az 8 karakter")}`);
-  }
+  if (!id.success) return { ok: false, mesaj: "Geçersiz kullanıcı" };
 
   let admin: ReturnType<typeof createAdminClient>;
   try {
     admin = createAdminClient();
   } catch {
-    redirect(`/admin/kullanicilar/${id.data}?hata=${encodeURIComponent("Service-role anahtarı tanımlı değil")}`);
+    return { ok: false, mesaj: "Service-role anahtarı tanımlı değil (.env + Vercel)" };
   }
-  const { error } = await admin.auth.admin.updateUserById(id.data, { password: parola.data });
-  redirect(
-    error
-      ? `/admin/kullanicilar/${id.data}?hata=${encodeURIComponent(error.message)}`
-      : `/admin/kullanicilar/${id.data}?mesaj=${encodeURIComponent("Parola güncellendi")}`,
-  );
+
+  const { data: u, error: e0 } = await admin.auth.admin.getUserById(id.data);
+  const email = u?.user?.email;
+  if (e0 || !email) return { ok: false, mesaj: "Kullanıcının e-posta adresi bulunamadı" };
+
+  const { data: p } = await admin.from("profiles").select("ad").eq("id", id.data).single();
+  const link = await kurulumLinkiGonder(admin, await istekOrigin(), email, (p?.ad as string | null) ?? null, "sifirlama");
+  if (!link) return { ok: false, mesaj: "Sıfırlama bağlantısı üretilemedi" };
+
+  await kayitYaz({ tip: "onay", profileId: adminId, payload: { kullanici_id: id.data, eylem: "parola_sifirlama_link" } });
+  return {
+    ok: true,
+    mesaj: `Sıfırlama bağlantısı ${email} adresine gönderildi. Kullanıcı kendi şifresini belirleyecek.`,
+    link,
+  };
 }
 
 // ── Hesap tanımlama: ÜRETİCİ firma + sahip kullanıcı (service-role) ──
@@ -484,10 +553,12 @@ const UreticiEkleSchema = z.object({
   vergi_no: z.string().trim().max(20).optional(),
   sahip_ad: z.string().trim().min(2, "Sahip ad-soyad"),
   sahip_email: z.string().email("Geçerli e-posta"),
-  sahip_parola: z.string().min(8, "Parola en az 8 karakter"),
 });
 
-/** Admin yeni ÜRETİCİ hesabı açar: firma kaydı + sahip kullanıcı (rol=uretici, aktif, doğrulanmış). */
+/**
+ * Admin yeni ÜRETİCİ hesabı açar: firma kaydı + sahip kullanıcı (rol=uretici, aktif, doğrulanmış).
+ * Düz-metin parola YOK: sahip kurulum bağlantısıyla kendi şifresini belirler.
+ */
 export async function ureticiEkle(formData: FormData) {
   await adminGuard();
   const parsed = UreticiEkleSchema.safeParse({
@@ -495,7 +566,6 @@ export async function ureticiEkle(formData: FormData) {
     vergi_no: (formData.get("vergi_no") as string) || undefined,
     sahip_ad: formData.get("sahip_ad"),
     sahip_email: formData.get("sahip_email"),
-    sahip_parola: formData.get("sahip_parola"),
   });
   if (!parsed.success) {
     redirect(`/admin/ureticiler?hata=${encodeURIComponent(parsed.error.issues[0].message)}`);
@@ -509,10 +579,10 @@ export async function ureticiEkle(formData: FormData) {
     redirect(`/admin/ureticiler?hata=${encodeURIComponent("Service-role anahtarı tanımlı değil (.env + Vercel)")}`);
   }
 
-  // 1) Sahip kullanıcı (auth) — rol=uretici, aktif
+  // 1) Sahip kullanıcı (auth) — rol=uretici, aktif; rastgele parola, kurulum linki gönderilir
   const { data: created, error } = await admin.auth.admin.createUser({
     email: d.sahip_email,
-    password: d.sahip_parola,
+    password: geciciParola(),
     email_confirm: true,
     user_metadata: { ad: d.sahip_ad },
   });
@@ -529,8 +599,14 @@ export async function ureticiEkle(formData: FormData) {
     dogrulanmis: true,
   });
   if (e2) redirect(`/admin/ureticiler?hata=${encodeURIComponent(e2.message)}`);
+
+  const link = await kurulumLinkiGonder(admin, await istekOrigin(), d.sahip_email, d.sahip_ad, "kurulum");
   revalidatePath("/admin/ureticiler");
-  redirect(`/admin/ureticiler?mesaj=${encodeURIComponent(`${d.ad} eklendi · sahip ${d.sahip_email}`)}`);
+  redirect(
+    `/admin/ureticiler?mesaj=${encodeURIComponent(
+      `${d.ad} eklendi · sahip ${d.sahip_email}${link ? " · kurulum bağlantısı gönderildi" : " · e-posta gönderilemedi, kullanıcıdan sıfırlama iste"}`,
+    )}`,
+  );
 }
 
 // ── Hesap tanımlama: OFİS + yetkili kullanıcı (service-role) ──
@@ -541,10 +617,12 @@ const OfisEkleSchema = z.object({
   ilce: z.string().trim().max(40).optional(),
   yetkili_ad: z.string().trim().min(2, "Yetkili ad-soyad"),
   yetkili_email: z.string().email("Geçerli e-posta"),
-  yetkili_parola: z.string().min(8, "Parola en az 8 karakter"),
 });
 
-/** Admin yeni OFİS hesabı açar: ofis kaydı + yetkili kullanıcı (rol=ofis_yetkili, ofis_id, aktif). */
+/**
+ * Admin yeni OFİS hesabı açar: ofis kaydı + yetkili kullanıcı (rol=ofis_yetkili, ofis_id, aktif).
+ * Düz-metin parola YOK: yetkili kurulum bağlantısıyla kendi şifresini belirler.
+ */
 export async function ofisEkle(formData: FormData) {
   await adminGuard();
   const parsed = OfisEkleSchema.safeParse({
@@ -554,7 +632,6 @@ export async function ofisEkle(formData: FormData) {
     ilce: (formData.get("ilce") as string) || undefined,
     yetkili_ad: formData.get("yetkili_ad"),
     yetkili_email: formData.get("yetkili_email"),
-    yetkili_parola: formData.get("yetkili_parola"),
   });
   if (!parsed.success) {
     redirect(`/admin/ofisler?hata=${encodeURIComponent(parsed.error.issues[0].message)}`);
@@ -578,10 +655,10 @@ export async function ofisEkle(formData: FormData) {
     redirect(`/admin/ofisler?hata=${encodeURIComponent(error?.message ?? "Ofis oluşturulamadı")}`);
   }
 
-  // 2) Yetkili kullanıcı — rol=ofis_yetkili, ofise bağlı, aktif
+  // 2) Yetkili kullanıcı — rol=ofis_yetkili, ofise bağlı, aktif; rastgele parola, kurulum linki
   const { data: created, error: e2 } = await admin.auth.admin.createUser({
     email: d.yetkili_email,
-    password: d.yetkili_parola,
+    password: geciciParola(),
     email_confirm: true,
     user_metadata: { ad: d.yetkili_ad },
   });
@@ -593,6 +670,11 @@ export async function ofisEkle(formData: FormData) {
     .update({ ad: d.yetkili_ad, rol: "ofis_yetkili", ofis_id: ofis.id, durum: "aktif" })
     .eq("id", created.user.id);
 
+  const link = await kurulumLinkiGonder(admin, await istekOrigin(), d.yetkili_email, d.yetkili_ad, "kurulum");
   revalidatePath("/admin/ofisler");
-  redirect(`/admin/ofisler?mesaj=${encodeURIComponent(`${d.ad} eklendi · yetkili ${d.yetkili_email}`)}`);
+  redirect(
+    `/admin/ofisler?mesaj=${encodeURIComponent(
+      `${d.ad} eklendi · yetkili ${d.yetkili_email}${link ? " · kurulum bağlantısı gönderildi" : " · e-posta gönderilemedi, kullanıcıdan sıfırlama iste"}`,
+    )}`,
+  );
 }
