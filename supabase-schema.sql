@@ -33,6 +33,7 @@ create type opsiyon_yontem as enum ('dogrudan','talep_kod');
 create type insaat_asama   as enum ('planlama','temel','kaba_insaat','ince_insaat','cevre_duzenleme','tamamlandi');
 create type lead_kaynak    as enum ('paylasim','jenerik','kendi_kanali');
 create type lead_durum     as enum ('yeni','arandi','gorusme','opsiyon','kazanildi','kaybedildi');
+create type lead_niyet     as enum ('bilgi','randevu','on_rezervasyon');
 create type tahsis_hedef   as enum ('herkes','ofis','danisman');
 
 -- =========================================================
@@ -197,9 +198,12 @@ create table lead (
   ad text, telefon text,
   telefon_norm    text,                      -- Lead Protection eşleşmesi (normalize)
   durum           lead_durum default 'yeni',
+  niyet           lead_niyet default 'bilgi',  -- ziyaretçi sinyali (db/2026-08-11_lead-derinlik-faz0)
   atanan_id       uuid references profiles(id),
   ilk_paylasan_id uuid references profiles(id),
   kvkk_riza       boolean default false,
+  son_temas_at    timestamptz,                 -- son arama/görüşme (durum ilerletince)
+  updated_at      timestamptz,                 -- son dokunuş (tazelik)
   created_at      timestamptz default now()
 );
 create index lead_telnorm_idx on lead(telefon_norm);
@@ -388,7 +392,8 @@ create policy lead_select on lead for select using (
   is_admin() or atanan_id = auth.uid() or ilk_paylasan_id = auth.uid()
   or exists (select 1 from proje p join uretici u on u.id=p.uretici_id
              where p.id = lead.proje_id and u.sahip_id = auth.uid()));
-create policy lead_insert on lead for insert with check (true);  -- landing formu (anon); server normalize eder
+-- lead INSERT: public policy YOK (db/2026-08-11_lead-derinlik-faz0 → drop). Tek meşru yol /api/lead
+-- (admin/service-role, RLS bypass, imzalı token doğrular). DEĞİŞMEZ #1: uygulama katmanına güvenme.
 
 -- events: yazma server-side; okuma admin/üretici/ilgili
 create policy events_select on events for select using (

@@ -13,12 +13,19 @@ const LEAD_PILL: Record<string, { bg: string; renk: string; et: string }> = {
   kaybedildi: { bg: "rgba(209,90,78,.12)", renk: "var(--color-red)", et: "Kayıp" },
 };
 
+/** Ziyaretçi niyeti → etiket. on_rezervasyon = en güçlü satın-alma sinyali. */
+const NIYET_ET: Record<string, string> = {
+  bilgi: "Bilgi istedi",
+  randevu: "Randevu istedi",
+  on_rezervasyon: "Ön rezervasyon",
+};
+
 export default async function Leadler() {
   const supabase = await createClient();
   // RLS lead_select → yalnız atanan/ilk_paylaşan emlakçının kendi leadleri
   const { data: leads } = await supabase
     .from("lead")
-    .select("id, ad, telefon, durum, created_at, birim:birim_id(daire_no), proje:proje_id(ad)")
+    .select("id, ad, telefon, durum, niyet, son_temas_at, created_at, birim:birim_id(daire_no), proje:proje_id(ad)")
     .order("created_at", { ascending: false });
 
   const liste = leads ?? [];
@@ -35,6 +42,7 @@ export default async function Leadler() {
       Ad: l.ad ?? "",
       Telefon: l.telefon ?? "",
       Durum: LEAD_PILL[l.durum]?.et ?? l.durum,
+      Niyet: NIYET_ET[l.niyet ?? "bilgi"] ?? l.niyet ?? "",
       Proje: proje?.ad ?? "",
       Daire: birim?.daire_no ?? "",
       Tarih: new Date(l.created_at).toLocaleDateString("tr-TR"),
@@ -104,6 +112,17 @@ export default async function Leadler() {
                       <span className="freshdot" style={{ background: pill.renk }} />
                       {pill.et}
                     </span>
+                    {l.niyet && l.niyet !== "bilgi" ? (
+                      <span
+                        className="lead-pill"
+                        style={{
+                          background: l.niyet === "on_rezervasyon" ? "rgba(47,179,107,.14)" : "rgba(30,155,138,.12)",
+                          color: l.niyet === "on_rezervasyon" ? "var(--color-green)" : "var(--color-teal)",
+                        }}
+                      >
+                        {NIYET_ET[l.niyet] ?? l.niyet}
+                      </span>
+                    ) : null}
                   </div>
                   <a href={`tel:${l.telefon}`} className="mono mt-1 inline-block text-[13px] font-semibold text-teal-d hover:underline">
                     {l.telefon || "—"}
@@ -111,6 +130,7 @@ export default async function Leadler() {
                   <p className="mt-1.5 text-[12px] text-ink-soft">
                     {proje?.ad ?? "—"}
                     {birim?.daire_no ? ` · Daire ${birim.daire_no}` : ""} · {zamanOnce(l.created_at)}
+                    {l.son_temas_at ? ` · son temas ${zamanOnce(l.son_temas_at)}` : ""}
                   </p>
                 </div>
               </div>

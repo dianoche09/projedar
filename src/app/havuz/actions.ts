@@ -487,13 +487,22 @@ export async function leadDurumGuncelle(leadId: string, yeniDurum: string): Prom
   } = await supabase.auth.getUser();
   if (!user) return { ok: false };
 
-  // Yetki: bu lead'i görebiliyor muyum? (RLS lead_select = atanan/ilk_paylasan/proje sahibi/admin)
-  const { data: lead } = await supabase.from("lead").select("id").eq("id", id.data).single();
+  // Yetki: bu lead'i görebiliyor muyum? (RLS lead_select = atanan/ilk_paylasan/admin)
+  const { data: lead } = await supabase.from("lead").select("id, durum").eq("id", id.data).single();
   if (!lead) return { ok: false };
 
+  const yeni = durum.data;
+  const simdi = new Date().toISOString();
+  // L0.3: her dokunuşta updated_at (tazelik); "yeni" dışına geçiş = temas gerçekleşti → son_temas_at.
+  const guncelleme: Record<string, unknown> = { durum: yeni, updated_at: simdi };
+  if (yeni !== "yeni") guncelleme.son_temas_at = simdi;
+
   const admin = createAdminClient();
-  const { error } = await admin.from("lead").update({ durum: durum.data }).eq("id", id.data);
+  const { error } = await admin.from("lead").update(guncelleme).eq("id", id.data);
   if (error) return { ok: false };
+
+  // L0.3: durum yaşam döngüsünü events'e logla (funnel/güven-skoru/tazelik girdisi).
+  await kayitYaz({ tip: "durum", profileId: user.id, payload: { lead_id: id.data, durum: yeni, onceki: lead.durum } });
 
   revalidatePath("/havuz/leadler");
   revalidatePath("/uretici");

@@ -6,8 +6,15 @@ Kaynak: havuz/ kapsamlı envanter (Explore agent) + bu oturumda eklenenler. Hede
 Panel olgun: ana havuz (filtre/sıralama/harita/kart), proje detay (medya/künye/stok/tahsis/güven skoru/katalog), opsiyon (3 yöntem + DB kilit + cron), lead (platform-kaynaklı, durum ilerletme), performans hunisi, hakediş, eşleştir, lansman, bildirim, KYC.
 Bu oturumda eklendi: **kazanç görünürlüğü** (kart/KPI/daire/modal) + **fiyat düşüşü bildirimi** + opsiyon süresi bildirimi (zaten vardı).
 
-## CRM sınırı (değişmez)
-YAP: platform-kaynaklı sinyali emlakçıya geri ver (canlı stok, bildirim, paylaşım kolaylığı). YAPMA: lead notu/görev/hatırlatma, manuel lead ekleme, müşteri-özel not, kişisel pipeline. Favori/kayıtlı-arama'yı **"bildirim aboneliği"** olarak konumla, "kişisel liste" olarak değil.
+## CRM sınırı (değişmez) — 2026-08-11 revize: "stok-bağlı genişletme"
+Üst doktrin (Sistem Kuralları 5.2 "danışman müşteri adayını kaydeder/takip eder" + Lock-in #5 "müşteri + satış geçmişi burada birikir") lead-takip birikmesini **ISTER**. Bu yüzden eski battaniye-yasak ("lead notu/hatırlatma hiç yok") daraltıldı. Yeni sınır tek testle çizilir:
+
+**Test:** Özellik `tahsis→paylaşım→lead→opsiyon→satış` zincirine ve `events` veri-yerçekimine bağlı mı (EVET) yoksa stoktan bağımsız genel kişi/görev/pipeline defteri mi (HAYIR)?
+
+- **YAP:** platform-kaynaklı sinyali emlakçıya geri ver (canlı stok, bildirim, paylaşım). **Platform-lead'ine bağlı**: not/aktivite timeline, kayıp nedeni, takip hatırlatması (kişisel + stok-tetikli), hafif enrichment (email/bütçe/ihtiyaç/etiket/sıcaklık). Hepsi **minimal ve lead'e bağlı**.
+- **YAPMA:** stoktan bağımsız **manuel/dış lead** girişi ve import, kişisel **pipeline/kanban** (durum-pill zaten var, ötesi yok), müşteri 360° profilleme (Identity Graph Katman B — KVKK kararı olmadan), ödeme/tahsilat defteri, müteahhide toplu lead feed.
+- Favori/kayıtlı-arama'yı **"bildirim aboneliği"** olarak konumla, "kişisel liste" olarak değil.
+- Pazarlama dili: "müşterin senin, kimse çalamaz"; çıplak "komisyon yok/komisyonsuz" YASAK; sahiplik "garanti" değil "görünürlük/şeffaflık".
 
 ---
 
@@ -42,12 +49,30 @@ Günlük sürtünmeyi hemen azaltan, backend'siz ya da hafif işler.
 16. **Ana havuz agregatını RPC/view'a taşı** — client-join (O(proje×birim)) büyük tahsiste ağırlaşır; `emlakci_havuz_ozet` benzeri.
 17. **DaireModal focus-trap + role=dialog + Esc** — erişilebilirlik.
 
-## YAPMA (kapsam dışı, CRM)
-- Lead notu / görev / hatırlatma sistemi
-- Manuel lead ekleme / dış lead import
-- Müşteri-özel not, kişisel pipeline drag-drop
+## FAZ 0 — Lead bug/güvenlik (koşulsuz, önce) — 2026-08-11
+Doktrinden bağımsız; bug + güvenlik.
+- **L0.1 `niyet` veri kaybı (P0/S):** `LeadForm` niyet topluyor, `/api/lead` Zod parse ediyor ama `lead` insert'ine yazılmıyor (`api/lead/route.ts:64-75`). Kolon ekle + insert + panelde göster.
+- **L0.2 RLS açığı (P1/M):** `lead_insert with check(true)` (`supabase-schema.sql:391`) → anon key ile doğrudan sahte lead/PII basılabilir. SECURITY DEFINER RPC'ye taşı veya policy daralt (DEĞİŞMEZ #1).
+- **L0.3 Durum→event + `updated_at`/`son_temas_at` (P1/S):** `leadDurumGuncelle` (`havuz/actions.ts:479-501`) log yazmıyor; funnel/güven-skoru/tazelik verisi üretilmiyor.
+
+## FAZ 4 — Lead derinliği (stok-bağlı, "kayıt altına alma") — 2026-08-11 kararı
+Kullanıcı kararı (2026-08-11): stok-bağlı genişletme. Hepsi platform-lead'ine bağlı, minimal.
+- **L1 Lead detay görünümü** — kim-getirdi, proje/birim/paylaşım, niyet, durum geçmişi tek ekranda (salt-okuma zengin). Manuel lead formu DEĞİL.
+- **L2 Not + aktivite timeline** — `lead_not` tablosu; zaman damgalı serbest not + `events`'ten stok olayları (paylaştın/baktı/opsiyon) tek akışta.
+- **L3 Kayıp nedeni** — `kayip_nedeni` (fiyat/kredi/başkasından aldı/ulaşılamadı) → müteahhide geri-besleme.
+- **L4 Takip hatırlatması** — `sonraki_aksiyon_at`/`_notu` (kişisel "Cuma ara") + stok-tetikli ("fiyat düştü → müşterini ara"); `bildirim` + cron (`option-expiry` deseni) hazır.
+- **L5 Hafif enrichment** — email, bütçe, ihtiyaç (oda/m²/bölge), etiket, sıcaklık; hepsi opsiyonel, zorunlu değil.
+- **L6 Kim-getirdi/Lead Protection görünürlüğü** — "ilk bayrağı sen diktin"; RLS zaten DB-seviyesinde koruyor.
+- **L7 Çift-lead uyarısı** (aynı `telefon_norm`) — birleştirme opsiyonel/dikkatli (farklı emlakçı = insan kararı).
+
+## YAPMA (kapsam dışı, CRM) — revize
+- Stoktan bağımsız **manuel/dış lead** girişi ve import
+- Kişisel **pipeline/kanban** drag-drop (durum-pill ötesi)
+- Müşteri 360° profilleme (Identity Graph Katman B, KVKK kararı olmadan)
+- ML lead skorlama, drip email/SMS otomasyonu, dialer
+- Ödeme/tahsilat/alacak-borç defteri · müteahhide toplu lead feed
 
 ---
 
 ## Önerilen sıra
-FAZ 1 (1→6, hızlı görünür değer) → FAZ 2 #7 digest (en yüksek getiri) → #9 takip → FAZ 3 Web Push. Yan akış ve teknik borç aralara serpiştirilir.
+**FAZ 0 (L0.1→L0.3, koşulsuz bug/güvenlik)** → FAZ 1 (1→6, hızlı görünür değer) → FAZ 4 (L1→L2 CRM çekirdeği, L4 takip) → FAZ 2 #7 digest → #9 takip → FAZ 3 Web Push. Yan akış ve teknik borç aralara serpiştirilir.

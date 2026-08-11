@@ -69,6 +69,7 @@ export async function POST(request: Request) {
         telefon,
         telefon_norm: telNorm,
         durum: "yeni",
+        niyet,                       // L0.1: ziyaretçinin satın-alma sinyali (artık lead satırında kalıcı)
         atanan_id: emlakciId,
         ilk_paylasan_id: emlakciId,
         kvkk_riza: true,
