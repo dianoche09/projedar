@@ -5,8 +5,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 
-// Projedar'ın KENDİ PostHog projesi (EU / KVKK). KolayIMAR'la ayrı; anahtar public (client) tiptir.
-const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "phc_vsFn4E3LSFZdAnFvnFjHu2fG2Km6NJuMdHtnZuPmESTp";
+// Projedar'ın KENDİ PostHog projesi (EU / KVKK). KolayIMAR'la ayrı. Anahtar Vercel env'de
+// (NEXT_PUBLIC_POSTHOG_KEY); yoksa init atlanır (dev'de sessiz). HOST varsayılan EU.
+const KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY;
 const HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://eu.i.posthog.com";
 
 /**
