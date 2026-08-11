@@ -31,7 +31,7 @@ export function BildirimListe({ bildirimler }: { bildirimler: Bildirim[] }) {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h1 className="font-display text-2xl font-bold text-ink">Bildirimler</h1>
+        <h1 className="font-display text-[27px] font-bold tracking-tight text-ink">Bildirimler</h1>
         {okunmamis > 0 ? (
           <button
             type="button"
@@ -45,9 +45,16 @@ export function BildirimListe({ bildirimler }: { bildirimler: Bildirim[] }) {
       </div>
 
       {bildirimler.length === 0 ? (
-        <p className="rounded-xl border border-hair bg-card px-4 py-12 text-center text-sm text-gray">
-          Henüz bildirim yok.
-        </p>
+        <div className="kart p-12 text-center">
+          <svg width="40" height="40" className="mx-auto text-[var(--ink-faint)] opacity-40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+          </svg>
+          <p className="mt-4 text-[15px] font-bold text-ink">Henüz bildirim yok</p>
+          <p className="mt-1 text-[13px] text-[var(--ink-faint)]">
+            Opsiyon talebi, tahsis, onay ve fiyat olayları burada anlık görünür.
+          </p>
+        </div>
       ) : (
         <div className="space-y-2">
           {bildirimler.map((b) => {
