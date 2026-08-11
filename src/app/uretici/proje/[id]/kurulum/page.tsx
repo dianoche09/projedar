@@ -4,8 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { medyaYukle, medyaSil, projeKunyeGuncelle, projeYatirimGuncelle, projeOdemePlaniGuncelle, projeOpsiyonAyar, mahalEkle, mahalSil } from "@/app/uretici/actions";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { StokKurulumu } from "../StokKurulumu";
+import { FiyatKurallari } from "../FiyatKurallari";
 import { OzellikSecici } from "@/components/OzellikSecici";
 import { okuOzellikler } from "@/lib/ozellikler";
+import { ayarCoz, type FiyatKurali } from "@/lib/fiyat-kurali";
 
 const inpCls =
   "w-full rounded-lg border border-hair bg-paper px-3 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
@@ -116,6 +118,15 @@ export default async function ProjeKurulum({
     tavan: string | null;
     marka: string | null;
   }[];
+
+  // Dinamik fiyat kuralları — graceful: tablo yoksa (migration bekliyor) boş liste, sayfa çalışır
+  const { data: kurallarRaw } = await supabase
+    .from("fiyat_kurali")
+    .select("*")
+    .eq("proje_id", id)
+    .order("created_at", { ascending: true });
+  const fiyatKurallar = (kurallarRaw ?? []) as unknown as FiyatKurali[];
+  const fiyatAyar = ayarCoz((proje as { fiyat_ayar?: unknown }).fiyat_ayar);
 
   const kapak = belgeler.find((b) => b.tip === "kapak") ?? null;
   const fotolar = belgeler.filter((b) => b.tip === "foto");
@@ -348,6 +359,14 @@ export default async function ProjeKurulum({
         </form>
         <p className="mt-2 text-xs text-gray">
           Önce <code className="rounded bg-soft px-1 font-mono">db/2026-06-28_odeme-plani.sql</code> migration&apos;ı Supabase SQL Editor&apos;den çalıştırılmalı.
+        </p>
+      </Bolum>
+
+      {/* Dinamik Fiyat Kuralları — deterministik zam/indirim otomasyonu */}
+      <Bolum baslik="Dinamik Fiyat Kuralları" aciklama="Süre / satış adedi / satış yüzdesi / takvim tetiğine göre otomatik zam-indirim. Otomatik uygula ya da önce sana öneri düşür — sen seç.">
+        <FiyatKurallari projeId={id} ayar={fiyatAyar} kurallar={fiyatKurallar} tipler={tipler ?? []} />
+        <p className="mt-3 text-xs text-gray">
+          Önce <code className="rounded bg-soft px-1 font-mono">db/2026-08-11_dinamik-fiyat.sql</code> migration&apos;ı Supabase SQL Editor&apos;den çalıştırılmalı.
         </p>
       </Bolum>
 
