@@ -15,10 +15,21 @@ type OdaOzet = { toplam: number; acik: number; opsiyon: number; satildi: number 
 
 function Stat({ etiket, deger, alt }: { etiket: string; deger: string; alt?: string }) {
   return (
-    <div className="rounded-xl border border-hair bg-card p-4">
-      <p className="text-xs uppercase tracking-wide text-gray">{etiket}</p>
-      <p className="mt-1 font-mono text-2xl font-semibold tabular-nums leading-none text-ink">{deger}</p>
-      {alt ? <p className="mt-1 text-xs text-gray">{alt}</p> : null}
+    <div className="rounded-xl border border-[var(--cizgi)] bg-card p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">{etiket}</p>
+      <p className="mono mt-1 text-2xl font-semibold leading-none text-ink">{deger}</p>
+      {alt ? <p className="mt-1 text-xs text-[var(--ink-faint)]">{alt}</p> : null}
+    </div>
+  );
+}
+
+/** KPI şeridi hücresi (stok/opsiyonlar ile aynı desen). */
+function Kpi({ etiket, deger, alt, renk = "text-ink" }: { etiket: string; deger: string; alt?: string; renk?: string }) {
+  return (
+    <div className="px-5 py-4">
+      <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-[var(--ink-faint)]">{etiket}</div>
+      <div className={`mono text-[30px] font-semibold leading-none ${renk}`}>{deger}</div>
+      {alt ? <div className="mono mt-2 text-[11.5px] text-[var(--ink-faint)]">{alt}</div> : null}
     </div>
   );
 }
@@ -126,22 +137,32 @@ export default async function Raporlar() {
   const odaListe = [...odalar.entries()].sort((a, b) => b[1].satildi - a[1].satildi);
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 px-4 py-8 sm:px-6">
-      <div>
-        <h1 className="font-display text-2xl font-semibold text-ink">Raporlar</h1>
-        <p className="mt-1 text-sm text-gray">Stok ve satış performansı: hangi tip satıyor, hangisi bekliyor.</p>
-      </div>
+    <div className="mx-auto max-w-[1100px] space-y-6 px-4 py-6 text-ink sm:px-6">
+      <header className="belir">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="font-display text-[27px] font-bold tracking-tight text-ink">Raporlar</h1>
+          <span className="inline-flex items-center gap-2 rounded-full bg-teal-soft px-2.5 py-[5px] text-[11.5px] font-semibold text-teal">
+            <span className="inline-block size-[7px] rounded-full bg-teal" aria-hidden />
+            Canlı
+          </span>
+        </div>
+        <p className="mt-1 text-[12.5px] text-[var(--ink-faint)]">
+          Stok ve satış performansı: hangi tip satıyor, hangisi bekliyor.
+        </p>
+      </header>
 
-      {/* STOK ÖZETİ */}
-      <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat etiket="Toplam birim" deger={String(toplam)} alt="tüm projeler" />
-        <Stat etiket="Satış oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${satilabilirEvren} satılabilir`} />
-        <Stat etiket="Satışa açık" deger={String(acik)} alt="satışa hazır" />
-        <Stat etiket="Opsiyonda" deger={String(opsiyon)} alt="kilitli, karar bekliyor" />
+      {/* STOK ÖZETİ — ortak KPI şeridi (stok/opsiyonlar deseni) */}
+      <section className="kart belir belir-1 p-1">
+        <div className="grid grid-cols-2 divide-x divide-y divide-[var(--cizgi)] sm:grid-cols-4 sm:divide-y-0">
+          <Kpi etiket="Toplam Birim" deger={String(toplam)} alt="tüm projeler" />
+          <Kpi etiket="Satış Oranı" deger={`%${satisOrani}`} alt={`${satildi} / ${satilabilirEvren} satılabilir`} />
+          <Kpi etiket="Satışa Açık" deger={String(acik)} renk="text-green" alt="satışa hazır" />
+          <Kpi etiket="Opsiyonda" deger={String(opsiyon)} renk="text-amber" alt="karar bekliyor" />
+        </div>
       </section>
 
       {/* ABSORPSİYON */}
-      <section className="rounded-2xl border border-hair bg-card p-5 shadow-card sm:p-6">
+      <section className="kart p-5 sm:p-6">
         <h2 className="font-display text-sm font-semibold text-ink">Absorpsiyon · Satış temposu</h2>
         <p className="mt-0.5 text-xs text-gray">Son 90 günün hızıyla kalan müsait stok ne kadar sürede tükenir.</p>
 
@@ -197,7 +218,7 @@ export default async function Raporlar() {
       </section>
 
       {/* DAİRE TİPİ PERFORMANSI */}
-      <section className="rounded-2xl border border-hair bg-card p-5 shadow-card sm:p-6">
+      <section className="kart p-5 sm:p-6">
         <h2 className="font-display text-sm font-semibold text-ink">Daire tipi performansı</h2>
         <p className="mt-0.5 text-xs text-gray">Tüm projeler · hangi tip satıyor, hangisi bekliyor.</p>
         {odaListe.length === 0 ? (
@@ -231,7 +252,7 @@ export default async function Raporlar() {
 
       {/* FİYAT HAREKETLERİ */}
       {fiyatlar.length > 0 ? (
-        <section className="rounded-2xl border border-hair bg-card p-5 shadow-card sm:p-6">
+        <section className="kart p-5 sm:p-6">
           <h2 className="font-display text-sm font-semibold text-ink">Fiyat Hareketleri · 90g</h2>
           <p className="mt-0.5 text-xs text-gray">Son 90 günde fiyat değişimleri · zam, indirim ve ortalama yön.</p>
 
