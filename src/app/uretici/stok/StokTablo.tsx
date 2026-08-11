@@ -560,7 +560,10 @@ function Kpi({
   );
 }
 
-/* ---------- BİNA KESİTİ (imza görünüm): blok/kat/daire, durum renkli, tıkla → Yönet ---------- */
+/* ---------- BİNA KESİTİ (imza görünüm): blok/kat/daire, durum renkli, tıkla → Yönet ----------
+   NOT: Bu KOMPAKT kesit stok tablosu yoldaşıdır (düz kutu + onSec). Proje-detaydaki BLUEPRINT
+   kesit (components/BinaKesiti.tsx) ayrı sunumdur; kasıtlı birleştirilmez. Paylaşılan tek sözleşme
+   durum RENK DİLİDİR: her ikisi de `durumGrup` (lib/stok) kullanır → aynı daire aynı renk. */
 
 const KESIT_RENK: Record<DurumGrup, string> = {
   acik: "var(--color-green)",

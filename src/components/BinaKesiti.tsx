@@ -39,6 +39,11 @@ type Blok = { id: string; ad: string | null; kat_sayisi: number | null };
  * BİNA KESİTİ — sistemin İMZA öğesi (v2 spatial "komuta şeması").
  * Her blok bir kart: navy blueprint çerçevede üstten alta katlar, durum-renkli
  * daire hücreleri (tıkla → DaireModal), zemin giriş. Seçim modu (SecimDuzenle) korunur.
+ *
+ * NOT (kasıtlı iki sunum): Bu "blueprint" kesit proje-detay yüzeyi içindir (BirimHucre + modal).
+ * Stok tablosundaki KOMPAKT kesit (StokTablo.tsx inline `BinaKesiti`) ayrı bir sunumdur
+ * (düz kutu ızgarası + onSec callback). İkisi birleştirilmez; PAYLAŞILAN tek sözleşme durum
+ * RENK DİLİDİR: her ikisi de `durumGrup` (lib/stok) kullanır → aynı daire iki ekranda aynı renk.
  */
 export function BinaKesiti({
   bloklar,
