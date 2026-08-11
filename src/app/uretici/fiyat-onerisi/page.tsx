@@ -39,7 +39,7 @@ function oneriHesapla(demand: number, peerMedyan: number, peerSay: number, gunFa
       yon: "artir",
       pct,
       yeniFiyat: fiyat != null ? Math.round((fiyat * (1 + pct / 100)) / 1000) * 1000 : null,
-      gerekce: `Talep benzerlerin ${oran.toFixed(1)}× üstünde — muhtemelen düşük fiyatlı`,
+      gerekce: `Talep benzerlerin ${oran.toFixed(1)}× üstünde, muhtemelen düşük fiyatlı`,
     };
   }
   if (gunFark > 21 && (peerSay < 2 || demand <= peerMedyan * 0.5)) {
@@ -48,7 +48,7 @@ function oneriHesapla(demand: number, peerMedyan: number, peerSay: number, gunFa
       yon: "dusur",
       pct,
       yeniFiyat: fiyat != null ? Math.round((fiyat * (1 + pct / 100)) / 1000) * 1000 : null,
-      gerekce: `${Math.round(gunFark)} gündür müsait, ilgi düşük — fiyat/öne çıkarma gözden geçir`,
+      gerekce: `${Math.round(gunFark)} gündür müsait, ilgi düşük; fiyat/öne çıkarma gözden geçir`,
     };
   }
   return { yon: "sabit", pct: 0, yeniFiyat: null, gerekce: "Talep dengeli — değişiklik önerilmiyor" };
@@ -156,7 +156,8 @@ export default async function FiyatOnerisi() {
       const grup = grupSkorlari.get(`${b.proje_id}|${b.tip_id ?? "-"}`) ?? [];
       const demand = skor.get(b.id) ?? 0;
       const peerMedyan = medyan(grup);
-      const gunFark = b.son_guncelleme ? (simdi - new Date(b.son_guncelleme).getTime()) / 86_400_000 : 999;
+      // son_guncelleme yoksa 0 kabul et (yeni/hiç güncellenmemiş birime "999 gündür müsait" + yanlış indirim önerme)
+      const gunFark = b.son_guncelleme ? (simdi - new Date(b.son_guncelleme).getTime()) / 86_400_000 : 0;
       const oneri = oneriHesapla(demand, peerMedyan, grup.length, gunFark, b.liste_fiyati);
       const konum = projeKonum.get(b.proje_id);
       const bolge = bolgeMedyani(konum?.il, konum?.ilce);

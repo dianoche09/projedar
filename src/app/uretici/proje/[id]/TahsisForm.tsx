@@ -197,7 +197,7 @@ export function TahsisForm({
             >
               <option value="yuzde">% Yüzde</option>
               <option value="sabit">Sabit ₺</option>
-              <option value="yok">Yok</option>
+              <option value="yok">Belirtme</option>
             </select>
           </label>
           {komisyon !== "yok" ? (

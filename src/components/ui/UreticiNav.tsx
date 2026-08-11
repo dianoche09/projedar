@@ -9,13 +9,15 @@ type NavLink = {
   ikon: string;
   /** true → tam eşleşme (sadece bu yol aktif). false → startsWith. */
   tam: boolean;
+  /** Ek prefix — bu yol da item'ı aktif tutar (ör. proje detay tekil /uretici/proje/[id]). */
+  ekYol?: string;
 };
 
 // Tüm item'lar gerçek route'lara bağlı (dead-end yok). Kokpit tam eşleşme,
 // diğerleri startsWith (alt sayfalar da ilgili item'ı aktif tutar).
 const LINKLER: NavLink[] = [
   { yol: "/uretici", etiket: "Kokpit", ikon: "kokpit", tam: true },
-  { yol: "/uretici/projeler", etiket: "Projeler", ikon: "projeler", tam: false },
+  { yol: "/uretici/projeler", etiket: "Projeler", ikon: "projeler", tam: false, ekYol: "/uretici/proje/" },
   { yol: "/uretici/stok", etiket: "Stok", ikon: "stok", tam: false },
   { yol: "/uretici/tahsis", etiket: "Tahsis", ikon: "tahsis", tam: false },
   { yol: "/uretici/lansman", etiket: "Lansman", ikon: "lansman", tam: false },
@@ -151,7 +153,8 @@ function Ikon({ ad }: { ad: string }) {
 export function UreticiNav({ mobil = false, bildirimSayi = 0 }: { mobil?: boolean; bildirimSayi?: number }) {
   const yol = usePathname();
   // Kokpit (tam) → yalnız tam eşleşme; diğerleri startsWith → alt sayfalar item'ı aktif tutar.
-  const aktif = (l: NavLink) => (l.tam ? yol === l.yol : yol.startsWith(l.yol));
+  const aktif = (l: NavLink) =>
+    l.tam ? yol === l.yol : yol.startsWith(l.yol) || (l.ekYol ? yol.startsWith(l.ekYol) : false);
   const rozet = (l: NavLink) =>
     l.yol === "/uretici/bildirimler" && bildirimSayi > 0 ? (
       <span className="ml-auto rounded-full bg-red px-1.5 py-0.5 text-[10px] font-bold leading-none text-white">

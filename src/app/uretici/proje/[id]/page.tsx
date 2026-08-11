@@ -219,7 +219,7 @@ export default async function ProjeDetay({
                 <span className="text-sm text-ink-soft">{bloklarKapsam || "tüm proje"}</span>
                 <span className="mono text-xs text-[var(--ink-faint)]">
                   {t.komisyon_tip === "yok"
-                    ? "komisyon yok"
+                    ? "komisyon belirtilmedi"
                     : t.komisyon_tip === "yuzde"
                       ? `%${t.komisyon_deger}`
                       : `${Number(t.komisyon_deger).toLocaleString("tr-TR")}₺`}

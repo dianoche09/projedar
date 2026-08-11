@@ -1,8 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 import { fiyatOneriUygula, fiyatOneriReddet } from "@/app/uretici/actions";
 import { paraKisa } from "@/lib/stok";
+
+/** Kuyruk aksiyonu submit butonu — pending sırasında disable + etiket (çift-submit kalkanı, min 44px). */
+function KuyrukBtn({
+  disabled,
+  cesit,
+  etiket,
+  bekleyen,
+}: {
+  disabled: boolean;
+  cesit: "uygula" | "reddet";
+  etiket: string;
+  bekleyen: string;
+}) {
+  const { pending } = useFormStatus();
+  const stil =
+    cesit === "uygula"
+      ? "bg-teal text-white hover:bg-teal-d"
+      : "border border-hair bg-card text-gray hover:text-red";
+  return (
+    <button
+      disabled={disabled || pending}
+      className={`min-h-[44px] rounded-lg px-4 text-xs font-bold transition-colors disabled:opacity-40 ${stil}`}
+    >
+      {pending ? bekleyen : etiket}
+    </button>
+  );
+}
 
 export type OneriKart = {
   id: string;
@@ -40,21 +68,11 @@ export function OneriKuyrugu({ oneriler }: { oneriler: OneriKart[] }) {
         <div className="flex items-center gap-2">
           <form action={fiyatOneriReddet}>
             <input type="hidden" name="oneri_idler" value={idStr} />
-            <button
-              disabled={secili.size === 0}
-              className="rounded-lg border border-hair bg-card px-3 py-2 text-xs font-bold text-gray transition-colors hover:text-red disabled:opacity-40"
-            >
-              Seçileni reddet
-            </button>
+            <KuyrukBtn disabled={secili.size === 0} cesit="reddet" etiket="Seçileni reddet" bekleyen="Reddediliyor…" />
           </form>
           <form action={fiyatOneriUygula}>
             <input type="hidden" name="oneri_idler" value={idStr} />
-            <button
-              disabled={secili.size === 0}
-              className="rounded-lg bg-teal px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-teal-d disabled:opacity-40"
-            >
-              Seçileni uygula ({secili.size})
-            </button>
+            <KuyrukBtn disabled={secili.size === 0} cesit="uygula" etiket={`Seçileni uygula (${secili.size})`} bekleyen="Uygulanıyor…" />
           </form>
         </div>
       </div>
