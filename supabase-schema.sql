@@ -34,6 +34,8 @@ create type insaat_asama   as enum ('planlama','temel','kaba_insaat','ince_insaa
 create type lead_kaynak    as enum ('paylasim','jenerik','kendi_kanali');
 create type lead_durum     as enum ('yeni','arandi','gorusme','opsiyon','kazanildi','kaybedildi');
 create type lead_niyet     as enum ('bilgi','randevu','on_rezervasyon');
+create type lead_sicaklik  as enum ('sicak','ilik','soguk');
+create type lead_not_tip   as enum ('not','arama','whatsapp','gorusme','sistem');
 create type tahsis_hedef   as enum ('herkes','ofis','danisman');
 
 -- =========================================================
@@ -202,11 +204,34 @@ create table lead (
   atanan_id       uuid references profiles(id),
   ilk_paylasan_id uuid references profiles(id),
   kvkk_riza       boolean default false,
+  -- FAZ 4 (db/2026-08-11b): hafif enrichment + kayıp + takip hatırlatması (hepsi opsiyonel)
+  email                 text,
+  butce                 text,                  -- serbest aralık ("3-4M TL")
+  ihtiyac_notu          text,                  -- oda/m²/bölge/teslim serbest
+  etiket                text[],                -- yatırımcı, acil, kredi-bekliyor
+  sicaklik              lead_sicaklik,         -- manuel sıcaklık skoru
+  kayip_nedeni          text,                  -- kaybedildi durumunda
+  sonraki_aksiyon_at    timestamptz,           -- takip hatırlatması (cron → bildirim)
+  sonraki_aksiyon_notu  text,
+  hatirlatma_gonderildi boolean default false,
   son_temas_at    timestamptz,                 -- son arama/görüşme (durum ilerletince)
   updated_at      timestamptz,                 -- son dokunuş (tazelik)
   created_at      timestamptz default now()
 );
 create index lead_telnorm_idx on lead(telefon_norm);
+create index lead_takip_idx on lead(sonraki_aksiyon_at)
+  where hatirlatma_gonderildi = false and sonraki_aksiyon_at is not null;
+
+-- lead_not: aktivite/not timeline (FAZ 4 L2). Yazma server action + admin client; okuma lead sahipliği.
+create table lead_not (
+  id         uuid primary key default gen_random_uuid(),
+  lead_id    uuid not null references lead(id) on delete cascade,
+  yazan_id   uuid references profiles(id),
+  tip        lead_not_tip not null default 'not',
+  govde      text not null,
+  created_at timestamptz default now()
+);
+create index lead_not_lead_idx on lead_not(lead_id, created_at desc);
 
 create table events (
   id         bigint generated always as identity primary key,
@@ -394,6 +419,14 @@ create policy lead_select on lead for select using (
              where p.id = lead.proje_id and u.sahip_id = auth.uid()));
 -- lead INSERT: public policy YOK (db/2026-08-11_lead-derinlik-faz0 → drop). Tek meşru yol /api/lead
 -- (admin/service-role, RLS bypass, imzalı token doğrular). DEĞİŞMEZ #1: uygulama katmanına güvenme.
+
+-- lead_not (FAZ 4): okuma yalnız lead sahibi emlakçı + admin; yazma server action + admin client.
+alter table lead_not enable row level security;
+create policy lead_not_select on lead_not for select using (
+  is_admin() or exists (
+    select 1 from lead l
+    where l.id = lead_not.lead_id
+      and (l.atanan_id = auth.uid() or l.ilk_paylasan_id = auth.uid())));
 
 -- events: yazma server-side; okuma admin/üretici/ilgili
 create policy events_select on events for select using (

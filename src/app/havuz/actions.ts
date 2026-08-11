@@ -505,6 +505,134 @@ export async function leadDurumGuncelle(leadId: string, yeniDurum: string): Prom
   await kayitYaz({ tip: "durum", profileId: user.id, payload: { lead_id: id.data, durum: yeni, onceki: lead.durum } });
 
   revalidatePath("/havuz/leadler");
+  revalidatePath(`/havuz/leadler/${id.data}`);
   revalidatePath("/uretici");
+  return { ok: true };
+}
+
+/* =========================================================
+   FAZ 4 — Lead derinliği (stok-bağlı). Tüm yazma: sahiplik RLS-select ile
+   doğrulanır → admin client ile yazılır (DEĞİŞMEZ #1: yalnız server).
+   ========================================================= */
+
+/** Bu lead'i güncel kullanıcı görebiliyor mu? (RLS lead_select = atanan/ilk_paylasan/admin) */
+async function leadSahiplikDogrula(
+  leadId: string
+): Promise<{ ok: false } | { ok: true; user_id: string; lead_id: string }> {
+  const id = uuid.safeParse(leadId);
+  if (!id.success) return { ok: false };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false };
+  const { data: lead } = await supabase.from("lead").select("id").eq("id", id.data).single();
+  if (!lead) return { ok: false };
+  return { ok: true, user_id: user.id, lead_id: id.data };
+}
+
+const NOT_TIP = z.enum(["not", "arama", "whatsapp", "gorusme"]);
+
+/** L2: lead'e aktivite/not ekle (timeline). Not eklemek = temas → son_temas_at tazelenir. */
+export async function leadNotEkle(
+  leadId: string,
+  tip: string,
+  govde: string
+): Promise<{ ok: boolean }> {
+  const t = NOT_TIP.safeParse(tip);
+  const g = z.string().trim().min(1, "Not boş olamaz").max(1000).safeParse(govde);
+  if (!t.success || !g.success) return { ok: false };
+
+  const yetki = await leadSahiplikDogrula(leadId);
+  if (!yetki.ok) return { ok: false };
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("lead_not").insert({
+    lead_id: yetki.lead_id,
+    yazan_id: yetki.user_id,
+    tip: t.data,
+    govde: g.data,
+  });
+  if (error) return { ok: false };
+
+  const simdi = new Date().toISOString();
+  await admin.from("lead").update({ son_temas_at: simdi, updated_at: simdi }).eq("id", yetki.lead_id);
+
+  revalidatePath(`/havuz/leadler/${yetki.lead_id}`);
+  revalidatePath("/havuz/leadler");
+  return { ok: true };
+}
+
+const SICAKLIK = z.enum(["sicak", "ilik", "soguk"]);
+const detaySemasi = z.object({
+  email: z.string().trim().email("Geçersiz e-posta").max(120).or(z.literal("")).nullish(),
+  butce: z.string().trim().max(60).nullish(),
+  ihtiyac_notu: z.string().trim().max(600).nullish(),
+  etiket: z.array(z.string().trim().min(1).max(30)).max(12).nullish(),
+  sicaklik: SICAKLIK.nullish(),
+  kayip_nedeni: z.string().trim().max(300).nullish(),
+});
+
+/** L3+L5: lead enrichment (email/bütçe/ihtiyaç/etiket/sıcaklık) + kayıp nedeni. */
+export async function leadDetayGuncelle(
+  leadId: string,
+  alanlar: unknown
+): Promise<{ ok: boolean }> {
+  const parsed = detaySemasi.safeParse(alanlar);
+  if (!parsed.success) return { ok: false };
+
+  const yetki = await leadSahiplikDogrula(leadId);
+  if (!yetki.ok) return { ok: false };
+
+  // Yalnız gönderilen alanları güncelle; "" → null (boşaltma). undefined → dokunma.
+  const d = parsed.data;
+  const guncelleme: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (d.email !== undefined) guncelleme.email = d.email ? d.email : null;
+  if (d.butce !== undefined) guncelleme.butce = d.butce || null;
+  if (d.ihtiyac_notu !== undefined) guncelleme.ihtiyac_notu = d.ihtiyac_notu || null;
+  if (d.etiket !== undefined) guncelleme.etiket = d.etiket && d.etiket.length ? d.etiket : null;
+  if (d.sicaklik !== undefined) guncelleme.sicaklik = d.sicaklik ?? null;
+  if (d.kayip_nedeni !== undefined) guncelleme.kayip_nedeni = d.kayip_nedeni || null;
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("lead").update(guncelleme).eq("id", yetki.lead_id);
+  if (error) return { ok: false };
+
+  revalidatePath(`/havuz/leadler/${yetki.lead_id}`);
+  revalidatePath("/havuz/leadler");
+  return { ok: true };
+}
+
+/** L4: takip hatırlatması kur/temizle. tarihISO null → hatırlatmayı kaldır. */
+export async function leadHatirlatmaKur(
+  leadId: string,
+  tarihISO: string | null,
+  notu: string | null
+): Promise<{ ok: boolean }> {
+  let sonrakiAt: string | null = null;
+  if (tarihISO) {
+    const t = new Date(tarihISO);
+    if (Number.isNaN(t.getTime())) return { ok: false };
+    sonrakiAt = t.toISOString();
+  }
+  const n = z.string().trim().max(200).nullish().safeParse(notu ?? undefined);
+  if (!n.success) return { ok: false };
+
+  const yetki = await leadSahiplikDogrula(leadId);
+  if (!yetki.ok) return { ok: false };
+
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from("lead")
+    .update({
+      sonraki_aksiyon_at: sonrakiAt,
+      sonraki_aksiyon_notu: sonrakiAt ? (n.data || null) : null,
+      hatirlatma_gonderildi: false, // yeni hatırlatma → cron tekrar tetikleyebilsin
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", yetki.lead_id);
+  if (error) return { ok: false };
+
+  revalidatePath(`/havuz/leadler/${yetki.lead_id}`);
   return { ok: true };
 }

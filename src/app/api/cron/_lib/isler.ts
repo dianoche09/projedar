@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitlarYaz } from "@/lib/events";
+import { bildirimYaz } from "@/lib/bildirim";
 import { davetMaili, mailGonder } from "@/lib/mail";
 import { adayDavetToken } from "@/lib/davet";
 import { SEGMENT_ROL, type Segment } from "@/lib/kesif/tipler";
@@ -361,5 +362,48 @@ export async function katalogUretCalistir(): Promise<CronSonuc> {
   return {
     status: 200,
     govde: { basarili: true, uretilen, hata, kalan, mesaj: `${uretilen} katalog sayfası üretildi (${hata} hata, ${kalan} sırada).` },
+  };
+}
+
+/**
+ * Lead takip hatırlatması (FAZ 4 L4): sonraki_aksiyon_at vakti gelmiş + henüz
+ * gönderilmemiş hatırlatmalar için lead sahibine bildirim düşer, sonra
+ * hatirlatma_gonderildi=true (bir kez). Emlakçının koyduğu "Cuma ara" tetiklenir.
+ */
+export async function leadTakipCalistir(): Promise<CronSonuc> {
+  const supabase = createAdminClient();
+  const simdi = new Date().toISOString();
+
+  const { data: leadler, error } = await supabase
+    .from("lead")
+    .select("id, ad, atanan_id, sonraki_aksiyon_notu")
+    .eq("hatirlatma_gonderildi", false)
+    .not("sonraki_aksiyon_at", "is", null)
+    .lte("sonraki_aksiyon_at", simdi)
+    .limit(200);
+
+  if (error) {
+    console.error("Lead takip cron hatası:", error);
+    return { status: 500, govde: { hata: error.message } };
+  }
+
+  const liste = leadler ?? [];
+  let gonderildi = 0;
+  for (const l of liste) {
+    if (!l.atanan_id) continue;
+    await bildirimYaz({
+      profile_id: l.atanan_id,
+      tip: "lead",
+      baslik: "Lead takibi zamanı",
+      govde: `${l.ad ?? "Müşteri"} · ${l.sonraki_aksiyon_notu ?? "Takip et"}`,
+      link: `/havuz/leadler/${l.id}`,
+    });
+    await supabase.from("lead").update({ hatirlatma_gonderildi: true }).eq("id", l.id);
+    gonderildi++;
+  }
+
+  return {
+    status: 200,
+    govde: { basarili: true, gonderildi, taranan: liste.length, mesaj: `${gonderildi} lead takip hatırlatması gönderildi.` },
   };
 }
