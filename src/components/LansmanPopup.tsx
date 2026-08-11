@@ -8,6 +8,8 @@ import { Logo } from "@/components/Logo";
 
 const ANAHTAR = "projedar_lansman_ts";
 const TEKRAR_GUN = 10;
+/** Proje sayısını yalnız anlamlı olduğunda göster; az proje sosyal kanıtı zayıflatır (tune edilebilir). */
+const PROJE_SAYI_ESIK = 10;
 
 type Proje = { ad: string; sehir: string };
 
@@ -109,6 +111,7 @@ export function LansmanPopup({ varsayilanRol }: { varsayilanRol?: "uretici" | "e
   const gercek = (veri?.projeler.length ?? 0) > 0;
   const kartlar = gercek ? veri!.projeler.slice(0, 3) : ORNEK;
   const projeSay = gercek ? veri!.projeSay : ORNEK.length;
+  const sayiGoster = projeSay >= PROJE_SAYI_ESIK;
   const kaynak = varsayilanRol ? `lansman-${varsayilanRol}` : "lansman-popup";
   const uclar = kartlar.length <= 1 ? [230] : kartlar.length === 2 ? [82, 378] : [82, 230, 378];
 
@@ -174,7 +177,7 @@ export function LansmanPopup({ varsayilanRol }: { varsayilanRol?: "uretici" | "e
 
           <div className="mono absolute inset-x-0 bottom-2 z-[2] text-center text-[10px] tracking-tight text-teal-d">
             <span className="mr-1.5 inline-block size-[5px] rounded-full bg-green align-middle" />
-            Canlı stok ağı · {projeSay} proje
+            Canlı stok ağı{sayiGoster ? ` · ${projeSay} proje` : ""}
           </div>
         </div>
 
@@ -202,9 +205,7 @@ export function LansmanPopup({ varsayilanRol }: { varsayilanRol?: "uretici" | "e
 
           <p className="mt-4 border-t border-hair pt-3 text-center text-[11.5px] leading-relaxed text-gray">
             <span className="mr-1.5 inline-block size-[5px] rounded-full bg-teal align-middle" />
-            Ücretsiz temel hesap
-            <span className="mx-1.5 text-hair">·</span>Projedar komisyonunuza ortak olmaz
-            <span className="mx-1.5 text-hair">·</span>Canlı stok ve fiyat
+            Projedar komisyonunuza ortak olmaz
           </p>
         </div>
       </div>
