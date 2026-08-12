@@ -83,6 +83,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const [ozellik, setOzellik] = useState<string[]>([]);
   const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait">("taze");
   const [gorunum, setGorunum] = useState<"liste" | "harita">("liste");
+  const [arama, setArama] = useState("");
 
   const iller = useMemo(() => [...new Set(projeler.map((p) => p.il).filter(Boolean))] as string[], [projeler]);
   const ilceler = useMemo(
@@ -93,6 +94,10 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const liste = useMemo(() => {
     const l = projeler.filter(
       (p) =>
+        (!arama.trim() ||
+          `${p.ad} ${p.il ?? ""} ${p.ilce ?? ""} ${p.mahalle ?? ""} ${p.turler.join(" ")} ${p.tipler.join(" ")}`
+            .toLocaleLowerCase("tr")
+            .includes(arama.trim().toLocaleLowerCase("tr"))) &&
         (!il || p.il === il) &&
         (!ilce || p.ilce === ilce) &&
         (!tip.length || tip.some((t) => p.tipler.some((pt) => pt.startsWith(t)))) &&
@@ -108,7 +113,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
       if (sirala === "musait") return b.musait - a.musait;
       return b.son_guncelleme.localeCompare(a.son_guncelleme);
     });
-  }, [projeler, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, ozellik, sirala]);
+  }, [projeler, arama, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, ozellik, sirala]);
 
   // KPI — GERÇEK değerlerden hesap (tahsisli RLS havuzundan).
   const toplamBirim = projeler.reduce((t, p) => t + p.toplam, 0);
@@ -121,6 +126,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const turAcKapa = (t: string) => setTur((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
   const ozellikAcKapa = (o: string) => setOzellik((s) => (s.includes(o) ? s.filter((x) => x !== o) : [...s, o]));
   const temizle = () => {
+    setArama("");
     setIl("");
     setIlce("");
     setTip([]);
@@ -132,7 +138,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
     setOzellik([]);
   };
   const aktifSayi =
-    (il ? 1 : 0) + (ilce ? 1 : 0) + tip.length + (durum ? 1 : 0) + tur.length +
+    (arama ? 1 : 0) + (il ? 1 : 0) + (ilce ? 1 : 0) + tip.length + (durum ? 1 : 0) + tur.length +
     (fiyatMin ? 1 : 0) + (fiyatMax ? 1 : 0) + (minKira ? 1 : 0) + ozellik.length;
   const filtreProps = {
     il, setIl, ilce, setIlce, tip, tipAcKapa, durum, setDurum, iller, ilceler,
@@ -200,6 +206,19 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
 
       {/* Filtre çubuğu — v2 chip özeti + gerçek filtre paneli (açılır) */}
       <div className="belir belir-1 mb-5">
+        <div className="relative mb-3">
+          <svg className="pointer-events-none absolute left-3.5 top-1/2 size-[18px] -translate-y-1/2 text-[var(--ink-faint)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            type="search"
+            value={arama}
+            onChange={(e) => setArama(e.target.value)}
+            placeholder="Proje, il, ilçe, mahalle ara..."
+            aria-label="Havuzda ara"
+            className="w-full rounded-2xl border border-[var(--cizgi)] bg-white py-3 pl-11 pr-4 text-sm text-ink shadow-[var(--golge-1)] outline-none transition focus:border-teal/40"
+          />
+        </div>
         <details className="kart group overflow-hidden" style={{ borderRadius: 16 }}>
           <summary className="filterbar flex cursor-pointer list-none flex-nowrap items-center gap-2.5 overflow-x-auto p-2.5">
             <span className="flex items-center gap-1.5 pl-1 pr-1.5 text-[var(--ink-faint)]">
