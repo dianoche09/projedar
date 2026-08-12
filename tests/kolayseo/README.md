@@ -11,7 +11,11 @@ kontrollü kanıtlar. "Skill'i kullandım" beyanı kanıt SAYILMAZ.
 | **N1** | yok | var | yok | yok | 1 | Native discovery |
 | **A** | yok | **yok** | yok | var* | ≥3 | Kontrol grubu |
 | **B-native** | yok | var | yok | var* | ≥3 | Skill katkısı (oto-keşif) |
-| **B-forced** | yok | var | **var** | var* | ≥3 | Skill **kalitesi** (zorla çağır) |
+| **B-forced** | yok | var | strip+akt. | var* | ≥3 | Skill **kalitesi** (yalnız SKILL.md okut) |
+
+**B-forced** = SEO/GEO CLAUDE.md bloğu **strip edilir** + tek satır `read .claude/skills/kolayseo/SKILL.md`
+aktivasyonu → CLAUDE.md'nin ek SEO kuralları benchmark'a karışmaz, saf skill içerik değeri ölçülür.
+İsim: **P1 = explicit portability** (snapshot+pointer erişim), **N1 = native discovery** (oto-keşif).
 
 `*AB_MODE=mutated` (varsayılan): her A/B clone'una **10 gizli SEO hatası** enjekte.
 
@@ -42,13 +46,17 @@ M7/M8 eşik→`0`, M2 canonical→`/konut-projeleri`, M10 `sitemap.xml`→`sitem
 halde agent KolaySEO'ya gerek kalmadan "test hatası" yakalar. mutations.mjs uygulama sonrası src'de
 kontaminasyon marker'ı kalırsa **fail-closed durur**. Mutasyonlu clone tsc'den geçer.
 
-## İzolasyon (v1.2 — ground-truth agent'a görünmez)
+## İzolasyon (v1.3 — ground-truth + ana repo yolu agent'a görünmez)
 
-1. **Clone'dan `tests/kolayseo/` silinir** → mutations.mjs + ground-truth.json + rubric agent'a görünmez.
-2. **Global skill `~/.claude` DIŞINA** taşınır (`$TMPDIR`) → `find ~/.claude` backup'ı bulamaz.
-3. **A/B read-only native tool whitelist** (`Read,Glob,Grep,LS`) — **`--dangerously-skip-permissions` YOK**
-   (efemer clone OS-sandbox değildir). `Edit/Write/Bash` kapalı.
-4. Ekstra: clone'da `ground-truth|mutations.mjs` izi kalırsa fail-closed.
+1. **`git archive HEAD | tar`** (git clone DEĞİL) → snapshot'ta **`.git` yok** → `.git/config`'teki
+   ana repo filesystem yolu test agent'ına sızmaz (aksi halde agent orijinal repo'daki `mutations.mjs`'i bulabilirdi).
+2. **Snapshot'tan `tests/kolayseo/` silinir** → mutations.mjs + ground-truth + rubric agent'a görünmez.
+3. **Global skill `~/.claude` DIŞINA** (`$TMPDIR`) → `find ~/.claude` backup'ı bulamaz.
+4. **A/B read-only native whitelist** (`Read,Glob,Grep,LS`) — **`--dangerously-skip-permissions` YOK**;
+   `Edit/Write/Bash` kapalı.
+5. **Snapshot-clean assert**: `.git` / `tests/kolayseo` / `ground-truth` / `mutations.mjs` izi varsa **FATAL**.
+
+> Tam OS-sandbox (temp `HOME` / container) hâlâ ileri iş — Read absolute-path teorik kaçış için PoC gerek.
 
 > Tam OS-sandbox (temp `HOME` / container) ileri iş — auth/config'i kırmadan önce küçük PoC gerekir.
 

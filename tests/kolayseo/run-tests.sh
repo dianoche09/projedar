@@ -9,8 +9,9 @@
 # | N1        | yok          | var        | yok          | yok      | Native discovery           |
 # | A         | yok          | yok        | yok          | var*     | Kontrol grubu              |
 # | B-native  | yok          | var        | yok          | var*     | Skill katkisi (oto-kesif)  |
-# | B-forced  | yok          | var        | var          | var*     | Skill KALITESI (zorla)     |
+# | B-forced  | yok          | var        | strip+akt.   | var*     | Skill KALITESI (yalniz SKILL.md okut) |
 # (*AB_MODE=mutated: her clone'a 10 GIZLI SEO hatasi enjekte. B-native<->B-forced farki = discovery.)
+# (B-forced: SEO/GEO CLAUDE.md blogu STRIP edilir + tek satir aktivasyon → CLAUDE.md kurallari karismaz.)
 #
 # A / B-native / B-forced: AYNI prompt/model/max-turns/mutasyon. --bare YOK.
 #
@@ -99,19 +100,23 @@ A/B flags      : ${AB_FLAGS[*]}     ← skip-permissions YOK; read-only native w
 PROMPT (tum kosullarda AYNI, "skill" kelimesi YOK):
   "$PROMPT"
 
-Her kosul (efemer clone):
-  1) git clone <repo> <tmp> (committed HEAD)
+Her kosul (efemer snapshot):
+  1) git archive HEAD | tar -x   → committed HEAD, .git YOK (ana repo yolu .git/config'ten sizmaz)
   2) rm -rf <tmp>/tests/kolayseo   ← IZOLASYON (ground-truth/mutations/rubric agent'a gorunmez)
-  3) pointer off ise: CLAUDE.md SEO/GEO blogu silinir + ASSERT (kolayseo kalirsa FATAL)
+  3) pointer=off  : SEO/GEO blogu silinir + ASSERT (kolayseo kalirsa FATAL)
+     pointer=forced: SEO/GEO blogu silinir + tek satir "read .claude/skills/kolayseo/SKILL.md" eklenir
   4) skill off ise (A): rm -rf <tmp>/.claude/skills/kolayseo
   5) A/B + mutated: node mutations.mjs <tmp>  → 10 gizli hata + ground-truth (marker-tarama fail-closed)
-  6) run: (cd <tmp> && claude -p PROMPT FLAGS) > results/<tag>.jsonl ; jq kanit ; <tmp> silinir
+  6) SNAPSHOT-CLEAN ASSERT: .git / tests/kolayseo / ground-truth / mutations izi varsa FATAL
+  7) run: (cd <tmp> && claude -p PROMPT FLAGS) > results/<tag>.jsonl ; jq kanit ; <tmp> silinir
 
+Kosul adlari:  P1 = explicit portability (snapshot+pointer erisim)   N1 = native discovery (oto-kesif)
 A/B matrisi (skill KALITESI vs DISCOVERY ayrimi):
-  A        = skill yok            (kontrol)
-  B-native = skill var, oto-kesif (discovery'ye bagli)
-  B-forced = skill var, pointer acik (zorla → saf kalite)
-  Ornek teshis: A=5.3 Bnative=5.4 Bforced=8.9 → skill guclu, discovery zayif.
+  A        = skill yok                              (kontrol)
+  B-native = skill var, pointer YOK                 (oto-kesif; discovery'ye bagli)
+  B-forced = skill var, SEO/GEO blok STRIP + minimal activation (yalniz SKILL.md okut → saf skill KALITESI)
+  Teshis:  B-forced−A = KolaySEO icerik degeri ; B-forced−B-native = discovery kaybi.
+  Ornek: A=4.7 Bnative=7.0 Bforced=8.6 → skill degerli + ~%70-80'i oto-discovery ile tasiniyor.
 
 FAIL-CLOSED: global md kirli+N1/A/Bnative + NEUTRALIZE!=1 → BASLAMAZ · pointer sonrasi kolayseo kalirsa
 FATAL · mutasyon anchor/kontaminasyon → FATAL · backup hedefi dolu → BASLAMAZ.
@@ -162,19 +167,26 @@ evidence(){ local j="$1" tag="$2" model tools s1 s2
   printf '%s\tmodel=%s\ttools=[%s]\tstrong1=%s\tstrong2=%s\n' "$tag" "$model" "$tools" "${s1:-0}" "${s2:-0}" >> "$OUT_DIR/evidence.tsv"
 }
 
-run_one(){ # tag pointer(on|off) repo_skill(on|off) mutate(0|1) profile(disco|ab)
+run_one(){ # tag pointer(on|off|forced) repo_skill(on|off) mutate(0|1) profile(disco|ab)
   local tag="$1" pointer="$2" repo_skill="$3" mutate="$4" profile="$5"
-  local base clone; base="$(mktemp -d)"; clone="$base/projedar"
-  git clone --quiet "$REPO_ROOT" "$clone"
+  local base clone; base="$(mktemp -d)"; clone="$base/projedar"; mkdir -p "$clone"
+  # git archive = committed HEAD, .git YOK → clone origin path'i (.git/config) test agent'ina sizmaz.
+  git -C "$REPO_ROOT" archive HEAD | tar -x -C "$clone"
   rm -rf "$clone/tests/kolayseo"                                  # IZOLASYON: ground-truth/mutations gizle
-  [ "$pointer" = "off" ] && strip_pointer "$clone/CLAUDE.md" "$tag"
+  case "$pointer" in
+    off)    strip_pointer "$clone/CLAUDE.md" "$tag" ;;
+    forced) strip_pointer "$clone/CLAUDE.md" "$tag"   # once SEO/GEO blogunu KALDIR (CLAUDE.md kurallari karismasin)
+            printf '\n## SEO gorevi aktivasyonu\nFor this SEO task, read and apply .claude/skills/kolayseo/SKILL.md before auditing.\n' >> "$clone/CLAUDE.md" ;;
+  esac
   [ "$repo_skill" = "off" ] && rm -rf "$clone/.claude/skills/kolayseo"
   if [ "$mutate" -eq 1 ]; then
     node "$MUT_SCRIPT" "$clone" > "$OUT_DIR/ground-truth.json" 2> "$OUT_DIR/$tag.mut.err" \
       || { echo "FATAL ($tag): mutations basarisiz (bkz $tag.mut.err)"; exit 1; }
   fi
-  # ekstra izolasyon dogrulamasi
-  grep -rqiE 'ground-truth|mutations\.mjs' "$clone" 2>/dev/null && { echo "FATAL ($tag): clone'da ground-truth izi kaldi."; exit 1; } || true
+  # snapshot-clean assert: .git / tests/kolayseo / ground-truth / mutations izi olmamali
+  if [ -d "$clone/.git" ] || [ -e "$clone/tests/kolayseo" ] || grep -rqiE 'ground-truth|mutations\.mjs' "$clone" 2>/dev/null; then
+    echo "FATAL ($tag): snapshot kirli (.git / tests/kolayseo / ground-truth izi)."; exit 1
+  fi
 
   local jsonl="$OUT_DIR/$tag.jsonl"
   log "[run] $tag (pointer=$pointer skill=$repo_skill mutate=$mutate profile=$profile) → $jsonl"
@@ -192,7 +204,7 @@ MUT=0; [ "$AB_MODE" = "mutated" ] && MUT=1
 [ "$RN1" -eq 1 ] && run_one "N1" off on  0    disco
 if [ "$RA"  -eq 1 ]; then i=1; while [ "$i" -le "$AB_REPEATS" ]; do run_one "A-$i"  off off "$MUT" ab; i=$((i+1)); done; fi
 if [ "$RBN" -eq 1 ]; then i=1; while [ "$i" -le "$AB_REPEATS" ]; do run_one "BN-$i" off on  "$MUT" ab; i=$((i+1)); done; fi
-if [ "$RBF" -eq 1 ]; then i=1; while [ "$i" -le "$AB_REPEATS" ]; do run_one "BF-$i" on  on  "$MUT" ab; i=$((i+1)); done; fi
+if [ "$RBF" -eq 1 ]; then i=1; while [ "$i" -le "$AB_REPEATS" ]; do run_one "BF-$i" forced on "$MUT" ab; i=$((i+1)); done; fi
 
 hr; log "Bitti. Kanit:"; column -t -s "$(printf '\t')" "$OUT_DIR/evidence.tsv" 2>/dev/null || cat "$OUT_DIR/evidence.tsv"
 hr; log "Skorlama: ground-truth.json + rubric.md. env: $OUT_DIR/env.txt"
