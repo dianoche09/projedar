@@ -7,6 +7,7 @@ import { Govde as SosyalMedyaGovde, toc as sosyalMedyaToc, faq as sosyalMedyaFaq
 import { Govde as EdevletYetkiGovde, toc as edevletYetkiToc, faq as edevletYetkiFaq } from "./e-devletten-emlakciya-eids-yetkisi";
 import { Govde as ProjeSatisGovde, toc as projeSatisToc, faq as projeSatisFaq } from "./proje-uzerinden-satis-nasil-yapilir";
 import { Govde as MusteriKaydiGovde, toc as musteriKaydiToc, faq as musteriKaydiFaq } from "./musteri-kaydi-ve-hakedis-korumasi";
+import { Govde as CiftSatisGovde, toc as ciftSatisToc, faq as ciftSatisFaq } from "./musteri-cakismasi-cift-satis";
 import { Govde as SifirKonutGovde, toc as sifirKonutToc, faq as sifirKonutFaq } from "./sifir-konut-satmanin-emlakciya-avantajlari";
 
 /**
@@ -24,5 +25,6 @@ export const REHBER_GOVDE: Record<string, RehberModul> = {
   "e-devletten-emlakciya-eids-yetkisi": { Govde: EdevletYetkiGovde, toc: edevletYetkiToc, faq: edevletYetkiFaq },
   "proje-uzerinden-satis-nasil-yapilir": { Govde: ProjeSatisGovde, toc: projeSatisToc, faq: projeSatisFaq },
   "musteri-kaydi-ve-hakedis-korumasi": { Govde: MusteriKaydiGovde, toc: musteriKaydiToc, faq: musteriKaydiFaq },
+  "musteri-cakismasi-cift-satis": { Govde: CiftSatisGovde, toc: ciftSatisToc, faq: ciftSatisFaq },
   "sifir-konut-satmanin-emlakciya-avantajlari": { Govde: SifirKonutGovde, toc: sifirKonutToc, faq: sifirKonutFaq },
 };
