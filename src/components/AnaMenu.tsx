@@ -12,7 +12,6 @@ import { cikisYap } from "@/app/(auth)/login/actions";
  * sayfalar, SSG'yi korumak için) "Giriş yap + Ağa katıl".
  */
 const ANA_MENU: { etiket: string; href: string; key: string }[] = [
-  { etiket: "Konut projeleri", href: "/konut-projeleri", key: "konut-projeleri" },
   { etiket: "Müteahhitler için", href: "/muteahhit", key: "muteahhit" },
   { etiket: "Danışmanlar için", href: "/emlakci", key: "emlakci" },
   { etiket: "Nedir", href: "/nedir", key: "nedir" },
