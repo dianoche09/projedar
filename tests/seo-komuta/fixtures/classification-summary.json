@@ -1,0 +1,20 @@
+{
+  "inputHash": "5a4c5de5db332e72",
+  "total": 749,
+  "heuristic": {
+    "MATCHED_MUST": 1,
+    "MATCHED_SUPPORT": 10,
+    "NEW_TERRITORY": 0,
+    "INVENTORY_ENTITY": 22,
+    "OFF_TOPIC": 716
+  },
+  "semantic": {
+    "MATCHED_MUST": 1,
+    "MATCHED_SUPPORT": 12,
+    "NEW_TERRITORY": 0,
+    "INVENTORY_ENTITY": 12,
+    "OFF_TOPIC": 724
+  },
+  "overrideCount": 11,
+  "lowConf": 80
+}
