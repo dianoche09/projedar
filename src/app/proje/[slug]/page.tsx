@@ -336,11 +336,14 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
   ).slice(0, 14);
 
   // ---- Hero istatistikleri + koyu rakam bandı ----
-  const heroStats: [string, string][] = [];
-  if (veri.birimSayisi > 0) heroStats.push([String(veri.birimSayisi), "konut birimi"]);
-  if (odaTipleri.length) heroStats.push([odaTipleri.join(" · "), "daire tipleri"]);
-  if (m2Band) heroStats.push([m2Band, "büyüklük"]);
-  heroStats.push([teslim ?? asama, teslim ? "teslim" : "durum"]);
+  // Tek dev mono satır çift/üçlü daire tipinde çirkin kırılıyordu; daire tipleri
+  // artık saran küçük çip listesi (chips) olarak basılır, diğerleri tek rakam.
+  type HeroStat = { v: string; l: string; chips?: string[] };
+  const heroStats: HeroStat[] = [];
+  if (veri.birimSayisi > 0) heroStats.push({ v: String(veri.birimSayisi), l: "konut birimi" });
+  if (odaTipleri.length) heroStats.push({ v: "", l: "daire tipleri", chips: odaTipleri });
+  if (m2Band) heroStats.push({ v: m2Band, l: "büyüklük" });
+  heroStats.push({ v: teslim ?? asama, l: teslim ? "teslim" : "durum" });
 
   const projeAlani = icerik?.proje_alani_m2 ?? (typeof kunye.arsa_alani === "number" ? (kunye.arsa_alani as number) : null);
   const figuresBand: [string, string][] = [];
@@ -396,10 +399,23 @@ export default async function ProjeSeoSayfa({ params }: { params: Promise<{ slug
 
           {heroStats.length ? (
             <div className="mt-8 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
-              {heroStats.slice(0, 4).map(([v, l]) => (
-                <div key={l} className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
-                  <p className="font-mono text-xl font-semibold tracking-tight sm:text-2xl">{v}</p>
-                  <p className="mt-1 text-[11.5px] text-white/70">{l}</p>
+              {heroStats.slice(0, 4).map((s) => (
+                <div key={s.l} className="flex flex-col rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
+                  {s.chips ? (
+                    <span className="flex flex-1 flex-wrap content-start gap-1.5">
+                      {s.chips.map((c) => (
+                        <span
+                          key={c}
+                          className="rounded-md bg-white/15 px-1.5 py-1 font-mono text-[13px] font-semibold leading-none text-white"
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    <p className="flex-1 font-mono text-xl font-semibold tracking-tight sm:text-2xl">{s.v}</p>
+                  )}
+                  <p className="mt-2 text-[11.5px] text-white/70">{s.l}</p>
                 </div>
               ))}
             </div>
