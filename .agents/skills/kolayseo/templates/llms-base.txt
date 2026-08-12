@@ -1,0 +1,54 @@
+# YourBrand
+
+> 1-2 sentence summary: what it does, who it serves, the key differentiator. Include a concrete number.
+
+## About
+
+2-3 paragraphs. What the product is, unique value proposition, core metrics. Then a fact block:
+
+- **Website**: https://www.example.com
+- **Platform**: Web (PWA / mobile-friendly)
+- **Category**: Your category
+- **Language**: en-US
+- **Company**: Your Legal Company Name
+- **Contact**: info@example.com
+
+## Key Pages
+
+### Overview
+- [Home](https://www.example.com) — platform overview
+- [About](https://www.example.com/about) — company, mission
+- [Contact](https://www.example.com/contact) — support channels
+
+### Core Tools
+- [Primary Tool](https://www.example.com/primary) — what it does
+- [Secondary Tool](https://www.example.com/secondary) — what it does
+
+## Features
+
+### Feature Category 1
+- Detailed feature list with SPECIFIC numbers ("65+ X", "5-step Y") — never "many".
+
+### Feature Category 2
+- ...
+
+## Who It Helps
+
+- Target segment 1 — specific use case
+- Target segment 2 — specific use case
+
+## Evidence / Research
+
+- Author (Year), Journal — what was found (inline citation format).
+
+## Key Differentiators
+
+- Difference from competitors, bullet by bullet.
+
+## Blog / Knowledge Base
+
+(Auto-appended from published blog_posts by the /llms.txt route — categorized, ALL posts.)
+
+## Disclaimer
+
+Legal/usage disclaimer.

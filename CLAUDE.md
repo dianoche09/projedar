@@ -38,6 +38,16 @@ Next.js (App Router, TypeScript, strict) + Tailwind · Supabase (Postgres + Auth
 - `npm run dev` · `npm run build` · `npm run lint`
 - **Supabase migration/SQL/RLS = HER ZAMAN browser Dashboard → SQL Editor.** MCP `apply_migration`/`execute_sql` bu projede `Unauthorized` (access token yok, non-interactive OAuth yok); `supabase db push` de yok. Migration dosyasını `db/` altına yaz, sonra kullanıcıya SQL'i **hazır kopyalanır blok** olarak ver — "browser'dan uygula" diye ayrıca uzun uzun anlatma, sadece bloğu sun. Detay: memory `supabase-apply-browser.md`.
 
+## SEO / GEO politikası (skill discovery)
+- **SEO/GEO işlerinin kalite kaynağı = `kolayseo` skill.** Repo-içi vendored kopya:
+  `.agents/skills/kolayseo/` (fresh clone / CI / her oturum bunu keşfeder). Source-of-truth
+  global `~/.claude/skills/kolayseo/`; repo kopyası snapshot — düzenleme kuralları için
+  `.agents/skills/kolayseo/VENDORED.md`.
+- Yeni public sayfa / route / şehir-ilçe / rehber eklerken **önce** kolayseo kurallarına bak
+  (canonical, index/noindex, sitemap, thin-content eşiği, FAQ+schema, answer-first, private-leak).
+- Projedar özel kuralı: **kapalı-devre B2B → private-by-default.** Her yeni route için doğrula:
+  panel/havuz/opsiyon/paylaşım/`/api` sitemap'e SIZMASIN + robots disallow + gerekli yerde `noindex`.
+
 ## Changelog / Memory (bu projeye özel)
 Her projenin **kendi** changelog'u vardır. Bu repoda anlamlı her değişiklikten sonra **yalnız bu projenin** changelog'unu güncelle; başka projenin (ör. KolayIMAR) changelog'una **yazma**.
 - Changelog: `~/.claude/projects/-Users-gurkankuzu-GK-MAC-D-GK-Proje-admin-ProjePazar/memory/projedar_changelog.md`
