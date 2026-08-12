@@ -51,10 +51,12 @@ async function kurulumLinkiGonder(
   const { data, error } = await admin.auth.admin.generateLink({
     type: "recovery",
     email,
-    options: { redirectTo: `${origin}/auth/callback?next=/sifre-yenile` },
+    options: { redirectTo: `${origin}/auth/confirm?next=/sifre-yenile` },
   });
-  const link = data?.properties?.action_link ?? null;
-  if (error || !link) return null;
+  const hash = data?.properties?.hashed_token ?? null;
+  if (error || !hash) return null;
+  // Markalı link: supabase.co/verify yerine projedar.com/auth/confirm (token_hash → verifyOtp).
+  const link = `${origin}/auth/confirm?token_hash=${encodeURIComponent(hash)}&type=recovery&next=/sifre-yenile`;
   await mailGonder({
     to: email,
     konu: tur === "kurulum" ? "Projedar · hesabın hazır, şifreni belirle" : "Projedar · şifre sıfırlama",
