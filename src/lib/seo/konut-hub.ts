@@ -25,6 +25,7 @@ export type HubProje = {
   teslim: string | null; // filtre: teslim (yıl/hemen); proje=tarih, katalog=serbest metin
   m2min: number | null;
   m2max: number | null;
+  sonGuncelleme: Date | null; // freshness (proje.son_guncelleme | katalog.updated_at) — lokasyon tazelik metriği için
   kaynak: "proje" | "katalog";
 };
 
@@ -50,7 +51,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
   const { data: projeRaw } = await supabase
     .from("proje")
     .select(
-      "id, ad, public_slug, il, ilce, mahalle, lat, lng, ada, parsel, emsal, taks, insaat_asamasi, teslim_tarihi, baslama_tarihi, kunye, belge_dogrulandi, uretici:uretici_id ( ad, dogrulanmis )",
+      "id, ad, public_slug, il, ilce, mahalle, lat, lng, ada, parsel, emsal, taks, insaat_asamasi, teslim_tarihi, baslama_tarihi, son_guncelleme, kunye, belge_dogrulandi, uretici:uretici_id ( ad, dogrulanmis )",
     )
     .not("public_slug", "is", null)
     .not("il", "is", null)
@@ -103,6 +104,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
         teslim: p.teslim_tarihi ?? null,
         m2min: m2ler.length ? Math.min(...m2ler) : null,
         m2max: m2ler.length ? Math.max(...m2ler) : null,
+        sonGuncelleme: p.son_guncelleme ? new Date(p.son_guncelleme) : null,
         kaynak: "proje",
       });
     }
@@ -111,7 +113,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
   // 2) Katalog projeleri (aktif, konumu olan)
   const { data: katRaw } = await supabase
     .from("katalog_proje")
-    .select("slug, ad, il, ilce, mahalle, oda_tipleri, m2_min, m2_max, durum, teslim, kapak_url, gelistirici")
+    .select("slug, ad, il, ilce, mahalle, oda_tipleri, m2_min, m2_max, durum, teslim, kapak_url, gelistirici, updated_at")
     .eq("aktif", true)
     .not("il", "is", null)
     .not("ilce", "is", null);
@@ -136,6 +138,7 @@ export async function tumHubProjeleri(): Promise<HubProje[]> {
       teslim: k.teslim ?? null,
       m2min: k.m2_min ?? null,
       m2max: k.m2_max ?? null,
+      sonGuncelleme: k.updated_at ? new Date(k.updated_at) : null,
       kaynak: "katalog",
     });
   }

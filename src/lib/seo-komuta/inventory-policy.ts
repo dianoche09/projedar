@@ -42,29 +42,34 @@ export const LOKASYON_MIN_INDEX_PROJE = 3;
 export const LOKASYON_MIN_GELISTIRICI = 2;
 export const LOKASYON_MIN_TAZE_ORAN = 0.3;
 
-/** benzersiz fayda = makineden hesaplanır: lokasyona özel gerçek veri + geliştirici çeşitliliği + child link. */
-export function benzersizFaydaVar(e: LokasyonEnvanter): boolean {
-  return e.indexProje >= 2 && e.farkliGelistirici >= 2; // ≥2 index'lenebilir proje + ≥2 geliştirici → özgün aggregate üretilebilir
+/**
+ * Koleksiyon zenginliği (makineden hesaplanır). NOT: "unique value" DEĞİL, çeşitlilik proxy'si —
+ * ≥2 index'lenebilir proje + ≥2 geliştirici → lokasyona özel aggregate (fiyat/oda/teslim dağılımı)
+ * üretilebilir. Gerçek unique-value modeli için: contentSignals {indexableProjects, developerDiversity,
+ * roomTypeDiversity, deliveryDiversity, hasLocationSummary} (ileri iş).
+ */
+export function collectionZenginligiVar(e: LokasyonEnvanter): boolean {
+  return e.indexProje >= 2 && e.farkliGelistirici >= 2;
 }
 
 export function lokasyonIndexPolicy(e: LokasyonEnvanter): IndexPolicy {
   const yeterli = e.indexProje >= LOKASYON_MIN_INDEX_PROJE;
   const cesitlilik = e.farkliGelistirici >= LOKASYON_MIN_GELISTIRICI;
   const guncel = e.guncelProje >= 1 && e.guncelProje / Math.max(e.toplamProje, 1) >= LOKASYON_MIN_TAZE_ORAN;
-  const fayda = benzersizFaydaVar(e);
+  const zengin = collectionZenginligiVar(e);
   const talepBonus = (e.queryTalep ?? 0) >= 40;
-  const skor = [yeterli, cesitlilik, guncel, fayda].filter(Boolean).length + (talepBonus ? 0.5 : 0);
+  const skor = [yeterli, cesitlilik, guncel, zengin].filter(Boolean).length + (talepBonus ? 0.5 : 0);
 
-  if (yeterli && cesitlilik && guncel && (fayda || talepBonus)) {
+  if (yeterli && cesitlilik && guncel && (zengin || talepBonus)) {
     return { karar: "INDEX", exposure: "INDEXED", sitemap: true, robots: "index,follow", internalLink: true, canonical: "self", skor,
-      neden: `indexProje=${e.indexProje}≥${LOKASYON_MIN_INDEX_PROJE} · geliştirici=${e.farkliGelistirici}≥${LOKASYON_MIN_GELISTIRICI} · güncel · ${fayda ? "benzersiz-fayda" : "talep-bonus"}` };
+      neden: `indexProje=${e.indexProje}≥${LOKASYON_MIN_INDEX_PROJE} · geliştirici=${e.farkliGelistirici}≥${LOKASYON_MIN_GELISTIRICI} · güncel · ${zengin ? "koleksiyon-zengin" : "talep-bonus"}` };
   }
 
   const eksik = [
     !yeterli ? "index'lenebilir-proje<eşik" : null,
     !cesitlilik ? "tek-geliştirici" : null,
     !guncel ? "veri-güncel-değil" : null,
-    !fayda && !talepBonus ? "benzersiz-fayda/talep-yok" : null,
+    !zengin && !talepBonus ? "koleksiyon-zenginliği/talep-yok" : null,
   ].filter(Boolean).join(" · ");
 
   // HOLD: gerçek içeriği olan (kullanıcıya gezinilebilir) → NAVIGABLE_NOINDEX; boş/faydasız → ABSORB.
