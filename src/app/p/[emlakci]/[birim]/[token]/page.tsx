@@ -56,7 +56,10 @@ export async function generateMetadata({
   params: Promise<{ emlakci: string; birim: string; token: string }>;
 }): Promise<Metadata> {
   const { emlakci, birim, token } = await params;
-  if (!verifyShareToken(emlakci, birim, token)) return {};
+  // Her dönüşte noindex,nofollow garantile: /p/ artık crawl'a açık (robots'ta değil),
+  // bu yüzden edge-case metadata fallback'leri de indexlenebilir 200 sızdırmamalı.
+  const NOINDEX = { robots: { index: false, follow: false } as const };
+  if (!verifyShareToken(emlakci, birim, token)) return NOINDEX;
 
   const supabase = createAdminClient();
   const { data } = await supabase
@@ -68,13 +71,13 @@ export async function generateMetadata({
     `)
     .eq("id", birim)
     .single();
-  if (!data) return {};
+  if (!data) return NOINDEX;
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const p = (data as any).proje;
   const t = (data as any).tip;
   /* eslint-enable @typescript-eslint/no-explicit-any */
-  if (!p) return {};
+  if (!p) return NOINDEX;
 
   const psim = PARA_SIMGE[(data.para_birimi as string) ?? "TRY"] ?? "₺";
   const fiyat = data.satilabilir && data.liste_fiyati != null ? `${fmt(Number(data.liste_fiyati))} ${psim}` : null;
