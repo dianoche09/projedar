@@ -1,0 +1,118 @@
+{
+  "baslik": "Brand / Category Visibility Baseline",
+  "amac": "Projedar'ın bugünkü Google başlangıç noktasını kaydet; ileride Verify/Learn ile kıyasla. Yeni içerik/keyword üretilmedi.",
+  "date": "2026-08-12",
+  "openseo": {
+    "projectId": "870ccd6f-2202-43fc-b26a-8ff856792540",
+    "market": { "locationCode": 2792, "languageCode": "tr", "device": "mobile" },
+    "rankTrackerId": "0606f526-6c83-4253-a42f-179c0efea5c4"
+  },
+
+  "gscBaseline": {
+    "siteUrl": "sc-domain:projedar.com",
+    "durum": "0 baseline",
+    "not": "GSC henüz veri döndürmüyor (yeni mülk / indexlenme erken). Bundan büyük anlam çıkarılmaz; kanal sonuçları ilk gerçek GSC verisiyle öğrenilecek.",
+    "pencereler": [
+      { "aralik": "last_28_days", "start": "2026-07-12", "end": "2026-08-09", "dimensions": ["query"], "rowCount": 0, "impressions": 0, "clicks": 0, "ctr": 0, "position": null },
+      { "aralik": "last_3_months", "start": "2026-05-09", "end": "2026-08-09", "dimensions": ["page"], "rowCount": 0, "impressions": 0, "clicks": 0, "ctr": 0, "position": null }
+    ]
+  },
+
+  "serpBaseline": {
+    "kaynak": "OpenSEO get_serp_results (canlı Google, tr/2792/mobile)",
+    "sorgular": {
+      "projedar": {
+        "durum": "OK",
+        "domainSiralari": [
+          { "rank": 1, "url": "https://projedar.com/konut-projeleri/istanbul/avcilar", "tip": "organic" },
+          { "rank": 4, "url": "https://projedar.com/", "tip": "organic" },
+          { "rank": 9, "url": "https://projedar.com/proje/vitrin-antalya-kepez", "tip": "organic" }
+        ],
+        "aiOverview": true,
+        "sitelink": false,
+        "gozlem": "Marka #1 domainde (bir lokasyon hub'ı); anasayfa #4. rank 2 alakasız gürültü (ancestry.com 'Projedar Gomzaley'). Sitelink görünmüyor. Snippet'ler onaylı dille ('Komisyondan pay...')."
+      },
+      "projedar nedir": {
+        "durum": "VERI_YOK",
+        "not": "OpenSEO SERP endpoint bu sorguda 2 denemede geçici hata verdi ('Internal SE Server Error' / 'POST Data Is Empty'). Baseline'da boş bırakıldı; sonraki turda tekrar denenecek."
+      },
+      "projedar emlakçı": {
+        "durum": "OK",
+        "domainSiralari": [
+          { "rank": 4, "url": "https://projedar.com/", "tip": "organic" },
+          { "rank": 5, "url": "https://projedar.com/konut-projeleri/bursa", "tip": "organic" }
+        ],
+        "aiOverview": false,
+        "localPack": true,
+        "sitelink": false,
+        "gozlem": "İlk 3 local pack (başka emlak ofisleri). Marka #4 organik (anasayfa). /emlakci landing ilk 20'de değil; anasayfa onun yerine sıralanıyor."
+      },
+      "projedar müteahhit": {
+        "durum": "OK",
+        "domainSiralari": [
+          { "rank": 2, "url": "https://projedar.com/konut-projeleri/istanbul/esenyurt", "tip": "organic" },
+          { "rank": 3, "url": "https://projedar.com/firma/gks-yapi", "tip": "organic" },
+          { "rank": 15, "url": "https://projedar.com/", "tip": "organic" }
+        ],
+        "aiOverview": true,
+        "sitelink": false,
+        "gozlem": "rank 1 AI overview. Marka #2 (lokasyon hub, müteahhit-uygun snippet) + #3 (firma). /muteahhit landing ilk 20'de değil; lokasyon/firma sayfaları onu geçiyor."
+      }
+    },
+    "ozet": "Marka sorgularında domain görünür (projedar #1, emlakçı #4, müteahhit #2); ancak intent-landing sayfaları (/emlakci, /muteahhit) marka sorgularında programatik lokasyon/firma sayfalarının GERİSİNDE. Sitelink yok (marka yeni, normal). 'projedar nedir' verisi alınamadı."
+  },
+
+  "trackedTerms": {
+    "trackerId": "0606f526-6c83-4253-a42f-179c0efea5c4",
+    "schedule": "manual",
+    "not": "Bu turda eklenen 7 çekirdek kategori terimi (category ownership baseline). Volume önemli değil; amaç kategori sahipliği takibi. Manual tracker → ekleme kredi harcamaz; ilk pozisyon için ileride run_rank_tracker gerekir (onaylı).",
+    "eklenen": [
+      "yeni konut proje satış ağı",
+      "konut projesi satış ağı",
+      "müteahhit emlakçı satış ağı",
+      "canlı konut stoğu",
+      "daire tahsisi",
+      "proje satışı nasıl yapılır",
+      "çift satış nasıl önlenir"
+    ],
+    "eklenenId": [
+      "6686d502-fdfb-4655-8b74-8dc868f9a16e",
+      "4b9db712-0ee4-4883-b994-89a883a81175",
+      "1f152546-8606-43fe-8268-abedc7d7f8ef",
+      "578b6240-75ba-4f13-b906-72149876054e",
+      "bdba06d4-9394-4249-9439-e8774460e355",
+      "60d51974-2555-4ef9-be75-b78dc360df5d",
+      "3effb4dd-f9b6-4bf0-8fe2-80eadaddca9d"
+    ],
+    "durumNot": "Pozisyonlar henüz alınmadı (lastCheckedAt=null, manual). İlk snapshot Verify/Learn turunda alınacak."
+  },
+
+  "pageHealth": {
+    "durum": "PASS_WARN",
+    "sayfalar": [
+      { "url": "/", "http": 200, "title": "Projedar | Yeni Konut Projelerinin Canlı Satış Ağı", "canonical": "https://projedar.com", "robots": "index, follow", "h1": "Bloklar yükselir. Stok erir.", "schema": ["Organization", "WebSite", "SoftwareApplication", "Service", "Offer", "FAQPage", "SiteNavigationElement"], "not": "OK" },
+      { "url": "/nedir", "http": 200, "title": "Projedar nedir? Tahsisli canlı konut satış ağı | Projedar", "canonical": "https://projedar.com/nedir", "robots": "index, follow", "h1": "Projedar nedir?", "schema": ["WebPage", "FAQPage"], "not": "OK" },
+      { "url": "/emlakci", "http": 200, "title": "Emlakçılar için Projedar: Ücretsiz | Komisyonun %100'ü senin", "canonical": "https://projedar.com/emlakci", "robots": "index, follow", "h1": null, "schema": ["WebPage", "BreadcrumbList", "FAQPage"], "not": "HATA: H1 yok (0 adet H1; sayfa H2 ile başlıyor)." },
+      { "url": "/muteahhit", "http": 200, "title": "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar", "canonical": "https://projedar.com/muteahhit", "robots": "index, follow", "h1": "Envanter kontrolü sende. Çift satış yapısal olarak imkânsız.", "schema": ["WebPage", "BreadcrumbList", "FAQPage"], "not": "HATA: 'imkânsız' (mutlak dil) + desc 'komisyon yok' (yasak ifade)." },
+      { "url": "/guven", "http": 200, "title": "Güven Protokolü: Çift satış imkânsız, veri tahsisli, komisyon yok | Projedar", "canonical": "https://projedar.com/guven", "robots": "index, follow", "h1": "Güven sözle kurulmaz. Mimariyle kurulur.", "schema": ["WebPage", "BreadcrumbList", "FAQPage"], "not": "HATA: title 'imkânsız' (mutlak dil) + 'komisyon yok' (yasak ifade)." },
+      { "url": "/rehber/musteri-cakismasi-cift-satis", "http": 200, "title": "Çift Satış Nasıl Önlenir? Aynı Dairenin İki Kez Satılması (2026) | Projedar", "canonical": "https://projedar.com/rehber/musteri-cakismasi-cift-satis", "robots": "index, follow", "h1": "Çift Satış Nasıl Önlenir? Müşteri Çakışması, Opsiyon Kilidi ve Canlı Stok", "schema": ["Organization", "BreadcrumbList", "Article", "FAQPage", "ImageObject"], "not": "OK (yeni pillar; dil kurallarına uygun)." }
+    ]
+  },
+
+  "conversionEvents": {
+    "durum": "HAZIR",
+    "funnel": [
+      { "adim": "pillar görüntüleme", "olay": "content_view", "kaynak": "IcerikGoruntuleme (slug)", "durum": "var" },
+      { "adim": "CTA tıklama", "olay": "content_cta_click", "kaynak": "IcerikCTA (slug, hedef); href kaynak=icerik-musteri-cakismasi-cift-satis", "durum": "var" },
+      { "adim": "kayıt sayfası görüntüleme", "olay": "kayit_goruntuleme", "kaynak": "KayitOlay → /api/olay (rol, kaynak)", "durum": "var" },
+      { "adim": "kayıt tamamlandı", "olay": "kayit_tamam", "kaynak": "actions.ts (rol, kaynak, oturum)", "durum": "duzeltildi", "not": "KayitForm'da hidden 'kaynak' inputu eksikti → kayit_tamam attribution null geliyordu. Bu turda eklendi (page.tsx→KayitForm→hidden input). Artık içerik→kayıt tam attribution taşınıyor." }
+    ],
+    "not": "Yeni analytics framework kurulmadı; yalnız kopuk son halka tamamlandı."
+  },
+
+  "fixes": [
+    { "oncelik": "yuksek", "sayfalar": ["/muteahhit", "/guven"], "sorun": "'imkânsız' mutlak dil (claim politikası ihlali: %100/imkânsız/garanti koşulsuz kullanılmaz)", "oneri": "'yapısal olarak engellenir' / 'veritabanı seviyesinde önlenir' gibi mekanizma-anlatan, mutlak olmayan ifade." },
+    { "oncelik": "yuksek", "sayfalar": ["/muteahhit", "/guven"], "sorun": "'komisyon yok' yasak ifade (emlakçı 'ben kazanamam' sanır; komisyonsuz-ifadesi-yasak)", "oneri": "'Projedar satış komisyonuna ortak olmaz / pay almaz' veya emlakçı için 'kazancının %100'ü senin'." },
+    { "oncelik": "orta", "sayfalar": ["/emlakci"], "sorun": "H1 yok (sayfa H2 ile başlıyor) — SEO + erişilebilirlik", "oneri": "Sayfa başına tek anlamlı H1 ekle (mevcut hero başlığını H1 yap)." }
+  ]
+}
