@@ -1166,9 +1166,11 @@ export async function tahsisEkle(formData: FormData) {
       : null;
 
   const supabase = await createClient();
+  const actorId = (await supabase.auth.getUser()).data.user?.id ?? null;
   const { error } = await supabase.from("tahsis").insert(
     alicilar.map((a) => ({
       proje_id,
+      created_by: actorId, // ← EKLE (yeni kayıtlar dolu; mevcut kayıtlar NULL kalır = doğru)
       hedef_tip: a.hedef_tip,
       hedef_id: a.hedef_id,
       hedef_filtre: a.hedef_filtre,
@@ -1223,6 +1225,127 @@ export async function tahsisEkle(formData: FormData) {
   basariya(geri, formData, `${alicilar.length} tahsis eklendi`);
 }
 
+// ── Tahsis düzenle (edit-in-place; hedef dahil). Tek satır = tek alıcı. ──
+export async function tahsisGuncelle(formData: FormData) {
+  const tahsis_id = String(formData.get("tahsis_id"));
+  const proje_id = String(formData.get("proje_id"));
+  if (!UUID_RE.test(tahsis_id) || !UUID_RE.test(proje_id)) hataya("/uretici", "Geçersiz kayıt");
+  const geri = `/uretici/tahsis?proje=${proje_id}`;
+
+  const supabase = await createClient();
+  const { data: eski } = await supabase.from("tahsis")
+    .select("hedef_tip, hedef_id, hedef_filtre, kapsam, komisyon_tip, komisyon_deger, munhasir, kontenjan, fiyat_gorunur, bitis")
+    .eq("id", tahsis_id).single();
+  if (!eski) hataya(geri, "Tahsis bulunamadı");
+
+  // HEDEF (tek): tum_ag | segment | ofis(tek) | danisman(tek)
+  const modu = String(formData.get("hedef_modu") ?? "tum_ag");
+  let hedef_tip: "herkes" | "ofis" | "danisman" = "herkes";
+  let hedef_id: string | null = null;
+  let hedef_filtre: Record<string, string> | null = null;
+  if (modu === "segment") {
+    const f: Record<string, string> = {};
+    for (const k of ["marka", "il", "ilce", "uzmanlik"]) {
+      const v = String(formData.get(`f_${k}`) ?? "").trim();
+      if (v) f[k] = v;
+    }
+    if (Object.keys(f).length === 0) hataya(geri, "Segment için en az bir filtre seç");
+    hedef_filtre = f;
+  } else if (modu === "ofis") {
+    const id = String(formData.get("ofis_id") ?? "");
+    if (!UUID_RE.test(id)) hataya(geri, "Ofis seç");
+    hedef_tip = "ofis"; hedef_id = id;
+  } else if (modu === "danisman") {
+    const id = String(formData.get("emlakci_id") ?? "");
+    if (!UUID_RE.test(id)) hataya(geri, "Danışman seç");
+    hedef_tip = "danisman"; hedef_id = id;
+  }
+
+  // KAPSAM
+  const kapsam: Record<string, string[]> = {};
+  if (String(formData.get("kapsam_tip")) === "belirli") {
+    const al = (k: string) => formData.getAll(k).map(String).filter(Boolean);
+    for (const k of ["bloklar", "katlar", "tipler", "turler", "birimler"]) {
+      const v = al(k); if (v.length) kapsam[k] = v;
+    }
+  }
+
+  // ŞARTLAR
+  const kom = String(formData.get("komisyon_deger") ?? "").trim();
+  const kot = String(formData.get("kontenjan") ?? "").trim();
+  const komisyon_tip = String(formData.get("komisyon_tip") ?? "yuzde") as "yuzde" | "sabit" | "yok";
+  const sureRaw = String(formData.get("bitis_gun") ?? "").trim();
+  const sureNum = sureRaw ? Number(sureRaw) : NaN;
+  const bitis = Number.isFinite(sureNum) && sureNum > 0 && sureNum <= 3650
+    ? new Date(Date.now() + sureNum * 86_400_000).toISOString() : null;
+
+  const yeni = {
+    hedef_tip, hedef_id, hedef_filtre, kapsam,
+    komisyon_tip,
+    komisyon_deger: kom === "" ? null : Number(kom),
+    munhasir: formData.get("munhasir") === "on",
+    kontenjan: kot === "" ? null : Number(kot),
+    fiyat_gorunur: formData.get("fiyat_gorunur") === "on",
+    bitis,
+    updated_at: new Date().toISOString(),
+    updated_by: (await supabase.auth.getUser()).data.user?.id ?? null,
+  };
+
+  const { error } = await supabase.from("tahsis").update(yeni).eq("id", tahsis_id);
+  if (error) hataya(geri, error.message);
+
+  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: { aksiyon: "guncelle", tahsis_id, eski, yeni } });
+  revalidatePath(geri);
+  basariya(geri, formData, "Tahsis güncellendi");
+}
+
+// ── Tek tahsis durum geçişi. kaldirildi TERMINAL (devam ile dirilmez). ──
+export async function tahsisDurumGuncelle(formData: FormData) {
+  const tahsis_id = String(formData.get("tahsis_id"));
+  const proje_id = String(formData.get("proje_id"));
+  const yeni_durum = String(formData.get("yeni_durum")) as "aktif" | "askida" | "kaldirildi";
+  if (!UUID_RE.test(tahsis_id) || !["aktif", "askida", "kaldirildi"].includes(yeni_durum)) return;
+  const geri = `/uretici/tahsis?proje=${proje_id}`;
+  const supabase = await createClient();
+
+  const { data: mevcut } = await supabase.from("tahsis").select("durum").eq("id", tahsis_id).single();
+  if (!mevcut) return;
+  if (mevcut.durum === "kaldirildi") hataya(geri, "Kaldırılmış tahsis yeniden aktifleştirilemez; yeni tahsis oluştur.");
+
+  const { error } = await supabase.from("tahsis")
+    .update({ durum: yeni_durum, updated_at: new Date().toISOString(), updated_by: (await supabase.auth.getUser()).data.user?.id ?? null })
+    .eq("id", tahsis_id);
+  if (error) hataya(geri, error.message);
+
+  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: {
+    aksiyon: yeni_durum === "askida" ? "askiya_al" : yeni_durum === "aktif" ? "devam" : "kaldir",
+    tahsis_id, eski: { durum: mevcut.durum }, yeni: { durum: yeni_durum },
+  } });
+  revalidatePath(geri);
+  basariya(geri, formData, yeni_durum === "askida" ? "Askıya alındı" : yeni_durum === "kaldirildi" ? "Kaldırıldı" : "Yeniden aktif");
+}
+
+// ── Toplu lifecycle — ATOMİK (DB RPC tahsis_toplu; update+audit tek transaction). Invariant 2. ──
+export async function tahsisTopluAksiyon(formData: FormData) {
+  const proje_id = String(formData.get("proje_id"));
+  const aksiyon = String(formData.get("aksiyon")); // askiya_al|devam|kaldir|uzat
+  const ids = formData.getAll("tahsis_ids").map(String).filter((s) => UUID_RE.test(s));
+  const gunRaw = String(formData.get("gun") ?? "").trim();
+  const geri = `/uretici/tahsis?proje=${proje_id}`;
+  if (!UUID_RE.test(proje_id) || ids.length === 0) hataya(geri, "Seçim yok");
+  if (!["askiya_al", "devam", "kaldir", "uzat"].includes(aksiyon)) hataya(geri, "Geçersiz aksiyon");
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("tahsis_toplu", {
+    p_proje_id: proje_id, p_ids: ids, p_aksiyon: aksiyon, p_gun: gunRaw ? Number(gunRaw) : null,
+  });
+  if (error) hataya(geri, error.message);
+  revalidatePath(geri);
+  basariya(geri, formData, `${data ?? 0} tahsis güncellendi`);
+}
+
+// ⚠️ HARD DELETE — normal kullanıcı akışından ÇIKARILDI (kullanıcıya görünen "Kaldır" = tahsisDurumGuncelle('kaldirildi')).
+// Yalnız administrative cleanup / veri bütünlüğü istisnası. UI'da buton bağlanmaz.
 export async function tahsisSil(formData: FormData) {
   const id = zUuid.safeParse(formData.get("tahsis_id"));
   const proje_id = String(formData.get("proje_id"));
