@@ -183,9 +183,12 @@ run_one(){ # tag pointer(on|off|forced) repo_skill(on|off) mutate(0|1) profile(d
     node "$MUT_SCRIPT" "$clone" > "$OUT_DIR/ground-truth.json" 2> "$OUT_DIR/$tag.mut.err" \
       || { echo "FATAL ($tag): mutations basarisiz (bkz $tag.mut.err)"; exit 1; }
   fi
-  # snapshot-clean assert: .git / tests/kolayseo / ground-truth / mutations izi olmamali
-  if [ -d "$clone/.git" ] || [ -e "$clone/tests/kolayseo" ] || grep -rqiE 'ground-truth|mutations\.mjs' "$clone" 2>/dev/null; then
-    echo "FATAL ($tag): snapshot kirli (.git / tests/kolayseo / ground-truth izi)."; exit 1
+  # snapshot-clean assert: .git / tests/kolayseo dizini / leak DOSYASI olmamali.
+  # (Not: icerik-grep DEGIL dosya-adi — skill'in 10-audit.md'si "GSC ground-truth" ibaresini
+  #  legit tasir; asil risk mutations.mjs/ground-truth.json DOSYALARININ sizmasidir.)
+  if [ -d "$clone/.git" ] || [ -e "$clone/tests/kolayseo" ] \
+     || [ -n "$(find "$clone" \( -name 'mutations.mjs' -o -name 'ground-truth.json' \) -print -quit 2>/dev/null)" ]; then
+    echo "FATAL ($tag): snapshot kirli (.git / tests/kolayseo / leak dosyasi)."; exit 1
   fi
 
   local jsonl="$OUT_DIR/$tag.jsonl"
