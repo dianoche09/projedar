@@ -26,20 +26,26 @@ Ek metrik (skora katma, ayrı raporla):
 - KolaySEO-özgü bulgu (React19 JSON-LD, thin→tüm-site doorway, IndexNow≠GSC, Content-Signal)
 - gereksiz öneri sayısı (B'de düşük — skill odaklar)
 
-## Karar
+## Karar (3-kollu: A / B-native / B-forced)
 
-| Sonuç | Yorum |
-|-------|-------|
-| ort(B TP) ≫ ort(A TP) ve FP(B) ≤ FP(A) | Skill ölçülebilir değer üretiyor ✅ |
-| ort(B) ≈ ort(A) | Adı var, bilgi avantajı yok ⚠️ |
-| ort(B) < ort(A) veya FP(B) > FP(A) | Skill yanlış yönlendiriyor 🔴 |
+Skill **kalitesini** B-forced ölçer (zorla çağrılır); **discovery**'yi B-native ↔ B-forced farkı.
+
+| Sonuç | Teşhis |
+|-------|--------|
+| B-forced ≫ A ve B-native ≈ B-forced | Skill güçlü + native discovery çalışıyor ✅✅ |
+| B-forced ≫ A ama B-native ≈ A | Skill güçlü, **discovery zayıf** (çağrılmıyor) → discovery düzelt ⚠️ |
+| B-forced ≈ A | Skill'in içerik avantajı zayıf 🔴 |
+| FP(B*) > FP(A) | Skill yanlış yönlendiriyor 🔴 |
+
+`ort()` = ≥3 tekrarın ortalaması. FP oranı ayrıca karşılaştırılır (verify-before-fix disiplini).
 
 ## Şablon (`results/scores.tsv`)
 
 ```
 run	TP	FP	MISS	highTP	medTP	score	kolayseo_ozgu	gereksiz
 A-1	...
-B-1	...
+BN-1	...   (B-native)
+BF-1	...   (B-forced)
 ```
 
 ## Versiyonlama faydası
