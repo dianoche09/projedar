@@ -178,22 +178,37 @@ language sql stable security definer set search_path = public as $$
   where b.proje_id = p_proje_id and b.ana_birim_id is null and _tahsis_proje_sahibi(p_proje_id)
 $$;
 
--- ==== 7) tahsis_toplu: ATOMİK toplu lifecycle (invariant 2) — update + audit tek transaction ====
+-- ==== 7) tahsis_toplu: ATOMİK toplu lifecycle (invariant 2) + RETURNING audit (invariant 4) ====
 -- p_aksiyon: 'askiya_al' | 'devam' | 'kaldir' | 'uzat'. p_gun yalnız 'uzat'ta.
+-- Audit YALNIZ gerçekten değişen satırdan (UPDATE...RETURNING), eski/yeni değerle. "Update sonrası tekrar oku" YASAK.
 create or replace function tahsis_toplu(p_proje_id uuid, p_ids uuid[], p_aksiyon text, p_gun int default null)
 returns int language plpgsql security definer set search_path = public as $$
-declare v_say int; v_yeni tahsis_durum;
+declare v_say int; v_yeni tahsis_durum; v_actor uuid := auth.uid();
 begin
   if not _tahsis_proje_sahibi(p_proje_id) then raise exception 'yetki yok'; end if;
 
   if p_aksiyon = 'uzat' then
-    update tahsis set bitis = coalesce(bitis, now()) + make_interval(days => greatest(1, coalesce(p_gun,0))),
-                      updated_at = now(), updated_by = auth.uid()
-     where id = any(p_ids) and proje_id = p_proje_id and durum <> 'kaldirildi';
-    get diagnostics v_say = row_count;
-    insert into events(tip, profile_id, proje_id, payload)
-      select 'tahsis', auth.uid(), p_proje_id, jsonb_build_object('aksiyon','uzat','tahsis_id',id,'gun',p_gun)
-      from tahsis where id = any(p_ids) and proje_id = p_proje_id;
+    with hedef as (
+      select id, bitis as eski_bitis,
+             coalesce(bitis, now()) + make_interval(days => greatest(1, coalesce(p_gun,0))) as yeni_bitis
+      from tahsis
+      where id = any(p_ids) and proje_id = p_proje_id and durum <> 'kaldirildi'
+      for update
+    ),
+    upd as (
+      update tahsis t set bitis = h.yeni_bitis, updated_at = now(), updated_by = v_actor
+      from hedef h where t.id = h.id
+      returning t.id, h.eski_bitis, t.bitis as yeni_bitis
+    ),
+    ins as (
+      insert into events(tip, profile_id, proje_id, payload)
+      select 'tahsis', v_actor, p_proje_id,
+             jsonb_build_object('aksiyon','uzat','tahsis_id',id,'gun',p_gun,
+                                'eski', jsonb_build_object('bitis', eski_bitis),
+                                'yeni', jsonb_build_object('bitis', yeni_bitis))
+      from upd returning 1
+    )
+    select count(*) into v_say from ins;
     return v_say;
   end if;
 
@@ -202,17 +217,29 @@ begin
                            when 'kaldir'    then 'kaldirildi'::tahsis_durum end;
   if v_yeni is null then raise exception 'gecersiz aksiyon: %', p_aksiyon; end if;
 
-  -- INVARIANT 1: kaldirildi terminal → 'devam' kaldirildi'yi diriltemez
-  update tahsis set durum = v_yeni, updated_at = now(), updated_by = auth.uid()
-   where id = any(p_ids) and proje_id = p_proje_id
-     and durum <> 'kaldirildi'
-     and durum <> v_yeni;
-  get diagnostics v_say = row_count;
-
-  insert into events(tip, profile_id, proje_id, payload)
-    select 'tahsis', auth.uid(), p_proje_id,
-           jsonb_build_object('aksiyon', p_aksiyon, 'tahsis_id', id, 'yeni_durum', v_yeni)
-    from tahsis where id = any(p_ids) and proje_id = p_proje_id and durum = v_yeni;
+  -- INVARIANT 1 (kaldirildi terminal: devam onu diriltemez) + INVARIANT 4 (yalnız değişen satır, eski/yeni)
+  with hedef as (
+    select id, durum as eski_durum
+    from tahsis
+    where id = any(p_ids) and proje_id = p_proje_id
+      and durum <> 'kaldirildi'   -- terminal koruması
+      and durum <> v_yeni         -- zaten hedef durumdaysa değişmez → event YOK
+    for update
+  ),
+  upd as (
+    update tahsis t set durum = v_yeni, updated_at = now(), updated_by = v_actor
+    from hedef h where t.id = h.id
+    returning t.id, h.eski_durum, t.durum as yeni_durum
+  ),
+  ins as (
+    insert into events(tip, profile_id, proje_id, payload)
+    select 'tahsis', v_actor, p_proje_id,
+           jsonb_build_object('aksiyon', p_aksiyon, 'tahsis_id', id,
+                              'eski', jsonb_build_object('durum', eski_durum),
+                              'yeni', jsonb_build_object('durum', yeni_durum))
+    from upd returning 1
+  )
+  select count(*) into v_say from ins;
   return v_say;
 end $$;
 ```
@@ -259,59 +286,65 @@ Amaç: `durum` görünürlüğün anahtarı olduğunu ve kapsam mantığının R
 
 `db/2026-08-12_tahsis-rls_TEST.sql`:
 
+İki katman test: **A) predicate** (function çağrısı) + **B) gerçek RLS** (`set local role authenticated` + `SELECT birim`). B, policy'nin doğru overload'ı çağırdığını da kanıtlar. Test birimi MUTLAKA seçilen tahsisin `birim_kapsaminda()` kapsamından seçilir (aksi halde false-alarm).
+
 ```sql
--- Rollback'li RLS/durum davranış testi. Doğrulanmış emlakçı + tüm-ağ tahsisli bir proje seç,
--- tahsisin durumunu askıya al → o birim emlakçıya GÖRÜNMEZ olmalı; aktif → GÖRÜNÜR.
+-- Rollback'li: doğrulanmış emlakçı + AKTİF tüm-ağ (herkes, filtresiz) tahsis + KAPSAM-İÇİ birim.
+-- durum=aktif → görünür; askida/kaldirildi → görünmez. Hem predicate hem gerçek RLS SELECT.
 begin;
 do $$
 declare
-  v_emlakci uuid; v_proje uuid; v_birim uuid; v_tahsis uuid; v_gorunur boolean;
+  v_emlakci uuid; v_proje uuid; v_kapsam jsonb; v_tahsis uuid;
+  v_birim uuid; v_blok uuid; v_tip uuid; v_kat int; v_tur text;
+  v_claims text; v_gorunur boolean;
 begin
-  -- Doğrulanmış emlakçı + AKTİF tüm-ağ (herkes, filtresiz) tahsisi olan proje+birim bul
-  select p.id, t.id into v_proje, v_tahsis
+  select t.id, t.proje_id, t.kapsam into v_tahsis, v_proje, v_kapsam
     from tahsis t join proje p on p.id = t.proje_id
-    where t.durum = 'aktif' and t.hedef_tip = 'herkes' and coalesce(t.hedef_filtre,'{}') = '{}'
-      and coalesce(p.demo,false) = false
+    where t.durum='aktif' and t.hedef_tip='herkes' and coalesce(t.hedef_filtre,'{}')='{}'
+      and coalesce(p.demo,false)=false
     limit 1;
-  select id into v_birim from birim where proje_id = v_proje and ana_birim_id is null limit 1;
   select id into v_emlakci from profiles where rol='emlakci' and belge_durumu='dogrulandi' and durum='aktif' limit 1;
+  -- BİRİM: tahsisin kapsamı içinde OLMALI (aksi halde 'görünmüyor' assert'i yanlış alarm)
+  select b.id, b.blok_id, b.tip_id, b.kat, b.tur::text
+    into v_birim, v_blok, v_tip, v_kat, v_tur
+    from birim b
+    where b.proje_id = v_proje and b.ana_birim_id is null
+      and birim_kapsaminda(b.id, b.blok_id, b.tip_id, b.kat, b.tur::text, v_kapsam)
+    limit 1;
   if v_tahsis is null or v_birim is null or v_emlakci is null then
-    raise notice 'ATLA: uygun aktif/tüm-ağ tahsis+birim+doğrulanmış emlakçı bulunamadı'; return;
+    raise notice 'ATLA: uygun aktif/tüm-ağ tahsis + kapsam-içi birim + doğrulanmış emlakçı yok'; return;
   end if;
+  v_claims := json_build_object('sub', v_emlakci, 'role','authenticated')::text;
+  perform set_config('request.jwt.claims', v_claims, true);
 
-  -- Emlakçı kimliğini simüle et
-  perform set_config('request.jwt.claims', json_build_object('sub', v_emlakci, 'role','authenticated')::text, true);
+  -- ===== A. PREDICATE (function) =====
+  assert emlakci_birim_gorebilir(v_birim, v_proje, v_blok, v_tip, v_kat, v_tur) = true,
+         'FAIL A: aktif tahsiste predicate false';
 
-  -- AKTİF iken görünür olmalı
-  v_gorunur := emlakci_birim_gorebilir(v_birim, v_proje,
-                 (select blok_id from birim where id=v_birim),
-                 (select tip_id from birim where id=v_birim),
-                 (select kat from birim where id=v_birim),
-                 (select tur::text from birim where id=v_birim));
-  assert v_gorunur = true, 'FAIL: aktif tahsiste birim görünmüyor';
+  -- ===== B. GERÇEK RLS SELECT (policy + doğru overload) =====
+  set local role authenticated;
+  select exists(select 1 from birim where id = v_birim) into v_gorunur;
+  reset role;
+  assert v_gorunur = true, 'FAIL B: aktif tahsiste SELECT birim GÖRÜNMÜYOR';
 
-  -- ASKIYA AL → görünmez olmalı
-  update tahsis set durum='askida' where id = v_tahsis;
-  v_gorunur := emlakci_birim_gorebilir(v_birim, v_proje,
-                 (select blok_id from birim where id=v_birim),
-                 (select tip_id from birim where id=v_birim),
-                 (select kat from birim where id=v_birim),
-                 (select tur::text from birim where id=v_birim));
-  assert v_gorunur = false, 'FAIL: askıya alınan tahsiste birim HÂLÂ görünüyor (RLS sızıntısı)';
+  update tahsis set durum='askida' where id = v_tahsis;   -- service role (RLS bypass)
+  set local role authenticated;
+  select exists(select 1 from birim where id = v_birim) into v_gorunur;
+  reset role;
+  assert v_gorunur = false, 'FAIL B: askıda tahsiste SELECT birim SIZIYOR (RLS)';
 
-  -- KALDIRILDI → görünmez olmalı
   update tahsis set durum='kaldirildi' where id = v_tahsis;
-  v_gorunur := emlakci_birim_gorebilir(v_birim, v_proje,
-                 (select blok_id from birim where id=v_birim),
-                 (select tip_id from birim where id=v_birim),
-                 (select kat from birim where id=v_birim),
-                 (select tur::text from birim where id=v_birim));
-  assert v_gorunur = false, 'FAIL: kaldirildi tahsiste birim görünüyor';
+  set local role authenticated;
+  select exists(select 1 from birim where id = v_birim) into v_gorunur;
+  reset role;
+  assert v_gorunur = false, 'FAIL B: kaldirildi tahsiste SELECT birim görünüyor';
 
-  raise notice 'PASS: durum=aktif görünür; askida/kaldirildi görünmez';
+  raise notice 'PASS: predicate + gerçek RLS — aktif görünür; askida/kaldirildi görünmez';
 end $$;
 rollback;
 ```
+
+Not (uygulayıcı): `set local role authenticated` + `reset role` DO bloğunda çalışmazsa (privilege), B bölümünü ayrı düz SQL statement'ları olarak koş (her biri kendi `set local role` + `SELECT` + assert). `request.jwt.claims` transaction-local (set_config true).
 
 - [ ] **Step 2: Migration ÖNCE davranışı doğrula (regresyon guard mantığı)**
 
@@ -473,7 +506,10 @@ export async function tahsisDurumGuncelle(formData: FormData) {
     .eq("id", tahsis_id);
   if (error) hataya(geri, error.message);
 
-  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: { aksiyon: yeni_durum === "askida" ? "askiya_al" : yeni_durum === "aktif" ? "devam" : "kaldir", tahsis_id } });
+  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: {
+    aksiyon: yeni_durum === "askida" ? "askiya_al" : yeni_durum === "aktif" ? "devam" : "kaldir",
+    tahsis_id, eski: { durum: mevcut.durum }, yeni: { durum: yeni_durum },
+  } });
   revalidatePath(geri);
   basariya(geri, formData, yeni_durum === "askida" ? "Askıya alındı" : yeni_durum === "kaldirildi" ? "Kaldırıldı" : "Yeniden aktif");
 }
@@ -510,6 +546,30 @@ export async function tahsisTopluAksiyon(formData: FormData) {
 // ⚠️ HARD DELETE — normal kullanıcı akışından ÇIKARILDI (kullanıcıya görünen "Kaldır" = tahsisDurumGuncelle('kaldirildi')).
 // Yalnız administrative cleanup / veri bütünlüğü istisnası. UI'da buton bağlanmaz.
 export async function tahsisSil(formData: FormData) {
+```
+
+- [ ] **Step 4b: `tahsisEkle` → yeni kayıtlarda `created_by` doldur (invariant 5)**
+
+Mevcut `tahsisEkle` içindeki `supabase.from("tahsis").insert(...)` ÖNCESİNDE actor id al, insert'lenen her satıra `created_by` ekle:
+
+```ts
+  const actorId = (await supabase.auth.getUser()).data.user?.id ?? null;
+  const { error } = await supabase.from("tahsis").insert(
+    alicilar.map((a) => ({
+      proje_id,
+      created_by: actorId,   // ← EKLE (yeni kayıtlar dolu; mevcut kayıtlar NULL kalır = doğru)
+      hedef_tip: a.hedef_tip,
+      hedef_id: a.hedef_id,
+      hedef_filtre: a.hedef_filtre,
+      kapsam,
+      komisyon_tip: terim.komisyon_tip,
+      komisyon_deger: terim.komisyon_deger,
+      munhasir: terim.munhasir,
+      kontenjan: terim.kontenjan,
+      fiyat_gorunur: terim.fiyat_gorunur,
+      bitis,
+    })),
+  );
 ```
 
 - [ ] **Step 5: Type-check + commit**

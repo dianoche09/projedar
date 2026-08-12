@@ -51,6 +51,15 @@ AND <kapsam eşleşmesi — tek ortak helper, bkz. Bölüm 5>
 
 Sonuç: askıya alınan (askida) veya silmeden kapatılan (kaldirildi) veya ileri tarihli (baslangic>now) veya süresi geçmiş tahsis emlakçıya **anında** görünmez olur. `durum` görünürlüğün birinci anahtarı olur.
 
+**GÜVENLİK INVARIANTI (canlı DB'den doğrulandı 2026-08-12):** Bu iki fonksiyonun MEVCUT görünürlük semantiği korunur, lifecycle refactor onu DEĞİŞTİREMEZ; yalnız yeni lifecycle predikatı (`durum='aktif' AND baslangic<=now()`) EKLER. Korunacak mevcut mantık:
+- `demo` proje bypass (demo proje herkese açık),
+- `belge_durumu='dogrulandi'` gate (yalnız doğrulanmış emlakçı görür),
+- segment filtre (`current_marka/il/ilce/uzmanlik` ↔ `hedef_filtre`),
+- hedef eşleşmesi (herkes/danisman/ofis),
+- `birimler` dahil kapsam eşleşmesi.
+- **Canlı `birim` policy 6-arg overload'ı çağırır** (`emlakci_birim_gorebilir(id, proje_id, blok_id, tip_id, kat, tur::text)`); 5-arg overload ölü. Refactor 6-arg'ı günceller, policy imzası değişmez.
+Kural: "Lifecycle refactor mevcut visibility semantics'i değiştiremez; yalnız lifecycle predicate ekler." Test bunu SELECT-seviyesi RLS ile (function çağrısı DEĞİL) kanıtlar.
+
 ## 3. Event modeli (ayrım net — karıştırılmaz)
 
 - **Tahsis audit** → `events tip='tahsis'`, uygulama yazar. `payload = { aksiyon: 'olustur'|'guncelle'|'askiya_al'|'devam'|'kaldir', eski:{...}, yeni:{...} }`. Yaşam döngüsü kayıt izi.
@@ -95,7 +104,8 @@ Amaç ikincil (performans): `tasks.md`'deki `O(proje×birim)` client-join borcun
 - **Tahsis mercek:** proje-gruplu tablo + durum rozeti (aktif / askıda / süresi-dolacak / kaldırıldı) + stok sayaç & değişiklik rozeti (ör. `42 müsait · 3 opsiyonlu · 5 satıldı` + gerekirse `↑2 opsiyon · 1 fiyat değişti`) + yaşam döngüsü aksiyonları (Düzenle / Askıya al / Devam / Kaldır) + "son yönetim: 2g önce, sen" (`updated_at/by`) + checkbox → **toplu aksiyon barı**.
 - **Stok mercek:** proje → blok → daire drilldown; her birim: durum (müsait/opsiyonlu/satıldı) + **"kim satabiliyor" + hangi şart** + inline erişim değiştir (o birimi kapsayan tahsise git veya yeni tahsis).
 - **Süresi-dolacak:** `bitis` yakın → amber + "uzat" quick action (window UI seviyesinde, kod sabiti; iş kuralı değil).
-- **Değişiklik rozeti referansı:** `tahsis.updated_at ?? baslangic`. UI'da açıkça etiketli ("son yönetimden beri"). **Hardcoded 7-gün yok.** ("Son görüntülemeye göre" penceresi ayrı tracking gerektirir → sonraki faz.)
+- **Değişiklik rozeti referansı:** `tahsis.updated_at ?? baslangic`. UI'da açıkça etiketli ("son yönetimden beri"). **Hardcoded 7-gün yok.**
+  - **SEMANTİK (dikkat):** bu rozet **acknowledgement / "okunmamış değişiklik" DEĞİL**, **lifecycle-relative change indicator**'dır: "bu tahsisi en son yönettiğimden beri kapsamında stok hareketi oldu mu". Kullanıcının değişiklikleri *gördüğünü* göstermez (ör. 09:00 fiyat değişir, 10:00 kullanıcı komisyonu düzenler → `updated_at` 10:00 olur, 09:00 değişimi rozetten düşer; bu bilinçli). Gerçek "görülmemiş değişiklik" istenirse ayrı `last_seen_at` tracking gerekir → sonraki faz.
 - **`?proje=<id>`** query param → o projeye filtrelenmiş açılır (proje/[id]'den deep-link).
 - **Düzenle:** mevcut `TahsisForm` edit moduna genişler (prefill + `tahsisGuncelle`); hedef seçici de prefill edilir.
 
@@ -126,6 +136,8 @@ Kullanıcı review'ı (2026-08-12) ile eklenen üç değişmez:
 1. **`kaldirildi` terminal state.** `aktif ↔ askida` çift yönlü; ama `kaldirildi → aktif` normal UI'dan **yapılamaz**. Yanlış kaldırmada çözüm = yeniden tahsis oluştur. Aksi halde "kaldırma" ile "askıya alma" arasındaki semantik fark erir. Test ile açıkça kilitlenir (durum geçiş matrisi: aktif→askida, askida→aktif, aktif→kaldirildi, askida→kaldirildi; kaldirildi→* yasak).
 2. **Toplu lifecycle atomik.** Bulk askıya al/devam/uzat/kaldır **application loop DEĞİL, tek DB transaction/RPC**: N tahsis + N audit event ya birlikte başarılı ya hiçbiri. İkinci kayıtta hata → yarım işlem olmamalı (ileride 100'lük bulk'ta kritik).
 3. **`updated_at` yalnız tahsis-yönetim aksiyonunda değişir.** Stok fiyat değişimi / birim opsiyonlanması-satılması / sistemsel update `tahsis.updated_at`'ı **tetiklemez**. Tahsis tablosuna generic "updated_at=now()" trigger'ı KONMAZ; alan yalnız `tahsisGuncelle` / `tahsisDurumGuncelle` / `tahsisTopluAksiyon` içinde set edilir. Aksi halde "son yönetimden beri" değişiklik penceresi kendini sıfırlar.
+4. **Audit gerçekten değişen satırdan üretilir.** Toplu aksiyon audit'i `UPDATE ... RETURNING` / CTE ile YALNIZ gerçekten değişen satırlardan yazılır (input'ta olup zaten hedef durumda olan satır event ÜRETMEZ). Payload `eski`/`yeni` değerleri taşır (`uzat` için eski/yeni `bitis` dahil). "Update sonrası tabloyu yeniden okuyup eşleşenleri event'le" deseni YASAK (yanlış satır + eski değer kaybı).
+5. **`created_by` CREATE'te doldurulur.** `tahsisEkle` yeni kayıtlara `created_by=auth.uid()` yazar (mevcut kayıtlar NULL kalır, doğru).
 
 ## 9. Kapsam DIŞI (bu spec)
 
