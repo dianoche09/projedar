@@ -21,12 +21,12 @@ const SITE = "https://projedar.com";
 export const metadata: Metadata = {
   title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar",
   description:
-    "Stok, fiyat ve tahsis tek noktadan sizde. Çift satış veritabanı seviyesinde imkânsız, komisyon yok. Müteahhitler için kapalı devre canlı proje satış ağı.",
+    "Stok, fiyat ve tahsis tek noktadan sizde. Çift satış veritabanı seviyesinde engellenir; satış komisyonuna ortak olmayız. Müteahhitler için kapalı devre canlı proje satış ağı.",
   alternates: { canonical: "/muteahhit" },
   openGraph: {
     title: "Müteahhit için Tahsisli Canlı Proje Satış Ağı | Projedar",
     description:
-      "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde imkânsız. Satış komisyonuna ortak olmayan, kapalı devre.",
+      "Tahsisli canlı proje satış ağı: stok, fiyat ve kimin göreceği tek noktada. Çift satış veritabanı seviyesinde engellenir. Satış komisyonuna ortak olmayan, kapalı devre.",
     type: "website",
     siteName: "Projedar",
     url: `${SITE}/muteahhit`,
@@ -59,7 +59,7 @@ const KALELER = [
   {
     Icon: Database,
     baslik: "Çift-satış kalkanı",
-    metin: "Söz değil, veritabanı garantisi. Aktif opsiyon DB seviyesinde kilitlenir; aynı daireye ikinci opsiyon teknik olarak imkânsız.",
+    metin: "Söz değil, veritabanı kuralı. Aktif opsiyon DB seviyesinde kilitlenir; aynı daireye ikinci opsiyon veritabanı düzeyinde reddedilir.",
     sinyal: "var(--color-green)",
   },
 ];
@@ -82,7 +82,7 @@ const KIYAS_SATIRLARI: { etiket: string; portal: string; crm: string; biz: strin
     etiket: "Çift-satış garantisi",
     portal: "Söze ve operasyona bağlı",
     crm: "Uygulama katmanında, delinebilir",
-    biz: "Veritabanı kilidi, yapısal olarak imkânsız",
+    biz: "Veritabanı kilidi, yapısal olarak engellenir",
   },
   {
     etiket: "Tazelik",
@@ -109,7 +109,7 @@ const SSS: { s: string; c: string }[] = [
   },
   {
     s: "Çift satış nasıl engelleniyor?",
-    c: "Uygulama sözüyle değil, veritabanı kuralıyla. Aktif opsiyon DB seviyesinde benzersiz kilitle korunur; aynı daireye ikinci opsiyon açmak teknik olarak imkânsızdır.",
+    c: "Uygulama sözüyle değil, veritabanı kuralıyla. Aktif opsiyon DB seviyesinde benzersiz kilitle korunur; aynı daireye ikinci opsiyon açmak veritabanı düzeyinde reddedilir.",
   },
   {
     s: "Hangi emlakçılar stoğumu görür?",
@@ -141,7 +141,7 @@ function jsonLd() {
         inLanguage: "tr-TR",
         isPartOf: { "@id": `${SITE}/#website` },
         description:
-          "Geliştirici firmalar için tahsisli canlı proje satış ağı: stok, fiyat ve tahsis tek noktadan; çift satış veritabanı seviyesinde imkânsız; satış komisyonuna ortak olmayan model.",
+          "Geliştirici firmalar için tahsisli canlı proje satış ağı: stok, fiyat ve tahsis tek noktadan; çift satış veritabanı seviyesinde engellenir; satış komisyonuna ortak olmayan model.",
       },
       {
         "@type": "BreadcrumbList",
@@ -202,7 +202,7 @@ export default function MuteahhitSayfasi() {
             <h1 className="mt-5 font-display text-[38px] font-extrabold leading-[1.04] tracking-tight sm:text-[54px]">
               Envanter kontrolü sende.
               <br />
-              <span className="text-[#7fd4c4]">Çift satış yapısal olarak imkânsız.</span>
+              <span className="text-[#7fd4c4]">Çift satış yapısal olarak engellenir.</span>
             </h1>
             <p className="mt-5 max-w-xl text-pretty text-[15px] leading-relaxed text-white/85 sm:text-base">
               Geliştirici firmalar için <strong className="font-semibold text-white">tahsisli canlı proje satış ağı</strong>: stok, fiyat ve kimin göreceği tek noktada, sende. Aktif opsiyon veritabanı seviyesinde kilitlenir.
@@ -426,7 +426,7 @@ export default function MuteahhitSayfasi() {
             <div className="komuta-grid absolute inset-0" aria-hidden />
             <div className="relative px-6 py-14 text-center sm:px-10">
               <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5 font-mono text-xs">
-                {["Komisyon yok", "Tahsis sende", "DB seviyesinde kilit"].map((t) => (
+                {["Komisyona ortak değiliz", "Tahsis sende", "DB seviyesinde kilit"].map((t) => (
                   <span key={t} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/90 backdrop-blur-md">{t}</span>
                 ))}
               </div>

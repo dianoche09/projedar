@@ -95,7 +95,7 @@ export function SoruSahnesi() {
         })}
       </div>
 
-      <h2 className="mt-10 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+      <h1 className="mt-10 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         Bu soru artık{" "}
         <span className="relative inline-block whitespace-nowrap">
           sorulmuyor.
@@ -108,7 +108,7 @@ export function SoruSahnesi() {
             }}
           />
         </span>
-      </h2>
+      </h1>
       <p className="mx-auto mt-5 max-w-xl text-pretty text-sm leading-relaxed text-ink-soft sm:text-base">
         Müteahhidin sana tahsis ettiği daireleri tek canlı ağdan görürsün. Fiyat günceldir, durum
         bellidir, kimseye sormazsın: bakarsın, paylaşırsın, opsiyonlarsın.

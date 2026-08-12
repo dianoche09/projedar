@@ -37,7 +37,7 @@ const ADIMLAR = [
   {
     no: "04",
     baslik: "Opsiyon kilidi devreye girer",
-    metin: "Opsiyon alınan daire anında kilitlenir. DB kilidi: aynı birime ikinci opsiyon teknik olarak imkânsız, söz değil, veritabanı kuralı.",
+    metin: "Opsiyon alınan daire anında kilitlenir. DB kilidi: aynı birime ikinci opsiyon veritabanı düzeyinde reddedilir, söz değil, veritabanı kuralı.",
   },
 ];
 
@@ -133,7 +133,7 @@ function OpsiyonKilitSim() {
           <span aria-hidden>✕</span> 2. opsiyon denemesi, veritabanı reddetti
         </div>
       </div>
-      <p className="mt-2 text-center font-mono text-[9px] text-[var(--ink-faint)]">DB kilidi: ikinci opsiyon teknik olarak imkânsız</p>
+      <p className="mt-2 text-center font-mono text-[9px] text-[var(--ink-faint)]">DB kilidi: ikinci opsiyon veritabanı düzeyinde reddedilir</p>
     </div>
   );
 }

@@ -16,7 +16,7 @@ import { ShieldCheck, Database, BadgeCheck, CircleSlash, Lock, FileCheck, Scale,
 const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Güven Protokolü: Çift satış imkânsız, veri tahsisli, komisyon yok | Projedar",
+  title: "Güven Protokolü: Çift satış DB seviyesinde engellenir, veri tahsisli | Projedar",
   description:
     "Projedar güven protokolü: aktif opsiyon veritabanı seviyesinde kilitlenir, görünürlük satır seviyesinde tahsisle sınırlıdır, komisyon alınmaz. EİDS ilan rejimi ve KVKK çizgisi dahil tüm teminatların dayanağı.",
   alternates: { canonical: "/guven" },
@@ -44,8 +44,8 @@ const TEMINATLAR = [
 
 const SSS: { s: string; c: string }[] = [
   {
-    s: "Çift satış nasıl imkânsız oluyor?",
-    c: "Aktif opsiyon veritabanı seviyesinde tekil kayıt kuralıyla (unique kilit) korunur. İkinci bir opsiyon talebi uygulamaya değil, doğrudan veritabanı kuralına çarpar ve reddedilir. Bu bir operasyon sözü değil, teknik imkânsızlıktır.",
+    s: "Çift satış nasıl engelleniyor?",
+    c: "Aktif opsiyon veritabanı seviyesinde tekil kayıt kuralıyla (unique kilit) korunur. İkinci bir opsiyon talebi uygulamaya değil, doğrudan veritabanı kuralına çarpar ve reddedilir. Bu bir operasyon sözü değil, veritabanı düzeyinde uygulanan bir kuraldır.",
   },
   {
     s: "Rakip müteahhitler birbirinin verisini görebilir mi?",
@@ -81,7 +81,7 @@ function jsonLd() {
         inLanguage: "tr-TR",
         isPartOf: { "@id": `${SITE}/#website` },
         description:
-          "Çift satış veritabanı seviyesinde imkânsız, görünürlük satır seviyesinde tahsisli, komisyon yok, kapalı devre paylaşım. Projedar güven protokolünün teknik ve yapısal dayanakları.",
+          "Çift satış veritabanı seviyesinde engellenir, görünürlük satır seviyesinde tahsisli, satış komisyonuna ortak olunmaz, kapalı devre paylaşım. Projedar güven protokolünün teknik ve yapısal dayanakları.",
       },
       {
         "@type": "BreadcrumbList",
@@ -246,7 +246,7 @@ export default function GuvenSayfasi() {
             <Link href="/muteahhit" className="group kart signal-top flex flex-col p-7 transition-transform duration-200 hover:-translate-y-1" style={{ ["--_sig" as string]: "var(--color-navy)" }}>
               <p className="font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[var(--ink-faint)]">Müteahhit · Proje sahibi</p>
               <p className="mt-2 font-display text-xl font-extrabold tracking-tight text-ink">Bu protokolle projenizi ağa açın</p>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">Stok, fiyat ve tahsis tek noktadan sizde; çift satış yapısal olarak imkânsız.</p>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">Stok, fiyat ve tahsis tek noktadan sizde; çift satış yapısal olarak engellenir.</p>
               <p className="mt-4 text-[14px] font-semibold text-teal">Müteahhitler için <span aria-hidden className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span></p>
             </Link>
             <Link href="/emlakci" className="group kart signal-top flex flex-col p-7 transition-transform duration-200 hover:-translate-y-1" style={{ ["--_sig" as string]: "var(--color-teal)" }}>
