@@ -154,8 +154,8 @@ function jsonLd() {
       {
         "@type": "SiteNavigationElement",
         "@id": `${SITE}/#nav`,
-        name: ["Konut projeleri", "Müteahhitler için", "Danışmanlar için", "Projedar nedir?", "Rehber", "Güven Protokolü"],
-        url: [`${SITE}/konut-projeleri`, `${SITE}/muteahhit`, `${SITE}/emlakci`, `${SITE}/nedir`, `${SITE}/rehber`, `${SITE}/guven`],
+        name: ["Müteahhitler için", "Danışmanlar için", "Projedar nedir?", "Rehber", "Güven Protokolü"],
+        url: [`${SITE}/muteahhit`, `${SITE}/emlakci`, `${SITE}/nedir`, `${SITE}/rehber`, `${SITE}/guven`],
       },
       { "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: SSS.map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
     ],

@@ -7,7 +7,6 @@ import { Logo } from "@/components/Logo";
 const NAV = [
   { etiket: "Müteahhitler için", href: "/muteahhit" },
   { etiket: "Danışmanlar için", href: "/emlakci" },
-  { etiket: "Konut projeleri", href: "/konut-projeleri" },
   { etiket: "Rehber", href: "/rehber" },
   { etiket: "Güven", href: "/guven" },
 ];
