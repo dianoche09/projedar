@@ -7,6 +7,8 @@ import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
 import { KapanisFooter } from "@/components/KapanisFooter";
 import { B2BCta } from "@/components/seo/B2BCta";
 import { tumHubProjeleri, illerOzet, ilcelerOzet, type HubProje } from "@/lib/seo/konut-hub";
+import { lokasyonAgregatlari, KONUM_TALEP } from "@/lib/seo-komuta/inventory-aggregate";
+import { lokasyonIndexPolicy } from "@/lib/seo-komuta/inventory-policy";
 import { temaGorsel, havuzGorsel } from "@/lib/seo/tema-gorsel";
 import { HubListe } from "@/components/seo/HubListe";
 import { MapPin, Building2, ChevronRight } from "lucide-react";
@@ -72,10 +74,21 @@ export async function generateMetadata({ params }: { params: Promise<{ dilim?: s
   const { kapsam } = kapsamCoz(dilim, hepsi);
   const { title, desc } = baslikMetni(kapsam);
   const yol = "/konut-projeleri" + (dilim?.length ? "/" + dilim.join("/") : "");
+
+  // Inventory Quality Gate: kalite eşiğini geçmeyen (HOLD/NAVIGABLE_NOINDEX) lokasyon = noindex,follow.
+  // canonical HER ZAMAN self (HOLD ≠ duplicate). Kök ve INDEX/REVIEW → index,follow.
+  let robots: Metadata["robots"] = { index: true, follow: true };
+  if (kapsam.tur !== "kok") {
+    const konum = kapsam.tur === "il" ? kapsam.ilSlug : `${kapsam.ilSlug}/${kapsam.ilceSlug}`;
+    const env = lokasyonAgregatlari(hepsi, { talep: KONUM_TALEP }).find((e) => e.konum === konum);
+    if (env && lokasyonIndexPolicy(env).exposure === "NAVIGABLE_NOINDEX") robots = { index: false, follow: true };
+  }
+
   return {
     title,
     description: desc,
     alternates: { canonical: `${SITE}${yol}` },
+    robots,
     openGraph: { title, description: desc, url: `${SITE}${yol}`, type: "website", siteName: "Projedar" },
     twitter: { card: "summary_large_image", title, description: desc },
   };

@@ -4,6 +4,8 @@ import { projeIcerikSkoru, ICERIK_ESIGI } from "@/lib/seo/icerik-esigi";
 import { sitemapIcerikleri, icerikYolu } from "@/lib/icerik/kayit";
 import { tumHubProjeleri } from "@/lib/seo/konut-hub";
 import { tumFirmaSluglari } from "@/lib/seo/firma";
+import { lokasyonAgregatlari, KONUM_TALEP } from "@/lib/seo-komuta/inventory-aggregate";
+import { lokasyonIndexPolicy } from "@/lib/seo-komuta/inventory-policy";
 
 const SITE = "https://projedar.com";
 
@@ -117,20 +119,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     katalog = [];
   }
 
-  // Konut projeleri hub'ı: kök + il + il/ilçe kırılım sayfaları (SEO iç bağlantı ağı).
+  // Konut projeleri hub'ı: kök + Inventory Quality Gate geçen il/ilçe (thin lokasyon sitemap'e girmez).
   let hub: MetadataRoute.Sitemap = [{ url: `${SITE}/konut-projeleri`, lastModified: now, changeFrequency: "weekly", priority: 0.6 }];
   try {
     const hepsi = await tumHubProjeleri();
-    const iller = new Set<string>();
-    const ilceler = new Set<string>();
-    for (const p of hepsi) {
-      iller.add(p.ilSlug);
-      if (p.ilceSlug) ilceler.add(`${p.ilSlug}/${p.ilceSlug}`);
-    }
+    const ag = lokasyonAgregatlari(hepsi, { talep: KONUM_TALEP });
+    // Yalnız policy.sitemap=true (INDEX + REVIEW_REQUIRED). HOLD (NAVIGABLE_NOINDEX/ABSORB) sitemap'e girmez.
     hub = [
       ...hub,
-      ...[...iller].map((il) => ({ url: `${SITE}/konut-projeleri/${il}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.5 })),
-      ...[...ilceler].map((x) => ({ url: `${SITE}/konut-projeleri/${x}`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.4 })),
+      ...ag
+        .filter((e) => lokasyonIndexPolicy(e).sitemap)
+        .map((e) => ({ url: `${SITE}/konut-projeleri/${e.konum}`, lastModified: now, changeFrequency: "weekly" as const, priority: e.seviye === "il" ? 0.5 : 0.4 })),
     ];
   } catch {
     // hub kök URL'si yine de kalır

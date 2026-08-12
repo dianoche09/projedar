@@ -37,6 +37,31 @@ const TALEP: Record<string, number> = { izmir: 720, ankara: 140, istanbul: 70, "
   }
   const idx = audit.filter((r) => r.policy.karar === "INDEX");
   console.log(`\nINDEX: ${idx.length} | HOLD: ${audit.length - idx.length}`);
-  try { fs.mkdirSync("tests/seo-komuta/results", { recursive: true }); fs.writeFileSync("tests/seo-komuta/results/inventory-audit.json", JSON.stringify(audit, null, 2)); } catch { /* dizin yoksa atla */ }
-  console.log("(JSON: tests/seo-komuta/results/inventory-audit.json)");
+
+  // ── Rollback snapshot + sitemap diff (ESKİ: tüm il/ilçe sitemap'te; YENİ: yalnız policy.sitemap) ──
+  const eski = audit.map((r) => r.konum); // önceki davranış: hepsi sitemap'te
+  const yeni = audit.filter((r) => r.policy.sitemap).map((r) => r.konum);
+  const yeniSet = new Set(yeni);
+  const cikan = audit.filter((r) => !yeniSet.has(r.konum)).map((r) => ({ konum: r.konum, karar: r.policy.karar, exposure: r.policy.exposure, robots: r.policy.robots, neden: r.policy.neden }));
+  console.log(`\nSITEMAP DIFF: ${eski.length} → ${yeni.length} (çıkan: ${cikan.length})`);
+  const migration = { tarih: process.env.MIGRATION_TARIH ?? "2026-08-12", eskiSitemapLokasyon: eski.length, yeniSitemapLokasyon: yeni.length, cikanLokasyon: cikan };
+  try { fs.mkdirSync("tests/seo-komuta/fixtures", { recursive: true }); fs.writeFileSync("tests/seo-komuta/fixtures/indexing-migration.json", JSON.stringify(migration, null, 2)); } catch { /* atla */ }
+
+  // ── 4 assertion (wiring doğrulama) ──
+  const pol = (k: string) => audit.find((r) => r.konum === k)?.policy;
+  const A = (ad: string, k: string, exp: string, robotsBek: string | null) => {
+    const p = pol(k);
+    const ok = p && p.exposure === exp && String(p.robots) === String(robotsBek);
+    console.log(`  ${ok ? "✓" : "✗"} ${ad} (${k}): exposure=${p?.exposure} robots=${p?.robots} sitemap=${p?.sitemap}`);
+    return !!ok;
+  };
+  console.log("\nASSERTIONS:");
+  let hepOk = true;
+  hepOk = A("Ankara INDEX", "ankara", "INDEXED", "index,follow") && hepOk;
+  hepOk = A("Çankaya INDEX", "ankara/cankaya", "INDEXED", "index,follow") && hepOk;
+  const etim = audit.find((r) => r.konum === "ankara/etimesgut");
+  if (etim) hepOk = A("Etimesgut NAVIGABLE_NOINDEX", "ankara/etimesgut", "NAVIGABLE_NOINDEX", "noindex,follow") && hepOk;
+  else console.log("  (ankara/etimesgut audit'te yok — atlandı)");
+  console.log(`\nWIRING ASSERTIONS: ${hepOk ? "PASS" : "FAIL"}`);
+  console.log("(JSON: tests/seo-komuta/fixtures/indexing-migration.json)");
 })().catch((e) => { console.error("AUDIT ERROR:", e?.message ?? e); process.exit(1); });

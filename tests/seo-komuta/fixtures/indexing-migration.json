@@ -1,0 +1,322 @@
+{
+  "tarih": "2026-08-12",
+  "eskiSitemapLokasyon": 57,
+  "yeniSitemapLokasyon": 12,
+  "cikanLokasyon": [
+    {
+      "konum": "ankara/etimesgut",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "istanbul/bagcilar",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "istanbul/pendik",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "ankara/golbasi",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "adana",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "adana/seyhan",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "konya/meram",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "konya/selcuklu",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "izmir/gaziemir",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "antalya/dosemealti",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "istanbul/umraniye",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "istanbul/maltepe",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "istanbul/kucukcekmece",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik"
+    },
+    {
+      "konum": "ankara/kecioren",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "ankara/yenimahalle",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/avcilar",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "izmir/cesme",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "izmir/urla",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "antalya/konyaalti",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "antalya/aksu",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "kocaeli/izmit",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "kocaeli/gebze",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "adana/cukurova",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "kocaeli/kartepe",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/bahcesehir",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "bursa/gemlik",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "ankara/mamak",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/kagithane",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/uskudar",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/kartal",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/eyup",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/bahcelievler",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "izmir/bornova",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "izmir/cigli",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "kocaeli/basiskele",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "antalya/kepez",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "antalya/alanya",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "izmir/bayrakli",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "ankara/sincan",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/basaksehir",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "kocaeli/darica",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/eyupsultan",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/beyoglu",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "ankara/pursaklar",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    },
+    {
+      "konum": "istanbul/sariyer",
+      "karar": "HOLD",
+      "exposure": "NAVIGABLE_NOINDEX",
+      "robots": "noindex,follow",
+      "neden": "HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: index'lenebilir-proje<eşik · tek-geliştirici"
+    }
+  ]
+}

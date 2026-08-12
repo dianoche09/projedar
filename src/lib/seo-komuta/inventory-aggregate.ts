@@ -30,6 +30,9 @@ export function normGelistirici(s: string): string {
 /** Talep + GSC organik sinyal haritaları. key = "il" ya da "il/ilce" (slug). Eleme değil. */
 export type TalepHaritasi = Record<string, number>;
 
+/** OpenSEO ölçülebilir talep (2026-08-12) — sitemap + hub metadata ortak kaynağı (PRIORITY sinyali). */
+export const KONUM_TALEP: TalepHaritasi = { izmir: 720, ankara: 140, istanbul: 70, "ankara/cankaya": 40 };
+
 export function lokasyonAgregatlari(
   hepsi: HubProje[],
   opts: { now?: number; talep?: TalepHaritasi; organik?: TalepHaritasi } = {},
