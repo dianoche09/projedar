@@ -131,3 +131,36 @@ export const SISTEM_SECIMI = [
   { sira: 2, aksiyon: "ARZ il hub'ları (izmir/ankara) + ilçe besleme", scorecard: "INVENTORY_SEO", gerekce: "Gerçek hacim (720/140) ama üst-3 portal duvarı → hub olarak mid + ilçe'yi besler", kanit: "SERP: il-üst DA-90; ankaraproje.net mid ranking" },
   { sira: 3, aksiyon: "Bir B2B entity pillar (çift-satış → /emlakci) CREATE", scorecard: "B2B_AUTHORITY", gerekce: "Trafik DEĞİL — entity/AI-cevap/dönüşüm; claim VERIFIED_DB; funnel /emlakci", kanit: "independent-discovery: B2B ölçülebilir talep yok → Authority scorecard" },
 ] as const;
+
+// ── v3: SEMANTIC CLASSIFICATION (regex değil anlam eşlemesi) + 3 kol + ilk-10 aksiyon ─────────
+/**
+ * Havuz (provenance'lı): research_keywords 750 idea + rakip non-brand ranked (Novo/Tapuva) + seed metrikleri.
+ * Classifier = MATCHED (territory'ye anlamca yakın) / NEW_TERRITORY / SUPPORT (komşu) / REJECT (irrelevant).
+ * null-volume ELENMEZ. Bu tur classifier'ı LLM-yargısı (Claude); üretimde Collect→Diagnose'da LLM adımı.
+ *
+ * SONUÇ (3 bağımsız kaynak): ölçülebilir Türkçe organik talep TÜKETİCİ (vergi + şehir-proje-keşif);
+ * B2B-dağıtım dili (işbirliği/acente-ağı/broker-ağı/lead-koruma/portföy-paylaşımı) ölçülebilir hacimle
+ * ÇIKMADI. Güçlü sinyal, MUTLAK DEĞİL (yeni site, GSC boş). NEW_TERRITORY adayı: zayıf ("satış danışmanı"
+ * persona-komşu). Gürültü çoğunluk (banka müşteri hizmetleri, okul proje ödevi, toki arsa).
+ */
+export type Sinif3 = "MATCHED" | "NEW_TERRITORY" | "SUPPORT" | "REJECT";
+
+export const SEO_KOLLARI = {
+  CATEGORY_BRAND: { kpi: ["marka sorgu", "branded impression", "sitelink", "category association", "entity visibility"], amac: "Google 'Projedar nedir' bilsin" },
+  B2B_PROBLEM: { kpi: ["impression", "landing-geçiş", "CTA", "kayıt", "activation"], amac: "Doğru profesyonel problemi arayınca çıksın (düşük-hacim/yüksek-değer)" },
+  INVENTORY_ENTITY: { kpi: ["indexed-entity-coverage", "non-brand impression", "proje-engagement", "share/lead"], amac: "Gerçek proje/firma/il/ilçe canonical yüzeyi — portal DEĞİL, Inventory-Gate'li" },
+} as const;
+
+/** İlk-10 kanıtlı SEO aksiyonu (3 kola dağılı, kanıta-göre). İçerik henüz üretilmez; bu backlog. */
+export const SEO_AKSIYONLARI = [
+  { no: 1, kol: "CATEGORY_BRAND", aksiyon: "Marka SERP + sitelink + /nedir'i kategori-entity yap", kanit: "0-rekabet kategori terimleri; nav/schema/title yapıldı" },
+  { no: 2, kol: "CATEGORY_BRAND", aksiyon: "Semantic territory pekiştir (/ /nedir /emlakci /muteahhit tutarlı anlam ağı)", kanit: "territory.ts MUST 8" },
+  { no: 3, kol: "B2B_PROBLEM", aksiyon: "Çift-satış/müşteri-çakışma pillar CREATE → /emlakci funnel", kanit: "claim VERIFIED_DB opsiyon_tek_aktif; /rehber slug YOK→CREATE" },
+  { no: 4, kol: "B2B_PROBLEM", aksiyon: "Komisyon/hakediş pillar CREATE → /emlakci", kanit: "komisyon_tip/deger; 'ortak olmaz' policy" },
+  { no: 5, kol: "B2B_PROBLEM", aksiyon: "Canlı-stok/tazelik pillar CREATE → /muteahhit", kanit: "son_guncelleme + tazelik VERIFIED_DB" },
+  { no: 6, kol: "B2B_PROBLEM", aksiyon: "/sozluk: tahsis + opsiyon tanım-entity (thin ama entity)", kanit: "/sozluk route VAR; mekanizma VERIFIED" },
+  { no: 7, kol: "INVENTORY_ENTITY", aksiyon: "/konut-projeleri/[il] hub (izmir/ankara) — inventory-gate'li", kanit: "SERP: gerçek talep 720/140, intent=project-discovery" },
+  { no: 8, kol: "INVENTORY_ENTITY", aksiyon: "/konut-projeleri/[il]/[ilce] (≥3 gerçek proje; çankaya-tipi kazanılabilir)", kanit: "SERP: ilçe aggregator/local_pack açık; INVENTORY_ESIK" },
+  { no: 9, kol: "INVENTORY_ENTITY", aksiyon: "/proje/[slug] + /firma/[slug] entity (schema + hub iç-link + indexed)", kanit: "gerçek ekonomik varlık; mevcut route + icerik-esigi" },
+  { no: 10, kol: "OLCUM", aksiyon: "3 scorecard + rank tracker + GSC; içerik sonrası ilk check → Verify/Learn kapat", kanit: "tracker 0606f526 hazır; GSC 0 baseline" },
+] as const;
