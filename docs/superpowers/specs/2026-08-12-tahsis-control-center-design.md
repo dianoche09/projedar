@@ -119,6 +119,14 @@ Sayılar `tahsis_ozet` / `stok_dagitim` RPC'sinden. Böylece proje/[id] operasyo
 - Değişiklik rozeti referansı UI'da etiketli; referans = `updated_at ?? baslangic`.
 - `updated_at` mevcut satırlarda NULL (backfill yok).
 
+## 8b. Invariantlar (uygulamada test ile kilitlenir)
+
+Kullanıcı review'ı (2026-08-12) ile eklenen üç değişmez:
+
+1. **`kaldirildi` terminal state.** `aktif ↔ askida` çift yönlü; ama `kaldirildi → aktif` normal UI'dan **yapılamaz**. Yanlış kaldırmada çözüm = yeniden tahsis oluştur. Aksi halde "kaldırma" ile "askıya alma" arasındaki semantik fark erir. Test ile açıkça kilitlenir (durum geçiş matrisi: aktif→askida, askida→aktif, aktif→kaldirildi, askida→kaldirildi; kaldirildi→* yasak).
+2. **Toplu lifecycle atomik.** Bulk askıya al/devam/uzat/kaldır **application loop DEĞİL, tek DB transaction/RPC**: N tahsis + N audit event ya birlikte başarılı ya hiçbiri. İkinci kayıtta hata → yarım işlem olmamalı (ileride 100'lük bulk'ta kritik).
+3. **`updated_at` yalnız tahsis-yönetim aksiyonunda değişir.** Stok fiyat değişimi / birim opsiyonlanması-satılması / sistemsel update `tahsis.updated_at`'ı **tetiklemez**. Tahsis tablosuna generic "updated_at=now()" trigger'ı KONMAZ; alan yalnız `tahsisGuncelle` / `tahsisDurumGuncelle` / `tahsisTopluAksiyon` içinde set edilir. Aksi halde "son yönetimden beri" değişiklik penceresi kendini sıfırlar.
+
 ## 9. Kapsam DIŞI (bu spec)
 
 - Funnel / performans analitiği (tahsis → erişen emlakçı → paylaşım → opsiyon → satış zinciri). Yalnız veri hook'u bırakılır (events zaten var), ekran yapılmaz.
@@ -132,6 +140,12 @@ Sayılar `tahsis_ozet` / `stok_dagitim` RPC'sinden. Böylece proje/[id] operasyo
 - Migration → browser Supabase Dashboard SQL Editor (CLAUDE.md kuralı; hazır kopyalanır blok verilecek).
 - `type-check` şart (ignoreBuildErrors yok).
 - Direkt main (branch ceremony yok).
+
+## Uygulama sırası (writing-plans için)
+
+migration → **DB/RLS testleri (UI'dan ÖNCE)** → server actions → Control Center tahsis merceği → stok merceği → proje/[id] shortcut → E2E/kabul testleri.
+
+Gerekçe: bu özelliğin güvenlik + doğruluk çekirdeği arayüz değil, "kim hangi birimi gerçekten görebiliyor?" sorusunun DB seviyesindeki cevabı (`birim_kapsaminda` + görünürlük predikatı). Bu yüzden görünürlük ve durum-geçiş testleri UI kodundan önce yazılır/geçirilir.
 
 ## Dokunulan dosyalar (öngörü)
 
