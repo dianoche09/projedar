@@ -116,6 +116,15 @@ trigger doorway penalty across the whole site; `/api/cron/*` blocked by middlewa
   expand only where real data exists (≥ threshold), defer the rest, verify one page live before the batch. (§04)
 - Never blindly "fix" an audit finding. Verify against fresh GSC/`inspect_urls` first — audits go stale, and
   some findings resolve to no-action-with-evidence (already-ISR perf, self-canonical money page, stale meta). (§05)
+- **An SEO endpoint is not "missing" just because a static `public/` file is absent.** On Next.js App Router,
+  `robots.txt` / `sitemap.xml` / `llms.txt` are usually served by route handlers (`src/app/<name>/route.ts`)
+  or metadata files (`app/robots.ts`, `app/sitemap.ts`). Grep `app/**/route.ts` + `app/{robots,sitemap}.ts`
+  before ever reporting "no llms.txt/robots/sitemap." (§01/§03)
+- **Private-route audit must be auth-aware.** Auth-gating (login redirect / enforced middleware) is itself a
+  Google-sanctioned index block — do NOT auto-flag "no page-level noindex" on auth-gated routes as HIGH.
+  Verify first: (a) anonymous Googlebot HTTP result, (b) login redirect?, (c) middleware actually enforced?,
+  (d) robots disallow present? Reserve the "crawl-allow + noindex" fix for PUBLIC-but-noindex routes (e.g.
+  token share pages), NOT auth-gated panels. (§01)
 
 ## Validation
 

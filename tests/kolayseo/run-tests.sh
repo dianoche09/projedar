@@ -159,12 +159,16 @@ strip_pointer(){ local f="$1" tag="$2"
   grep -qi "kolayseo" "$f" && { echo "FATAL ($tag): CLAUDE.md'de hala 'kolayseo' — deney kirli."; exit 1; } || true
 }
 
-evidence(){ local j="$1" tag="$2" model tools s1 s2
+evidence(){ local j="$1" tag="$2" model tools nse sfr sem
   model="$(jq -rs '[.[] | (.model // .message.model // .session.model // empty)] | first // "?"' "$j" 2>/dev/null || echo '?')"
   tools="$(jq -rc '.message.content[]? | select(.type=="tool_use") | .name' "$j" 2>/dev/null | sort -u | paste -sd, - 2>/dev/null || echo '')"
-  s1="$(jq -rc '.message.content[]? | select(.type=="tool_use") | [.name,(.input|tostring)] | @tsv' "$j" 2>/dev/null | grep -ciE 'skill|kolayseo' || true)"
-  s2="$(jq -rc '.message.content[]? | select(.type=="tool_use" and .name=="Read") | .input.file_path? // empty' "$j" 2>/dev/null | grep -c 'kolayseo' || true)"
-  printf '%s\tmodel=%s\ttools=[%s]\tstrong1=%s\tstrong2=%s\n' "$tag" "$model" "$tools" "${s1:-0}" "${s2:-0}" >> "$OUT_DIR/evidence.tsv"
+  # native_skill_event: AYRI bir Skill/skill tool-event (Read DEGIL). Bu surumde genelde 0.
+  nse="$(jq -rc '.message.content[]? | select(.type=="tool_use") | .name' "$j" 2>/dev/null | grep -cxiE 'skill' || true)"
+  # skill_file_read: .claude/skills/kolayseo/... Read (bu surumde GERCEK sinyal). nse ile ayni Read'i CIFT saymaz.
+  sfr="$(jq -rc '.message.content[]? | select(.type=="tool_use" and .name=="Read") | .input.file_path? // empty' "$j" 2>/dev/null | grep -c 'kolayseo' || true)"
+  # semantic_match: final metin kolayseo davranisi/adi gosteriyor mu (zayif, teyit).
+  sem="$(jq -rs '[.[] | select(.type=="result") | .result] | last // ""' "$j" 2>/dev/null | grep -ciE 'kolayseo|llms\.txt|answer-first|IndexNow' || true)"
+  printf '%s\tmodel=%s\ttools=[%s]\tnative_evt=%s\tfile_read=%s\tsemantic=%s\n' "$tag" "$model" "$tools" "${nse:-0}" "${sfr:-0}" "${sem:-0}" >> "$OUT_DIR/evidence.tsv"
 }
 
 run_one(){ # tag pointer(on|off|forced) repo_skill(on|off) mutate(0|1) profile(disco|ab)
