@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { tahsisSil } from "@/app/uretici/actions";
-import { TahsisForm } from "./TahsisForm";
-import { tahsisEmlakcilari, tahsisSecenekleri } from "@/lib/tahsis";
+import { stokDagitimGetir } from "@/lib/tahsis";
 import { BinaKesiti } from "@/components/BinaKesiti";
 import { SecimDuzenle } from "@/components/SecimDuzenle";
 import { ProjeKomutBari } from "@/components/ProjeKomutBari";
@@ -52,11 +50,10 @@ export default async function ProjeDetay({
 
   const { data: tahsisler } = await supabase
     .from("tahsis")
-    .select("id, hedef_tip, hedef_id, hedef_filtre, kapsam, komisyon_tip, komisyon_deger, munhasir, kontenjan, fiyat_gorunur")
-    .eq("proje_id", id);
-  const { data: ofisler } = await supabase.from("ofis").select("id, ad").order("ad");
-  const emlakcilar = await tahsisEmlakcilari();
-  const secenekler = await tahsisSecenekleri();
+    .select("hedef_tip, hedef_id")
+    .eq("proje_id", id)
+    .eq("durum", "aktif");
+  const dagitim = await stokDagitimGetir(id);
   const { data: belgeler } = await supabase
     .from("proje_belge")
     .select("id, tip, ad, url, dogrulandi")
@@ -70,13 +67,18 @@ export default async function ProjeDetay({
 
   // Eklentiler (otopark/depo, ana_birim_id dolu) ana stok sayımına/tahsise girmez — parent dairesiyle gider.
   const anaBirimler = (birimler ?? []).filter((b) => b.ana_birim_id == null);
-  const tahsisKatlar = [
-    ...new Set(anaBirimler.map((b) => b.kat).filter((k): k is number => k != null)),
-  ].sort((a, b) => a - b);
-  const blokMap = new Map((bloklar ?? []).map((b) => [b.id, b.ad]));
-  const ofisMap = new Map((ofisler ?? []).map((o) => [o.id, o.ad]));
-  const emlakciMap = new Map(emlakcilar.map((e) => [e.id, e.ad]));
   const toplam = anaBirimler.length;
+  // Dağıtım özeti (salt-okunur; yönetim /uretici/tahsis Control Center'da)
+  const aktifTahsisler = tahsisler ?? [];
+  const ofisSay = new Set(
+    aktifTahsisler.filter((t) => t.hedef_tip === "ofis" && t.hedef_id).map((t) => t.hedef_id),
+  ).size;
+  const danismanSay = new Set(
+    aktifTahsisler.filter((t) => t.hedef_tip === "danisman" && t.hedef_id).map((t) => t.hedef_id),
+  ).size;
+  const dagitimda = new Set(
+    dagitim.filter((r) => r.tahsis_id != null).map((r) => r.birim_id),
+  ).size;
   // Tek doğru kaynak: durumGrup (stok/kesit ile aynı 5 grup, satilabilir-duyarlı)
   const grupSay = (g: string) => anaBirimler.filter((b) => durumGrup(b.durum, b.satilabilir ?? true) === g).length;
   const stats = {
@@ -199,70 +201,18 @@ export default async function ProjeDetay({
         </SecimDuzenle>
       </div>
 
-      {/* ===== TAHSİS (MOAT) ===== */}
+      {/* ===== DAĞITIM (özet + Control Center'a deep-link) ===== */}
       <section className="mt-12 border-t border-hair pt-8">
-        <h2 className="font-display text-lg font-semibold text-ink">Tahsis: kim neyi görür</h2>
-        <p className="mt-1 text-sm text-gray">
-          Hangi kapsam kime açık, komisyon ne. Emlakçı yalnız tahsisli + satılabilir birimi görür/satar.
-        </p>
-
-        <div className="mt-4 space-y-2">
-          {(tahsisler ?? []).map((t) => {
-            const bloklarKapsam = ((t.kapsam as { bloklar?: string[] } | null)?.bloklar ?? [])
-              .map((bid) => blokMap.get(bid) ?? "?")
-              .join(", ");
-            return (
-              <div key={t.id} className="kart flex flex-wrap items-center gap-3 p-3.5">
-                <span className="rozet bg-teal-soft text-teal-d">
-                  {(() => {
-                    if (t.hedef_tip === "danisman") return `Danışman: ${emlakciMap.get(t.hedef_id) ?? "?"}`;
-                    if (t.hedef_tip === "ofis") return `Ofis: ${ofisMap.get(t.hedef_id) ?? "?"}`;
-                    const f = t.hedef_filtre as { marka?: string; il?: string; ilce?: string; uzmanlik?: string } | null;
-                    const parca = f ? [f.marka, f.il, f.ilce, f.uzmanlik].filter(Boolean) : [];
-                    return parca.length ? `Segment: ${parca.join(" · ")}` : "Tüm ağ (yayın)";
-                  })()}
-                </span>
-                <span className="text-sm text-ink-soft">{bloklarKapsam || "tüm proje"}</span>
-                <span className="mono text-xs text-[var(--ink-faint)]">
-                  {t.komisyon_tip === "yok"
-                    ? "komisyon belirtilmedi"
-                    : t.komisyon_tip === "yuzde"
-                      ? `%${t.komisyon_deger}`
-                      : `${Number(t.komisyon_deger).toLocaleString("tr-TR")}₺`}
-                  {t.munhasir ? " · münhasır" : ""}
-                  {t.kontenjan ? ` · kont. ${t.kontenjan}` : ""}
-                  {!t.fiyat_gorunur ? " · fiyat gizli" : ""}
-                </span>
-                <form action={tahsisSil} className="ml-auto">
-                  <input type="hidden" name="tahsis_id" value={t.id} />
-                  <input type="hidden" name="proje_id" value={id} />
-                  <button className="rounded-lg border border-hair px-3 py-1.5 text-sm font-medium text-red transition-colors hover:border-red hover:bg-red-soft">
-                    Kaldır
-                  </button>
-                </form>
-              </div>
-            );
-          })}
-          {(tahsisler?.length ?? 0) === 0 ? (
-            <p className="text-sm text-gray">Henüz tahsis yok — kimse göremez. Aşağıdan ekle.</p>
-          ) : null}
-        </div>
-
-        <div className="mt-4">
-          <TahsisForm
-            projeId={id}
-            bloklar={bloklar ?? []}
-            katlar={tahsisKatlar}
-            tipler={tipler ?? []}
-            ofisler={ofisler ?? []}
-            secenekler={secenekler}
-            birimler={anaBirimler.map((b) => ({
-              id: b.id,
-              daire_no: b.daire_no,
-              blok_id: b.blok_id,
-              kat: b.kat,
-            }))}
-          />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-ink">Dağıtım</h2>
+            <p className="mt-1 text-sm text-gray">
+              {ofisSay} ofis · {danismanSay} danışman · {dagitimda}/{toplam} birim dağıtımda
+            </p>
+          </div>
+          <Link href={`/uretici/tahsis?proje=${id}`} className="btn-action h-9 px-3.5 text-[12px]">
+            Tahsisleri Yönet →
+          </Link>
         </div>
       </section>
 
