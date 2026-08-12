@@ -23,12 +23,15 @@ export interface LokasyonEnvanter {
   toplamProje: number;
   indexProje: number; // per-proje eşiği (ICERIK_ESIGI) geçen, standalone-index'lenebilir proje
   farkliGelistirici: number; // NORMALIZE edilmiş benzersiz geliştirici (varyant şişmesi yok)
-  guncelProje: number; // son N günde güncellenmiş proje (tazelik)
+  guncelProje: number; // KNOWN-fresh (yalnız kaynak=proje, son N gün)
+  tazelikBilinenProje: number; // freshness sinyali BİLİNEN proje sayısı (0 → tazelik UNKNOWN)
   queryTalep: number | null; // PRIORITY sinyali (indexability DEĞİL)
   historicalOrganicSignal?: number; // GSC impression+click; >0 ise HOLD→REVIEW_REQUIRED
 }
 
-export type Exposure = "INDEXED" | "NAVIGABLE_NOINDEX" | "ABSORB_TO_PARENT";
+// PRESERVE_INDEXING = REVIEW_REQUIRED sırasında mevcut indexing KORUNUR (index,follow + sitemap).
+export type Exposure = "INDEXED" | "NAVIGABLE_NOINDEX" | "ABSORB_TO_PARENT" | "PRESERVE_INDEXING";
+export type TazelikDurum = "FRESH" | "STALE" | "UNKNOWN";
 export interface IndexPolicy {
   karar: "INDEX" | "HOLD" | "REVIEW_REQUIRED";
   exposure: Exposure;
@@ -46,17 +49,24 @@ export const LOKASYON_MIN_GELISTIRICI = 2;
 export const LOKASYON_MIN_TAZE_ORAN = 0.3;
 
 /** INDEXABILITY = kalite (demand YOK). yeterli index-proje + geliştirici çeşitliliği + tazelik. */
+export function tazelikDurumu(e: LokasyonEnvanter): TazelikDurum {
+  if (e.tazelikBilinenProje === 0) return "UNKNOWN"; // hepsi katalog → freshness bilinmiyor
+  return e.guncelProje / e.tazelikBilinenProje >= LOKASYON_MIN_TAZE_ORAN ? "FRESH" : "STALE";
+}
+
 export function indexability(e: LokasyonEnvanter): { gecer: boolean; skor: number; eksik: string } {
   const yeterli = e.indexProje >= LOKASYON_MIN_INDEX_PROJE;
   const cesitlilik = e.farkliGelistirici >= LOKASYON_MIN_GELISTIRICI;
-  const guncel = e.guncelProje >= 1 && e.guncelProje / Math.max(e.toplamProje, 1) >= LOKASYON_MIN_TAZE_ORAN;
-  const skor = [yeterli, cesitlilik, guncel].filter(Boolean).length;
+  // UNKNOWN tazelik lokasyonu OTOMATİK düşürmez; yalnız KNOWN-STALE fail eder (katalog UNKNOWN'ı cezalandırma).
+  const taze = tazelikDurumu(e);
+  const guncelOk = taze !== "STALE";
+  const skor = [yeterli, cesitlilik, guncelOk].filter(Boolean).length;
   const eksik = [
     !yeterli ? "index'lenebilir-proje<eşik" : null,
     !cesitlilik ? "tek-geliştirici" : null,
-    !guncel ? "veri-güncel-değil" : null,
+    !guncelOk ? "veri-eskiyen(STALE)" : null,
   ].filter(Boolean).join(" · ");
-  return { gecer: yeterli && cesitlilik && guncel, skor, eksik };
+  return { gecer: yeterli && cesitlilik && guncelOk, skor, eksik };
 }
 
 /** PRIORITY = indexability + demand (INDEX-ready sayfalar arası optimizasyon sırası). */
@@ -75,10 +85,10 @@ export function lokasyonIndexPolicy(e: LokasyonEnvanter): IndexPolicy {
       neden: `indexProje=${e.indexProje}≥${LOKASYON_MIN_INDEX_PROJE} · geliştirici=${e.farkliGelistirici}≥${LOKASYON_MIN_GELISTIRICI} · güncel` };
   }
 
-  // Mevcut organik değeri biçme: HOLD ama GSC sinyali varsa noindex OTOMATİK verme.
+  // Mevcut organik değeri biçme: HOLD ama GSC sinyali varsa mevcut indexing KORUNUR (çelişki yok).
   if ((e.historicalOrganicSignal ?? 0) > 0) {
-    return { karar: "REVIEW_REQUIRED", exposure: "NAVIGABLE_NOINDEX", sitemap: true, robots: "index,follow", internalLink: true, canonical: "self", indexability: skor, priority: pri,
-      neden: `HOLD kalitesi (${eksik}) AMA organik sinyal=${e.historicalOrganicSignal} → manuel review; otomatik noindex YOK` };
+    return { karar: "REVIEW_REQUIRED", exposure: "PRESERVE_INDEXING", sitemap: true, robots: "index,follow", internalLink: true, canonical: "self", indexability: skor, priority: pri,
+      neden: `HOLD kalitesi (${eksik}) AMA organik sinyal=${e.historicalOrganicSignal} → indexing KORUNUR, manuel review` };
   }
 
   if (e.toplamProje >= 1) {

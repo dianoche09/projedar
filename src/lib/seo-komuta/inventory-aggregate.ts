@@ -37,15 +37,18 @@ export function lokasyonAgregatlari(
   const now = opts.now ?? Date.now();
   const talep = opts.talep ?? {};
   const organik = opts.organik ?? {};
-  type Acc = { konum: string; seviye: "il" | "ilce"; toplam: number; index: number; gel: Set<string>; guncel: number };
+  // Freshness KAYNAK-FARKINDA: yalnız kaynak="proje" (proje.son_guncelleme = gerçek edit) tazelik
+  // BİLİNİR. kaynak="katalog" updated_at = SEO-içerik üretim tarihi ≠ envanter tazeliği → UNKNOWN
+  // (freshness'e ne olumlu ne olumsuz sayılır). Gerçek inventory-freshness alanı gelince genişletilir.
+  type Acc = { konum: string; seviye: "il" | "ilce"; toplam: number; index: number; gel: Set<string>; tazeBilinen: number; guncel: number };
   const acc = new Map<string, Acc>();
 
   const ekle = (konum: string, seviye: "il" | "ilce", p: HubProje) => {
-    const a = acc.get(konum) ?? { konum, seviye, toplam: 0, index: 0, gel: new Set<string>(), guncel: 0 };
+    const a = acc.get(konum) ?? { konum, seviye, toplam: 0, index: 0, gel: new Set<string>(), tazeBilinen: 0, guncel: 0 };
     a.toplam++;
     if (p.esik) a.index++;
     if (p.gelistirici) { const n = normGelistirici(p.gelistirici); if (n) a.gel.add(n); }
-    if (tazeMi(p.sonGuncelleme, now)) a.guncel++;
+    if (p.kaynak === "proje") { a.tazeBilinen++; if (tazeMi(p.sonGuncelleme, now)) a.guncel++; }
     acc.set(konum, a);
   };
 
@@ -60,7 +63,8 @@ export function lokasyonAgregatlari(
     toplamProje: a.toplam,
     indexProje: a.index,
     farkliGelistirici: a.gel.size,
-    guncelProje: a.guncel,
+    guncelProje: a.guncel, // known-fresh (yalnız proje kaynağı)
+    tazelikBilinenProje: a.tazeBilinen, // freshness sinyali BİLİNEN proje sayısı (0 → UNKNOWN)
     queryTalep: talep[a.konum] ?? null,
     historicalOrganicSignal: organik[a.konum] ?? 0,
   }));
