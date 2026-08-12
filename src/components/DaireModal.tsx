@@ -611,8 +611,50 @@ export function DaireModal({
                   </svg>
                   WhatsApp ile Paylaş
                 </PaylasWhatsApp>
+                {shareUrl ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          if (typeof navigator !== "undefined" && navigator.share) {
+                            await navigator.share({ title: projeAd ?? "Projedar", text: paylasMetni, url: shareUrl });
+                          } else {
+                            await navigator.clipboard.writeText(shareUrl);
+                            toast.goster("Bağlantı kopyalandı", "basari");
+                          }
+                        } catch {
+                          /* kullanıcı iptali veya erişim yok */
+                        }
+                      }}
+                      className="flex items-center justify-center gap-1.5 rounded-xl border border-hair bg-white py-3 text-xs font-bold text-ink transition-all hover:bg-soft active:scale-[0.98]"
+                    >
+                      <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+                      </svg>
+                      Paylaş
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText(shareUrl);
+                          toast.goster("Bağlantı kopyalandı", "basari");
+                        } catch {
+                          toast.goster("Kopyalanamadı", "hata");
+                        }
+                      }}
+                      className="flex items-center justify-center gap-1.5 rounded-xl border border-hair bg-white py-3 text-xs font-bold text-ink transition-all hover:bg-soft active:scale-[0.98]"
+                    >
+                      <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                      </svg>
+                      Bağlantıyı kopyala
+                    </button>
+                  </div>
+                ) : null}
                 <p className="text-center text-[10.5px] leading-snug text-[var(--ink-faint)] font-bold">
-                  Müşterinizle birebir paylaşın — yetkisiz ilan yasal risk taşımaktadır.
+                  Müşterinizle birebir paylaşın; yetkisiz ilan yasal risk taşımaktadır.
                 </p>
                 {opsiyonYontemi === "gecici" ? (
                   <>
