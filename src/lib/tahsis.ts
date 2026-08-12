@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 
 export type TahsisEmlakci = { id: string; ad: string | null; ofis: string | null };
 
@@ -41,4 +42,25 @@ export async function tahsisSecenekleri(): Promise<TahsisSecenekler> {
       ),
     ].sort((a, b) => a.localeCompare(b, "tr"));
   return { markalar: uniq("marka"), iller: uniq("il"), ilceler: uniq("ilce") };
+}
+
+export type TahsisOzet = { tahsis_id: string; musait: number; opsiyonlu: number; satildi: number; toplam: number; degisiklik: number };
+export type StokDagitimSatir = {
+  birim_id: string; daire_no: string | null; blok_id: string | null; kat: number | null; birim_durum: string;
+  tahsis_id: string | null; hedef_tip: "herkes" | "ofis" | "danisman" | null; hedef_id: string | null;
+  hedef_filtre: Record<string, string> | null; komisyon_tip: string | null; komisyon_deger: number | null; munhasir: boolean | null;
+};
+
+/** tahsis-merkezli stok sayacı + değişiklik (RPC tahsis_ozet). tahsis_id → özet map. */
+export async function tahsisOzetGetir(projeId: string): Promise<Map<string, TahsisOzet>> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("tahsis_ozet", { p_proje_id: projeId });
+  return new Map(((data ?? []) as TahsisOzet[]).map((r) => [r.tahsis_id, r]));
+}
+
+/** stok-merkezli ters indeks (RPC stok_dagitim). Ham satırlar (UI birim'e göre gruplar). */
+export async function stokDagitimGetir(projeId: string): Promise<StokDagitimSatir[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("stok_dagitim", { p_proje_id: projeId });
+  return (data ?? []) as StokDagitimSatir[];
 }
