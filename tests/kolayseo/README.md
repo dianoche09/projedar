@@ -1,59 +1,71 @@
-# KolaySEO kabul-testi harness
+# KolaySEO kabul-testi harness v1.1
 
-KolaySEO skill'inin gerçekten **(1) taşınabilir, (2) native discoverable, (3) faydalı** olduğunu
-kontrollü biçimde kanıtlar. "Skill'i kullandım" beyanı kanıt SAYILMAZ.
+KolaySEO'nun gerçekten **(1) taşınabilir, (2) native discoverable, (3) faydalı** olduğunu
+kontrollü kanıtlar. "Skill'i kullandım" beyanı kanıt SAYILMAZ.
 
 ## 4 koşul
 
-| Koşul | Global skill | Repo skill (`.claude/skills/kolayseo`) | CLAUDE.md pointer | Tekrar | Ölçtüğü |
-|-------|------|------|------|--------|---------|
-| **P1** | yok | var | **var** | 1 | Taşınabilirlik (fresh clone kurallara erişebiliyor mu?) |
-| **N1** | yok | var | yok | 1 | Native discovery (Claude `description`'dan kendiliğinden çağırıyor mu?) |
-| **A**  | yok | **yok** | yok | ≥3 | Kontrol grubu (skill'siz normal Claude) |
-| **B**  | yok | var | yok | ≥3 | Skill katkısı |
+| Koşul | Global skill | Repo skill | proj CLAUDE.md pointer | Mutasyon | Tekrar | Ölçtüğü |
+|-------|------|------|------|------|--------|---------|
+| **P1** | yok | var | **var** | yok | 1 | Taşınabilirlik (fresh clone kurallara erişebiliyor mu?) |
+| **N1** | yok | var | yok | yok | 1 | Native discovery (Claude `description`'dan kendiliğinden çağırıyor mu?) |
+| **A**  | yok | **yok** | yok | var* | ≥3 | Kontrol grubu (skill'siz Claude) |
+| **B**  | yok | var | yok | var* | ≥3 | Skill katkısı |
 
-- **A ve B tek değişkenle ayrılır: repo skill.** Aynı prompt / model / max-turns / commit state.
-- Global skill TÜM koşullarda kapalı (harness geçici rename eder, sonra geri alır).
-- **`--bare` kullanılmaz** — o CLAUDE.md + hooks + MCP + memory'yi de kapatır, tek değişken kalmaz.
-- Native-discovery prompt'unda **"skill" kelimesi bilerek yok** (aksi halde keşfe teşvik = kirli deney).
+`*AB_MODE=mutated` (varsayılan): her A/B clone'una **10 bilinen SEO hatası** enjekte edilir → matematiksel ground-truth.
+
+- **A ve B tek değişken: repo skill.** Aynı prompt / model / max-turns / mutasyon / commit state.
+- Global skill TÜM koşullarda kapalı (harness geçici rename + trap restore).
+- **`--bare` yok** (CLAUDE.md+hooks+MCP+memory'yi de kapatır → tek değişken kalmaz).
+- Native-discovery prompt'unda **"skill" kelimesi yok** (keşfe teşvik = kirli deney).
 
 ## Çalıştırma
 
 ```bash
-# 1) Önce DRY-RUN (hiçbir şey değiştirmez, planı + dokunulacak yolları basar)
-bash tests/kolayseo/run-tests.sh
-
-# 2) Onaydan sonra gerçek koşu
-bash tests/kolayseo/run-tests.sh --execute
-
-# override örnekleri
-MODEL=sonnet MAX_TURNS=40 AB_REPEATS=3 bash tests/kolayseo/run-tests.sh --execute
+bash tests/kolayseo/run-tests.sh                       # DRY-RUN (plan + dokunulacak yollar)
+ONLY=P1 bash tests/kolayseo/run-tests.sh --execute     # SMOKE: yalnız 1 koşu (şema öğren)
+ONLY=N1 bash tests/kolayseo/run-tests.sh --execute     # native discovery tek koşu
+bash tests/kolayseo/run-tests.sh --execute             # tam set (P1,N1,A×3,B×3)
+AB_MODE=clean bash tests/kolayseo/run-tests.sh --execute   # mutasyonsuz A/B (ceiling-effect riski)
 ```
 
-Çıktı: `tests/kolayseo/results/<tag>.jsonl` (stream-json), `<tag>.err`, `evidence.tsv`.
+Override: `MODEL`, `MAX_TURNS`, `AB_REPEATS`, `ONLY`, `AB_MODE`, `NEUTRALIZE_GLOBAL_MD`.
 
-## PASS kanıtı — 3 seviye (ayrı raporlanır)
+## Mutation benchmark (A/B'nin kalbi — ceiling-effect'i yener)
 
-1. **[strong-1]** jsonl'de skill/tool invocation event + `kolayseo` → en güçlü.
-2. **[strong-2]** jsonl'de `.claude/skills/kolayseo/...` dosya-okuma izi (Read) → güçlü.
-3. **[weak]** yalnız final metnin KolaySEO kurallarına benzemesi → zayıf, tek başına yetmez.
+Projedar zaten büyük ölçüde temiz (kolayseo sayesinde). Temiz repo'da "hata bul" demek skill'in
+değerini ölçmez. Çözüm: `mutations.mjs` her A/B clone'una **10 bilinen SEO hatası** enjekte eder
+(literal-replace, **fail-closed**: anchor kayarsa DURUR). Ground-truth `results/ground-truth.json`.
 
-> `stream-json --verbose` sürüme göre event adlarını değiştirebilir; bu yüzden tek bir event
-> adına PASS bağlanmaz — üç sinyal ayrı ayrı toplanır.
+10 mutasyon: M1 konut noindex · M2 proje yanlış canonical · M3 sitemap private leak ·
+M4 /p/ robots-disallow (noindex çelişkisi) · M5 duplicate title · M6 derinlik-guard kaldırma ·
+M7 sitemap thin-eşik kaldırma · M8 proje thin-guard kaldırma · M9 anasayfa self-canonical kaldırma ·
+M10 robots sitemap-pointer 404. (Mutasyonlu clone tsc'den geçer → agent "çalışan ama bozuk" site görür.)
 
-- **P1 PASS**: strong-1 veya strong-2 sinyali var (pointer yolu çalışıyor).
-- **N1 PASS**: pointer YOKken strong-1/strong-2 var → native discovery kanıtlandı.
-- **N1 FAIL ama P1 PASS**: taşınabilir ama native değil → güvence CLAUDE.md pointer'ında (kabul edilebilir).
+Ölçüm: A ort kaç/10 buldu, B ort kaç/10, FP oranları. Gerçek laboratuvar testi.
 
-## Güvenlik (global skill rename)
+## PASS kanıtı — 3 seviye (jq ile, ayrı raporlanır)
 
-Harness yalnız `~/.claude/skills/kolayseo`'yu taşır (auth ve diğer skill'ler dokunulmaz):
-- backup hedefi doluysa **başlamaz** (yarım kalmış önceki test koruması).
-- başlangıçta içerik-hash kaydeder.
-- `trap EXIT/INT/TERM` → yarıda kesilse bile restore.
-- koşu sonunda hash == başlangıç doğrulanır; farklıysa UYARI basar.
+1. **[strong-1]** jsonl tool_use event'inde `Skill`/`kolayseo` → en güçlü.
+2. **[strong-2]** `Read` tool_use `file_path` içinde `.claude/skills/kolayseo` → güçlü.
+3. **[weak]** yalnız final metnin KolaySEO kurallarına benzemesi → tek başına yetmez.
 
-## Skorlama
+Harness ayrıca **görülen distinct tool_use adlarını** döker (skill invocation'ın JSON'da hangi
+şema ile çıktığını öğrenmek için — smoke'un asıl amacı). `grep` değil `jq` kullanılır.
 
-A/B çıktıları `rubric.md`'deki severity-weighted formülle puanlanır (manuel veya ayrı judge koşusu).
-Tek A + tek B "ölçülebilir katkı" için zayıf; **≥3+3 koşu** + ortalama alınır.
+## Fail-closed / güvenlik
+
+- **Global `~/.claude/CLAUDE.md` kolayseo içeriyorsa** + N1/A/B koşacaksa → BAŞLAMAZ
+  (`NEUTRALIZE_GLOBAL_MD=1`: yedekle + kolayseo satırlarını çıkar + trap restore).
+- pointer silme sonrası clone CLAUDE.md'de hâlâ `kolayseo` varsa → FATAL (before/after diff artefakt).
+- mutasyon anchor'ı beklenen sayıda değilse → FATAL.
+- global skill: `mv` + `trap EXIT/INT/TERM` + backup-dolu koruması + pre/post integrity-hash.
+- `DISABLE_AUTOUPDATER=1`; `claude --version` + resolved-model her koşuda `env.txt`/`evidence.tsv`'ye.
+
+## Flag profilleri
+
+- **P1/N1 (DISCO):** `--permission-mode plan` — read-only, discovery için yeterli + güvenli.
+- **A/B:** `--dangerously-skip-permissions` — **yalnız efemer clone'da** (atılıyor), skill'in tam
+  grep/find/bash yeteneğini kısıtlamamak için. Clone disposable olduğu için güvenli.
+
+Skorlama: `rubric.md`.

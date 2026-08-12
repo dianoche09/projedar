@@ -1,47 +1,46 @@
-# A/B skorlama rubric'i
+# A/B skorlama rubric'i (mutation-benchmark tabanlı)
 
 Amaç: "B daha uzun cevap verdi" ile "B gerçekten daha iyi SEO audit yaptı"yı ayırmak.
-LLM çıktısı deterministik değil → **en az 3 A + 3 B** koşusu, ortalama.
+LLM deterministik değil → **≥3 A + 3 B**, ortalama.
 
-## Her koşu için işaretle
+## Ground-truth = enjekte edilen 10 mutasyon
 
-Üçüncü bir değerlendirici (insan veya ayrı judge koşusu) her raporu ground-truth ile karşılaştırır.
-Ground-truth = Projedar'ın bilinen SEO gerçekleri (bu repoda doğrulanmış bulgular: `/p/` indexation,
-thin-content eşiği, canonical, private-leak, `[[...dilim]]` derinlik-guard, gradual-index, robots AI-list).
+`AB_MODE=mutated` ile her A/B clone'una 10 bilinen hata girer (`results/ground-truth.json`).
+Artık skorlama sezgisel değil, **matematiksel**: 10 hata kondu, kaç tanesi yakalandı?
 
-Her bulgu için sınıfla:
-- **TP (true positive)** — gerçek + doğru; severity: critical / high / medium
-- **FP (false positive)** — hatalı/uydurma bulgu (yanlış-pozitif)
-- **MISS** — kaçırılan önemli gerçek sorun; severity: critical / high / medium
-- **KolaySEO-özgü** — yalnız skill kuralı sayesinde çıkabilecek bulgu (React19 JSON-LD paterni,
-  thin→tüm-site doorway, IndexNow≠GSC, answer-first/FAQ, Content-Signal, verify-before-fix)
-- **Gereksiz öneri** — düşük değerli / genel laf
+Her koşu raporu ground-truth ile eşleştirilir (3. bir değerlendirici — insan veya ayrı judge koşusu):
+- **TP** — enjekte edilen mutasyonu doğru tespit (M1..M10'dan hangisi)
+- **FP** — enjekte EDİLMEMİŞ, hatalı/uydurma bulgu
+- **MISS** — kaçırılan mutasyon
+- **severity** — mutasyon başına: M1/M2/M3/M4/M8 = high (index/canonical/leak), M5/M6/M7/M9/M10 = medium
 
-## Skor formülü
+## Skor
 
 ```
-score = 5×(critical TP) + 3×(high TP) + 1×(medium TP)
-        − 3×(FP)
-        − 5×(critical MISS) − 3×(high MISS)
+detection_rate = TP / 10
+score = 5×(high TP) + 3×(medium TP) − 3×(FP)
 ```
 
-Ek metrikler (ayrı raporla, skora katma):
-- KolaySEO-özgü bulgu sayısı (B'de A'dan belirgin fazla olmalı)
-- Gereksiz öneri sayısı (B'de düşük olmalı — skill odaklar)
+Ek metrik (skora katma, ayrı raporla):
 - FP oranı (B'de düşük olmalı — verify-before-fix disiplini)
+- KolaySEO-özgü bulgu (React19 JSON-LD, thin→tüm-site doorway, IndexNow≠GSC, Content-Signal)
+- gereksiz öneri sayısı (B'de düşük — skill odaklar)
 
 ## Karar
 
 | Sonuç | Yorum |
 |-------|-------|
-| ort(B) − ort(A) belirgin pozitif **ve** KolaySEO-özgü bulgu B≫A | Skill değer üretiyor ✅ |
-| ort(B) ≈ ort(A), KolaySEO-özgü bulgu farkı yok | Skill'in adı var, bilgi avantajı yok ⚠️ |
-| ort(B) < ort(A) veya B'de FP artışı | Skill zarar veriyor / yanlış yönlendiriyor 🔴 |
+| ort(B TP) ≫ ort(A TP) ve FP(B) ≤ FP(A) | Skill ölçülebilir değer üretiyor ✅ |
+| ort(B) ≈ ort(A) | Adı var, bilgi avantajı yok ⚠️ |
+| ort(B) < ort(A) veya FP(B) > FP(A) | Skill yanlış yönlendiriyor 🔴 |
 
-## Şablon (results/scores.tsv olarak doldur)
+## Şablon (`results/scores.tsv`)
 
 ```
-run	critTP	highTP	medTP	FP	critMISS	highMISS	kolayseo_ozgu	gereksiz	score
+run	TP	FP	MISS	highTP	medTP	score	kolayseo_ozgu	gereksiz
 A-1	...
 B-1	...
 ```
+
+## Versiyonlama faydası
+Aynı benchmark KolaySEO v3'te de koşar: "v2 detection 0.62 → v3 0.85" gibi objektif regresyon ölçümü.
