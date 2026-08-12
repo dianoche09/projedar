@@ -6,6 +6,7 @@ import { zamanOnce } from "@/lib/types";
 import { PerspektifToggle } from "./_components/PerspektifToggle";
 import { TopluBar } from "./_components/TopluBar";
 import { TahsisDuzenleModal } from "./_components/TahsisDuzenleModal";
+import { StokMercek } from "./_components/StokMercek";
 
 /* =========================================================
    TAHSİS — Distribution Control Center (MOAT). Hangi kapsam kime açık, komisyon ne.
@@ -82,12 +83,12 @@ export default async function UreticiTahsis({
   const { data: projeler } = await projeQ;
   const projeAd = new Map((projeler ?? []).map((p) => [p.id, p.ad as string]));
 
-  // ===== STOK MERCEĞİ (ters görünüm — asıl uygulama bir sonraki adımda) =====
+  // ===== STOK MERCEĞİ (ters görünüm — birim → onu satabilen aktif tahsisler) =====
   if (mercek === "stok") {
-    return (
-      <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
-        <Baslik mercek="stok" proje={proje} projeAdi={proje ? projeAd.get(proje) ?? null : null} />
-        {!proje ? (
+    if (!proje) {
+      return (
+        <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
+          <Baslik mercek="stok" proje={proje} projeAdi={null} />
           <section className="kart p-5">
             <p className="text-[13px] font-semibold text-ink">Ters görünüm için önce bir proje seç</p>
             <p className="mt-1 text-[12.5px] text-gray">
@@ -109,17 +110,24 @@ export default async function UreticiTahsis({
               {(projeler?.length ?? 0) === 0 ? <p className="text-sm text-[var(--ink-faint)]">Henüz proje yok.</p> : null}
             </div>
           </section>
-        ) : (
-          <section className="kart p-8 text-center">
-            <p className="text-[13px] font-semibold text-ink">Stok merceği bir sonraki adımda</p>
-            <p className="mt-1 text-[12.5px] text-gray">
-              {projeAd.get(proje) ?? "Proje"} birimleri ters indekste (birim → satabilenler) burada listelenecek.
-            </p>
-            <Link href={`?proje=${proje}`} className="mt-4 inline-block text-[12.5px] font-semibold text-teal hover:underline">
-              Tahsis merceğine dön →
-            </Link>
-          </section>
-        )}
+        </div>
+      );
+    }
+
+    // Ad eşleme verileri (hedef rozeti + blok adı) — StokMercek'e prop olarak geçilir.
+    const [{ data: stokOfisler }, { data: stokBloklar }, stokEmlakcilar] = await Promise.all([
+      supabase.from("ofis").select("id, ad"),
+      supabase.from("blok").select("id, ad").eq("proje_id", proje),
+      tahsisEmlakcilari(),
+    ]);
+    const stokOfisAd = new Map((stokOfisler ?? []).map((o) => [o.id as string, o.ad as string]));
+    const stokBlokAd = new Map((stokBloklar ?? []).map((b) => [b.id as string, b.ad as string | null]));
+    const stokDanismanAd = new Map(stokEmlakcilar.map((e) => [e.id, e.ad]));
+
+    return (
+      <div className="mx-auto max-w-[1640px] px-4 py-6 text-ink sm:px-6">
+        <Baslik mercek="stok" proje={proje} projeAdi={projeAd.get(proje) ?? null} />
+        <StokMercek projeId={proje} ofisAd={stokOfisAd} danismanAd={stokDanismanAd} blokAd={stokBlokAd} />
       </div>
     );
   }
