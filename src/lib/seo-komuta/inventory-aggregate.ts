@@ -14,17 +14,29 @@ function tazeMi(d: Date | null, now: number): boolean {
 }
 
 /**
- * Talep haritası (OpenSEO annotation, elle beslenir). key = "il" ya da "il/ilce" (ilceSlug).
- * Eleme kriteri DEĞİL, policy bonus'u. Canlı audit script'i buradan geçer.
+ * Geliştirici identity normalizasyonu (çeşitlilik şişmesini önler): "YDA Group"/"YDA GROUP"/
+ * "YDA İnşaat" → aynı. İdeali ID; HubProje'de yalnız ad (string) olduğundan normalized-slug.
+ * (İleri iş: uretici_id'yi HubProje'ye taşıyıp ID-öncelikli dedup.)
  */
+export function normGelistirici(s: string): string {
+  return s
+    .toLocaleLowerCase("tr")
+    .replace(/[.\-_/]/g, " ")
+    .replace(/\b(inşaat|insaat|gayrimenkul|group|grup|gyo|holding|yapı|yapi|proje|a ş|aş|ltd|şti|sti|inc|co)\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Talep + GSC organik sinyal haritaları. key = "il" ya da "il/ilce" (slug). Eleme değil. */
 export type TalepHaritasi = Record<string, number>;
 
 export function lokasyonAgregatlari(
   hepsi: HubProje[],
-  opts: { now?: number; talep?: TalepHaritasi } = {},
+  opts: { now?: number; talep?: TalepHaritasi; organik?: TalepHaritasi } = {},
 ): LokasyonEnvanter[] {
   const now = opts.now ?? Date.now();
   const talep = opts.talep ?? {};
+  const organik = opts.organik ?? {};
   type Acc = { konum: string; seviye: "il" | "ilce"; toplam: number; index: number; gel: Set<string>; guncel: number };
   const acc = new Map<string, Acc>();
 
@@ -32,7 +44,7 @@ export function lokasyonAgregatlari(
     const a = acc.get(konum) ?? { konum, seviye, toplam: 0, index: 0, gel: new Set<string>(), guncel: 0 };
     a.toplam++;
     if (p.esik) a.index++;
-    if (p.gelistirici) a.gel.add(p.gelistirici);
+    if (p.gelistirici) { const n = normGelistirici(p.gelistirici); if (n) a.gel.add(n); }
     if (tazeMi(p.sonGuncelleme, now)) a.guncel++;
     acc.set(konum, a);
   };
@@ -50,5 +62,6 @@ export function lokasyonAgregatlari(
     farkliGelistirici: a.gel.size,
     guncelProje: a.guncel,
     queryTalep: talep[a.konum] ?? null,
+    historicalOrganicSignal: organik[a.konum] ?? 0,
   }));
 }
