@@ -39,10 +39,13 @@ Next.js (App Router, TypeScript, strict) + Tailwind · Supabase (Postgres + Auth
 - **Supabase migration/SQL/RLS = HER ZAMAN browser Dashboard → SQL Editor.** MCP `apply_migration`/`execute_sql` bu projede `Unauthorized` (access token yok, non-interactive OAuth yok); `supabase db push` de yok. Migration dosyasını `db/` altına yaz, sonra kullanıcıya SQL'i **hazır kopyalanır blok** olarak ver — "browser'dan uygula" diye ayrıca uzun uzun anlatma, sadece bloğu sun. Detay: memory `supabase-apply-browser.md`.
 
 ## SEO / GEO politikası (skill discovery)
-- **SEO/GEO işlerinin kalite kaynağı = `kolayseo` skill.** Repo-içi vendored kopya:
-  `.agents/skills/kolayseo/` (fresh clone / CI / her oturum bunu keşfeder). Source-of-truth
-  global `~/.claude/skills/kolayseo/`; repo kopyası snapshot — düzenleme kuralları için
-  `.agents/skills/kolayseo/VENDORED.md`.
+- **SEO/GEO işlerinin kalite kaynağı = `kolayseo` skill.** Her SEO/GEO işinde **önce
+  `.claude/skills/kolayseo/SKILL.md` dosyasını oku** (bu pointer native discovery'ye bağlı değil,
+  her koşulda çalışır). Repo-içi kopya: `.claude/skills/kolayseo/` (Claude Code native project-skill
+  path; gerçek dosya, symlink değil).
+- **Source-of-truth = `github.com/kolayimar/kolayseo-skill`** (pin: `f8047b3`); global
+  `~/.claude/skills/kolayseo/` sadece yerel install, esas değil. Düzenleme/drift kuralları:
+  `.claude/skills/kolayseo/VENDORED.md`. Not: fresh-clone native discovery henüz empirik doğrulanmadı.
 - Yeni public sayfa / route / şehir-ilçe / rehber eklerken **önce** kolayseo kurallarına bak
   (canonical, index/noindex, sitemap, thin-content eşiği, FAQ+schema, answer-first, private-leak).
 - Projedar özel kuralı: **kapalı-devre B2B → private-by-default.** Her yeni route için doğrula:
