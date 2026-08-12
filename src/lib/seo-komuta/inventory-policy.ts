@@ -1,67 +1,79 @@
 /**
  * Inventory Quality Gate — lokasyon (il/ilçe) index politikası.
  *
- * İKİ AYRI EŞİK (karıştırma):
- *  - Proje-içerik eşiği (ICERIK_ESIGI=5, icerik-esigi.ts): tek /proje/[slug]'ın yeterince zengin mi.
- *  - Lokasyon inventory eşiği (BURASI): /konut-projeleri/[il]/[ilce] COLLECTION'ının index'e değer mi.
+ * İKİ AYRI EŞİK: proje-içerik eşiği (ICERIK_ESIGI=5) tek /proje/[slug] zenginliği;
+ * lokasyon eşiği (BURASI) /konut-projeleri/[il]/[ilce] COLLECTION'ının index'e değer mi.
  *
- * Çok-faktör (sadece proje sayısı DEĞİL): index'lenebilir proje + geliştirici çeşitliliği + veri güncelliği
- * + benzersiz-fayda üretilebilirliği + (query talebi = bonus).
- *
- * Çok-sinyal (HOLD sadece sitemap'ten çıkarmak DEĞİL — Google iç linkten keşfeder): sitemap inclusion +
- * robots index/noindex + hub internal link + canonical birlikte kararlaşır.
+ * DÜZELTMELER (Google dokümanına göre):
+ *  - canonical HER ZAMAN self. HOLD ≠ duplicate: zayıf Çankaya koleksiyonu Ankara'nın DUPLICATE'i değil;
+ *    canonical duplicate/çok-benzer konsolidasyonu içindir, "zayıf" için değil. noindex ile canonical'ı
+ *    yönetme — ayrı sinyaller.
+ *  - HOLD'da internalLink otomatik kapatılmaz: Google noindex'i GÖRMEK için URL'yi crawl edebilmeli;
+ *    crawlable iç link keşfin temel yolu. → exposure ile ayır:
+ *      INDEXED           : sitemap + index,follow + iç link
+ *      NAVIGABLE_NOINDEX : gerçek içerik var ama eşik-altı → crawlable, noindex,follow, iç link VAR (Google noindex'i görür)
+ *      ABSORB_TO_PARENT  : standalone kullanıcı faydası yok → ayrı SEO URL'si ÜRETME, parent/filter state
+ *  - benzersizFayda MANUEL boolean değil, sinyallerden HESAPLANIR (gate subjektifleşmesin).
  */
 
 export interface LokasyonEnvanter {
   konum: string; // "izmir" | "ankara/cankaya"
   seviye: "il" | "ilce";
   toplamProje: number; // lokasyondaki toplam proje (proje + katalog)
-  indexProje: number; // per-proje eşiği (ICERIK_ESIGI) geçen, standalone-index'lenebilir proje sayısı
-  farkliGelistirici: number; // benzersiz müteahhit/geliştirici sayısı (tek kaynağa bağımlılık kontrolü)
-  guncelProje: number; // son N günde güncellenmiş proje sayısı (tazelik)
-  benzersizFayda: boolean; // lokasyona özel benzersiz açıklama/fayda üretilebiliyor mu (doorway değil)
-  queryTalep: number | null; // OpenSEO ölçülebilir talep (annotation/bonus, eleme kriteri değil)
+  indexProje: number; // per-proje eşiği (ICERIK_ESIGI) geçen, standalone-index'lenebilir proje
+  farkliGelistirici: number; // benzersiz müteahhit/geliştirici (tek-kaynak bağımlılık kontrolü)
+  guncelProje: number; // son N günde güncellenmiş proje (tazelik)
+  queryTalep: number | null; // OpenSEO ölçülebilir talep (annotation/bonus, eleme değil)
 }
 
+export type Exposure = "INDEXED" | "NAVIGABLE_NOINDEX" | "ABSORB_TO_PARENT";
 export interface IndexPolicy {
   karar: "INDEX" | "HOLD";
+  exposure: Exposure;
   sitemap: boolean;
-  robots: "index,follow" | "noindex,follow";
-  internalLink: boolean; // hub'dan iç link verilsin mi
-  canonical: "self" | "parent"; // HOLD'da parent il/hub'a canonical
+  robots: "index,follow" | "noindex,follow" | null; // ABSORB → sayfa üretilmez (null)
+  internalLink: boolean;
+  canonical: "self"; // her zaman self (HOLD duplicate değil)
   skor: number;
   neden: string;
 }
 
-// Lokasyon eşikleri (proje-içerik eşiğinden AYRI). Hardcode tek-sayı değil; çok-faktörün parçası.
-export const LOKASYON_MIN_INDEX_PROJE = 3; // en az bu kadar standalone-index'lenebilir proje
-export const LOKASYON_MIN_GELISTIRICI = 2; // tek geliştiriciye bağımlı collection index'lenmez
-export const LOKASYON_MIN_TAZE_ORAN = 0.3; // toplamın en az %30'u güncel olmalı
+export const LOKASYON_MIN_INDEX_PROJE = 3;
+export const LOKASYON_MIN_GELISTIRICI = 2;
+export const LOKASYON_MIN_TAZE_ORAN = 0.3;
+
+/** benzersiz fayda = makineden hesaplanır: lokasyona özel gerçek veri + geliştirici çeşitliliği + child link. */
+export function benzersizFaydaVar(e: LokasyonEnvanter): boolean {
+  return e.indexProje >= 2 && e.farkliGelistirici >= 2; // ≥2 index'lenebilir proje + ≥2 geliştirici → özgün aggregate üretilebilir
+}
 
 export function lokasyonIndexPolicy(e: LokasyonEnvanter): IndexPolicy {
-  const yeterliIndexProje = e.indexProje >= LOKASYON_MIN_INDEX_PROJE;
+  const yeterli = e.indexProje >= LOKASYON_MIN_INDEX_PROJE;
   const cesitlilik = e.farkliGelistirici >= LOKASYON_MIN_GELISTIRICI;
   const guncel = e.guncelProje >= 1 && e.guncelProje / Math.max(e.toplamProje, 1) >= LOKASYON_MIN_TAZE_ORAN;
-  const fayda = e.benzersizFayda;
-  const talepBonus = (e.queryTalep ?? 0) >= 40; // ölçülebilir talep = güçlendirici (zorunlu değil)
+  const fayda = benzersizFaydaVar(e);
+  const talepBonus = (e.queryTalep ?? 0) >= 40;
+  const skor = [yeterli, cesitlilik, guncel, fayda].filter(Boolean).length + (talepBonus ? 0.5 : 0);
 
-  const zorunlu = yeterliIndexProje && cesitlilik && guncel;
-  const index = zorunlu && (fayda || talepBonus); // 3 zorunlu + (benzersiz fayda VEYA gerçek talep)
-  const skor = [yeterliIndexProje, cesitlilik, guncel, fayda].filter(Boolean).length + (talepBonus ? 0.5 : 0);
-
-  if (index) {
-    return {
-      karar: "INDEX", sitemap: true, robots: "index,follow", internalLink: true, canonical: "self", skor,
-      neden: `indexProje=${e.indexProje}≥${LOKASYON_MIN_INDEX_PROJE} · geliştirici=${e.farkliGelistirici}≥${LOKASYON_MIN_GELISTIRICI} · güncel · ${fayda ? "benzersiz-fayda" : "talep-bonus"}`,
-    };
+  if (yeterli && cesitlilik && guncel && (fayda || talepBonus)) {
+    return { karar: "INDEX", exposure: "INDEXED", sitemap: true, robots: "index,follow", internalLink: true, canonical: "self", skor,
+      neden: `indexProje=${e.indexProje}≥${LOKASYON_MIN_INDEX_PROJE} · geliştirici=${e.farkliGelistirici}≥${LOKASYON_MIN_GELISTIRICI} · güncel · ${fayda ? "benzersiz-fayda" : "talep-bonus"}` };
   }
+
   const eksik = [
-    !yeterliIndexProje ? "index'lenebilir-proje<eşik" : null,
+    !yeterli ? "index'lenebilir-proje<eşik" : null,
     !cesitlilik ? "tek-geliştirici" : null,
     !guncel ? "veri-güncel-değil" : null,
     !fayda && !talepBonus ? "benzersiz-fayda/talep-yok" : null,
   ].filter(Boolean).join(" · ");
-  return { karar: "HOLD", sitemap: false, robots: "noindex,follow", internalLink: false, canonical: "parent", skor, neden: `eksik: ${eksik}` };
+
+  // HOLD: gerçek içeriği olan (kullanıcıya gezinilebilir) → NAVIGABLE_NOINDEX; boş/faydasız → ABSORB.
+  if (e.toplamProje >= 1) {
+    return { karar: "HOLD", exposure: "NAVIGABLE_NOINDEX", sitemap: false, robots: "noindex,follow", internalLink: true, canonical: "self", skor,
+      neden: `HOLD-navigable (crawlable, noindex,follow — Google noindex'i görsün). eksik: ${eksik}` };
+  }
+  return { karar: "HOLD", exposure: "ABSORB_TO_PARENT", sitemap: false, robots: null, internalLink: false, canonical: "self", skor,
+    neden: `HOLD-absorb (standalone URL üretme; parent/filter). eksik: ${eksik}` };
 }
 
 /** Toplu audit: lokasyon envanter listesi → INDEX/HOLD tablosu (canlı tumHubProjeleri'den beslenir). */

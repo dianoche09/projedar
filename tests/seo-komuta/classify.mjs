@@ -2,9 +2,12 @@
 //
 // Layer A (heuristic-classifier): öncelik-sıralı regex baseline. Hızlı, tekrarlanabilir, assertion'lı.
 //   AMA: NEW_TERRITORY üretemez; first-match-wins false-negative riski; INVENTORY precision düşük.
-// Layer B (semantic judge): LLM (Claude) yargısı, SEMANTIC_OVERRIDES olarak kodlanır (A≠B diff'i).
-//   Bu turda judge = Claude'un 749'u tam okuyup verdiği kararlar; ÜRETİMDE Collect→Diagnose'da LLM adımı.
-// Final semantic classification = heuristic + overrides. Fixtures repo'da kalıcı.
+// Layer B (Claude REVIEW + OVERRIDE — TAM per-row LLM judge DEĞİL): Claude 749'un tamamını okudu;
+//   judge==heuristic satırlarda ayrı kayıt tutulmaz (agreement), judge≠heuristic → SEMANTIC_OVERRIDES.
+//   ⚠️ DÜRÜSTLÜK: bu FULL per-row bağımsız LLM adjudication DEĞİL, review+override. "NEW_TERRITORY=0 /
+//   B2B false-negative yok" = review-güveni; per-row machine-validated değil. Üretim: her satıra
+//   bağımsız LLM judge (heuristic fallback YASAK) + confusion matrix. "749 semantic doğrulandı" DENMEZ.
+// Final = heuristic + overrides. Fixtures repo'da kalıcı.
 //
 // Kullanım: node tests/seo-komuta/classify.mjs <research_keywords.json>
 // Integrity: Integrity PASS ≠ semantic accuracy PASS. Bu dosya ikisini AYRI raporlar.
@@ -106,4 +109,5 @@ OUT.filter((o) => o.semantic === "MATCHED_MUST").forEach((o) => console.log(`  [
 console.log("=== INVENTORY_ENTITY (semantic, temizlenmiş) top ===");
 OUT.filter((o) => o.semantic === "INVENTORY_ENTITY").sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0)).slice(0, 15).forEach((o) => console.log(`  [${o.volume ?? "null"}] ${o.query}`));
 console.log("\nfixtures: tests/seo-komuta/fixtures/{query-pool,semantic-classification,classification-summary}.json");
-console.log("NOT: Integrity PASS ≠ semantic accuracy. B katmanı A'nın INVENTORY false-positive'lerini düzeltir.");
+console.log("NOT: Integrity PASS ≠ semantic accuracy. Layer B = Claude review+override (11 satır), TAM");
+console.log("     per-row LLM judge DEĞİL → 'B2B FN yok / NEW_TERRITORY=0' review-güveni, machine-validated değil.");
