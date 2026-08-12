@@ -162,13 +162,15 @@ strip_pointer(){ local f="$1" tag="$2"
 evidence(){ local j="$1" tag="$2" model tools nse sfr sem
   model="$(jq -rs '[.[] | (.model // .message.model // .session.model // empty)] | first // "?"' "$j" 2>/dev/null || echo '?')"
   tools="$(jq -rc '.message.content[]? | select(.type=="tool_use") | .name' "$j" 2>/dev/null | sort -u | paste -sd, - 2>/dev/null || echo '')"
-  # native_skill_event: AYRI bir Skill/skill tool-event (Read DEGIL). Bu surumde genelde 0.
-  nse="$(jq -rc '.message.content[]? | select(.type=="tool_use") | .name' "$j" 2>/dev/null | grep -cxiE 'skill' || true)"
+  # native_skill_event: YALNIZ kolayseo Skill-invocation (rakip skill'ler SAYILMAZ — geo-technical vb.).
+  local skills_seen
+  skills_seen="$(jq -rc '.message.content[]? | select(.type=="tool_use" and (.name|ascii_downcase=="skill")) | (.input.skill? // (.input|tostring))' "$j" 2>/dev/null | sort -u | paste -sd, - 2>/dev/null || echo '')"
+  nse="$(jq -rc '.message.content[]? | select(.type=="tool_use" and (.name|ascii_downcase=="skill")) | (.input.skill? // (.input|tostring))' "$j" 2>/dev/null | grep -ic kolayseo || true)"
   # skill_file_read: .claude/skills/kolayseo/... Read (bu surumde GERCEK sinyal). nse ile ayni Read'i CIFT saymaz.
   sfr="$(jq -rc '.message.content[]? | select(.type=="tool_use" and .name=="Read") | .input.file_path? // empty' "$j" 2>/dev/null | grep -c 'kolayseo' || true)"
   # semantic_match: final metin kolayseo davranisi/adi gosteriyor mu (zayif, teyit).
   sem="$(jq -rs '[.[] | select(.type=="result") | .result] | last // ""' "$j" 2>/dev/null | grep -ciE 'kolayseo|llms\.txt|answer-first|IndexNow' || true)"
-  printf '%s\tmodel=%s\ttools=[%s]\tnative_evt=%s\tfile_read=%s\tsemantic=%s\n' "$tag" "$model" "$tools" "${nse:-0}" "${sfr:-0}" "${sem:-0}" >> "$OUT_DIR/evidence.tsv"
+  printf '%s\tmodel=%s\tkolayseo_evt=%s\tkolayseo_read=%s\tsemantic=%s\tskills_invoked=[%s]\n' "$tag" "$model" "${nse:-0}" "${sfr:-0}" "${sem:-0}" "$skills_seen" >> "$OUT_DIR/evidence.tsv"
 }
 
 run_one(){ # tag pointer(on|off|forced) repo_skill(on|off) mutate(0|1) profile(disco|ab)
