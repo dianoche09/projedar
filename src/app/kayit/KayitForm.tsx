@@ -63,9 +63,11 @@ function AlanGir({ a, aktif }: { a: Alan; aktif: boolean }) {
 export function KayitForm({
   davet,
   adayDavet,
+  kaynak,
 }: {
   davet?: { ad: string; d: string; n: string; t: string } | null;
   adayDavet?: { aday: string; rol: string; t: string; firma: string } | null;
+  kaynak?: string | null;
 }) {
   const [adim, setAdim] = useState<0 | 1 | 2>(0);
   const [rol, setRol] = useState<string>(adayDavet ? adayDavet.rol : davet ? "emlakci" : "uretici");
@@ -96,6 +98,8 @@ export function KayitForm({
 
   return (
     <form action={kayitOl} className="mt-6 flex flex-col gap-4 text-ink">
+      {/* İçerik/CTA attribution: kaynak'ı kayit_tamam huni-kapanış olayına taşır. */}
+      {kaynak ? <input type="hidden" name="kaynak" value={kaynak} /> : null}
       {davet ? (
         <>
           <input type="hidden" name="d" value={davet.d} />

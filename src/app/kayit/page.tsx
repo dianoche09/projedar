@@ -45,7 +45,7 @@ export default async function KayitPage({
           </p>
         ) : null}
 
-        <KayitForm davet={davet} adayDavet={adayDavet} />
+        <KayitForm davet={davet} adayDavet={adayDavet} kaynak={kaynak ?? null} />
 
         <p className="mt-6 border-t border-hair pt-4 text-center text-sm font-medium text-ink-soft">
           Zaten hesabın var mı?{" "}
