@@ -33,7 +33,6 @@ export function Eslestirici({ birimler }: { birimler: EslesBirim[] }) {
   const [ilce, setIlce] = useState("");
   const [minM2, setMinM2] = useState("");
   const [kat, setKat] = useState<"" | "yuksek" | "dusuk">("");
-  const [arandi, setArandi] = useState(false);
 
   const odaSec = useMemo(() => distinct(birimler.map((b) => b.oda)), [birimler]);
   const ilSec = useMemo(() => distinct(birimler.map((b) => b.il)), [birimler]);
@@ -66,7 +65,7 @@ export function Eslestirici({ birimler }: { birimler: EslesBirim[] }) {
   }, [birimler, butceMin, butceMax, oda, il, ilce, minM2, kat]);
 
   const temizle = () => {
-    setButceMin(""); setButceMax(""); setOda(""); setIl(""); setIlce(""); setMinM2(""); setKat(""); setArandi(false);
+    setButceMin(""); setButceMax(""); setOda(""); setIl(""); setIlce(""); setMinM2(""); setKat("");
   };
 
   return (
@@ -133,23 +132,15 @@ export function Eslestirici({ birimler }: { birimler: EslesBirim[] }) {
             </div>
           </label>
         </div>
-        <div className="mt-3 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setArandi(true)}
-            className="rounded-xl bg-teal px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-teal-d"
-          >
-            Eşleştir
-          </button>
+        <div className="mt-3 flex items-center justify-end">
           <button type="button" onClick={temizle} className="text-[13px] font-medium text-gray hover:text-ink hover:underline">
             Temizle
           </button>
         </div>
       </div>
 
-      {/* Sonuçlar */}
-      {arandi ? (
-        <div className="mt-5">
+      {/* Sonuçlar — anlık (kriter değiştikçe güncellenir) */}
+      <div className="mt-5">
           <p className="mb-2 text-[13px] text-ink-soft">
             <span className="font-semibold text-ink">{sonuc.length}</span> uygun birim
             {sonuc.length ? " · en uygun üstte (değer yoğunluğu)" : ""}
@@ -192,7 +183,6 @@ export function Eslestirici({ birimler }: { birimler: EslesBirim[] }) {
             </div>
           )}
         </div>
-      ) : null}
     </div>
   );
 }

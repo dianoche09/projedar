@@ -157,6 +157,7 @@ export function DaireModal({
   const pathname = usePathname();
   // Görsel önceliği: daireye özel görsel → tip planı → şematik plan
   const daireGorsel = birim.gorsel_url ?? birim.plan_url ?? null;
+  const [buyut, setBuyut] = useState(false);
 
   const taban = birim.taban_fiyat;
   const liste = birim.liste_fiyati;
@@ -189,6 +190,13 @@ export function DaireModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onKapat} aria-hidden />
+      {buyut && daireGorsel ? (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 p-4" onClick={() => setBuyut(false)} role="dialog" aria-label="Görsel önizleme">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={daireGorsel} alt={`${birim.tip_ad ?? "Daire"} görseli`} onClick={(e) => e.stopPropagation()} className="max-h-[92vh] max-w-[94vw] rounded-lg object-contain" />
+          <button type="button" onClick={() => setBuyut(false)} aria-label="Kapat" className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-white/15 text-lg text-white backdrop-blur-sm transition-colors hover:bg-white/25">✕</button>
+        </div>
+      ) : null}
       <div className="sheet-in glass-card relative z-10 max-h-[92vh] w-full max-w-md overflow-y-auto rounded-t-2xl p-6 shadow-cardlg sm:rounded-2xl sm:max-w-lg lg:max-w-4xl border border-slate-200/80">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -226,7 +234,7 @@ export function DaireModal({
         <div className="group relative overflow-hidden rounded-xl border border-slate-100 bg-slate-50">
           {daireGorsel ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={daireGorsel} alt={`${birim.tip_ad ?? "Daire"} görseli`} className="max-h-72 w-full object-contain bg-slate-100/50" />
+            <img src={daireGorsel} alt={`${birim.tip_ad ?? "Daire"} görseli`} onClick={() => setBuyut(true)} title="Büyüt" className="max-h-72 w-full cursor-zoom-in object-contain bg-slate-100/50" />
           ) : (
             <KatPlani etiket={birim.oda ?? birim.tip_ad ?? undefined} buyuk />
           )}
