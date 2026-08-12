@@ -87,3 +87,47 @@ export function hacimliler(m: QueryRow[] = MATRIX): QueryRow[] {
 export function territoryGaplar(m: QueryRow[] = MATRIX): QueryRow[] {
   return m.filter((r) => r.territory === "GAP");
 }
+
+// ── v2 kanıtları (independent discovery + SERP validation, 2026-08-12) ─────────
+/**
+ * INDEPENDENT DISCOVERY (research_keywords 5 seed → 750 keyword ideas, seed-annotation DEĞİL):
+ * Projedar B2B kavramlarına + ölçülebilir hacme sahip yalnız 2 çıktı ("proje satışı nasıl yapılır" 10,
+ * "gizli müşteri kaydı" alakasız). Gerisi gürültü. → B2B'nin bağımsız arama sözlüğü ölçülemez.
+ * (null≠sıfır: long-tail/AI/entity için sayfa var, trafik için değil.) Territory Gap: bağımsız
+ * havuzdan yeni B2B territory ÇIKMADI (kapalı-devre değil bu sefer — gerçekten yok).
+ *
+ * SERP VALIDATION (get_serp_results, ARZ):
+ *  - intent = project-discovery (Projedar /konut-projeleri yapısına uyar).
+ *  - il (izmir/ankara) = DA-90 portal duvarı üstte; ilçe (çankaya) = aggregator+local_pack, DAHA KAZANILABİLİR.
+ *  - rakip aggregator'lar GERÇEK proje sayısıyla ranking (ankaraproje.net "34/17 aktif proje") → envanter şart.
+ * ROUTE EXISTENCE: B2B /rehber slug'ları YOK → CREATE (STRENGTHEN değil). ARZ route + /sozluk VAR.
+ */
+
+/** Inventory Quality Gate: il/ilçe ARZ sayfası ancak yeterli gerçek+güncel envanterle index'lenir. */
+export interface EnvanterDurum {
+  konum: string; // il ya da il/ilçe
+  gercekProje: number; // eşik-geçen (icerik-esigi) proje sayısı
+  guncel: boolean; // veriler taze mi
+}
+export const INVENTORY_ESIK = 3; // < eşik → thin; parent altında ABSORB/NOINDEX (mevcut icerik-esigi.ts mantığı)
+export function inventoryGateGecer(e: EnvanterDurum): boolean {
+  return e.gercekProje >= INVENTORY_ESIK && e.guncel;
+}
+export function arzKarar(e: EnvanterDurum): Karar {
+  return inventoryGateGecer(e) ? "CREATE" : "ABSORB"; // ABSORB = parent il/hub altında, ilçe sayfası açma
+}
+
+/** İKİ scorecard (B2B'yi trafik metriğiyle ölçme — kullanıcı kuralı). */
+export const SCORECARDS = {
+  B2B_AUTHORITY: ["visibility(impression/pos)", "product-landing-geçiş", "lead", "activation(nitelikli/belgeli hesap)"],
+  INVENTORY_SEO: ["impressions", "organic-traffic", "project-engagement", "professional/buyer-action"],
+} as const;
+
+/**
+ * SİSTEMİN kanıta-göre seçtiği ilk 3 aksiyon (biz seçmiyoruz). Sıralama = ölçülebilir talep × kazanılabilirlik.
+ */
+export const SISTEM_SECIMI = [
+  { sira: 1, aksiyon: "ARZ ilçe sayfaları (envanter-eşiği geçen)", scorecard: "INVENTORY_SEO", gerekce: "Tek ölçülebilir talep + ilçe SERP kazanılabilir + intent match; Inventory Gate ile thin-koruma", kanit: "SERP: çankaya aggregator/local_pack; icerik-esigi mevcut" },
+  { sira: 2, aksiyon: "ARZ il hub'ları (izmir/ankara) + ilçe besleme", scorecard: "INVENTORY_SEO", gerekce: "Gerçek hacim (720/140) ama üst-3 portal duvarı → hub olarak mid + ilçe'yi besler", kanit: "SERP: il-üst DA-90; ankaraproje.net mid ranking" },
+  { sira: 3, aksiyon: "Bir B2B entity pillar (çift-satış → /emlakci) CREATE", scorecard: "B2B_AUTHORITY", gerekce: "Trafik DEĞİL — entity/AI-cevap/dönüşüm; claim VERIFIED_DB; funnel /emlakci", kanit: "independent-discovery: B2B ölçülebilir talep yok → Authority scorecard" },
+] as const;
