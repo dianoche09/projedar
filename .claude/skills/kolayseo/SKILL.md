@@ -125,6 +125,17 @@ trigger doorway penalty across the whole site; `/api/cron/*` blocked by middlewa
   Verify first: (a) anonymous Googlebot HTTP result, (b) login redirect?, (c) middleware actually enforced?,
   (d) robots disallow present? Reserve the "crawl-allow + noindex" fix for PUBLIC-but-noindex routes (e.g.
   token share pages), NOT auth-gated panels. (§01)
+- **"competition: LOW" (Google-Ads-derived) is ADVERTISER bid competition, NOT organic SEO difficulty.** Never
+  call a keyword "winnable" from it. Use real Keyword Difficulty (KD) AND read the actual top-10 SERP: who
+  ranks (GİB/gov, banks, DA-90 portals like sahibinden/hepsiemlak, established calculator/finance domains
+  like hesapkurdu/hangikredi vs weak blogs?). A zero-authority new site does not instantly take even a KD-0
+  term if strong domains hold the SERP. (§04/§10)
+- **2026 Google rich-result reality — do NOT build schema for dead features.** HowTo rich result was
+  deprecated (2023); **FAQ rich result was fully removed (May 2026, docs gone June 2026).** Keep
+  BreadcrumbList; use WebApplication/WebPage semantic markup where apt; write FAQ/steps content when it helps
+  the USER — but never add FAQPage/HowTo expecting a Google rich result. **`llms.txt` is NOT needed for Google
+  Search** (no ranking effect) — it's an AI-distribution channel, classify RECOMMENDED not CORE. **IndexNow =
+  Bing/Yandex/Naver/Seznam/Yep, NOT Google** — never report it as a Google SEO mechanism. (§02/§03/§10)
 
 ## Validation
 

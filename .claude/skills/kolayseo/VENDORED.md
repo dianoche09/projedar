@@ -4,8 +4,9 @@ Bu klasör, SEO/GEO kalite-politikasının **repo-içi, Claude Code native disco
 
 ## Source of truth
 - **Kanonik kaynak:** `github.com/kolayimar/kolayseo-skill` (kendi git repo'su).
-- **Pin (vendor edilen commit):** `310c1ea` (2 field lesson: Next.js route-handler farkındalığı +
-  auth-aware private audit; P1 smoke'un yanlış "llms.txt yok" bulgusundan çıkarıldı).
+- **Pin (vendor edilen commit):** `5da65e2` (4 field lesson: route-handler farkındalığı, auth-aware
+  private audit, LOW-competition≠SEO/gerçek-SERP-oku, 2026 schema gerçeği [HowTo/FAQ rich result ölü,
+  llms.txt Google-CORE değil, IndexNow Google değil]).
 - **Vendor tarihi:** 2026-08-12.
 - **Not:** global source-of-truth `310c1ea`'da commit'li ama `github.com/kolayimar/kolayseo-skill`'e
   push edilemedi (https "repository not found" — private/auth veya taşınmış). Push kullanıcının ssh/creds'iyle.
