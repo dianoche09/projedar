@@ -10,9 +10,10 @@ import { AgBuyuyor } from "@/components/landing/AgBuyuyor";
  * menüsü sektörel içerik yüzeyine açılır (yalnız yayında kategoriler).
  */
 const KESFET: [string, string][] = [
+  ["Konut projeleri", "/konut-projeleri"],
   ["Müteahhitler için", "/muteahhit"],
   ["Danışmanlar için", "/emlakci"],
-  ["Konut projeleri", "/konut-projeleri"],
+  ["Nedir", "/nedir"],
   ["Rehberler", "/rehber"],
   ["Güven", "/guven"],
 ];

@@ -54,20 +54,20 @@ const GUVEN = [
 const SITE = "https://projedar.com";
 
 export const metadata: Metadata = {
-  title: "Projedar — Yeni projelerin profesyonel satış ağı",
+  title: "Projedar | Yeni Konut Projelerinin Canlı Satış Ağı",
   description:
-    "İnşaat firmalarının canlı proje bilgilerini, güncel fiyatlarını ve bağımsız bölüm durumlarını yetkili gayrimenkul danışmanlarıyla tek satış ağında buluşturur. Bir daire değişir, bütün ağ güncellenir. Kontrollü erişim, tek doğru veri, komisyon yok.",
+    "İnşaat firmalarının canlı proje bilgilerini, güncel fiyatlarını ve bağımsız bölüm durumlarını yetkili gayrimenkul danışmanlarıyla tek satış ağında buluşturur. Bir daire değişir, bütün ağ güncellenir. Kontrollü erişim, tek doğru veri; Projedar satış komisyonuna ortak olmaz.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Projedar — Yeni projelerin profesyonel satış ağı",
+    title: "Projedar | Yeni Konut Projelerinin Canlı Satış Ağı",
     description:
-      "Proje sahibiyle yetkili danışmanları aynı canlı, güncel gerçekte buluşturan satış ve dağıtım ağı. Tek doğru veri, çift-satış kalkanı, komisyon yok.",
+      "Proje sahibiyle yetkili danışmanları aynı canlı, güncel gerçekte buluşturan satış ve dağıtım ağı. Tek doğru veri, çift-satış kalkanı; Projedar satış komisyonuna ortak olmaz.",
     type: "website",
     siteName: "Projedar",
     url: SITE,
     locale: "tr_TR",
   },
-  twitter: { card: "summary_large_image", title: "Projedar — Yeni projelerin profesyonel satış ağı" },
+  twitter: { card: "summary_large_image", title: "Projedar | Yeni Konut Projelerinin Canlı Satış Ağı" },
 };
 
 
@@ -126,7 +126,7 @@ function jsonLd() {
   return {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "Organization", "@id": `${SITE}/#org`, name: "Projedar", url: SITE, logo: `${SITE}/icon-512.png`, description: "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kapalı B2B konut stoğu ağı." },
+      { "@type": "Organization", "@id": `${SITE}/#org`, name: "Projedar", url: SITE, logo: `${SITE}/icon-512.png`, description: "Proje sahibi ve gayrimenkul danışmanlarını canlı, doğru veriyle buluşturan kontrollü erişimli konut stoğu dağıtım ağı." },
       { "@type": "WebSite", "@id": `${SITE}/#website`, url: SITE, name: "Projedar", inLanguage: "tr-TR", publisher: { "@id": `${SITE}/#org` } },
       {
         "@type": "SoftwareApplication",
@@ -136,7 +136,7 @@ function jsonLd() {
         operatingSystem: "Web, iOS, Android (PWA)",
         description: "Çok-müteahhitli, üretici-kontrollü canlı konut stoğu dağıtım ağı. Tek doğru kaynak, granüler tahsis, çift-satış kalkanı, görünür tazelik.",
         publisher: { "@id": `${SITE}/#org` },
-        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY", description: "Gayrimenkul danışmanı için başlangıçta ücretsiz; komisyon yok." },
+        offers: { "@type": "Offer", price: "0", priceCurrency: "TRY", description: "Gayrimenkul danışmanı için başlangıçta ücretsiz; Projedar satış komisyonuna ortak olmaz." },
       },
       {
         "@type": "Service",
@@ -145,7 +145,7 @@ function jsonLd() {
         serviceType: "Yeni konut projeleri için tahsisli canlı satış ve dağıtım ağı",
         provider: { "@id": `${SITE}/#org` },
         areaServed: { "@type": "Country", name: "Türkiye" },
-        description: "Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; yetkili gayrimenkul danışmanları tahsisli projeleri tek canlı ağda görür ve paylaşır. Komisyon yok.",
+        description: "Proje sahibi stoğunu, fiyatını ve dağıtımını tek noktadan yönetir; yetkili gayrimenkul danışmanları tahsisli projeleri tek canlı ağda görür ve paylaşır. Projedar satış komisyonuna ortak olmaz.",
         audience: [
           { "@type": "Audience", audienceType: "Müteahhit / konut projesi geliştiren firma" },
           { "@type": "Audience", audienceType: "Gayrimenkul danışmanı ve ofisi" },
@@ -154,8 +154,8 @@ function jsonLd() {
       {
         "@type": "SiteNavigationElement",
         "@id": `${SITE}/#nav`,
-        name: ["Müteahhitler için", "Danışmanlar için", "Güven Protokolü"],
-        url: [`${SITE}/muteahhit`, `${SITE}/emlakci`, `${SITE}/guven`],
+        name: ["Konut projeleri", "Müteahhitler için", "Danışmanlar için", "Projedar nedir?", "Rehber", "Güven Protokolü"],
+        url: [`${SITE}/konut-projeleri`, `${SITE}/muteahhit`, `${SITE}/emlakci`, `${SITE}/nedir`, `${SITE}/rehber`, `${SITE}/guven`],
       },
       { "@type": "FAQPage", "@id": `${SITE}/#faq`, mainEntity: SSS.map((q) => ({ "@type": "Question", name: q.s, acceptedAnswer: { "@type": "Answer", text: q.c } })) },
     ],
