@@ -51,6 +51,13 @@ Next.js (App Router, TypeScript, strict) + Tailwind · Supabase (Postgres + Auth
 - Projedar özel kuralı: **kapalı-devre B2B → private-by-default.** Her yeni route için doğrula:
   panel/havuz/opsiyon/paylaşım/`/api` sitemap'e SIZMASIN + robots disallow + gerekli yerde `noindex`.
 
+## Görev Takibi (ZORUNLU — kullanıcı kuralı 2026-08-14)
+- Kullanıcının istediği **HER şey** kalıcı görev panosuna işlenir: `ProjePazar-Gorev-Takip.md`.
+- Her yeni istek → panoya yeni satır (durum ⏳ bekliyor). İş bitince → ✅ + commit hash yaz, satırı kapat.
+- Kullanıcı "ne yapıldı / ne kaldı" diye sorunca panodan **yapılmayanları hatırlat.**
+- Oturum içi ilerlemede ayrıca `TodoWrite` kullan (ephemeral); ama kalıcı gerçek pano dosyasıdır.
+- Durum kodları: ✅ tamam(canlı) · 🔵 devam · ⏳ bekliyor · 🧊 ayrı proje · ❌ iptal. Bu kuralı ATLAMA.
+
 ## Changelog / Memory (bu projeye özel)
 Her projenin **kendi** changelog'u vardır. Bu repoda anlamlı her değişiklikten sonra **yalnız bu projenin** changelog'unu güncelle; başka projenin (ör. KolayIMAR) changelog'una **yazma**.
 - Changelog: `~/.claude/projects/-Users-gurkankuzu-GK-MAC-D-GK-Proje-admin-ProjePazar/memory/projedar_changelog.md`
