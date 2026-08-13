@@ -236,6 +236,30 @@ def _sayi(ham: str) -> int | None:
     return _YAZI_SAYI.get(ham)
 
 
+def stok_hareketli(kalan, toplam, yuzde) -> bool | None:
+    """Stok kaydında gerçek satış hareketi görülüyor mu?
+
+    Geliştiricilerin bir kısmı kalan stoğu bir kez girip güncellemiyor: kalan
+    stok toplam bağımsız bölüme eşit ve satış yüzdesi 0 kalıyor. Teslim tarihi
+    geçmiş bir projede bu gerçekçi değil, kayıt eskimiş demektir. Bu tür kayıt
+    "stok var" kanıtı sayılmaz; ayrı sınıflandırılır.
+
+    Döner: True hareket var · False kayıt güncellenmemiş görünüyor · None stok verisi yok
+    """
+    def _s(d):
+        try:
+            return float(str(d).strip())
+        except (TypeError, ValueError):
+            return None
+
+    k, t, y = _s(kalan), _s(toplam), _s(yuzde)
+    if k is None:
+        return None
+    if t is not None and k == t and (y is None or y == 0):
+        return False
+    return True
+
+
 def blok_etap_cikar(metin: str) -> tuple[int | None, int | None]:
     """Proje açıklamasından blok ve etap sayısını yakala. Bulunamazsa None.
 

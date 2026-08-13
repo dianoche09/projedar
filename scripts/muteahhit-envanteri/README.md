@@ -37,6 +37,26 @@ Ek kaldıraç: her detay sayfası `relatedProjects` içinde 10-20 komşu projeyi
 **tam nesne** olarak taşır. 30 projelik denemede 120 firma çıktı. Tarama kendi
 evrenini genişletir.
 
+## Durgun kayıt tuzağı (önemli)
+
+Stok toplamını ham haliyle kullanma. 289 stoklu projenin **130'unda** kalan stok
+toplam bağımsız bölüme eşit ve satış yüzdesi 0. Teslim tarihi geçmiş bir projede
+%0 satış gerçekçi değil; bu kayıtlar bir kez girilip güncellenmemiş görünüyor.
+
+| Grup | Proje | Stok |
+|---|---|---|
+| Satış hareketi doğrulanmış | 159 | **11.965 konut** |
+| Kaydı güncellenmemiş görünen | 130 | 39.399 konut |
+| Ham toplam | 289 | 51.364 konut |
+
+`ortak.stok_hareketli()` bu ayrımı yapar. `lead_skor.py` skoru **yalnız
+doğrulanmış stoğa** verir; durgun stok `durgun_stok` kolonunda ayrı görünür ve
+gerekçede "teyit gerek" olarak işaretlenir. Durgun kayıtlar gerçekten stok
+taşıyor da olabilir; snapshot serisinde iki ölçüm arasında değişim görülürse
+doğrulanmış gruba geçerler.
+
+Bu, brief'in "SATIŞ HIZINDA YANILTICI SİNYALLER" uyarısının somut karşılığıdır.
+
 ## Sınırlar (bilerek)
 
 - **Satış hızı geriye dönük üretilemez.** Payload yalnız anlık değeri verir.

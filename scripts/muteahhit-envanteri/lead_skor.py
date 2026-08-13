@@ -38,14 +38,14 @@ import csv
 from collections import defaultdict
 from datetime import date
 
-from ortak import CIKTI
+from ortak import CIKTI, stok_hareketli
 
 CIKAN_ALAN = [
     "sira", "firma", "firma_slug", "il", "ilce", "telefon", "web_sitesi",
     "eposta_kurumsal", "adres", "toplam_proje", "aktif_proje", "toplam_konut",
-    "aktif_stok", "stok_verisi_olan_proje", "ort_satis_yuzdesi",
-    "teslimi_gecmis_stoklu_proje", "sehir_sayisi", "son_kayit_tarihi",
-    "b2b_skor", "sinif", "gerekce", "kaynak",
+    "aktif_stok", "dogrulanmis_stok", "durgun_stok", "stok_verisi_olan_proje",
+    "ort_satis_yuzdesi", "teslimi_gecmis_stoklu_proje", "sehir_sayisi",
+    "son_kayit_tarihi", "b2b_skor", "sinif", "gerekce", "kaynak",
 ]
 
 
@@ -86,13 +86,23 @@ def main() -> int:
         stoklu = [p for p in aktif if str(p.get("kalan_stok", "")).strip() != ""]
         aktif_stok = sum(int(_sayi(p.get("kalan_stok"))) for p in stoklu)
 
+        # Durgun kayıt (kalan == toplam, satış %0) "stok var" kanıtı değil; skoru
+        # doğrulanmış stok belirler, durgun stok ayrı kolonda görünür.
+        hareketli = [
+            p for p in stoklu
+            if stok_hareketli(p.get("kalan_stok"), p.get("toplam_bagimsiz_bolum"),
+                              p.get("satis_yuzdesi"))
+        ]
+        dogrulanmis_stok = sum(int(_sayi(p.get("kalan_stok"))) for p in hareketli)
+        durgun_stok = aktif_stok - dogrulanmis_stok
+
         yuzdeler = [_sayi(p.get("satis_yuzdesi"), -1) for p in aktif]
         yuzdeler = [y for y in yuzdeler if y >= 0]
         ort_yuzde = round(sum(yuzdeler) / len(yuzdeler), 3) if yuzdeler else ""
 
         # Teslim tarihi geçmiş ama hâlâ satışta ve stoğu olan proje: en sıcak sinyal.
         gecmis_stoklu = [
-            p for p in stoklu
+            p for p in hareketli
             if p.get("teslim_tarihi") and p["teslim_tarihi"] < bugun
             and int(_sayi(p.get("kalan_stok"))) > 0
         ]
@@ -102,12 +112,14 @@ def main() -> int:
 
         # --- skor ---
         skor, neden = 0.0, []
-        if aktif_stok >= 200:
-            skor += 3; neden.append(f"{aktif_stok} aktif stok")
-        elif aktif_stok >= 60:
-            skor += 2; neden.append(f"{aktif_stok} aktif stok")
-        elif aktif_stok >= 15:
-            skor += 1; neden.append(f"{aktif_stok} aktif stok")
+        if dogrulanmis_stok >= 200:
+            skor += 3; neden.append(f"{dogrulanmis_stok} doğrulanmış stok")
+        elif dogrulanmis_stok >= 60:
+            skor += 2; neden.append(f"{dogrulanmis_stok} doğrulanmış stok")
+        elif dogrulanmis_stok >= 15:
+            skor += 1; neden.append(f"{dogrulanmis_stok} doğrulanmış stok")
+        if durgun_stok >= 100:
+            neden.append(f"ayrıca {durgun_stok} durgun kayıt (teyit gerek)")
 
         if len(aktif) >= 4:
             skor += 2; neden.append(f"{len(aktif)} aktif proje")
@@ -121,7 +133,7 @@ def main() -> int:
         elif len(gecmis_stoklu) == 1:
             skor += 1; neden.append("teslim geçmiş projede stok duruyor")
 
-        if yuzdeler and ort_yuzde != "" and float(ort_yuzde) < 0.5 and aktif_stok >= 30:
+        if yuzdeler and ort_yuzde != "" and float(ort_yuzde) < 0.5 and dogrulanmis_stok >= 30:
             skor += 1; neden.append(f"ortalama satış %{float(ort_yuzde) * 100:.0f}, erime yavaş")
 
         iletisim = sum(
@@ -137,9 +149,9 @@ def main() -> int:
 
         skor = round(min(skor, 10.0), 1)
 
-        if len(aktif) >= 2 and aktif_stok >= 100:
+        if len(aktif) >= 2 and dogrulanmis_stok >= 100:
             sinif = "A"
-        elif len(aktif) >= 1 and aktif_stok >= 30:
+        elif len(aktif) >= 1 and dogrulanmis_stok >= 30:
             sinif = "B"
         elif len(aktif) >= 1:
             sinif = "C"
@@ -167,6 +179,8 @@ def main() -> int:
                 "aktif_proje": len(aktif),
                 "toplam_konut": toplam_konut,
                 "aktif_stok": aktif_stok,
+                "dogrulanmis_stok": dogrulanmis_stok,
+                "durgun_stok": durgun_stok,
                 "stok_verisi_olan_proje": len(stoklu),
                 "ort_satis_yuzdesi": ort_yuzde,
                 "teslimi_gecmis_stoklu_proje": len(gecmis_stoklu),
@@ -179,7 +193,7 @@ def main() -> int:
             }
         )
 
-    satirlar.sort(key=lambda r: (-r["b2b_skor"], -r["aktif_stok"], -r["aktif_proje"]))
+    satirlar.sort(key=lambda r: (-r["b2b_skor"], -r["dogrulanmis_stok"], -r["aktif_proje"]))
     satirlar = [r for r in satirlar if r["b2b_skor"] >= a.min_skor]
     for i, r in enumerate(satirlar, 1):
         r["sira"] = i
@@ -196,11 +210,13 @@ def main() -> int:
         dagilim[r["sinif"]] += 1
     print(f"-> {yol} ({len(satirlar)} firma)")
     print(f"Sınıf dağılımı: {dict(sorted(dagilim.items()))}")
-    print(f"Toplam aktif stok (tüm firmalar): {sum(r['aktif_stok'] for r in satirlar)} konut")
+    print(f"Doğrulanmış stok: {sum(r['dogrulanmis_stok'] for r in satirlar)} konut · "
+          f"durgun (teyit gerek): {sum(r['durgun_stok'] for r in satirlar)} konut")
     print("\nEn öncelikli 15:")
     for r in satirlar[:15]:
-        print(f"  {r['sira']:3}. [{r['sinif']}] {r['b2b_skor']:4} {r['firma'][:30]:32} "
-              f"stok={r['aktif_stok']:<5} aktif={r['aktif_proje']:<3} {r['gerekce'][:60]}")
+        print(f"  {r['sira']:3}. [{r['sinif']}] {r['b2b_skor']:4} {r['firma'][:28]:30} "
+              f"doğru={r['dogrulanmis_stok']:<5} durgun={r['durgun_stok']:<5} "
+              f"aktif={r['aktif_proje']:<3} {r['gerekce'][:48]}")
     return 0
 
 

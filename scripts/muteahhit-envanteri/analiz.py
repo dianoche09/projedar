@@ -17,7 +17,7 @@ import csv
 from collections import defaultdict
 from datetime import date
 
-from ortak import CIKTI
+from ortak import CIKTI, stok_hareketli
 
 
 def sayi(d, v=0.0) -> float:
@@ -63,6 +63,17 @@ def main() -> int:
     stoklu = [p for p in aktif if str(p.get("kalan_stok", "")).strip() != ""]
     toplam_stok = sum(int(sayi(p["kalan_stok"])) for p in stoklu)
 
+    # Kayıt eskimesi ayrımı: kalan == toplam ve satış %0 olan kayıtlar bir kez
+    # girilip güncellenmemiş olabilir; "stok var" kanıtı sayılmaz.
+    hareketli = [
+        p for p in stoklu
+        if stok_hareketli(p.get("kalan_stok"), p.get("toplam_bagimsiz_bolum"),
+                          p.get("satis_yuzdesi"))
+    ]
+    durgun = [p for p in stoklu if p not in hareketli]
+    stok_hareketli_top = sum(int(sayi(p["kalan_stok"])) for p in hareketli)
+    stok_durgun_top = sum(int(sayi(p["kalan_stok"])) for p in durgun)
+
     L: list[str] = []
     ek = L.append
     ek("# Türkiye Konut Projesi / Müteahhit Envanteri — Analiz")
@@ -80,13 +91,23 @@ def main() -> int:
     ek(f"| Satışı süren proje (ONGOING) | {len(aktif)} |")
     ek(f"| Satışı tamamlanmış proje (FINISHED) | {len(biten)} |")
     ek(f"| Kalan stoğu **ölçülen** proje | {len(stoklu)} |")
-    ek(f"| **Satıştaki toplam kalan stok** | **{toplam_stok:,} konut** |".replace(",", "."))
+    ek(f"| — bunun satış hareketi **görüleni** | {len(hareketli)} |")
+    ek(f"| — kaydı güncellenmemiş görüneni | {len(durgun)} |")
+    ek(f"| **Doğrulanmış kalan stok** (hareket görülen) | **{stok_hareketli_top:,} konut** |".replace(",", "."))
+    ek(f"| Doğrulanmamış kalan stok (durgun kayıt) | {stok_durgun_top:,} konut |".replace(",", "."))
+    ek(f"| Ham toplam (ikisi birlikte) | {toplam_stok:,} konut |".replace(",", "."))
     ek(f"| Kayıtlı toplam bağımsız bölüm | {sum(int(sayi(p['toplam_bagimsiz_bolum'])) for p in projeler):,} |".replace(",", "."))
     ek(f"| Konut tipi kaydı | {len(tipler)} |")
     ek("")
-    ek("> Kalan stok yalnız projelerin bir kısmında yayımlanır. `Kalan stoğu ölçülen "
-       "proje` sayısı, stok toplamının hangi tabana dayandığını gösterir; eksik olan "
-       "projeler '0 stok' sayılmaz.")
+    ek("> **Ham stok toplamını tek başına kullanma.** Projelerin bir kısmında kalan "
+       "stok toplam bağımsız bölüme eşit ve satış yüzdesi 0; bu kayıtlar bir kez "
+       "girilip güncellenmemiş olabilir (teslim tarihi geçmiş bir projede %0 satış "
+       "gerçekçi değil). Bu yüzden stok iki gruba ayrıldı. Karar verirken "
+       "**doğrulanmış** rakamı esas al; durgun grup ancak snapshot serisinde hareket "
+       "görülürse doğrulanır.")
+    ek("")
+    ek("> Kalan stok yalnız projelerin bir kısmında yayımlanır. Eksik olan projeler "
+       "'0 stok' sayılmaz.")
     ek("")
 
     # --- 2. Veri kalitesi ---
@@ -151,16 +172,21 @@ def main() -> int:
 
     # --- 6. En yavaş stok eriten projeler ---
     yavas = []
-    for p in stoklu:
+    for p in hareketli:
         t = p.get("teslim_tarihi") or ""
         kalan = int(sayi(p.get("kalan_stok")))
         if t and t < bugun and kalan > 0:
             yavas.append((ay_farki(t, bugun) or 0, kalan, p))
     yavas.sort(key=lambda x: (-x[1], -x[0]))
+    durgun_teslim = [
+        p for p in durgun
+        if p.get("teslim_tarihi") and p["teslim_tarihi"] < bugun
+    ]
     ek("## 6. En yavaş stok eriten projeler (teslim geçti, stok duruyor)")
     ek("")
     ek("Projedar açısından en sıcak işbirliği sinyali: teslim tarihi geçmiş ama "
-       "geliştirici hâlâ stok taşıyor.")
+       "geliştirici hâlâ stok taşıyor. **Yalnız satış hareketi doğrulanmış kayıtlar** "
+       "listelenir; durgun kayıtlar aşağıda ayrıca sayılır.")
     ek("")
     ek("| Proje | Geliştirici | İl / İlçe | Toplam | Kalan | Satış % | Teslimden geçen ay |")
     ek("|---|---|---|---|---|---|---|")
@@ -169,6 +195,11 @@ def main() -> int:
         sy = f"%{sy * 100:.0f}" if sy >= 0 else "-"
         ek(f"| {p['ad']} | {p['gelistirici']} | {p['il']} / {p['ilce']} | "
            f"{p['toplam_bagimsiz_bolum']} | {kalan} | {sy} | {gecen} |")
+    ek("")
+    ek(f"Ayrıca **{len(durgun_teslim)} projede** teslim tarihi geçmiş ama kayıt durgun "
+       f"(kalan = toplam, satış %0). Bunlar listeye alınmadı: gerçekten stok taşıyor da "
+       f"olabilirler, kaydı güncellenmemiş de. Snapshot serisinde iki ölçüm arasında "
+       f"değişim görülürse doğrulanmış gruba geçerler. Temas öncesi teyit gerektirir.")
     ek("")
 
     # --- 7. Teslim öncesi satışı tamamlananlar ---
