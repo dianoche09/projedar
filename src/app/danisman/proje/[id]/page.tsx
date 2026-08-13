@@ -6,7 +6,7 @@ import { ASAMA_ETIKET, fmtPara, type InsaatAsama } from "@/lib/types";
 import { EmlakciStok } from "@/components/EmlakciStok";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
 import { projeKapak } from "@/lib/gorsel";
-import { generateShareToken } from "@/lib/sharing";
+import { generateShareToken, paylasimKodlariAl } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { GuvenRozeti } from "@/components/GuvenRozeti";
@@ -173,8 +173,15 @@ export default async function HavuzProjeDetay({
         ? fmtPara(Math.min(...fiyatlar), paraBirim)
         : `${fmtPara(Math.min(...fiyatlar), paraBirim)} – ${fmtPara(Math.max(...fiyatlar), paraBirim)}`;
 
+  // Kısa paylaşım kodları (toplu upsert); yoksa (tablo yok/hata) imzalı uzun linke düş.
+  const kodMap = await paylasimKodlariAl(emlakciId, stok.map((b) => b.id));
   const shareUrlMap = Object.fromEntries(
-    stok.map((b) => [b.id, `${appUrl}/p/${emlakciId}/${b.id}/${generateShareToken(emlakciId, b.id)}`]),
+    stok.map((b) => [
+      b.id,
+      kodMap.get(b.id)
+        ? `${appUrl}/p/${kodMap.get(b.id)}`
+        : `${appUrl}/p/${emlakciId}/${b.id}/${generateShareToken(emlakciId, b.id)}`,
+    ]),
   );
 
   // Katalog seçimi için müsait + satılabilir ana daireler (eklentiler hariç). Oda tipten çözülür.

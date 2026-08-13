@@ -1,10 +1,10 @@
 import type { ReactElement } from "react";
 import { ImageResponse } from "next/og";
-import { verifyShareToken } from "@/lib/sharing";
+import { slugCoz } from "@/lib/sharing";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { projeKapak } from "@/lib/gorsel";
 
-// Node crypto (verifyShareToken) + service-role Supabase gerektiği için edge DEĞİL.
+// Node crypto (imza) + service-role Supabase gerektiği için edge DEĞİL.
 export const runtime = "nodejs";
 export const alt = "Projedar — canlı stoktan daire";
 export const size = { width: 1200, height: 630 };
@@ -63,17 +63,20 @@ function genericNode() {
 export default async function Image({
   params,
 }: {
-  params: Promise<{ emlakci: string; birim: string; token: string }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { emlakci, birim, token } = await params;
+  const { slug } = await params;
 
-  let gecerli = false;
+  // slug: [emlakçı, birim, token] (imza) VEYA [kod] (DB). Geçersiz → sade marka kartı.
+  let coz: { emlakciId: string; birimId: string } | null = null;
   try {
-    gecerli = verifyShareToken(emlakci, birim, token);
+    coz = await slugCoz(slug);
   } catch {
-    gecerli = false;
+    coz = null;
   }
-  if (!gecerli) return buildImage("", genericNode());
+  if (!coz) return buildImage("", genericNode());
+  const emlakci = coz.emlakciId;
+  const birim = coz.birimId;
 
   let supabase;
   try {

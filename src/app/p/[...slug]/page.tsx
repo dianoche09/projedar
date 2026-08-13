@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { after } from "next/server";
-import { verifyShareToken, generateShareToken } from "@/lib/sharing";
+import { generateShareToken, slugCoz, paylasimKodlariAl } from "@/lib/sharing";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
 import { DURUM_BG, DURUM_ETIKET, ASAMA_ETIKET, zamanOnce, type BirimDurum, type InsaatAsama } from "@/lib/types";
@@ -53,13 +53,16 @@ function tazelikRenk(iso: string): { dot: string; text: string } {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ emlakci: string; birim: string; token: string }>;
+  params: Promise<{ slug: string[] }>;
 }): Promise<Metadata> {
-  const { emlakci, birim, token } = await params;
+  const { slug } = await params;
   // Her dönüşte noindex,nofollow garantile: /p/ artık crawl'a açık (robots'ta değil),
   // bu yüzden edge-case metadata fallback'leri de indexlenebilir 200 sızdırmamalı.
   const NOINDEX = { robots: { index: false, follow: false } as const };
-  if (!verifyShareToken(emlakci, birim, token)) return NOINDEX;
+  // slug ya [emlakçı, birim, token] (eski uzun link) ya [kod] (yeni kısa link).
+  const coz = await slugCoz(slug);
+  if (!coz) return NOINDEX;
+  const birim = coz.birimId;
 
   const supabase = createAdminClient();
   const { data } = await supabase
@@ -106,14 +109,18 @@ export async function generateMetadata({
 export default async function PublicBirimPage({
   params,
 }: {
-  params: Promise<{ emlakci: string; birim: string; token: string }>;
+  params: Promise<{ slug: string[] }>;
 }) {
-  const { emlakci, birim, token } = await params;
+  const { slug } = await params;
 
-  // 1. URL imzası (Cryptographic Signature) doğrula
-  if (!verifyShareToken(emlakci, birim, token)) {
+  // 1. slug'ı çöz: [emlakçı, birim, token] (imza doğrula) VEYA [kod] (DB'den çöz)
+  const coz = await slugCoz(slug);
+  if (!coz) {
     notFound();
   }
+  const { emlakciId: emlakci, birimId: birim } = coz;
+  // Etkileşim API'leri (favori/lead/ödeme sinyali) imzalı token bekler → türet (URL'de olmasa da).
+  const token = generateShareToken(emlakci, birim);
 
   // 2. RLS bypass eden admin client'ı ile veriyi çek (public ziyaretçiler RLS'e takılmamalı)
   const supabase = createAdminClient();
@@ -178,6 +185,8 @@ export default async function PublicBirimPage({
     .neq("id", birim)
     .limit(3);
   /* eslint-disable @typescript-eslint/no-explicit-any */
+  const benzerIds = ((benzerRaw ?? []) as any[]).map((x) => x.id as string);
+  const benzerKodlar = await paylasimKodlariAl(emlakci, benzerIds);
   const benzer = ((benzerRaw ?? []) as any[]).map((x) => ({
     id: x.id as string,
     daire_no: x.daire_no as string | null,
@@ -186,7 +195,10 @@ export default async function PublicBirimPage({
     para_birimi: x.para_birimi as string | null,
     oda: (x.tip?.oda as string | null) ?? null,
     plan_url: (x.tip?.plan_url as string | null) ?? null,
-    link: `/p/${emlakci}/${x.id}/${generateShareToken(emlakci, x.id)}`,
+    // Kısa kod varsa /p/{kod}; yoksa (tablo yok/hata) imzalı uzun linke düş.
+    link: benzerKodlar.get(x.id as string)
+      ? `/p/${benzerKodlar.get(x.id as string)}`
+      : `/p/${emlakci}/${x.id}/${generateShareToken(emlakci, x.id)}`,
   }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
 
