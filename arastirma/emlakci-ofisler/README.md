@@ -94,3 +94,36 @@ değişirse adapter'lar hata fırlatır (sessiz boş sonuç dönmez).
   `place_id`, diğer alanlar sorgu anında tazelenir.
 * **Katman 2:** Yeni konut ve proje satış sinyali. Kaynağı emlakçı tarafı değil müteahhit
   tarafıdır: yapı ruhsatı verileri, belediye proje kayıtları, proje siteleri.
+
+## İkinci kaynak: bağımsız ofisler (bagimsiz.py)
+
+Franchise ağları sektörün küçük bir dilimi. Asıl kütle bağımsız ofislerde ve onlar
+hiçbir marka sitesinde listelenmiyor. Kaynak: SerpAPI `google_maps` motoru.
+
+```bash
+python3 arastirma/emlakci-ofisler/bagimsiz.py --il Ankara --butce 200
+python3 arastirma/emlakci-ofisler/bagimsiz.py --tumu --butce 6000
+python3 arastirma/emlakci-ofisler/bagimsiz.py --il Ankara --kuru
+```
+
+**Neden SerpAPI, Google Places API değil.** Places API ayrı bir Google Cloud hesabı ve
+kredi kartı ister; telefon ve website alanları Enterprise SKU'ya düşer (35 USD/1.000,
+aylık yalnız 1.000 ücretsiz). SerpAPI mevcut Big Data planından yeniyor, ek maliyet yok.
+Ayrıca Maps Platform'un "place_id dışını kalıcı saklama" kısıtı burada geçerli değil.
+
+**Kota koruması.** Script başlangıçta kalan kotayı okur, bütçe kotadan büyükse otomatik
+kısar. Her çağrı `cikti/ham-maps/` altına cache'lenir, tekrar çalıştırmak kota yakmaz.
+`--kuru` hiç API çağırmaz.
+
+**İlçe doğruluğu.** Google yakın çevreden de sonuç döndürebiliyor. İlçe adres metninden
+türetilir (`ilceKaynak=adres`), çıkarılamazsa sorgunun ilçesine düşülür
+(`ilceKaynak=sorgu`). Ankara pilotunda 1.392 kaydın 1.310'unda ikisi zaten uyuşuyordu.
+
+**Franchise ayrımı.** İşletme adı bilinen ağlarla eşleşirse `bagimsizMi=Hayır` ve marka
+yazılır. Böylece bu veri seti marka sitesi çıktısıyla çakışmadan birleştirilebilir.
+
+**Kapsam (KVKK).** Yalnız işletme düzeyi kamuya açık kayıt. Kişi adı ve cep numarası
+aranmaz; bazı ofisler cep hattını işletme numarası olarak yayımlar, o işletmenin kendi
+yayımladığı iletişim bilgisidir.
+
+İlçe listesi `iller.json`: 81 il, 973 ilçe.
