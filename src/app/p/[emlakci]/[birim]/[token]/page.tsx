@@ -6,7 +6,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { kayitYaz } from "@/lib/events";
 import { DURUM_BG, DURUM_ETIKET, ASAMA_ETIKET, zamanOnce, type BirimDurum, type InsaatAsama } from "@/lib/types";
 import LeadForm from "./LeadForm";
-import { GridMark } from "@/components/GridMark";
+import { Logo } from "@/components/Logo";
 import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
 import { OdemeSlider } from "./OdemeSlider";
@@ -79,13 +79,14 @@ export async function generateMetadata({
   /* eslint-enable @typescript-eslint/no-explicit-any */
   if (!p) return NOINDEX;
 
-  const psim = PARA_SIMGE[(data.para_birimi as string) ?? "TRY"] ?? "₺";
-  const fiyat = data.satilabilir && data.liste_fiyati != null ? `${fmt(Number(data.liste_fiyati))} ${psim}` : null;
   const konum = [p?.ilce, p?.il].filter(Boolean).join(", ");
+  // Fiyat OG başlığına/açıklamasına BASILMAZ: WhatsApp/sosyal og:title'ı URL bazında cache'ler,
+  // canlı fiyat orada donar ve eskir (DEĞİŞMEZ #2 tek-doğru-kaynak / #5 tazelik). Fiyat yalnız
+  // linkin arkasındaki canlı mikrositede görünür — "linke basınca fiyat gelir".
   const baslik =
-    [p?.ad, data.daire_no ? `Daire ${data.daire_no}` : null, fiyat].filter(Boolean).join(" · ") || "Projedar";
+    [p?.ad, data.daire_no ? `Daire ${data.daire_no}` : null].filter(Boolean).join(" · ") || "Projedar";
   const aciklama =
-    [t?.oda, data.net_m2 ? `${data.net_m2} m²` : null, konum, "Canlı stoktan, fiyat güncel"]
+    [t?.oda, data.net_m2 ? `${data.net_m2} m²` : null, konum, "Canlı fiyat ve detay için aç"]
       .filter(Boolean)
       .join(" · ");
 
@@ -270,90 +271,89 @@ export default async function PublicBirimPage({
 
   return (
     <div className="min-h-screen bg-paper pb-16">
-      {/* Üst Bar / Header */}
-      <header className="border-b border-hair bg-card py-4 shadow-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6">
-          <div className="flex items-center gap-2">
-            <GridMark />
-            <span className="font-display text-xl font-bold tracking-tight text-ink">
-              Proje<span className="text-teal">dar</span>
-            </span>
-          </div>
+      {/* Üst bar — marka (radar logo) + tazelik + yazdır; kaydırınca sabit */}
+      <header className="sticky top-0 z-30 border-b border-hair bg-card/85 shadow-sm backdrop-blur-md print:static print:bg-card print:backdrop-blur-none">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-2.5">
+          <Logo size={22} wordmark />
           <div className="flex items-center gap-4">
             <YazdirButonu />
-            <div className={`flex items-center gap-1.5 font-mono text-xs ${tazelik.text}`}>
+            <div className={`hidden items-center gap-1.5 font-mono text-xs sm:flex ${tazelik.text}`}>
               <span className="relative flex size-2">
                 <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${tazelik.dot} opacity-75 print:hidden`}></span>
                 <span className={`relative inline-flex size-2 rounded-full ${tazelik.dot}`}></span>
               </span>
-              Canlı stoktan alındı · {zamanOnce(b.son_guncelleme)} güncellendi
+              {zamanOnce(b.son_guncelleme)} güncellendi
             </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto mt-8 max-w-5xl px-6">
+      {/* HERO — kapak görseli + proje/daire kimliği + CANLI fiyat.
+          OG kartıyla aynı dil (kart→sayfa tutarlılığı); fiyat linkin arkasında olduğu için burada gösterilir. */}
+      <section className="relative isolate overflow-hidden">
         {kapak ? (
-          <div className="mb-6 overflow-hidden rounded-2xl border border-hair shadow-sm">
+          <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={kapak} alt={p?.ad} className="h-48 w-full object-cover sm:h-72" />
+            <img src={kapak} alt={p?.ad} className="absolute inset-0 -z-10 size-full object-cover" />
+            <div className="absolute inset-0 -z-10" style={{ background: "linear-gradient(180deg, rgba(8,20,34,0.32) 0%, rgba(8,20,34,0.62) 46%, rgba(8,20,34,0.94) 100%)" }} />
+          </>
+        ) : (
+          <div className="absolute inset-0 -z-10" style={{ background: "linear-gradient(135deg,#081422 0%,#10243a 55%,#13314b 100%)" }} />
+        )}
+        <div className="mx-auto max-w-5xl px-6 pb-8 pt-10 sm:pb-10 sm:pt-14">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${DURUM_BG[bDurum]}`}>
+              {DURUM_ETIKET[bDurum]}
+            </span>
+            {u?.dogrulanmis ? (
+              <span className="inline-flex items-center rounded-full border border-teal/50 bg-teal/20 px-3 py-1 text-xs font-semibold text-[#8ee6d5]">
+                ✓ Doğrulanmış Üretici
+              </span>
+            ) : null}
+            {p?.kira_getirisi_pct != null ? (
+              <span className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/90">
+                %{p.kira_getirisi_pct} yıllık kira getirisi
+              </span>
+            ) : null}
           </div>
-        ) : null}
-        <div className="grid gap-8 lg:grid-cols-3">
+
+          <h1 className="mt-4 font-display text-3xl font-bold tracking-tight text-white sm:text-[2.6rem] sm:leading-[1.05]">{p?.ad}</h1>
+          <p className="mt-1.5 text-sm text-white/75">{[p?.mahalle, p?.ilce, p?.il].filter(Boolean).join(", ") || "—"}</p>
+
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-sm text-white/90">
+              {[b.daire_no ? `Daire ${b.daire_no}` : null, b.kat != null ? `${b.kat}. kat` : null, t?.oda, (b.net_m2 || t?.net_m2) ? `${b.net_m2 || t?.net_m2} m²` : null]
+                .filter(Boolean)
+                .map((x, i, arr) => (
+                  <span key={i} className="flex items-center gap-2">
+                    {x}
+                    {i < arr.length - 1 ? <span className="text-white/40">·</span> : null}
+                  </span>
+                ))}
+            </div>
+            {liste != null && b.satilabilir ? (
+              <div className="text-right">
+                <p className="font-mono text-3xl font-bold leading-none text-white sm:text-4xl">
+                  {fmt(liste)} <span className="text-2xl text-white/80">{psim}</span>
+                </p>
+                {eklentiToplam > 0 && genelToplam != null ? (
+                  <p className="mt-1 font-mono text-xs text-white/60">eklentilerle {fmt(genelToplam)} {psim}</p>
+                ) : null}
+              </div>
+            ) : (
+              <span className="rounded-lg bg-white/10 px-3 py-1.5 text-sm font-medium text-white/85">Paylaşıma kapalı</span>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <main className="mx-auto mt-8 max-w-5xl px-6">
+        <div className="grid gap-8 lg:grid-cols-3 lg:items-start">
           {/* Sol Kolon: Proje & Daire Detayları */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Proje Başlığı & Doğrulama */}
-            <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <h1 className="font-display text-2xl font-bold text-ink">{p?.ad}</h1>
-                  <p className="mt-1 text-sm text-gray">
-                    {[p?.mahalle, p?.ilce, p?.il].filter(Boolean).join(", ") || "—"}
-                  </p>
-                </div>
-                {u?.dogrulanmis ? (
-                  <span className="inline-flex items-center rounded-full bg-teal/10 px-3 py-1 text-xs font-semibold text-teal">
-                    ✓ Doğrulanmış Üretici
-                  </span>
-                ) : null}
-              </div>
-              {/* Faz-1 yurtiçi: yalnız kira getirisi (oturum/golden vize Faz-2'de) */}
-              {p?.kira_getirisi_pct != null ? (
-                <div className="mt-3 flex flex-wrap gap-1.5 text-[11px] font-medium">
-                  <span className="rounded-md bg-teal-soft px-2 py-0.5 text-teal-d">%{p.kira_getirisi_pct} yıllık kira getirisi</span>
-                </div>
-              ) : null}
-
-              {/* İnşaat Zaman Çizelgesi */}
-              <div className="mt-6 border-t border-hair pt-6">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-ink">
-                    İnşaat: {ASAMA_ETIKET[p?.insaat_asamasi as InsaatAsama] || "Planlama"}
-                  </span>
-                  <span className="font-mono font-medium text-teal">%{p?.ilerleme_yuzde ?? 0}</span>
-                </div>
-                <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-hair">
-                  <div
-                    className="h-full bg-teal transition-all duration-500"
-                    style={{ width: `${p?.ilerleme_yuzde ?? 0}%` }}
-                  />
-                </div>
-                {p?.teslim_tarihi ? (
-                  <p className="mt-3 text-xs text-gray">
-                    Tahmini Teslim: <span className="font-mono text-ink">{new Date(p.teslim_tarihi).toLocaleDateString("tr-TR", { year: 'numeric', month: 'long' })}</span>
-                  </p>
-                ) : null}
-              </div>
-            </div>
-
             {/* Daire Kat Planı ve Özellikleri */}
             <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm space-y-6">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-xl font-semibold text-ink">Daire Detayları</h2>
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold text-white ${DURUM_BG[bDurum]}`}>
-                  {DURUM_ETIKET[bDurum]}
-                </span>
-              </div>
+              <h2 className="font-display text-xl font-semibold text-ink">Daire Detayları</h2>
 
               {/* Daire Kat Planı Görseli */}
               {t?.plan_url ? (
@@ -396,64 +396,88 @@ export default async function PublicBirimPage({
                 </div>
               </div>
 
-              {/* Fiyat Bilgisi */}
-              {liste != null && b.satilabilir ? (
-                <div className="rounded-xl border border-hair bg-paper p-4 font-mono">
-                  <span className="text-xs text-gray block">Liste Fiyatı</span>
-                  <span className="text-2xl font-bold text-ink">{fmt(liste)} {psim}</span>
-                  <FiyatTrend noktalar={fiyatNoktalar} paraBirimi={(b.para_birimi as string) ?? "TRY"} />
-                  {odeme ? (
-                    <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm print:block hidden">
-                      {odeme.pesinat ? (
-                        <div className="flex justify-between"><span className="text-gray">Peşinat</span><span className="text-ink">{fmt(odeme.pesinat)} {psim}</span></div>
-                      ) : null}
-                      {odeme.aylik ? (
-                        <div className="flex justify-between"><span className="text-gray">{odeme.ay} ay taksit</span><span className="font-semibold text-ink">{fmt(odeme.aylik)} {psim}/ay</span></div>
-                      ) : null}
-                      {odeme.vade === 0 ? <p className="text-[11px] font-medium text-teal-d">Vade farksız</p> : null}
-                    </div>
-                  ) : null}
-                  {/* interaktif ödeme simülasyonu (Sprint 2): peşinat kaydır → taksit değişsin; baskıda statik özet basılır */}
-                  <OdemeSlider
-                    liste={liste}
-                    psim={psim}
-                    varsayilanPesinat={op?.pesinat_pct ?? null}
-                    varsayilanTaksit={op?.taksit_sayisi ?? null}
-                    vadeFarkiPct={op?.vade_farki_pct ?? 0}
-                    araOdemePct={(op?.ara_odemeler ?? []).reduce((s, a) => s + (a?.pct ?? 0), 0)}
-                    emlakci={emlakci}
-                    birim={b.id}
-                    proje={p?.id ?? ""}
-                    token={token}
-                  />
-                  {eklentiler.length > 0 ? (
-                    <div className="mt-3 space-y-1 border-t border-hair pt-3 text-sm">
-                      <p className="font-sans text-[11px] font-semibold uppercase tracking-wide text-gray">Eklentiler</p>
-                      {eklentiler.map((e) => (
-                        <div key={e.id} className="flex justify-between">
-                          <span className="text-gray">
-                            {e.tur === "otopark" ? "Otopark" : "Depo"}
-                            {e.daire_no ? ` · ${e.daire_no}` : ""}
-                          </span>
-                          <span className="text-ink">
-                            {e.liste_fiyati != null ? `${fmt(e.liste_fiyati)} ${PARA_SIMGE[e.para_birimi] ?? "₺"}` : "—"}
-                          </span>
-                        </div>
-                      ))}
-                      {genelToplam != null && eklentiToplam > 0 ? (
-                        <div className="mt-1.5 flex justify-between border-t border-hair pt-1.5 font-semibold">
-                          <span className="text-ink">Toplam (daire + eklenti)</span>
-                          <span className="text-teal-d">{fmt(genelToplam)} {psim}</span>
-                        </div>
-                      ) : null}
-                    </div>
-                  ) : null}
-                </div>
-              ) : (
-                <div className="rounded-xl bg-red/5 border border-red/10 p-4">
+              {!b.satilabilir ? (
+                <div className="rounded-xl border border-red/10 bg-red/5 p-4">
                   <p className="text-sm font-medium text-red">Bu birim satışa veya paylaşıma kapalıdır.</p>
                 </div>
-              )}
+              ) : null}
+            </div>
+
+            {/* Ödeme Planı — fiyat geçmişi + interaktif simülasyon + eklentiler (fiyat başlığı hero'da) */}
+            {liste != null && b.satilabilir ? (
+              <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="font-display text-xl font-semibold text-ink">Ödeme Planı</h2>
+                  <div className="text-right font-mono leading-tight">
+                    <span className="block text-[11px] text-gray">Liste Fiyatı</span>
+                    <span className="text-lg font-bold text-ink">{fmt(liste)} {psim}</span>
+                  </div>
+                </div>
+                <FiyatTrend noktalar={fiyatNoktalar} paraBirimi={(b.para_birimi as string) ?? "TRY"} />
+                {odeme ? (
+                  <div className="mt-3 hidden space-y-1 border-t border-hair pt-3 text-sm print:block">
+                    {odeme.pesinat ? (
+                      <div className="flex justify-between"><span className="text-gray">Peşinat</span><span className="text-ink">{fmt(odeme.pesinat)} {psim}</span></div>
+                    ) : null}
+                    {odeme.aylik ? (
+                      <div className="flex justify-between"><span className="text-gray">{odeme.ay} ay taksit</span><span className="font-semibold text-ink">{fmt(odeme.aylik)} {psim}/ay</span></div>
+                    ) : null}
+                    {odeme.vade === 0 ? <p className="text-[11px] font-medium text-teal-d">Vade farksız</p> : null}
+                  </div>
+                ) : null}
+                {/* interaktif ödeme simülasyonu: peşinat kaydır → taksit değişsin; baskıda statik özet basılır */}
+                <OdemeSlider
+                  liste={liste}
+                  psim={psim}
+                  varsayilanPesinat={op?.pesinat_pct ?? null}
+                  varsayilanTaksit={op?.taksit_sayisi ?? null}
+                  vadeFarkiPct={op?.vade_farki_pct ?? 0}
+                  araOdemePct={(op?.ara_odemeler ?? []).reduce((s, a) => s + (a?.pct ?? 0), 0)}
+                  emlakci={emlakci}
+                  birim={b.id}
+                  proje={p?.id ?? ""}
+                  token={token}
+                />
+                {eklentiler.length > 0 ? (
+                  <div className="mt-4 space-y-1 border-t border-hair pt-3 text-sm">
+                    <p className="font-sans text-[11px] font-semibold uppercase tracking-wide text-gray">Eklentiler</p>
+                    {eklentiler.map((e) => (
+                      <div key={e.id} className="flex justify-between">
+                        <span className="text-gray">
+                          {e.tur === "otopark" ? "Otopark" : "Depo"}
+                          {e.daire_no ? ` · ${e.daire_no}` : ""}
+                        </span>
+                        <span className="font-mono text-ink">
+                          {e.liste_fiyati != null ? `${fmt(e.liste_fiyati)} ${PARA_SIMGE[e.para_birimi] ?? "₺"}` : "—"}
+                        </span>
+                      </div>
+                    ))}
+                    {genelToplam != null && eklentiToplam > 0 ? (
+                      <div className="mt-1.5 flex justify-between border-t border-hair pt-1.5 font-semibold">
+                        <span className="text-ink">Toplam (daire + eklenti)</span>
+                        <span className="font-mono text-teal-d">{fmt(genelToplam)} {psim}</span>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
+            {/* Proje Durumu — inşaat aşaması + teslim */}
+            <div className="rounded-2xl border border-hair bg-card p-6 shadow-sm">
+              <h2 className="font-display text-xl font-semibold text-ink">Proje Durumu</h2>
+              <div className="mt-4 flex items-center justify-between text-sm">
+                <span className="font-semibold text-ink">İnşaat: {ASAMA_ETIKET[p?.insaat_asamasi as InsaatAsama] || "Planlama"}</span>
+                <span className="font-mono font-medium text-teal">%{p?.ilerleme_yuzde ?? 0}</span>
+              </div>
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-hair">
+                <div className="h-full bg-teal transition-all duration-500" style={{ width: `${p?.ilerleme_yuzde ?? 0}%` }} />
+              </div>
+              {p?.teslim_tarihi ? (
+                <p className="mt-3 text-xs text-gray">
+                  Tahmini Teslim: <span className="font-mono text-ink">{new Date(p.teslim_tarihi).toLocaleDateString("tr-TR", { year: "numeric", month: "long" })}</span>
+                </p>
+              ) : null}
             </div>
 
             {/* Proje Görselleri (üretici yüklediği foto galeri) */}
@@ -560,8 +584,8 @@ export default async function PublicBirimPage({
             ) : null}
           </div>
 
-          {/* Sağ Kolon: İletişim / Danışman & Lead Formu */}
-          <div className="space-y-6">
+          {/* Sağ Kolon: İletişim / Danışman & Lead Formu (masaüstünde sticky) */}
+          <div className="space-y-6 lg:sticky lg:top-20">
             {/* Emlakçı Profil Kartı */}
             <div className="rounded-2xl border border-hair bg-card p-5 shadow-sm text-center">
               <p className="text-xs text-gray font-medium uppercase tracking-wider">Yetkili Danışman</p>
