@@ -4,6 +4,6 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["scripts/**/*.ts", "tests/**/*.ts"],
+  "include": ["scripts/**/*.ts", "tests/**/*.ts", "arastirma/**/*.ts"],
   "exclude": ["node_modules"]
 }

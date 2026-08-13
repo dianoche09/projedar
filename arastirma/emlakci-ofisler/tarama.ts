@@ -22,8 +22,8 @@ const ADAPTERLER: MarkaAdapter[] = [
   century21Adapter, coldwellBankerAdapter,
 ];
 
-/** Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır. */
-const CIKTI = path.join("arastirma", "emlakci-ofisler");
+/** Üretilen veri bu araştırma klasörünün cikti/ alt dizinine yazılır (çalışma dizininden bağımsız). */
+const CIKTI = path.join(import.meta.dirname, "cikti");
 
 const KOLONLAR: (keyof FranchiseOfis)[] = [
   "marka", "subeAdi", "isletmeAdi", "kapsam", "il", "ilce", "mahalle", "hamBolge",

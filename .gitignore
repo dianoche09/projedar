@@ -48,9 +48,7 @@ projepazar-sistem/
 # İzole geliştirme worktree'leri (repoya girmez)
 .worktrees/
 
-# araştırma çıktıları: RAPOR/analiz (.md) ve elle toplanan kaynak veri (.json) COMMIT edilir.
-# Scriptten yeniden üretilebilen tablolar ve ham HTML repoda tutulmaz (462 MB+).
-/arastirma/**/*.csv
-/arastirma/**/*.xlsx
-/arastirma/**/ham/
-/arastirma/**/*.log
+# araştırma: script, README ve elle toplanan kaynak veri (data/*.json) COMMIT edilir.
+# Üretilen her şey cikti/ altındadır ve repoda tutulmaz (500 MB+, hızla eskir).
+/arastirma/**/cikti/
+__pycache__/

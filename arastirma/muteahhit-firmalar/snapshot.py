@@ -25,7 +25,7 @@ Kullanım:
 
 Haftalık otomatik çalıştırma (kullanıcı onayıyla kurulur):
   crontab -e
-  0 4 * * 1 cd <repo>/scripts/muteahhit-envanteri && /usr/bin/python3 snapshot.py
+  0 4 * * 1 cd <repo>/arastirma/muteahhit-firmalar && /usr/bin/python3 snapshot.py
 """
 
 from __future__ import annotations

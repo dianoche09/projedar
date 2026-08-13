@@ -58,7 +58,7 @@ from ortak import (
 )
 
 TOHUM_CSV = (
-    Path(__file__).resolve().parent.parent.parent / "arastirma" / "konut-projeleri" / "projeler.csv"
+    Path(__file__).resolve().parent.parent / "konut-projeleri" / "cikti" / "projeler.csv"
 )
 
 PROJE_ALAN = [

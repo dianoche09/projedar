@@ -37,9 +37,8 @@ import urllib.request
 from pathlib import Path
 
 BURASI = Path(__file__).resolve().parent
-# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
-# (script klasörlerinde veri dosyası tutulmaz).
-CIKTI = BURASI.parent.parent / "arastirma" / "konut-projeleri"
+# Üretilen veri bu araştırma klasörünün cikti/ alt dizinine yazılır.
+CIKTI = BURASI / "cikti"
 HAM = CIKTI / "ham"
 
 TABAN = "https://www.emlakjet.com"

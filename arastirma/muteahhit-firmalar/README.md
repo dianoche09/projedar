@@ -1,7 +1,7 @@
 # Müteahhit / Konut Projesi Envanteri
 
 Projedar için **geliştirici (müteahhit) + konut projesi + stok/satış** veri tabanı.
-`scripts/emlakjet-envanteri` liste taramasının üstüne kurulur: orası proje
+`arastirma/konut-projeleri` liste taramasının üstüne kurulur: orası proje
 kartlarını verir, burası her projenin **detay payload'ını** açıp gerçek stok ve
 satış verisini çıkarır.
 
@@ -79,13 +79,13 @@ Bu, brief'in "SATIŞ HIZINDA YANILTICI SİNYALLER" uyarısının somut karşıl�
 - Yalnız **tüzel kişi / işletme** verisi toplanır. Firma e-postası ancak rol
   tabanlıysa (`info@`, `bilgi@`, `satis@` ...) kaydedilir; gerçek kişi adı
   taşıyan adres atılır ve sayısı log'lanır. Danışman adı / cep telefonu
-  toplanmaz. Bu, `scripts/franchise-ofisler` kapsam kararıyla aynı çizgidir.
+  toplanmaz. Bu, `arastirma/emlakci-ofisler` kapsam kararıyla aynı çizgidir.
 - Nazik davran: `--gecikme` ile bekleme koy, cache'i kullan, `--limit` ile tavan koy.
 
 ## Kullanım
 
 ```bash
-cd scripts/muteahhit-envanteri
+cd arastirma/muteahhit-firmalar
 
 python3 proje_detay.py --kuru --iller yogun     # plan: kaç proje, tahmini süre
 python3 proje_detay.py --limit 50               # deneme
@@ -130,5 +130,5 @@ Zaman serisi ancak düzenli ölçümle birikir. Kurulum kullanıcı onayıyla ya
 ```bash
 crontab -e
 # her pazartesi 04:00
-0 4 * * 1 cd /path/to/repo/scripts/muteahhit-envanteri && /usr/bin/python3 snapshot.py
+0 4 * * 1 cd /path/to/repo/arastirma/muteahhit-firmalar && /usr/bin/python3 snapshot.py
 ```

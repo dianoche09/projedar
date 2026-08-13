@@ -36,9 +36,8 @@ import sorgular as CFG
 
 BURASI = Path(__file__).resolve().parent
 PROJE_KOK = BURASI.parent.parent
-# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
-# (script klasörlerinde veri dosyası tutulmaz).
-CIKTI = BURASI.parent.parent / "arastirma" / "rakip-tarama"
+# Üretilen veri bu araştırma klasörünün cikti/ alt dizinine yazılır.
+CIKTI = BURASI / "cikti"
 HAM = CIKTI / "ham"
 SERPAPI_URL = "https://serpapi.com/search.json"
 

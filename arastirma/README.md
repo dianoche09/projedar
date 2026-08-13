@@ -7,14 +7,14 @@ Projedar'ın pazar, rakip ve envanter araştırmalarının tek toplandığı yer
 
 | Klasör | Ne | Kapsam | Üreten script |
 |---|---|---|---|
-| `emlakci-ofisler/` | Franchise emlak ofisleri | 1.242 kayıt, 1.203 TR, 62 il, 6 marka | `scripts/franchise-ofisler/tarama.ts` |
-| `muteahhit-firmalar/` | Müteahhit ve geliştirici envanteri | firma + proje + lead + stok zaman serisi | `scripts/muteahhit-envanteri/*.py` |
-| `konut-projeleri/` | Konut projesi envanteri (Emlakjet) | proje listesi, il/ilçe benchmark | `scripts/emlakjet-envanteri/*.py` |
-| `rakip-tarama/` | Rakip platform taraması | — | `scripts/rakip-tarama/rakip_tarama.py` |
-| `emlak-kurumsal-ag/` | Oda, dernek, federasyon haritası | 82 kuruluş, 17 protokol, 10 kesişim kişisi | `arastirma/emlak-kurumsal-ag/build.py` |
+| `emlakci-ofisler/` | Franchise emlak ofisleri | 1.242 kayıt, 1.203 TR, 62 il, 6 marka | `emlakci-ofisler/tarama.ts` |
+| `muteahhit-firmalar/` | Müteahhit ve geliştirici envanteri | firma + proje + lead + stok zaman serisi | `muteahhit-firmalar/*.py` |
+| `konut-projeleri/` | Konut projesi envanteri (Emlakjet) | proje listesi, il/ilçe benchmark | `konut-projeleri/*.py` |
+| `rakip-tarama/` | Rakip platform taraması | — | `rakip-tarama/rakip_tarama.py` |
+| `emlak-kurumsal-ag/` | Oda, dernek, federasyon haritası | 82 kuruluş, 17 protokol, 10 kesişim kişisi | `emlak-kurumsal-ag/build.py` |
 
 `muteahhit-firmalar/` ve `konut-projeleri/` bağlıdır: müteahhit taraması, konut projeleri
-çıktısındaki `projeler.csv` dosyasını tohum listesi olarak okur.
+`cikti/projeler.csv` dosyasını tohum listesi olarak okur.
 
 ## Analiz raporları
 
@@ -23,9 +23,9 @@ benimseme, çift satış ve güven, yasal çerçeve, paketleme ve global kapalı
 
 ## Repoya ne girer
 
-* **Girer:** analiz raporları (`.md`), elle toplanan kaynak veri (`.json`), üretici scriptler.
-* **Girmez:** scriptten yeniden üretilebilen tablolar (`.csv`, `.xlsx`), ham HTML (`ham/`),
-  log dosyaları. Toplamı 500 MB'ı aşıyor ve hızla eskiyor.
+* **Girer:** analiz raporları (`.md`), elle toplanan kaynak veri (`.json`), üretici scriptler ve README'ler.
+* **Girmez:** her konunun `cikti/` klasörü. Üretilen tablolar, ham HTML ve loglar oradadır;
+  toplamı 500 MB'ı aşıyor ve hızla eskiyor.
 
 Veri diskte durur, repoda durmaz. Kullanmadan önce ilgili scripti yeniden çalıştırın: ofis
 sayıları, stok ve iletişim bilgileri değişkendir, her kayıtta çekilme tarihi vardır.
@@ -33,16 +33,16 @@ sayıları, stok ve iletişim bilgileri değişkendir, her kayıtta çekilme tar
 ## Yeniden üretme
 
 ```bash
-npx tsx scripts/franchise-ofisler/tarama.ts
+npx tsx arastirma/emlakci-ofisler/tarama.ts
 ```
 
 ```bash
-python3 scripts/emlakjet-envanteri/emlakjet_envanteri.py
+python3 arastirma/konut-projeleri/emlakjet_envanteri.py
 ```
 
 ```bash
-python3 scripts/muteahhit-envanteri/proje_detay.py
+python3 arastirma/muteahhit-firmalar/proje_detay.py
 ```
 
-Kaynak, robots.txt durumu, KVKK kapsamı ve bilinen eksikler için her scriptin kendi
-`README.md` dosyasına bakın.
+Her konu klasöründe kod (kökte), veri (`cikti/`) ve kendi `README.md` dosyası bulunur:
+kaynak, robots.txt durumu, KVKK kapsamı ve bilinen eksikler oradadır.

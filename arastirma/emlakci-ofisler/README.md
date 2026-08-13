@@ -7,18 +7,17 @@ veya ilan portalı taramasından **önce** çalıştırılacak katman budur.
 ## Çalıştırma
 
 ```bash
-npx tsx scripts/franchise-ofisler/tarama.ts
+npx tsx arastirma/emlakci-ofisler/tarama.ts
 ```
 
 Tek marka için:
 
 ```bash
-npx tsx scripts/franchise-ofisler/tarama.ts --marka=remax
+npx tsx arastirma/emlakci-ofisler/tarama.ts --marka=remax
 ```
 
-Çıktı **repo kökündeki** `arastirma/emlakci-ofisler/` altına yazılır (üretilen tablolar
-gitignore'lu, veri repoda tutulmaz). Tüm araştırma scriptleri çıktılarını `arastirma/<konu>/`
-altında toplar; script klasörlerinde veri dosyası bulunmaz. Dizin haritası: `arastirma/README.md`.
+Çıktı, bu klasörün `cikti/` alt dizinine yazılır (gitignore'lu, veri repoda tutulmaz).
+Dizin haritası: `arastirma/README.md`.
 
 * `franchise-ofisler.csv` : UTF-8 BOM'lu, Excel uyumlu tam liste
 * `franchise-ofisler.xlsx` : `Ofisler` + `Marka Ozeti` + `Il Ozeti` sayfaları
@@ -36,7 +35,7 @@ altında toplar; script klasörlerinde veri dosyası bulunmaz. Dizin haritası: 
 
 Toplam: **1.242 kayıt, 1.203'ü Türkiye içi, 62 il.**
 
-Century 21 ve Coldwell Banker aynı platformu kullandığı için tek adapter (`masterturk.ts`)
+Century 21 ve Coldwell Banker aynı platformu kullandığı için tek adapter (`adapters/masterturk.ts`)
 ikisini de besler.
 
 ## Erişim ve robots durumu (2026-08-13 doğrulandı)
