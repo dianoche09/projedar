@@ -98,7 +98,7 @@ export default async function Performans() {
   const maksProjeGor = Math.max(...topProjeler.map(([, a]) => a.goruntuleme), 1);
 
   return (
-    <div className="mx-auto max-w-[920px] text-ink">
+    <div className="mx-auto max-w-[1240px] text-ink">
       <header className="belir mb-6">
         <div className="mb-1.5 flex items-center gap-2.5">
           <span className="rozet" style={{ background: "rgba(30,155,138,.12)", color: "var(--color-teal)" }}>

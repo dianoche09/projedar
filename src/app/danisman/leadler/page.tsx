@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { zamanOnce } from "@/lib/types";
 import { LeadDurum } from "./LeadDurum";
 import { ExcelIndir } from "@/components/ExcelIndir";
+import { SayfaBaslik } from "@/components/ui/SayfaBaslik";
 
 /** Lead durum → lead-pill renk + etiket (sinyal dili). */
 const LEAD_PILL: Record<string, { bg: string; renk: string; et: string }> = {
@@ -57,21 +58,12 @@ export default async function Leadler() {
   ];
 
   return (
-    <div className="mx-auto max-w-[920px] text-ink">
-      <header className="belir mb-6">
-        <div className="mb-1.5 flex items-center gap-2.5">
-          <span className="rozet" style={{ background: "rgba(30,155,138,.12)", color: "var(--color-teal)" }}>
-            <span className="freshdot" style={{ background: "var(--color-teal)" }} />
-            Kendi takibin
-          </span>
-        </div>
-        <h1 className="font-display text-[27px] font-bold leading-none tracking-tight text-navy md:text-[31px]">
-          Lead&apos;lerim
-        </h1>
-        <p className="mt-2 max-w-[560px] text-[13.5px] text-ink-soft">
-          Paylaşımlarından gelen müşteri adayları. Yalnız sana atanan/paylaştığın leadleri görürsün — durumu ilerlet, ara, WhatsApp&apos;tan dönüş yap.
-        </p>
-      </header>
+    <div className="mx-auto max-w-[1240px] text-ink">
+      <SayfaBaslik
+        rozet={{ etiket: "Kendi takibin" }}
+        baslik="Lead'lerim"
+        altMetin="Paylaşımlarından gelen müşteri adayları. Yalnız sana atanan/paylaştığın leadleri görürsün; durumu ilerlet, ara, WhatsApp'tan dönüş yap."
+      />
 
       {liste.length > 0 ? (
         <div className="mb-4 flex justify-end">

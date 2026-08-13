@@ -59,6 +59,42 @@
 | T28 | Opsiyon sayfasını elden geçir (mantıksızlıklar) | |
 | T29 | Anti-abuse: kimliksiz kilit hak doğurmaz + kota + müşteri teyidi + register-expire tespiti | |
 
+### ⏳ Bekleyen — Paylaşım analitiği (T31)
+| # | Görev | Not |
+|---|-------|-----|
+| T31a | `/p` açılışında **anonim ziyaretçi id (first-party cookie)** + **geo (Vercel header → il/ilçe)** yakala → goruntuleme event payload | KVKK-safe: PII yok, anonim; Katman A |
+| T31b | `paylastiklarim`: link başına açılış **sayısı + tarih dökümü + tekil ziyaretçi + il/ilçe kırılımı** | açılış sayısı zaten var |
+| T31c | Müteahhit tarafı: proje bazında **her danışmanın paylaşım+açılış+tekil-ziyaretçi** toplu görünümü | RLS: müteahhit kendi projesi |
+| T31d | Hacim büyürse events yerine ayrı `goruntuleme` tablosu (performans) | sonra |
+
+### ⏳ Bekleyen — Danışman profil sayfası (T32)
+| # | Görev | Not |
+|---|-------|-----|
+| T32a | `/danisman/profil` düzenlenebilir tam profil (şu an salt-okunur) + düzenle modu | |
+| T32b | Kişi fotosu + ofis/şirket logosu yükleme | `foto_url`/`logo_url` kolonları var, Storage |
+| T32c | Bio/hakkında, çalışma alanları (uzmanlık çoklu), hizmet bölgeleri, deneyim, diller, sosyal/web | `profil_detay jsonb` |
+| T32d | **E-posta/telefon değiştirme + ONAY/DOĞRULAMA sistemi** (email confirm + telefon OTP/admin onay) | kullanıcı özel istedi |
+| T32e | UYARI: `il/ilce/uzmanlik/marka` segment-tahsis RLS'ini besliyor → serbest düzenleme kimin hangi projeyi gördüğünü değiştirir; "hizmet bölgesi (pazarlama)" ile "tahsis-anahtarı" ayrılmalı | mimari karar |
+
+### 🔵 Devam — Sayfa yapısı tutarlılığı (T33) + dil (T34)
+| # | Görev | Not |
+|---|-------|-----|
+| T33 | Tüm danışman sayfalarında ortak `SayfaBaslik` + container `max-w-[1240px]` (pool referans); içerik sağ alanı tam doldursun | |
+| T34 | **"—" (uzun tire) hiçbir yerde kullanma** (kullanıcı-görünür içerik); yeni yazımda uygulanır + mevcut görünür metinlerde temizlik | memory `tire-kullanma` ile aynı; kod yorumlarına dokunma |
+
+### ✅ Bu push
+| # | Görev | Commit |
+|---|-------|--------|
+| T35 | Olanaklar & Özellikler (OzellikGoster) "saçma" görünüm → 2-kolon kompakt grid + kategori sayacı | (bu push) |
+| T33 (kısmi) | Liste sayfaları 1240'a genişledi (leadler/paylastiklarim/performans) + leadler başlığı ortak `SayfaBaslik`; dar form/detay sayfaları kasıtlı dar bırakıldı ("mantıklı düşün") | (bu push) |
+
+### ⏳ Düzeltme/açıklama (kullanıcı geri bildirimi)
+| # | Görev | Not |
+|---|-------|-----|
+| T16↺ | **Favori YANLIŞ yerde:** `/p` paylaşım katalogunda (müşteri favorisi) DEĞİL; emlakçı **havuzdaki projeleri** favori yapsın (proje kartı + sol menü). Doğru yere kur. | düzeltme |
+| T22↺ | `/p` sayfasında istenen değişiklikler (proje hero + üretici firma bilgisi + media lightbox) HENÜZ yapılmadı, bekliyor | kullanıcı "değişiklik göremedim" dedi |
+| T33 (kalan) | Diğer sayfaların başlıklarını da `SayfaBaslik`'e taşı (bildirimler/opsiyonlarim/dogrulama/lansman) | |
+
 ### 🧊 Ayrı proje (kendi planlaması)
 | # | Görev | Not |
 |---|-------|-----|
