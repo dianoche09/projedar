@@ -11,6 +11,7 @@ export type HaritaProje = {
   ilce: string | null;
   lat: number | null;
   lng: number | null;
+  toplam: number;
   musait: number;
   opsiyon: number;
   satildi: number;
@@ -54,11 +55,12 @@ export function HavuzHarita({ projeler }: { projeler: HaritaProje[] }) {
         Lmod.marker([p.lat as number, p.lng as number], { icon })
           .addTo(map as L.Map)
           .bindPopup(
-            `<div style="min-width:172px;font:400 12.5px/1.45 ui-sans-serif,system-ui">
+            `<div style="min-width:184px;font:400 12.5px/1.45 ui-sans-serif,system-ui">
                <strong style="font-size:14px;color:#10243a">${esc(p.ad)}</strong><br/>
                <span style="color:#667">${konum}</span><br/>
-               <span style="color:#1f7d4c;font-weight:600">${p.musait} müsait</span>
-               <span style="color:#9a6a12">· ${p.opsiyon} opsiyon</span>
+               <span style="color:#10243a;font-weight:700">${p.toplam} birim</span>
+               <span style="color:#1f7d4c;font-weight:600">· ${p.musait} müsait</span><br/>
+               <span style="color:#9a6a12">${p.opsiyon} opsiyon</span>
                <span style="color:#b0526a">· ${p.satildi} satıldı</span><br/>
                <a href="/danisman/proje/${p.id}" style="display:inline-block;margin-top:6px;color:#1e9b8a;font-weight:700;text-decoration:none">İncele →</a>
              </div>`,
