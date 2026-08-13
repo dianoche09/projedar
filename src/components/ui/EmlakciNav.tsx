@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
  */
 const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon: ReactNode }[] = [
   {
-    href: "/havuz",
+    href: "/danisman",
     etiket: "Canlı Ağ",
     tam: true,
     canli: true,
@@ -24,7 +24,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/leadler",
+    href: "/danisman/leadler",
     etiket: "Lead'lerim",
     tam: true,
     ikon: (
@@ -35,7 +35,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/opsiyonlarim",
+    href: "/danisman/opsiyonlarim",
     etiket: "Opsiyonlarım",
     tam: true,
     ikon: (
@@ -47,7 +47,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/paylastiklarim",
+    href: "/danisman/paylastiklarim",
     etiket: "Paylaştıklarım",
     tam: true,
     ikon: (
@@ -60,7 +60,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/performans",
+    href: "/danisman/performans",
     etiket: "Performansım",
     tam: true,
     ikon: (
@@ -71,7 +71,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/eslestir",
+    href: "/danisman/eslestir",
     etiket: "Eşleştir",
     tam: true,
     ikon: (
@@ -83,7 +83,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/lansman",
+    href: "/danisman/lansman",
     etiket: "Lansman",
     tam: true,
     ikon: (
@@ -94,7 +94,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/bildirimler",
+    href: "/danisman/bildirimler",
     etiket: "Bildirimler",
     tam: true,
     ikon: (
@@ -105,7 +105,7 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
     ),
   },
   {
-    href: "/havuz/profil",
+    href: "/danisman/profil",
     etiket: "Profil",
     ikon: (
       <>
@@ -119,13 +119,13 @@ const NAV: { href: string; etiket: string; tam?: boolean; canli?: boolean; ikon:
 export function EmlakciNav({ bildirimSayi = 0 }: { bildirimSayi?: number }) {
   const yol = usePathname();
   const aktif = (n: { href: string; etiket: string; tam?: boolean }) =>
-    n.href === "/havuz" ? yol === n.href : n.tam ? yol === n.href || yol.startsWith(`${n.href}/`) : false;
+    n.href === "/danisman" ? yol === n.href : n.tam ? yol === n.href || yol.startsWith(`${n.href}/`) : false;
 
   return (
     <nav className="flex flex-col gap-1.5">
       {NAV.map((n) => {
         const a = aktif(n);
-        const rozetli = n.href === "/havuz/bildirimler" && bildirimSayi > 0;
+        const rozetli = n.href === "/danisman/bildirimler" && bildirimSayi > 0;
         return (
           <Link key={n.etiket} href={n.href} className={`nav-item${a ? " active" : ""}`} aria-current={a ? "page" : undefined}>
             <svg className="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

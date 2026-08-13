@@ -10,14 +10,14 @@ export type Rol =
 
 /** Rol'ün ana paneli. admin=BİZ (platform yönetimi); üretici/ofis/emlakçı=müşteri.
  *  Faz-1: ofis/marka/arsa rolleri henüz ayrı panele sahip değil (gelir modeli: ofis/franchise = SONRA fazı)
- *  → tahsisli stok gördükleri /havuz'a yönlendirilir (404 yerine). Ayrı panelleri Faz-2. */
+ *  → tahsisli stok gördükleri /danisman'a yönlendirilir (404 yerine). Ayrı panelleri Faz-2. */
 export const ROL_PANEL: Record<Rol, string> = {
   admin: "/admin",
   uretici: "/uretici",
-  emlakci: "/havuz",
-  ofis_yetkili: "/havuz",
-  marka_yetkili: "/havuz",
-  arsa_sahibi: "/havuz",
+  emlakci: "/danisman",
+  ofis_yetkili: "/danisman",
+  marka_yetkili: "/danisman",
+  arsa_sahibi: "/danisman",
 };
 
 export const ROL_ETIKET: Record<Rol, string> = {

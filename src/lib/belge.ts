@@ -8,7 +8,7 @@ export type BelgeSonuc = { ok: true; yuklendi: number } | { ok: false; hata: "AU
 /**
  * KYC belgelerini `kyc-belge` bucket'a yükler, `kullanici_belge`'ye 'beklemede' yazar ve
  * `profiles.belge_durumu='beklemede'` set eder. REDIRECT ETMEZ — çağıran server action
- * sonucu yorumlayıp yönlendirir. Tek upload kaynağı: hem /havuz/dogrulama hem kayıt wizard'ı kullanır.
+ * sonucu yorumlayıp yönlendirir. Tek upload kaynağı: hem /danisman/dogrulama hem kayıt wizard'ı kullanır.
  *
  * MYS için opsiyonel beyan edilen barkod/belge no `mys_no` alanından okunur → ai_sonuc.beyan_edilen_no.
  * (Gerçek doğrulama admin/AI tarafında; bu yalnız danışmanın beyanı.)

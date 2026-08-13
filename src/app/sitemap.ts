@@ -11,7 +11,7 @@ const SITE = "https://projedar.com";
 
 /**
  * Statik landing + yasal sayfalar + programmatic proje sayfaları (public_slug opt-in).
- * Kapalı-devre: panel/havuz/mikrosite yok. Eşik-altı public_slug'lar dahil EDİLMEZ
+ * Kapalı-devre: panel/danisman/mikrosite yok. Eşik-altı public_slug'lar dahil EDİLMEZ
  * (sayfa notFound verir → soft-404 olmasın). DB down ise statik'e graceful düşer.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

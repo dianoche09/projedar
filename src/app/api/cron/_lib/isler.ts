@@ -396,7 +396,7 @@ export async function leadTakipCalistir(): Promise<CronSonuc> {
       tip: "lead",
       baslik: "Lead takibi zamanı",
       govde: `${l.ad ?? "Müşteri"} · ${l.sonraki_aksiyon_notu ?? "Takip et"}`,
-      link: `/havuz/leadler/${l.id}`,
+      link: `/danisman/leadler/${l.id}`,
     });
     await supabase.from("lead").update({ hatirlatma_gonderildi: true }).eq("id", l.id);
     gonderildi++;

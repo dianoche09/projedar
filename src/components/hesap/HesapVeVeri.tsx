@@ -5,7 +5,7 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 /**
  * KVKK "Hesap ve veri" bölümü — üretici/emlakçı panellerinde ortak.
  * Kullanıcı hesap/veri silme talebi açar; talep iz olarak düşer, silmeyi admin işler.
- * `revalideYolu`: talep sonrası tazelenecek panel yolu (ör. "/havuz/profil").
+ * `revalideYolu`: talep sonrası tazelenecek panel yolu (ör. "/danisman/profil").
  */
 export async function HesapVeVeri({ revalideYolu }: { revalideYolu: string }) {
   const supabase = await createClient();

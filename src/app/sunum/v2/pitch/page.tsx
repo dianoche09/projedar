@@ -227,7 +227,7 @@ export default function PitchV2() {
       <p className="deck-soft -mt-3 mb-5 text-[14px]">
         Bu bir görsel değil: aşağıdaki bina kesiti etkileşimli. Bir daireye dokunun, opsiyon kilidini deneyin.
       </p>
-      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi" kucult zemin="acik">
+      <EkranKart url="projedar.com/danisman/proje/cankaya-vadi" kucult zemin="acik">
         <KuleDemo />
       </EkranKart>
     </Slayt>,

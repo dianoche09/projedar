@@ -48,6 +48,18 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Danışman paneli /havuz → /danisman taşındı (rol öneki, /uretici ile simetri).
+        // Eski bildirim linkleri/bookmark'lar kırılmasın diye kalıcı redirect.
+        source: "/havuz",
+        destination: "/danisman",
+        permanent: true,
+      },
+      {
+        source: "/havuz/:path*",
+        destination: "/danisman/:path*",
+        permanent: true,
+      },
+      {
         // Geçici köprü: Afet Sempozyumu kampanya maillerindeki "Bilgilerimi Tamamla" linki
         // bir env hatası yüzünden projedar.com'a düşmüştü. Query (id & token) korunarak asıl
         // kayıt sitesine yönlendirilir; böylece gönderilmiş linkler tekrar mail atmadan çalışır.

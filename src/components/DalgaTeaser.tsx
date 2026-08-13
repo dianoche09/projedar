@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ilgiBildir } from "@/app/havuz/actions";
+import { ilgiBildir } from "@/app/danisman/actions";
 
 /** Kalan süreyi "3g 4sa" / "5sa 20dk" / "12dk" biçiminde döndürür. */
 function geriSayim(hedef: number): string {

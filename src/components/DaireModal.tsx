@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { birimDurumGuncelle, birimGuncelle, birimGorselSil, birimGorselYukle, birimSatisKapat, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
-import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/havuz/actions";
+import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/danisman/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";

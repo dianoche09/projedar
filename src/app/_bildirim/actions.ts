@@ -14,9 +14,9 @@ export async function bildirimOku(id: string): Promise<void> {
   if (!user) return;
   await supabase.from("bildirim").update({ okundu: true }).eq("id", id).eq("profile_id", user.id);
   revalidatePath("/uretici/bildirimler");
-  revalidatePath("/havuz/bildirimler");
+  revalidatePath("/danisman/bildirimler");
   revalidatePath("/uretici");
-  revalidatePath("/havuz");
+  revalidatePath("/danisman");
 }
 
 /** Tüm okunmamışları okundu işaretle. */
@@ -28,7 +28,7 @@ export async function bildirimHepsiOku(): Promise<void> {
   if (!user) return;
   await supabase.from("bildirim").update({ okundu: true }).eq("profile_id", user.id).eq("okundu", false);
   revalidatePath("/uretici/bildirimler");
-  revalidatePath("/havuz/bildirimler");
+  revalidatePath("/danisman/bildirimler");
   revalidatePath("/uretici");
-  revalidatePath("/havuz");
+  revalidatePath("/danisman");
 }

@@ -723,7 +723,7 @@ async function talepBildir(talepId: string, karar: "onay" | "red", gun?: number)
         karar === "onay"
           ? `${projeAd} · Daire ${daire}${gun ? ` · ${gun} gün opsiyon` : ""}`
           : `${projeAd} · Daire ${daire}`,
-      link: "/havuz/opsiyonlarim",
+      link: "/danisman/opsiyonlarim",
     });
   } catch {
     /* best-effort */
@@ -772,7 +772,7 @@ async function opsiyonBildir(opsiyonId: string, karar: "dogrula" | "reddet"): Pr
       tip: karar === "dogrula" ? "onay" : "red",
       baslik: karar === "dogrula" ? "Opsiyonun doğrulandı" : "Opsiyonun reddedildi",
       govde: karar === "dogrula" ? `${projeAd} · Daire ${daire} · kesin opsiyon` : `${projeAd} · Daire ${daire} · daire serbest`,
-      link: "/havuz/opsiyonlarim",
+      link: "/danisman/opsiyonlarim",
     });
     return birim?.proje?.id ? { birim_id: ops.birim_id as string, proje_id: birim.proje.id as string } : null;
   } catch {
@@ -1215,7 +1215,7 @@ export async function tahsisEkle(formData: FormData) {
       tip: "tahsis",
       baslik: "Yeni proje sana açıldı",
       govde: (proje?.ad as string | null) ?? "Proje",
-      link: "/havuz",
+      link: "/danisman",
     });
   } catch {
     /* bildirim best-effort */

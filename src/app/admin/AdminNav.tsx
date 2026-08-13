@@ -94,7 +94,7 @@ const YONETIM: NavItem[] = [
 
 const PANELLER = [
   { href: "/uretici", etiket: "Üretici Paneli" },
-  { href: "/havuz", etiket: "Emlakçı Havuzu" },
+  { href: "/danisman", etiket: "Emlakçı Havuzu" },
 ];
 
 export function AdminNav({ mobil = false, onayBekleyen = 0, belgeBekleyen = 0 }: { mobil?: boolean; onayBekleyen?: number; belgeBekleyen?: number }) {

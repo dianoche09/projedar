@@ -171,7 +171,7 @@ export default function EmlakciSunumV2() {
           <OnayMadde>Tazelik damgası bilgini kanıtlar: &ldquo;2 dk önce güncellendi&rdquo; gibi.</OnayMadde>
           <OnayMadde>Satılan daire anında kapanır; boşuna pazarlamazsın.</OnayMadde>
         </ul>
-        <EkranKart url="projedar.com/havuz">
+        <EkranKart url="projedar.com/danisman">
           <FiyatListesiMock />
         </EkranKart>
       </div>
@@ -226,7 +226,7 @@ export default function EmlakciSunumV2() {
       <p className="mono mb-3 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-[#2fd3bc]">
         Dene: bir daireye dokun, opsiyon kilidini test et
       </p>
-      <EkranKart url="projedar.com/havuz/proje/cankaya-vadi" kucult zemin="acik">
+      <EkranKart url="projedar.com/danisman/proje/cankaya-vadi" kucult zemin="acik">
         <KuleDemo />
       </EkranKart>
     </Slayt>,

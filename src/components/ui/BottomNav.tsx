@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 
 const TABS = [
   {
-    href: "/havuz",
+    href: "/danisman",
     etiket: "Ağ",
     ikon: <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />,
   },
   {
-    href: "/havuz/leadler",
+    href: "/danisman/leadler",
     etiket: "Lead'ler",
     ikon: (
       <>
@@ -21,7 +21,7 @@ const TABS = [
     ),
   },
   {
-    href: "/havuz/opsiyonlarim",
+    href: "/danisman/opsiyonlarim",
     etiket: "Opsiyon",
     ikon: (
       <>
@@ -32,7 +32,7 @@ const TABS = [
     ),
   },
   {
-    href: "/havuz/paylastiklarim",
+    href: "/danisman/paylastiklarim",
     etiket: "Paylaşım",
     ikon: (
       <>
@@ -44,7 +44,7 @@ const TABS = [
     ),
   },
   {
-    href: "/havuz/profil",
+    href: "/danisman/profil",
     etiket: "Profil",
     ikon: (
       <>
@@ -62,7 +62,7 @@ export function BottomNav() {
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-hair bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <div className="mx-auto flex max-w-md items-stretch">
         {TABS.map((t) => {
-          const aktif = t.href === "/havuz" ? path === "/havuz" : path.startsWith(t.href);
+          const aktif = t.href === "/danisman" ? path === "/danisman" : path.startsWith(t.href);
           return (
             <Link
               key={t.href}

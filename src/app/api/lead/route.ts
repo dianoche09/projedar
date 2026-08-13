@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       tip: "lead",
       baslik: "Yeni müşteri (lead)",
       govde: `${ad} · ${niyetAd[niyet] ?? "İletişim"}`,
-      link: "/havuz/leadler",
+      link: "/danisman/leadler",
     });
 
     return NextResponse.json({ basarili: true, id: leadData.id });

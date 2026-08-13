@@ -4,13 +4,13 @@ const SITE = "https://projedar.com";
 
 /**
  * Kapalı-devre B2B ağ: yalnız landing + yasal sayfalar indexlenir.
- * Panel/havuz/api route'ları (özel veri) disallow. AI crawler'lar landing için açık.
+ * Panel/danisman/api route'ları (özel veri) disallow. AI crawler'lar landing için açık.
  */
 export default function robots(): MetadataRoute.Robots {
   // Not: /p/ (share mikrositesi) BİLEREK disallow DEĞİL. Public + crawlable olmalı ki
   // Googlebot sayfadaki noindex,nofollow'u görebilsin (robots-disallow olsaydı noindex'i
   // göremez, paylaşılan URL çıplak SERP'e sızabilirdi — Google block-indexing dokümanı).
-  const gizli = ["/havuz", "/uretici", "/admin", "/api", "/hesap-bekliyor", "/tasarim", "/login", "/kayit", "/mockup", "/sunum", "/_bildirim"];
+  const gizli = ["/danisman", "/uretici", "/admin", "/api", "/hesap-bekliyor", "/tasarim", "/login", "/kayit", "/mockup", "/sunum", "/_bildirim"];
   // GEO görünürlüğü: AI arama/asistan crawler'ları landing içeriğini okuyabilsin.
   const aiCrawlers = [
     // OpenAI

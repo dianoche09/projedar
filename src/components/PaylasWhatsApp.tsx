@@ -1,6 +1,6 @@
 "use client";
 
-import { paylasimKaydet } from "@/app/havuz/actions";
+import { paylasimKaydet } from "@/app/danisman/actions";
 
 /**
  * WhatsApp paylaş linki — tıklamada anonim "paylasim" sinyali yazar (fire-and-forget),
