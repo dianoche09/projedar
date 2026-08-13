@@ -55,6 +55,7 @@ export function BinaKesiti({
   shareUrlMap,
   benimOpsiyonlar,
   opsiyonYontemi = "talep_kod",
+  onSec,
 }: {
   bloklar: Blok[];
   birimler: BinaBirim[];
@@ -66,6 +67,8 @@ export function BinaKesiti({
   /** Emlakçı modu: bu emlakçıya ait opsiyonlu birim id'leri (bırak butonu için). */
   benimOpsiyonlar?: string[];
   opsiyonYontemi?: string;
+  /** Verilirse hücre tıklaması kendi modalını açmaz; tek merkezi DaireModal'a yönlendirir. */
+  onSec?: (id: string) => void;
 }) {
   const tipMap = new Map(tipler.map((t) => [t.id, t]));
 
@@ -205,6 +208,7 @@ export function BinaKesiti({
                                   benimOpsiyon={benimOpsiyonlar?.includes(b.id) ?? false}
                                   opsiyonYontemi={opsiyonYontemi}
                                   eklentiler={eklentiler}
+                                  onSec={onSec}
                                   birim={{
                                     id: b.id,
                                     daire_no: b.daire_no,

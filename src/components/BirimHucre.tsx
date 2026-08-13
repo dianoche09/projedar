@@ -34,6 +34,7 @@ export function BirimHucre({
   benimOpsiyon = false,
   opsiyonYontemi = "talep_kod",
   eklentiler = [],
+  onSec,
 }: {
   birim: ModalBirim;
   projeId: string;
@@ -43,6 +44,8 @@ export function BirimHucre({
   benimOpsiyon?: boolean;
   opsiyonYontemi?: string;
   eklentiler?: Eklenti[];
+  /** Verilirse hücre kendi modalını AÇMAZ; seçimi yukarı bildirir (tek merkezi DaireModal). */
+  onSec?: (id: string) => void;
 }) {
   const [acik, setAcik] = useState(false);
   const secim = useSecim();
@@ -54,7 +57,7 @@ export function BirimHucre({
     <>
       <button
         type="button"
-        onClick={() => (secimModu ? secim!.toggle(birim.id) : setAcik(true))}
+        onClick={() => (secimModu ? secim!.toggle(birim.id) : onSec ? onSec(birim.id) : setAcik(true))}
         title={`${birim.daire_no ?? ""} · ${DURUM_ETIKET[birim.durum]}${!birim.satilabilir ? " · arsa payı (satılamaz)" : ""}`}
         className={`hucre min-w-[48px] shrink-0 ${hucreSinif(birim.durum, birim.satilabilir)} ${
           seciliMi ? "ring-2 ring-white" : ""
@@ -72,7 +75,7 @@ export function BirimHucre({
         )}
       </button>
 
-      {acik && !secimModu ? (
+      {acik && !secimModu && !onSec ? (
         <DaireModal
           birim={birim}
           projeId={projeId}

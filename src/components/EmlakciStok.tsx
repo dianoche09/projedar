@@ -203,6 +203,10 @@ export function EmlakciStok({
             shareUrlMap={shareUrlMap}
             benimOpsiyonlar={benimOpsiyonlar}
             opsiyonYontemi={opsiyonYontemi}
+            onSec={(id) => {
+              const b = birimler.find((x) => x.id === id);
+              if (b) setSecili(toModal(b));
+            }}
           />
         </div>
       ) : null}
