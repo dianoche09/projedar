@@ -16,7 +16,9 @@ Tek marka için:
 npx tsx scripts/franchise-ofisler/tarama.ts --marka=remax
 ```
 
-Çıktı `cikti/` altına yazılır (gitignore'lu, veri repoda tutulmaz):
+Çıktı **repo kökündeki** `arastirma/emlakci-ofisler/` altına yazılır (üretilen tablolar
+gitignore'lu, veri repoda tutulmaz). Tüm araştırma scriptleri çıktılarını `arastirma/<konu>/`
+altında toplar; script klasörlerinde veri dosyası bulunmaz. Dizin haritası: `arastirma/README.md`.
 
 * `franchise-ofisler.csv` : UTF-8 BOM'lu, Excel uyumlu tam liste
 * `franchise-ofisler.xlsx` : `Ofisler` + `Marka Ozeti` + `Il Ozeti` sayfaları

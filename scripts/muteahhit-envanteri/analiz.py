@@ -8,7 +8,7 @@ sell-through süresi ve sold-out tarihi tek anlık ölçümden çıkarılamaz; e
 farklı tarihli snapshot gerekir. Bu rapor onları "tahmin" diye uydurmaz.
 
 Kullanım: python3 analiz.py
-Çıktı:    cikti/rapor.md
+Çıktı:    arastirma/muteahhit-firmalar/rapor.md
 """
 
 from __future__ import annotations

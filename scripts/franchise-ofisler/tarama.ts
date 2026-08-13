@@ -4,7 +4,7 @@
  * Çalıştır:  npx tsx scripts/franchise-ofisler/tarama.ts
  * Tek marka: npx tsx scripts/franchise-ofisler/tarama.ts --marka=remax
  *
- * Çıktı: scripts/franchise-ofisler/cikti/ altında CSV + XLSX (Ofisler / Marka Özeti / İl Özeti).
+ * Çıktı: arastirma/emlakci-ofisler/ altında CSV + XLSX (Ofisler / Marka Özeti / İl Özeti).
  * Yalnız işletme düzeyi kamuya açık veri toplanır — gerekçe ve sınırlar için README.md.
  */
 import fs from "node:fs";
@@ -22,7 +22,8 @@ const ADAPTERLER: MarkaAdapter[] = [
   century21Adapter, coldwellBankerAdapter,
 ];
 
-const CIKTI = path.join("scripts", "franchise-ofisler", "cikti");
+/** Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır. */
+const CIKTI = path.join("arastirma", "emlakci-ofisler");
 
 const KOLONLAR: (keyof FranchiseOfis)[] = [
   "marka", "subeAdi", "isletmeAdi", "kapsam", "il", "ilce", "mahalle", "hamBolge",

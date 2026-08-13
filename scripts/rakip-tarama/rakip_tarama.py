@@ -7,7 +7,7 @@ Faz 1 (default): 50 ulusal sorgu -> domain keşfi + ön skor.
 Faz 2 (--local): lokasyon-duyarlı sorgular x şehir.
 Faz 3 (--enrich): hayatta kalan domainlere site: indeks sayımı + anasayfa tarama.
 
-Cache: her ham SerpAPI cevabı cikti/ham/ altına yazılır; tekrar koşuda API'ye
+Cache: her ham SerpAPI cevabı arastirma/rakip-tarama/ham/ altına yazılır; tekrar koşuda API'ye
 gidilmez (para harcanmaz). Bütçe: --max-aramalar sert tavan. --kuru = dry-run.
 
 Bağımlılık YOK — sadece Python stdlib (urllib). pip install gerekmez.
@@ -36,7 +36,9 @@ import sorgular as CFG
 
 BURASI = Path(__file__).resolve().parent
 PROJE_KOK = BURASI.parent.parent
-CIKTI = BURASI / "cikti"
+# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
+# (script klasörlerinde veri dosyası tutulmaz).
+CIKTI = BURASI.parent.parent / "arastirma" / "rakip-tarama"
 HAM = CIKTI / "ham"
 SERPAPI_URL = "https://serpapi.com/search.json"
 

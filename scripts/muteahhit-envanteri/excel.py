@@ -9,7 +9,7 @@ yazılır. openpyxl/pandas gerekmez (bu makinede openpyxl kurulu değil).
 Sheet'ler yalnız var olan CSV'lerden üretilir; eksik olan atlanır ve raporlanır.
 
 Kullanım: python3 excel.py
-Çıktı:    cikti/envanter.xlsx
+Çıktı:    arastirma/muteahhit-firmalar/envanter.xlsx
 """
 
 from __future__ import annotations

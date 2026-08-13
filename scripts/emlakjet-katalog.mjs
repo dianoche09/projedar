@@ -14,7 +14,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const KOK = join(dirname(fileURLToPath(import.meta.url)), "..");
-const CSV = join(KOK, "scripts", "emlakjet-envanteri", "cikti", "projeler.csv");
+const CSV = join(KOK, "arastirma", "konut-projeleri", "projeler.csv");
 const CIKTI_VARSAYILAN = join(KOK, "scripts", "katalog-data", "emlakjet-buyuk.json");
 
 const AYLAR = { ocak: 1, şubat: 2, subat: 2, mart: 3, nisan: 4, mayıs: 5, mayis: 5, haziran: 6, temmuz: 7, ağustos: 8, agustos: 8, eylül: 9, eylul: 9, ekim: 10, kasım: 11, kasim: 11, aralık: 12, aralik: 12 };

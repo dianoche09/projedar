@@ -27,16 +27,16 @@ python3 emlakjet_envanteri.py --yenile     # cache'i yok say, taze indir
 ```
 
 ## Çıktı
-- `cikti/projeler.csv` — tam veri (id, ad, il/ilçe, m², oda, konut, teslim, müteahhit, fiyat min/max, url)
-- `cikti/rapor.md` — özet (en çok projesi olan müteahhitler, il dağılımı)
-- `cikti/ham/sayfa-NNN.html` — ham cache (tekrar koşuda site yorulmaz)
+- `arastirma/konut-projeleri/projeler.csv` — tam veri (id, ad, il/ilçe, m², oda, konut, teslim, müteahhit, fiyat min/max, url)
+- `arastirma/konut-projeleri/rapor.md` — özet (en çok projesi olan müteahhitler, il dağılımı)
+- `arastirma/konut-projeleri/ham/sayfa-NNN.html` — ham cache (tekrar koşuda site yorulmaz)
 
 ## Fiyat/m² benchmark (benchmark.py)
 `projeler.csv`'den il ve il+ilçe bazlı ₺/m² medyan tablosu üretir.
 ```bash
 python3 benchmark.py --min-proje 3
 ```
-Çıktı: `cikti/benchmark-il.csv`, `cikti/benchmark-ilce.csv`, `cikti/benchmark.md`.
+Çıktı: `arastirma/konut-projeleri/benchmark-il.csv`, `arastirma/konut-projeleri/benchmark-ilce.csv`, `arastirma/konut-projeleri/benchmark.md`.
 
 > **Nüans:** kart yalnız fiyat aralığı + m² aralığı verir, birim bazlı değil. İki uç
 > ölçü hesaplanır: `tl_m2_giris = fiyat_min/alan_min` (giriş daire), `tl_m2_ust =

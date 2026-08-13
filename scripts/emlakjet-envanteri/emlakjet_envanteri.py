@@ -37,7 +37,9 @@ import urllib.request
 from pathlib import Path
 
 BURASI = Path(__file__).resolve().parent
-CIKTI = BURASI / "cikti"
+# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
+# (script klasörlerinde veri dosyası tutulmaz).
+CIKTI = BURASI.parent.parent / "arastirma" / "konut-projeleri"
 HAM = CIKTI / "ham"
 
 TABAN = "https://www.emlakjet.com"
@@ -56,7 +58,7 @@ def sayfa_url(n: int) -> str:
 
 
 def indir(n: int, yenile: bool = False) -> str:
-    """Sayfa n HTML'ini döndür. cikti/ham/sayfa-N.html altına cache'ler."""
+    """Sayfa n HTML'ini döndür. arastirma/konut-projeleri/ham/sayfa-N.html altına cache'ler."""
     HAM.mkdir(parents=True, exist_ok=True)
     dosya = HAM / f"sayfa-{n:03d}.html"
     if dosya.exists() and not yenile:

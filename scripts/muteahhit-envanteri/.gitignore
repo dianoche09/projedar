@@ -1,3 +1,2 @@
-# Ham HTML ve üretilen çıktılar commit'lenmez (yeniden üretilebilir).
-cikti/
+# Python önbelleği (çıktılar artık repo kökündeki arastirma/muteahhit-firmalar/ altında, kök .gitignore kapsar).
 __pycache__/

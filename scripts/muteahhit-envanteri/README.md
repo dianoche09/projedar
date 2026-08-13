@@ -96,7 +96,7 @@ python3 snapshot.py                             # haftalık stok ölçümü (ser
 python3 lead_skor.py                            # B2B işbirliği skoru + öncelik listesi
 ```
 
-## Çıktılar (`cikti/`)
+## Çıktılar (`arastirma/muteahhit-firmalar/`)
 
 | Dosya | İçerik |
 |---|---|

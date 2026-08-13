@@ -42,7 +42,9 @@ import urllib.request
 from pathlib import Path
 
 BURASI = Path(__file__).resolve().parent
-CIKTI = BURASI / "cikti"
+# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
+# (script klasörlerinde veri dosyası tutulmaz).
+CIKTI = BURASI.parent.parent / "arastirma" / "muteahhit-firmalar"
 HAM = CIKTI / "ham"
 
 TABAN = "https://www.emlakjet.com"
@@ -84,7 +86,7 @@ ROL_EPOSTA = (
 # İndirme (cache'li, nazik)
 # ---------------------------------------------------------------------------
 def indir(url: str, ad: str, yenile: bool = False, deneme: int = 3) -> str | None:
-    """URL'yi indir, cikti/ham/<ad>.html altına cache'le. Hata olursa None."""
+    """URL'yi indir, arastirma/muteahhit-firmalar/ham/<ad>.html altına cache'le. Hata olursa None."""
     HAM.mkdir(parents=True, exist_ok=True)
     dosya = HAM / f"{ad}.html"
     if dosya.exists() and not yenile:

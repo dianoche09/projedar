@@ -3,7 +3,7 @@
 """
 Konut projesi + müteahhit detay tarayıcı (emlakjet `initialProject` payload'ı).
 
-Ne üretir (cikti/ altına):
+Ne üretir (arastirma/muteahhit-firmalar/ altına):
   proje.csv        proje ana kaydı; kalan stok, satış yüzdesi, inşaat/teslim tarihi,
                    koordinat, satış durumu, blok/etap (metinden), veri güven seviyesi
   firma.csv        müteahhit/geliştirici; adres, kurumsal telefon, web sitesi,
@@ -58,7 +58,7 @@ from ortak import (
 )
 
 TOHUM_CSV = (
-    Path(__file__).resolve().parent.parent / "emlakjet-envanteri" / "cikti" / "projeler.csv"
+    Path(__file__).resolve().parent.parent.parent / "arastirma" / "konut-projeleri" / "projeler.csv"
 )
 
 PROJE_ALAN = [
@@ -343,7 +343,7 @@ def main() -> int:
     print(f"\nTamam. proje={len(projeler)} firma={len(firmalar)} tip={len(tipler)} kampanya={len(kampanyalar)}")
     print(f"Veri güven dağılımı: {dict(sorted(guven.items()))}")
     print(f"KVKK gereği atılan kişi-adı e-postası: {atlanan_eposta}")
-    print(f"Sonraki tur için bekleyen keşif: {len(kuyruk)} (cikti/kesif.txt)")
+    print(f"Sonraki tur için bekleyen keşif: {len(kuyruk)} (arastirma/muteahhit-firmalar/kesif.txt)")
     return 0
 
 

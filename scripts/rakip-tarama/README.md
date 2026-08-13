@@ -15,7 +15,7 @@ aramasını değil, tekrarlanabilir + bütçe-korumalı bir pipeline'ı hedefler
 
 ## Bütçe / maliyet koruması
 SerpAPI'de her arama = 1 kredi. Bu yüzden:
-- **Cache:** her ham cevap `cikti/ham/` altına yazılır; tekrar koşu API'ye gitmez.
+- **Cache:** her ham cevap `arastirma/rakip-tarama/ham/` altına yazılır; tekrar koşu API'ye gitmez.
 - **`--max-aramalar N`:** sert tavan (varsayılan 60). Tavan dolunca durur.
 - **`--kuru`:** dry-run — plan + tahmini krediyi gösterir, hiç API çağırmaz.
 
@@ -34,8 +34,8 @@ Otomatik bulunur — sırasıyla: `--anahtar` argümanı → adında `SERP` geç
 değişkeni → proje kökündeki `.env.local` / `.env`. Anahtar koda/çıktıya yazılmaz.
 
 ## Çıktı
-- `cikti/domainler.csv` — tam veri (eksen kırılımı, indeks, sinyaller dahil)
-- `cikti/rapor.md` — directness'e göre sıralı skor tablosu
+- `arastirma/rakip-tarama/domainler.csv` — tam veri (eksen kırılımı, indeks, sinyaller dahil)
+- `arastirma/rakip-tarama/rapor.md` — directness'e göre sıralı skor tablosu
 
 ## Skorlama eksenleri (`sorgular.py::LEKSIKON`)
 A çok-müteahhit · B emlakçı/broker ağı · C canlı stok+fiyat · D çift-satış önleme ·

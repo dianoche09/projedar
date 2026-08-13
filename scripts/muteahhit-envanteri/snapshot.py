@@ -10,7 +10,7 @@ emlakjet yalnız ANLIK değeri yayımlar. Satış hızı (aylık kaç konut erid
 başlarsa seri o kadar değerli olur; kaçırılan hafta telafi edilemez.
 
 Ne yapar: proje.csv'deki her projeyi TAZE çeker (cache kullanmaz, amaç zaten
-değişimi görmek) ve cikti/stok-zaman-serisi.csv'ye satır EKLER. Dosya asla
+değişimi görmek) ve arastirma/muteahhit-firmalar/stok-zaman-serisi.csv'ye satır EKLER. Dosya asla
 üzerine yazılmaz.
 
 Varsayılan olarak yalnız satışı süren (ONGOING) projeler ölçülür; FINISHED

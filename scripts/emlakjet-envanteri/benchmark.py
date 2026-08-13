@@ -3,8 +3,8 @@
 """
 Emlakjet envanterinden il / il+ilçe bazlı fiyat benchmark tablosu üretir.
 
-Girdi:  cikti/projeler.csv  (emlakjet_envanteri.py çıktısı)
-Çıktı:  cikti/benchmark-il.csv, cikti/benchmark-ilce.csv, cikti/benchmark.md
+Girdi:  arastirma/konut-projeleri/projeler.csv  (emlakjet_envanteri.py çıktısı)
+Çıktı:  arastirma/konut-projeleri/benchmark-il.csv, arastirma/konut-projeleri/benchmark-ilce.csv, arastirma/konut-projeleri/benchmark.md
 
 ₺/m² tahmini: kart yalnız fiyat aralığı (min-max) + m² aralığı (min-max) verir,
 birim bazlı değil. İki uç ölçü hesaplanır:
@@ -28,7 +28,9 @@ from collections import defaultdict
 from pathlib import Path
 
 BURASI = Path(__file__).resolve().parent
-CIKTI = BURASI / "cikti"
+# Araştırma çıktıları repo kökündeki arastirma/ altında konu bazlı toplanır
+# (script klasörlerinde veri dosyası tutulmaz).
+CIKTI = BURASI.parent.parent / "arastirma" / "konut-projeleri"
 
 
 def alan_aralik(s: str):
