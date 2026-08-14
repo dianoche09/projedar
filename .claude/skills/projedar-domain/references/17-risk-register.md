@@ -38,6 +38,22 @@ Status: Open · Impact: Medium · Likelihood: Unlikely · Detectability: Difficu
 Senaryo: `pazarlama_entegrasyon` API anahtarları plaintext (doc 04:98; Vault Faz-2). DB erişimi → anahtar sızıntısı.
 Kontrol: Supabase Vault / şifreleme.
 
+## RISK-STATE-001 — `satis_beklemede` birim cron ile serbest kalıyor (çift-satış açığı)
+Status: Open · Impact: High · Likelihood: Plausible · Detectability: Difficult · Recovery: Dispute
+Senaryo: `satis_beklemede`'ye geçişte opsiyon `opsiyonlu` + eski `kilit_bitis` kalıyor; expiry cron (`isler.ts:159-182`, `db/2026-08-05:22-29`) siliyor → trigger birimi `musait` yapıyor. Sözleşme imzalanırken birim tekrar opsiyonlanabilir. Enforcement: INV-STATE-001. Audit B3/XP-03.
+
+## RISK-CRON-001 — İki opsiyon-expiry scheduler, audit divergence
+Status: Open · Impact: Low · Likelihood: Frequent · Detectability: Delayed · Recovery: Manual
+Senaryo: pg_cron (15dk) + Vercel (günlük) ikisi de aynı satırı silip event yazıyor; etiket farklı (`dogrulama_sure_doldu` vs hep `sure_doldu`) → "neden serbest kaldı" belirsiz, SoR ambiguous. Fix: tek sahip. Audit N10/XP-05.
+
+## RISK-PRICEVIS-001 — Gizli fiyat (`fiyat_gorunur=false`) 3 yüzeyden sızıyor
+Status: Open · Impact: High · Likelihood: Frequent · Detectability: Delayed · Recovery: Dispute
+Senaryo: Mikrosite/katalog PDF/eşleştir redaksiyonu atlıyor (`p/[...slug]/page.tsx:138-153`, `katalog/page.tsx:74-101`, `eslestir/page.tsx:13-21`); müteahhidin danışmandan gizlediği fiyat müşteriye gidiyor. Takımın kendi "HIGH leak fix"i (`db/2026-08-10_emlakci-birim-fiyat.sql`) eksik. Audit A1/D-01/02/03.
+
+## RISK-ADMIN-001 — Admin canlı stoğa satıcı olabiliyor + denetim kör
+Status: Open · Impact: High · Likelihood: Plausible · Detectability: Difficult · Recovery: Dispute
+Senaryo: `is_admin() OR` opsiyon bypass'ı (INV-ADMIN-002 ihlali) + kritik admin aksiyonları audit'e yazmıyor (INV-AUDIT-001) + izsiz admin üretimi. Audit E1/E2.
+
 ## RISK-OFFSYSTEM-001 — Platform-dışı satış reconciliation'ı yok
 Status: Accepted (bugün) · Impact: Medium · Likelihood: Frequent · Detectability: Difficult · Recovery: Manual
 Senaryo: Müteahhit telefon/Excel/kendi ofisinde satış yapar; Projedar'da birim hâlâ musait görünür. Bugünkü mekanizma yalnız tazelik sinyali (tespit, önleme değil). Entegrasyon gelince reconciliation gerekli (`references/29`).

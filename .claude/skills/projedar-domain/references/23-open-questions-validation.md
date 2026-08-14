@@ -25,3 +25,6 @@ V2 B.4: "muaf/ilan değil" kesin hüküm olarak kullanılmaz. `references/27`.
 
 ## OQ-SHARE-001 — Satış/opsiyon sonrası dolaşımdaki paylaşım kodları deaktive edilmeli mi? [PRODUCT DECISION]
 Bugün `paylasim_kod.aktif` manuel; mikrosite canlı bastığı için satıldı görünür ama link hâlâ geçerli.
+
+## OQ-PRICEVIS-001 — Tahsis revoke/expire olunca dolaşımdaki mikrosite fiyatı da çekilmeli mi? [PRODUCT DECISION]
+`birim_gorunur_fiyat` yöneten tahsis çözülmezse `coalesce(...,true)` → fiyat gösterir. Mikrosite (service-role, RLS backstop yok) paylaşan danışmanın tahsisi kaldırıldıktan/süresi dolduktan sonra da paylaşılmış `/p/{kod}` linkinde canlı fiyatı göstermeye devam eder. A1 `fiyat_gorunur=false` durumunu düzeltir ama "tahsis çekildi" durumunu değil. Müteahhit "bu danışmanı çektim" derken paylaşımların da düşmesini bekleyebilir. (MODE B P2, pre-existing.)

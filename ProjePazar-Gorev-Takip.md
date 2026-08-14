@@ -9,7 +9,22 @@
 |---|-------|-------|
 | DA1 | `projedar-real-estate-cdo` domain agent + `projedar-domain` skill + references (20) + domain gate rule + CLAUDE.md pointer + .gitignore un-ignore + ilk full audit | ✅ tamam (yerel; commit bekliyor) |
 | DA2 | **Agent discovery için session restart** (`.claude/agents/` ilk kez oluştu) | ⏳ kullanıcı restart etmeli |
-| DA3 | İlk audit P0/P1 aksiyonları (test altyapısı, tahsis-revoke reconciliation kararı, lead-claim kararı) backlog'a al | ⏳ bekliyor (audit: `references/audit/2026-08-14-first-full-audit.md`) |
+| DA3 | İlk audit P0/P1 aksiyonları backlog'a al | ✅ konsolide backlog çıktı |
+| DA4 | **FULL PRODUCT AUDIT (4 derin panel geçişi)** → tek konsolide backlog | ✅ `references/audit/2026-08-14-KONSOLIDE-BACKLOG.md` |
+
+### ⏳ Bekleyen — Audit P1 aksiyonları (KONSOLIDE-BACKLOG'dan)
+| # | Görev | Not |
+|---|-------|-----|
+| AU-N1 | `/havuz`→`/danisman` bildirim linkleri (cron) 404 fix | 🔵 kod hazır · SQL uygula (`db/2026-08-14_havuz-danisman-link-fix.sql`) |
+| AU-E1 | Admin opsiyon bypass'ı demo-only + UI gate | 🔵 kod hazır · SQL uygula (`db/2026-08-14_opsiyon-admin-demo-only.sql`) |
+| AU-A1 | Gizli fiyat 3 yüzey redaksiyon (tek-kaynak) | 🔵 kod hazır · SQL uygula (`db/2026-08-14_fiyat-redaksiyon-tek-kaynak.sql`) |
+| AU-B1 | Tahsis revoke → aktif opsiyon/lead kararı (MODE A) | PROJECT DECISION |
+| AU-A2 | Opsiyon fiyat snapshot (MODE A) | PROJECT DECISION |
+| AU-N2 | Cross-agent lead first-touch kararı (MODE A) | moat, PROJECT DECISION |
+| AU-D1 | Sahte "tutma" vaadi kopyası + geçici-opsiyon köprüsü | LEGAL |
+| AU-B2/B3/C1 | bulk opsiyon desync · satis_beklemede cron koruması · tek satış kapama | lifecycle |
+| AU-E2/E3 | admin audit event'leri + gerçek KVKK erasure | governance/LEGAL |
+| AU-T1 | Kritik invariant test altyapısı (her P1 testiyle) | P0-adjacent |
 
 ## Aktif oturum: emlakçı/danışman paneli elden geçirme (2026-08-13/14)
 
