@@ -65,5 +65,8 @@ Her projenin **kendi** changelog'u vardır. Bu repoda anlamlı her değişiklikt
 - Format: dosyanın en üstüne `## YYYY-MM-DD HH:MM — [kısa başlık]` + madde. Aynı gün ise mevcut günün altına satır ekle, yeni tarih bloğu açma.
 - Trivial işleri (typo, import) yazma.
 
+## Domain Gate (gayrimenkul iş mantığı — ZORUNLU)
+Gayrimenkul domain'ini etkileyen her değişiklikte (birim/stok/fiyat/tahsis/opsiyon/rezervasyon/satış/lead/komisyon/RLS/paylaşım/entegrasyon/panel/bulk/exception) **`projedar-real-estate-cdo` agent'ını** kullan: implementasyondan ÖNCE domain design review, SONRA implementation review; P0/P1 çözülmeden iş tamam sayılmaz. Agent ürün kodu yazmaz (domain otoritesi + kendi knowledge/memory bakımı). Kurallar: `.claude/rules/projedar-domain-gate.md`. Yöntem/bilgi: `Skill(projedar-domain)` → `.claude/skills/projedar-domain/references/00-reference-index.md`. Trivial iş + "sadece yap"/"tartışma" gate'i kapatır.
+
 ## Build sırası
 Devir Dokümanı Bölüm 16 (PR-1 → PR-10). Sırayla; her PR'da kabul kriterini doğrula (Bölüm 13).

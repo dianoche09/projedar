@@ -4,6 +4,13 @@
 > Yapılanlar kapatılır (✅ + commit), yapılmayanlar (⏳) kullanıcı sorunca hatırlatılır. Bkz. CLAUDE.md "Görev Takibi".
 > Durum kodları: ✅ tamam (canlı) · 🔵 devam ediyor · ⏳ bekliyor · 🧊 ayrı proje/planlama · ❌ iptal.
 
+## Domain Agent Kurulumu (2026-08-14)
+| # | Görev | Durum |
+|---|-------|-------|
+| DA1 | `projedar-real-estate-cdo` domain agent + `projedar-domain` skill + references (20) + domain gate rule + CLAUDE.md pointer + .gitignore un-ignore + ilk full audit | ✅ tamam (yerel; commit bekliyor) |
+| DA2 | **Agent discovery için session restart** (`.claude/agents/` ilk kez oluştu) | ⏳ kullanıcı restart etmeli |
+| DA3 | İlk audit P0/P1 aksiyonları (test altyapısı, tahsis-revoke reconciliation kararı, lead-claim kararı) backlog'a al | ⏳ bekliyor (audit: `references/audit/2026-08-14-first-full-audit.md`) |
+
 ## Aktif oturum: emlakçı/danışman paneli elden geçirme (2026-08-13/14)
 
 ### ✅ Tamamlanan (canlı)
