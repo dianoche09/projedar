@@ -55,6 +55,12 @@ export default async function HavuzProjeDetay({
   const { data: proje } = await supabase.from("proje").select("*").eq("id", id).single();
   if (!proje) notFound();
 
+  // E1/INV-ADMIN-002: admin = platform, canlı stoğa satıcı olamaz. Admin non-demo projede
+  // "Opsiyon Al" butonunu görmez (DB gate zaten reddeder; bu UI tutarlılığı için).
+  const { data: kendiProfil } = await supabase.from("profiles").select("rol").eq("id", emlakciId).single();
+  const adminMi = kendiProfil?.rol === "admin";
+  const opsiyonAcik = !(adminMi && !proje.demo);
+
   const [{ data: bloklar }, { data: tipler }, { data: birimler }, { data: belgelerRaw }, { data: mahallerRaw }] =
     await Promise.all([
       supabase.from("blok").select("id, ad, kat_sayisi").eq("proje_id", id).order("ad"),
@@ -588,6 +594,7 @@ export default async function HavuzProjeDetay({
               shareUrlMap={shareUrlMap}
               kazancMap={kazancMap}
               benimOpsiyonlar={benimOpsiyonlar}
+              opsiyonAcik={opsiyonAcik}
               opsiyonYontemi={
                 ((proje.opsiyon_ayar as { yontem?: string } | null)?.yontem) ??
                 (proje.opsiyon_yontemi === "dogrudan" ? "dogrudan" : "onay")

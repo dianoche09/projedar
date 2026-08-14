@@ -21,13 +21,25 @@ export default async function EslestirSayfasi() {
     .eq("satilabilir", true);
 
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  const birimler: EslesBirim[] = ((data ?? []) as any[])
-    .filter((b) => b.ana_birim_id == null)
+  const ana = ((data ?? []) as any[]).filter((b) => b.ana_birim_id == null);
+
+  // Fiyat redaksiyonu (audit A1): çok-projeli toplu redakte fiyat. Gizli tahsiste fiyat null →
+  // hem gösterim "Fiyat gizli" hem bütçe filtresi (aktif sınırda) o birimi otomatik dışlar
+  // (Eslestirici filtresi f==null'ı zaten eler) → gizli fiyat eşik-süpürmeyle çıkarsanamaz.
+  const anaIds = ana.map((b) => b.id as string);
+  const { data: fiyatRows } = anaIds.length
+    ? await supabase.rpc("emlakci_gorunur_fiyat_coklu", { p_birim_ids: anaIds })
+    : { data: [] };
+  const fiyatMap = new Map<string, number | null>(
+    ((fiyatRows ?? []) as { birim_id: string; fiyat: number | null }[]).map((r) => [r.birim_id, r.fiyat]),
+  );
+
+  const birimler: EslesBirim[] = ana
     .map((b) => ({
       id: b.id,
       daire_no: b.daire_no,
       kat: b.kat,
-      liste_fiyati: b.liste_fiyati,
+      liste_fiyati: fiyatMap.has(b.id as string) ? fiyatMap.get(b.id as string) ?? null : null,
       para_birimi: b.para_birimi ?? "TRY",
       net_m2: b.net_m2,
       brut_m2: b.brut_m2,

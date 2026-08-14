@@ -129,6 +129,7 @@ export function DaireModal({
   eklentiler = [],
   kazanc,
   opsiyonSaticiAd = null,
+  opsiyonAcik = true,
 }: {
   birim: ModalBirim;
   projeId: string;
@@ -146,6 +147,9 @@ export function DaireModal({
   eklentiler?: Eklenti[];
   /** Emlakçı modu: bu daireyi satınca kazanç (satış primi, TL). DB'de hesaplanır. */
   kazanc?: number;
+  /** Satıcı aksiyonu (opsiyon al) açık mı. Admin non-demo projede görürse false (E1/INV-ADMIN-002):
+   *  admin = platform, canlı stoğa satıcı olamaz; buton gizlenir (DB gate zaten reddeder). */
+  opsiyonAcik?: boolean;
 }) {
   const [durum, setDurum] = useState<BirimDurum>(birim.durum);
   const [bekliyor, basla] = useTransition();
@@ -664,7 +668,11 @@ export function DaireModal({
                 <p className="text-center text-[10.5px] leading-snug text-[var(--ink-faint)] font-bold">
                   Müşterinizle birebir paylaşın; yetkisiz ilan yasal risk taşımaktadır.
                 </p>
-                {opsiyonYontemi === "gecici" ? (
+                {!opsiyonAcik ? (
+                  <p className="rounded-xl border border-hair bg-soft p-3 text-center text-[10.5px] font-bold leading-snug text-ink-soft">
+                    Admin (platform) görünümü · opsiyon yalnız demo projede alınabilir. Canlı stokta satıcı danışmandır.
+                  </p>
+                ) : opsiyonYontemi === "gecici" ? (
                   <>
                     <div className="rounded-xl border border-hair bg-soft p-3 space-y-2">
                       <p className="text-[10.5px] font-bold text-ink-soft leading-snug">

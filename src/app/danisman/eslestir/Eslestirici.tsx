@@ -167,7 +167,7 @@ export function Eslestirici({ birimler }: { birimler: EslesBirim[] }) {
                     </p>
                   </div>
                   <span className="mono flex-none text-[14px] font-bold text-ink">
-                    {b.liste_fiyati ? paraKisa(b.liste_fiyati, b.para_birimi) : "—"}
+                    {b.liste_fiyati ? paraKisa(b.liste_fiyati, b.para_birimi) : "Fiyat gizli"}
                   </span>
                   <Link
                     href={`/danisman/proje/${b.proje_id}`}

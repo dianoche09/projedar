@@ -184,14 +184,36 @@ export default async function PublicBirimPage({
     .eq("satilabilir", true)
     .neq("id", birim)
     .limit(3);
+
+  // Eklenti birimler (otopark/depo) — bu daireye bağlı; satış argümanı olarak fiyatla göster
+  const { data: eklentiRaw } = await supabase
+    .from("birim")
+    .select("id, tur, daire_no, liste_fiyati, para_birimi")
+    .eq("ana_birim_id", birim);
+
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const benzerIds = ((benzerRaw ?? []) as any[]).map((x) => x.id as string);
+  const eklentiIds = ((eklentiRaw ?? []) as any[]).map((x) => x.id as string);
+
+  // Fiyat redaksiyonu (audit A1): mikrositeyi BUYER görür → fiyat, PAYLAŞAN DANIŞMANIN (emlakci)
+  // yöneten tahsisinin fiyat_gorunur'una göre redakte edilir. Gizliyse null → hero fiyatı,
+  // Ödeme Planı kartı (FiyatTrend + OdemeSlider + eklenti toplamı, hepsi `liste != null` koşullu)
+  // ve benzer/eklenti fiyatları basılmaz. Migration yoksa map boş → güvenli tarafta hepsi gizlenir.
+  const { data: gorunurFiyatlar } = await supabase.rpc("emlakci_gorunur_fiyat_coklu", {
+    p_birim_ids: [birim, ...benzerIds, ...eklentiIds],
+    p_emlakci: emlakci,
+  });
+  const fiyatMap = new Map<string, number | null>(
+    ((gorunurFiyatlar ?? []) as { birim_id: string; fiyat: number | null }[]).map((r) => [r.birim_id, r.fiyat]),
+  );
+  const gorunurFiyat = (id: string): number | null => fiyatMap.get(id) ?? null;
+
   const benzerKodlar = await paylasimKodlariAl(emlakci, benzerIds);
   const benzer = ((benzerRaw ?? []) as any[]).map((x) => ({
     id: x.id as string,
     daire_no: x.daire_no as string | null,
     kat: x.kat as number | null,
-    liste_fiyati: x.liste_fiyati as number | null,
+    liste_fiyati: gorunurFiyat(x.id as string),
     para_birimi: x.para_birimi as string | null,
     oda: (x.tip?.oda as string | null) ?? null,
     plan_url: (x.tip?.plan_url as string | null) ?? null,
@@ -200,28 +222,24 @@ export default async function PublicBirimPage({
       ? `/p/${benzerKodlar.get(x.id as string)}`
       : `/p/${emlakci}/${x.id}/${generateShareToken(emlakci, x.id)}`,
   }));
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
-  // Eklenti birimler (otopark/depo) — bu daireye bağlı; satış argümanı olarak fiyatla göster
-  const { data: eklentiRaw } = await supabase
-    .from("birim")
-    .select("id, tur, daire_no, liste_fiyati, para_birimi")
-    .eq("ana_birim_id", birim);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const eklentiler = ((eklentiRaw ?? []) as any[]).map((x) => ({
     id: x.id as string,
     tur: (x.tur as string | null) ?? "depo",
     daire_no: x.daire_no as string | null,
-    liste_fiyati: x.liste_fiyati as number | null,
+    liste_fiyati: gorunurFiyat(x.id as string),
     para_birimi: (x.para_birimi as string | null) ?? "TRY",
   }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
+
+  // Ana birimin bu danışmana görünür (redakte) fiyatı — tüm fiyat gösterimi bunu kullanır.
+  const listeGorunur = gorunurFiyat(birim);
   // Toplam: yalnız ana daireyle aynı para birimindeki eklentiler eklenir (farklı kur Faz-2)
   const eklentiToplam = eklentiler.reduce(
     (acc, e) => acc + (e.liste_fiyati != null && e.para_birimi === (b.para_birimi ?? "TRY") ? e.liste_fiyati : 0),
     0,
   );
-  const genelToplam = b.liste_fiyati != null ? b.liste_fiyati + eklentiToplam : null;
+  const genelToplam = listeGorunur != null ? listeGorunur + eklentiToplam : null;
 
   // Fiyat geçmişi (events tip='fiyat', append-only trigger) — müşteriye olgusal fiyat trendi.
   const { data: fiyatOlaylar } = await supabase
@@ -250,7 +268,7 @@ export default async function PublicBirimPage({
   const fotolar = belgeler.filter((x) => x.tip === "foto" && x.url).map((x) => x.url as string);
 
   const bDurum = b.durum as BirimDurum;
-  const liste = b.liste_fiyati;
+  const liste = listeGorunur;
   const psim = PARA_SIMGE[b.para_birimi as string] ?? "₺";
   const tazelik = tazelikRenk(b.son_guncelleme);
   const op = b.odeme_plani as {
@@ -352,8 +370,10 @@ export default async function PublicBirimPage({
                   <p className="mt-1 font-mono text-xs text-white/60">eklentilerle {fmt(genelToplam)} {psim}</p>
                 ) : null}
               </div>
-            ) : (
+            ) : !b.satilabilir ? (
               <span className="rounded-lg bg-white/10 px-3 py-1.5 text-sm font-medium text-white/85">Paylaşıma kapalı</span>
+            ) : (
+              <span className="rounded-lg bg-white/10 px-3 py-1.5 text-sm font-medium text-white/85">Fiyat için danışmana ulaşın</span>
             )}
           </div>
         </div>

@@ -79,6 +79,13 @@ export default async function KatalogSayfasi({
         .eq("proje_id", id)
     : { data: [] };
 
+  // Fiyat redaksiyonu (audit A1): yöneten tahsisin fiyat_gorunur'una göre. Gizliyse fiyat null
+  // → katalog PDF'e ham fiyat basılmaz. Proje-detay ile aynı tek-kaynak RPC.
+  const { data: fiyatRows } = await supabase.rpc("emlakci_birim_fiyat", { p_proje_id: id });
+  const fiyatMap = new Map<string, number | null>(
+    ((fiyatRows ?? []) as { birim_id: string; fiyat: number | null }[]).map((r) => [r.birim_id, r.fiyat]),
+  );
+
   // Kısa paylaşım kodları (toplu); yoksa imzalı uzun linke düş.
   const katalogKodlar = await paylasimKodlariAl(emlakciId, ((birimlerRaw ?? []) as { id: string }[]).map((x) => x.id));
   /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -87,7 +94,7 @@ export default async function KatalogSayfasi({
     daire_no: (x.daire_no as string | null) ?? null,
     kat: (x.kat as number | null) ?? null,
     durum: x.durum as BirimDurum,
-    liste_fiyati: (x.liste_fiyati as number | null) ?? null,
+    liste_fiyati: fiyatMap.has(x.id as string) ? fiyatMap.get(x.id as string) ?? null : null,
     para_birimi: (x.para_birimi as string | null) ?? "TRY",
     net_m2: (x.net_m2 as number | null) ?? null,
     brut_m2: (x.brut_m2 as number | null) ?? null,
@@ -194,7 +201,7 @@ export default async function KatalogSayfasi({
                   <div className="mt-3 flex items-end justify-between border-t border-hair pt-3">
                     <div>
                       <span className="mono text-lg font-bold text-ink">
-                        {x.liste_fiyati != null ? `${x.liste_fiyati.toLocaleString("tr-TR")} ${psim}` : "—"}
+                        {x.liste_fiyati != null ? `${x.liste_fiyati.toLocaleString("tr-TR")} ${psim}` : "Fiyat gizli"}
                       </span>
                       {x.odeme ? <p className="mono mt-0.5 text-[11px] text-gray">{x.odeme}</p> : null}
                     </div>
