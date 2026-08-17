@@ -34,7 +34,9 @@
 | QA-#4 | Admin başvuru karar paneli rol düşürme riski (durum=onay_bekliyor gate) | ✅ canlı (`617eba1`) |
 | QA-#6 | huni+seo servis anahtarı yoksa çökme → graceful | ✅ canlı (`55f92e5`) |
 | QA-#5 | Admin'in üretici/danışman panelini görmesi (DEĞİŞMEZ ihlali mi, view-as mı) | ⏳ PROJECT DECISION |
-| QA-P2 | komisyon-yok metni (davet/SEO), /giris→/login, middleware rol-kapısı, ofis paket hedef filtresi, N+1, e-Devlet linki | ⏳ bekliyor |
+| QA-P2a | komisyon-yok/komisyonsuz kilitli-kural temizliği (davet WA+mail, SEO, OG, B2B CTA, admin) | ✅ canlı (`5457289`) |
+| QA-P2b | sertifika /giris→/login · ofis paket hedef filtresi · hesap-silme adminGuard | ✅ canlı (`ce6c00e`) |
+| QA-P2c | middleware rol-kapısı + null-profil · yanlış-role redirect · e-Devlet link · N+1 perf | ⏳ bekliyor (auth-hassas) |
 | QA-LIVE | Canlı browser QA turu (runtime/UX kırıkları) — erişim/test hesabı bekliyor | ⏳ bekliyor |
 | AU-E2/E3 | admin audit event'leri + gerçek KVKK erasure | governance/LEGAL |
 | AU-T1 | Kritik invariant test altyapısı (her P1 testiyle) | P0-adjacent |
