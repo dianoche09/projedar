@@ -15,14 +15,27 @@
 ### ⏳ Bekleyen — Audit P1 aksiyonları (KONSOLIDE-BACKLOG'dan)
 | # | Görev | Not |
 |---|-------|-----|
-| AU-N1 | `/havuz`→`/danisman` bildirim linkleri (cron) 404 fix | 🔵 kod hazır · SQL uygula (`db/2026-08-14_havuz-danisman-link-fix.sql`) |
-| AU-E1 | Admin opsiyon bypass'ı demo-only + UI gate | 🔵 kod hazır · SQL uygula (`db/2026-08-14_opsiyon-admin-demo-only.sql`) |
-| AU-A1 | Gizli fiyat 3 yüzey redaksiyon (tek-kaynak) | 🔵 kod hazır · SQL uygula (`db/2026-08-14_fiyat-redaksiyon-tek-kaynak.sql`) |
+| AU-N1 | `/havuz`→`/danisman` bildirim linkleri (cron) 404 fix | 🔵 kod push (`59250d1`) · SQL uygulanma teyidi bekliyor (Block 1) |
+| AU-E1 | Admin opsiyon bypass'ı demo-only + UI gate | ✅ canlı (kod `59250d1` + SQL uygulandı 2026-08-17) |
+| AU-A1 | Gizli fiyat 3 yüzey redaksiyon (tek-kaynak) | ✅ canlı (kod `59250d1` + SQL uygulandı 2026-08-17, MODE B P1 dahil) |
 | AU-B1 | Tahsis revoke → aktif opsiyon/lead kararı (MODE A) | PROJECT DECISION |
 | AU-A2 | Opsiyon fiyat snapshot (MODE A) | PROJECT DECISION |
 | AU-N2 | Cross-agent lead first-touch kararı (MODE A) | moat, PROJECT DECISION |
 | AU-D1 | Sahte "tutma" vaadi kopyası + geçici-opsiyon köprüsü | LEGAL |
-| AU-B2/B3/C1 | bulk opsiyon desync · satis_beklemede cron koruması · tek satış kapama | lifecycle |
+| AU-B2 | bulk opsiyon desync (`birimTopluGuncelle` opsiyon senkronu) | ✅ canlı (`fedec6a`, 2026-08-17) |
+| AU-B3/C1 | satis_beklemede cron koruması · tek satış kapama | lifecycle (bekliyor) |
+
+## Panel Kalite Denetimi — kod-turu (2026-08-17)
+| # | Görev | Durum |
+|---|-------|-------|
+| QA1 | 4 paralel kod-denetçisi (danisman/uretici/admin/ortak) → P0 yok, bulgular koda karşı teyit edildi | ✅ tamam |
+| QA-#2 | Hayalet opsiyon (= AU-B2) `birimTopluGuncelle` fix | ✅ canlı (`fedec6a`) |
+| QA-#3 | Yeni-proje sihirbazı künye özellik silme fix (ozellik koruması + marker) | ✅ canlı (`fedec6a`) |
+| QA-#4 | Admin başvuru karar paneli rol düşürme riski (durum=onay_bekliyor gate) | ✅ canlı (`617eba1`) |
+| QA-#6 | huni+seo servis anahtarı yoksa çökme → graceful | ✅ canlı (`55f92e5`) |
+| QA-#5 | Admin'in üretici/danışman panelini görmesi (DEĞİŞMEZ ihlali mi, view-as mı) | ⏳ PROJECT DECISION |
+| QA-P2 | komisyon-yok metni (davet/SEO), /giris→/login, middleware rol-kapısı, ofis paket hedef filtresi, N+1, e-Devlet linki | ⏳ bekliyor |
+| QA-LIVE | Canlı browser QA turu (runtime/UX kırıkları) — erişim/test hesabı bekliyor | ⏳ bekliyor |
 | AU-E2/E3 | admin audit event'leri + gerçek KVKK erasure | governance/LEGAL |
 | AU-T1 | Kritik invariant test altyapısı (her P1 testiyle) | P0-adjacent |
 
