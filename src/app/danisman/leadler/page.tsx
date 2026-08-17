@@ -18,7 +18,7 @@ const LEAD_PILL: Record<string, { bg: string; renk: string; et: string }> = {
 const NIYET_ET: Record<string, string> = {
   bilgi: "Bilgi istedi",
   randevu: "Randevu istedi",
-  on_rezervasyon: "Ön rezervasyon",
+  on_rezervasyon: "Almak istiyor",
 };
 
 export default async function Leadler() {

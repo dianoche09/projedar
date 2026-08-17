@@ -58,4 +58,12 @@ Karar (RISK-LEAD-001/OQ-LEAD-001 çözümü, Option A):
 - Anti-abuse: bayrak non-authoritative → squatting getirisi yok (müteahhit dismiss eder); unique index EKLENMEDİ. Şema B (koruma penceresi) / C (çakışma kuyruğu) için ileri-uyumlu.
 - Kabul edilen minor: TOCTOU race (eşzamanlı iki gönderim bayrağı kaçırabilir; advisory olduğu için soft). Kod `db/2026-08-17c_lead-cakisma.sql` · `api/lead/route.ts` · `danisman/leadler/page.tsx`.
 
+## DDR-011 — Rezervasyon vaadi: dürüst kopya + danışman-opsiyon köprüsü (D1)
+Date: 2026-08-17 · Status: Accepted (kullanıcı) · Class: Legal/consumer + Product decision · LEGAL: final metin hukuk cilası isteyebilir
+Karar (audit F-D1, Option B):
+- `/p` LeadForm "sizin için tutmamızı talep edin / Ön Rezervasyon Talep Et" **kaldırıldı** (yanıltıcı vaat — birim `musait` kalıyordu, hiçbir kilit yoktu → TR tüketici mevzuatı riski). Dürüst kopya: "almak istiyorum / danışmana ilet". `on_rezervasyon` niyet DB değeri KORUNDU (yalnız müşteri+danışman görünür etiket değişti → "Almak istiyor").
+- **Köprü (Option B):** yüksek-niyet lead detayında tek-tık "Geçici opsiyon al · müşteri ön-dolu" → gerçek `opsiyonAlGecici` (danışman-başlatır, tahsis+kota+müteahhit doğrulaması gate'leri aynen; `dogrulandi=false`). **Müşteri asla kendi kilitlemez** (Option C reddedildi — DEĞİŞMEZ #3 + kontrollü dağıtım + anti-abuse). Buton yalnız birim `musait`+`satilabilir` iken; değilse "artık müsait değil" notu.
+- Conflation guard: lead durumunu 'opsiyon' etiketlemek kilit yaratmaz; yalnız RPC yaratır. Kod: `LeadForm.tsx` · `leadler/[id]/page.tsx` + `TutTalebiOpsiyon.tsx`. Migration YOK (pür app).
+- **Yöntem davranışı (MODE B P2 → bilinçli karar):** köprü daima `opsiyon_al_gecici` çağırır (müşteri ekli + müteahhit doğrulama checkpoint'i = lead→hold için tutarlı semantik). **onay** yöntemli projede buton YERİNE "daire detayından talep oluştur" notu (dead-end önlendi). **dogrudan** yöntemli projede köprü geçici-checkpoint verir (2sa doğrulama; days-lock yerine bilinçli olarak müteahhide görünürlük/onay noktası). Açık backlog: LEGAL "öncelikli/hızla" copy cilası; ileride köprünün proje yöntemini birebir aynalaması istenirse per-method routing.
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

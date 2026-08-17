@@ -5,6 +5,7 @@ import { zamanOnce } from "@/lib/types";
 import { LeadDurum } from "../LeadDurum";
 import { LeadNotForm } from "./LeadNotForm";
 import { LeadDuzenlePanel } from "./LeadDuzenlePanel";
+import { TutTalebiOpsiyon } from "./TutTalebiOpsiyon";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,7 @@ const DURUM_ET: Record<string, string> = {
   yeni: "Yeni", arandi: "Arandı", gorusme: "Görüşme", opsiyon: "Opsiyon", kazanildi: "Kazanıldı", kaybedildi: "Kayıp",
 };
 const NIYET_ET: Record<string, string> = {
-  bilgi: "Bilgi istedi", randevu: "Randevu istedi", on_rezervasyon: "Ön rezervasyon",
+  bilgi: "Bilgi istedi", randevu: "Randevu istedi", on_rezervasyon: "Almak istiyor",
 };
 const NOT_TIP_ET: Record<string, string> = {
   not: "Not", arama: "Arama", whatsapp: "WhatsApp", gorusme: "Görüşme", sistem: "Sistem",
@@ -40,16 +41,23 @@ export default async function LeadDetay({ params }: { params: Promise<{ id: stri
   const { data: lead } = await supabase
     .from("lead")
     .select(
-      "id, ad, telefon, telefon_norm, durum, niyet, kaynak, kvkk_riza, created_at, son_temas_at, updated_at, email, butce, ihtiyac_notu, etiket, sicaklik, kayip_nedeni, sonraki_aksiyon_at, sonraki_aksiyon_notu, birim_id, proje_id, birim:birim_id(daire_no), proje:proje_id(ad)"
+      "id, ad, telefon, telefon_norm, durum, niyet, kaynak, kvkk_riza, created_at, son_temas_at, updated_at, email, butce, ihtiyac_notu, etiket, sicaklik, kayip_nedeni, sonraki_aksiyon_at, sonraki_aksiyon_notu, birim_id, proje_id, birim:birim_id(daire_no, durum, satilabilir), proje:proje_id(ad, opsiyon_ayar)"
     )
     .eq("id", id)
     .single();
 
   if (!lead) notFound();
 
-  const proje = lead.proje as { ad?: string } | null;
-  const birim = lead.birim as { daire_no?: string } | null;
+  const proje = lead.proje as { ad?: string; opsiyon_ayar?: { yontem?: string } | null } | null;
+  const birim = lead.birim as { daire_no?: string; durum?: string; satilabilir?: boolean } | null;
   const tel = (lead.telefon ?? "").replace(/\D/g, "");
+  // D1/Option B: yüksek-niyet ("almak istiyorum") + birim hâlâ müsait + lead açık → tek-tık gerçek opsiyon köprüsü.
+  const acikLead = !["kazanildi", "kaybedildi"].includes(lead.durum);
+  const tutTalebi = lead.niyet === "on_rezervasyon" && acikLead && lead.birim_id && lead.proje_id;
+  const birimMusait = birim?.durum === "musait" && birim?.satilabilir === true;
+  // opsiyon_al_gecici ile aynı çözümleme (coalesce(...,'gecici')): 'onay' ise geçici-opsiyon RPC'si reddeder
+  // → buton yerine talep-akışı notu göster (dead-end buton olmasın).
+  const opsYontem = proje?.opsiyon_ayar?.yontem ?? "gecici";
 
   // Notlar (RLS lead_not_select)
   const { data: notlar } = await supabase
@@ -143,6 +151,37 @@ export default async function LeadDetay({ params }: { params: Promise<{ id: stri
             <strong className="text-ink">İlk bayrağı sen diktin.</strong> Bu müşteri senin paylaşımından doğdu ve yalnız sana görünür. Kimse göremez, kimse alamaz.
           </p>
         </div>
+
+        {/* D1: "Almak istiyorum" talebi → gerçek geçici opsiyon köprüsü (danışman başlatır, müteahhit doğrular) */}
+        {tutTalebi ? (
+          <div className="mt-3 rounded-xl border border-teal/25 p-3.5" style={{ background: "rgba(30,155,138,.06)" }}>
+            <p className="text-[12.5px] font-semibold text-ink">
+              Müşteri bu daireyi <strong>almak istediğini</strong> belirtti.
+            </p>
+            {!birimMusait ? (
+              <p className="mt-1 text-[12px] text-ink-soft">
+                Bu daire artık müsait değil ({birim?.durum ?? "—"}) — opsiyon alınamaz. Müşteriye alternatif öner.
+              </p>
+            ) : opsYontem === "onay" ? (
+              <p className="mt-1 text-[12px] text-ink-soft">
+                Bu projede opsiyon <strong>önce-onay</strong> yöntemiyle alınır. Daire detayından opsiyon talebi oluştur;
+                müteahhit onaylayınca kilit doğar.
+              </p>
+            ) : (
+              <>
+                <p className="mt-1 mb-2.5 text-[12px] text-ink-soft">
+                  Uygunsa müşteri adına geçici opsiyon alarak tut — müşteri bilgisi ön-dolu. Kilit müteahhit doğrulamasına gider.
+                </p>
+                <TutTalebiOpsiyon
+                  birimId={lead.birim_id as string}
+                  projeId={lead.proje_id as string}
+                  musteriAd={lead.ad ?? ""}
+                  musteriTel={lead.telefon ?? ""}
+                />
+              </>
+            )}
+          </div>
+        ) : null}
 
         {cift > 0 ? (
           <div className="mt-2 flex items-start gap-2 rounded-xl p-3" style={{ background: "rgba(227,161,44,.12)" }}>

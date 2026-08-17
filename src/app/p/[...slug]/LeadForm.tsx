@@ -77,7 +77,7 @@ export default function LeadForm({
         {([
           ["bilgi", "Bilgi al"],
           ["randevu", "Randevu / görüşme"],
-          ["on_rezervasyon", "Ön rezervasyon"],
+          ["on_rezervasyon", "Almak istiyorum"],
         ] as const).map(([n, et]) => (
           <button
             key={n}
@@ -92,11 +92,11 @@ export default function LeadForm({
         ))}
       </div>
       <h4 className="font-display text-base font-semibold text-ink">
-        {niyet === "randevu" ? "Randevu / Görüşme Talebi" : niyet === "on_rezervasyon" ? "Ön Rezervasyon Talebi" : "Bilgi Almak İstiyorum"}
+        {niyet === "randevu" ? "Randevu / Görüşme Talebi" : niyet === "on_rezervasyon" ? "Bu Daireyi Almak İstiyorum" : "Bilgi Almak İstiyorum"}
       </h4>
       <p className="text-xs text-gray">
         {niyet === "on_rezervasyon"
-          ? "Bu daireyi sizin için tutmamızı talep edin — danışmanınız hızla dönecek."
+          ? "Bu daireye öncelikli ilgilendiğinizi danışmanınıza iletin; sizinle hızla iletişime geçip sonraki adımları anlatır."
           : niyet === "randevu"
             ? "Danışmanınızla görüşme/randevu için bilgilerinizi bırakın."
             : "Bu daire veya proje hakkında detaylı bilgi ve ödeme planı için formu doldurun."}
@@ -173,7 +173,7 @@ export default function LeadForm({
         {yukleniyor
           ? "Gönderiliyor…"
           : niyet === "on_rezervasyon"
-            ? "Ön Rezervasyon Talep Et"
+            ? "Danışmana İlet"
             : niyet === "randevu"
               ? "Randevu Talep Et"
               : "Detaylı Bilgi Gönder"}
