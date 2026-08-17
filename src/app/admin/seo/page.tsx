@@ -14,7 +14,20 @@ export const dynamic = "force-dynamic";
  * akışta (scripts/katalog-import.mjs).
  */
 export default async function AdminSeoSayfa() {
-  const admin = createAdminClient();
+  // Servis anahtarı yoksa panel çökmez (DEĞİŞMEZ #6 graceful; admin/page.tsx ile aynı desen).
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return (
+      <>
+        <SayfaBaslik baslik="SEO Sayfaları" altEtiket="Servis anahtarı (SUPABASE_SERVICE_ROLE_KEY) tanımlı değil." />
+        <div className="kart p-8 text-center text-[13.5px] text-ink-soft">
+          Proje listesi için servis anahtarı gerekli.
+        </div>
+      </>
+    );
+  }
   const [{ data: projeRaw }, { data: tipRaw }] = await Promise.all([
     admin
       .from("proje")

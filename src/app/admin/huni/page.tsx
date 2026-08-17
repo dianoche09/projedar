@@ -41,7 +41,17 @@ function Kpi({ etiket, deger, alt }: { etiket: string; deger: string | number; a
 }
 
 export default async function AdminHuni() {
-  const admin = createAdminClient();
+  // Servis anahtarı yoksa panel çökmez (DEĞİŞMEZ #6 graceful; admin/page.tsx ile aynı desen).
+  let admin: ReturnType<typeof createAdminClient>;
+  try {
+    admin = createAdminClient();
+  } catch {
+    return (
+      <div className="kart p-8 text-center text-[13.5px] text-ink-soft">
+        Huni/analitik için servis anahtarı (SUPABASE_SERVICE_ROLE_KEY) tanımlı değil.
+      </div>
+    );
+  }
 
   const { data: olayRaw } = await admin.from("events").select("tip, created_at");
   const olaylar = (olayRaw ?? []) as OlayMini[];
