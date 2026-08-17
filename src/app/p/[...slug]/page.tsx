@@ -93,14 +93,15 @@ export async function generateMetadata({
       .filter(Boolean)
       .join(" · ");
 
-  // Görsel: og:image / twitter:image burada VERİLMEZ — kardeş opengraph-image.tsx
-  // (dosya-tabanlı dinamik kart) devreye girer ve daireye özel proje+daire+fiyat+durum
-  // kartını üretir. Böylece her paylaşımda alıcı, linke tıklamadan ne olduğunu görür.
+  // Görsel: daireye özel dinamik OG kartı /api/p-og route'undan gelir. (Catch-all `/p/[...slug]`
+  // altında `opengraph-image` konvansiyonu Next.js'te geçersiz → ayrı non-catch-all route.)
+  // Böylece her paylaşımda alıcı, linke tıklamadan ne olduğunu görür.
+  const ogUrl = `/api/p-og?s=${encodeURIComponent(slug.join("/"))}`;
   return {
     title: baslik,
     description: aciklama,
-    openGraph: { title: baslik, description: aciklama },
-    twitter: { card: "summary_large_image", title: baslik, description: aciklama },
+    openGraph: { title: baslik, description: aciklama, images: [{ url: ogUrl, width: 1200, height: 630, alt: baslik }] },
+    twitter: { card: "summary_large_image", title: baslik, description: aciklama, images: [ogUrl] },
     // Birebir paylaşım mikrositesi kamuya açık ilan değil; arama motorunda listelenmesin.
     robots: { index: false, follow: false },
   };

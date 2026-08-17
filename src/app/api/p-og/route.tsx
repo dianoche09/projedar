@@ -4,18 +4,21 @@ import { slugCoz } from "@/lib/sharing";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { projeKapak } from "@/lib/gorsel";
 
-// Node crypto (imza) + service-role Supabase gerektiği için edge DEĞİL.
+/**
+ * /p/ mikrosite dinamik OG kartı — route handler (catch-all `/p/[...slug]` ALTINDA
+ * `opengraph-image` konvansiyonu Next.js'te geçersiz: "catch-all must be last"). Bu yüzden
+ * OG üretimi ayrı, non-catch-all route'ta: `/api/p-og?s=<emlakci/birim/token>`.
+ * page.tsx generateMetadata bunu openGraph.images ile referanslar.
+ * Node crypto (imza) + service-role Supabase gerektiği için edge DEĞİL.
+ */
 export const runtime = "nodejs";
-export const alt = "Projedar — canlı stoktan daire";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
 
 const ORIGIN = "https://projedar.com";
+const size = { width: 1200, height: 630 };
 
-// ÖNEMLİ: OG görseli WhatsApp/sosyal tarafından URL bazında CACHE'lenir. Bu yüzden
-// HIZLI DEĞİŞEN veri (fiyat, tazelik "X gün önce", durum) BURAYA BASILMAZ — cache'de
-// donar ve eskir (DEĞİŞMEZ #2 / tek-doğru-kaynak). Kart yalnız SABİT bilgi taşır:
-// kapak görseli + proje adı + konum + daire tipi + marka. Fiyat/durum linkin arkasında canlı.
+// ÖNEMLİ: OG görseli WhatsApp/sosyal tarafından URL bazında CACHE'lenir. HIZLI DEĞİŞEN veri
+// (fiyat, tazelik, durum) BURAYA BASILMAZ (DEĞİŞMEZ #2). Kart yalnız SABİT bilgi taşır:
+// kapak + proje adı + konum + daire tipi + marka. Fiyat/durum linkin arkasında canlı.
 const ALFABE =
   "ABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZabcçdefgğhıijklmnoöpqrsştuüvwxyz0123456789 ·.,:/()m²+-→✓ Daire kat oda Doğrulanmış Üretici Projedar projedar.com Canlı konut stoğu dağıtım ağı fiyat ve detay için aç";
 
@@ -60,12 +63,9 @@ function genericNode() {
   );
 }
 
-export default async function Image({
-  params,
-}: {
-  params: Promise<{ slug: string[] }>;
-}) {
-  const { slug } = await params;
+export async function GET(request: Request): Promise<Response> {
+  const s = new URL(request.url).searchParams.get("s") ?? "";
+  const slug = s.split("/").filter(Boolean);
 
   // slug: [emlakçı, birim, token] (imza) VEYA [kod] (DB). Geçersiz → sade marka kartı.
   let coz: { emlakciId: string; birimId: string } | null = null;
@@ -113,8 +113,6 @@ export default async function Image({
   const danismanFoto = mutlak((prof?.foto_url as string) ?? null);
   const kurumsalLogo = mutlak((prof?.logo_url as string) ?? null);
 
-  // Kapak görseli (arka plan) — proje_belge kapak; yoksa deterministik üretilmiş kapak.
-  // projeKapak relatif dönebilir (/gorseller/...) → OG için mutlak URL'e çevir.
   const { data: kapakRow } = await supabase
     .from("proje_belge")
     .select("url")
@@ -134,13 +132,10 @@ export default async function Image({
 
   const node = (
     <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: ZEMIN, fontFamily: "Inter" }}>
-      {/* Kapak görseli — arka plan (gerçek proje foto veya deterministik üretilmiş kapak) */}
       <img src={kapak} alt="" width={1200} height={630} style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }} />
-      {/* Koyu gradient overlay — alttan koyulaşır, yazı okunur */}
       <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, background: "linear-gradient(180deg, rgba(8,20,34,0.28) 0%, rgba(8,20,34,0.52) 48%, rgba(8,20,34,0.94) 100%)", display: "flex" }} />
 
       <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between", width: "100%", height: "100%", padding: "48px 56px" }}>
-        {/* ÜST: paylaşan danışman (sol) + varsa kurumsal logo (sağ) */}
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             {danismanFoto ? (
@@ -166,7 +161,6 @@ export default async function Image({
           ) : null}
         </div>
 
-        {/* ALT: proje (kahraman, sol) + Projedar imzası (küçük, sağ alt köşe) */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 40 }}>
           <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
@@ -185,7 +179,6 @@ export default async function Image({
             </div>
           </div>
 
-          {/* Projedar imzası — küçük, sağ alt: radar ikon + wordmark + domain */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <svg width={30} height={30} viewBox="0 0 40 40" style={{ display: "flex" }}>
