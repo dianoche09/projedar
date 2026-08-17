@@ -41,13 +41,22 @@ export async function POST(request: Request) {
 
     const supabase = createAdminClient();
 
-    // Hafif throttle: aynı telefon + birim için son 10 dakikada lead varsa tekrar yazma
+    // Etkin proje: form projeId'si yoksa birimden çöz (çakışma scope'u PROJE bazlı — N2).
+    let effProje: string | null = projeId ?? null;
+    if (!effProje) {
+      const { data: bp } = await supabase.from("birim").select("proje_id").eq("id", birimId).single();
+      effProje = (bp?.proje_id as string | null) ?? null;
+    }
+
+    // Dedupe: yalnız AYNI danışmanın aynı birime son 10dk'daki tekrar gönderimi (çift-tık) yutulur.
+    // P2 fix (N2): farklı danışman ARTIK yutulmuyor — meşru ikinci danışman lead'i oluşur + çakışma işaretlenir.
     const onDakikaOnce = new Date(Date.now() - 10 * 60 * 1000).toISOString();
     const { data: mevcutLead } = await supabase
       .from("lead")
       .select("id")
       .eq("telefon_norm", telNorm)
       .eq("birim_id", birimId)
+      .eq("ilk_paylasan_id", emlakciId)
       .gte("created_at", onDakikaOnce)
       .limit(1);
 
@@ -58,11 +67,28 @@ export async function POST(request: Request) {
       );
     }
 
+    // N2 çakışma tespiti: aynı telefon + aynı PROJE + FARKLI danışman → OLASI çakışma (blok yok,
+    // reassign yok — "arbitraj yapmaz"). İki lead iki satır kalır; yalnız bayrak + ilk-temas kaydı.
+    let cakisma: { lead_id: string; at: string } | null = null;
+    if (effProje) {
+      const { data: onceki } = await supabase
+        .from("lead")
+        .select("id, created_at")
+        .eq("telefon_norm", telNorm)
+        .eq("proje_id", effProje)
+        .neq("ilk_paylasan_id", emlakciId)
+        .order("created_at", { ascending: true })
+        .limit(1);
+      if (onceki && onceki.length > 0) {
+        cakisma = { lead_id: onceki[0].id as string, at: onceki[0].created_at as string };
+      }
+    }
+
     // 1. Lead tablosuna kaydet (hangi linkten geldiyse doğrudan o emlakçıya atanır)
     const { data: leadData, error: leadError } = await supabase
       .from("lead")
       .insert({
-        proje_id: projeId || null,
+        proje_id: effProje,
         birim_id: birimId,
         kaynak: "paylasim",
         ad,
@@ -73,6 +99,9 @@ export async function POST(request: Request) {
         atanan_id: emlakciId,
         ilk_paylasan_id: emlakciId,
         kvkk_riza: true,
+        olasi_cakisma: cakisma != null,       // N2: ağda daha önce (farklı danışman) kaydedilmiş mi
+        ilk_temas_lead_id: cakisma?.lead_id ?? null,
+        ilk_temas_at: cakisma?.at ?? null,
       })
       .select("id")
       .single();
@@ -88,13 +117,14 @@ export async function POST(request: Request) {
       .insert({
         tip: "lead",
         profile_id: emlakciId,
-        proje_id: projeId || null,
+        proje_id: effProje,
         birim_id: birimId,
         payload: {
           lead_id: leadData.id,
           ad,
           telefon: telNorm,
           niyet,
+          ...(cakisma ? { cakisma: true, ilk_temas_lead_id: cakisma.lead_id } : {}),
         },
       });
 
@@ -116,6 +146,27 @@ export async function POST(request: Request) {
       govde: `${ad} · ${niyetAd[niyet] ?? "İletişim"}`,
       link: "/danisman/leadler",
     });
+
+    // N2: çakışmada MÜTEAHHİDE push (system-of-record = müşteri ilişkisi onda). PII YOK —
+    // yalnız "incele" yönlendirmesi; ilk-kaydeden danışman detayı /uretici/lead-sorgu'da.
+    if (cakisma && effProje) {
+      const { data: sahipRow } = await supabase
+        .from("proje")
+        .select("ad, uretici:uretici_id(sahip_id)")
+        .eq("id", effProje)
+        .single();
+      const sahipId = (sahipRow as { uretici?: { sahip_id?: string | null } | null } | null)?.uretici?.sahip_id;
+      const projeAd = (sahipRow as { ad?: string | null } | null)?.ad;
+      if (sahipId) {
+        await bildirimYaz({
+          profile_id: sahipId,
+          tip: "lead",
+          baslik: "Olası müşteri çakışması",
+          govde: `${projeAd ?? "Bir proje"} · bir müşteri birden fazla danışmana kaydedildi — lead sorgudan inceleyebilirsin`,
+          link: "/uretici/lead-sorgu",
+        });
+      }
+    }
 
     return NextResponse.json({ basarili: true, id: leadData.id });
   } catch (err) {

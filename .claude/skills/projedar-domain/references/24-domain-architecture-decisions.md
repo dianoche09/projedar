@@ -48,4 +48,14 @@ Karar (RISK-PRICE-001 çözümü, OQ-PRICE-001):
 - Edit-guard: satılmış birimde liste fiyatı DB trigger'ıyla korunur (admin hariç); opsiyonlu birimde fiyat değişince opsiyon sahibine DB trigger bildirim.
 - İleri-uyumlu: aynı kolon üstüne Option B (bağlayıcı kilit + config + min(snapshot,canlı) + hukuk onayı) sonradan eklenebilir. Kod `db/2026-08-17b_opsiyon-fiyat-snapshot.sql` · rozet `opsiyonlarim/page.tsx`.
 
+## DDR-010 — Cross-agent lead çakışma: kaydet+işaretle (N2)
+Date: 2026-08-17 · Status: Accepted (kullanıcı) · Class: Product decision + Platform invariant (audit) + Configurable policy (ileride)
+Karar (RISK-LEAD-001/OQ-LEAD-001 çözümü, Option A):
+- Aynı telefon + aynı PROJE + FARKLI danışman → yeni lead normal oluşur (`atanan=ilk_paylasan=gönderen`, DEĞİŞMEZ), yalnız `olasi_cakisma`+`ilk_temas_lead_id`+`ilk_temas_at` işaretlenir. **Blok yok, auto-reassign yok, merge yok → "arbitraj yapmaz" korunur.** Projedar tespit+kayıt+yüzeye çıkarır, kimin haklı olduğuna KARAR VERMEZ (müteahhit off-system).
+- Scope = müşteri × proje (TR sektör normu). Kimlik T1: telefon exact = **OLASI** eşleşme (aile tek telefon → "aynı müşteri" değil).
+- Görünürlük: müteahhide push (PII YOK, "lead-sorgu'dan incele") + ikinci danışmana bayrak (karşı PII maskeli — `ilk_temas_lead_id` RLS'le çözülemez, UI'a bile çekilmez).
+- P2 fix: 10dk throttle artık danışman-farkında (`ilk_paylasan_id` scope) → meşru ikinci danışman lead'i yutulmuyor.
+- Anti-abuse: bayrak non-authoritative → squatting getirisi yok (müteahhit dismiss eder); unique index EKLENMEDİ. Şema B (koruma penceresi) / C (çakışma kuyruğu) için ileri-uyumlu.
+- Kabul edilen minor: TOCTOU race (eşzamanlı iki gönderim bayrağı kaçırabilir; advisory olduğu için soft). Kod `db/2026-08-17c_lead-cakisma.sql` · `api/lead/route.ts` · `danisman/leadler/page.tsx`.
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

@@ -26,7 +26,7 @@ export default async function Leadler() {
   // RLS lead_select → yalnız atanan/ilk_paylaşan emlakçının kendi leadleri
   const { data: leads } = await supabase
     .from("lead")
-    .select("id, ad, telefon, durum, niyet, son_temas_at, created_at, birim:birim_id(daire_no), proje:proje_id(ad)")
+    .select("id, ad, telefon, durum, niyet, olasi_cakisma, ilk_temas_at, son_temas_at, created_at, birim:birim_id(daire_no), proje:proje_id(ad)")
     .order("created_at", { ascending: false });
 
   const liste = leads ?? [];
@@ -113,6 +113,16 @@ export default async function Leadler() {
                         }}
                       >
                         {NIYET_ET[l.niyet] ?? l.niyet}
+                      </span>
+                    ) : null}
+                    {l.olasi_cakisma ? (
+                      <span
+                        className="lead-pill"
+                        style={{ background: "var(--color-amber-soft)", color: "#9a6a12" }}
+                        title="Bu müşteri ağda daha önce (başka danışman) kaydedilmiş olabilir. Sahiplik garantisi değildir; müteahhit değerlendirir."
+                      >
+                        olası çakışma
+                        {l.ilk_temas_at ? ` · ilk temas ${zamanOnce(l.ilk_temas_at)}` : ""}
                       </span>
                     ) : null}
                   </div>
