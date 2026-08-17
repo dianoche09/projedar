@@ -39,4 +39,13 @@ Karar (OQ-TAHSIS-001 çözümü):
 - **Zorunlu companion (P1):** (1) aktif opsiyon sahibi danışman, tahsisi olmasa da o **birimi görebilir** (görünürlük çatlağı fix); (2) de-alloc danışman opsiyonu **uzatamaz** (`opsiyon_uzat`'a tahsis/guard). DEĞİŞMEZ #3 (tek aktif opsiyon) korunur → grandfather birim ayağın altından satılamaz.
 Neden: askıya alma idari duraklama; canlı müşteriyi öldürmek orantısız. Kaldırma ilişkiyi bitirir ama canlı opsiyon çoğu zaman süren-satış → feda kararı müteahhidin. Detay brif: MODE A (2026-08-17). Supersedes INV-CANDIDATE-003 gap.
 
+## DDR-009 — Opsiyon fiyat snapshot: NON-BINDING + sapma rozeti (A2)
+Date: 2026-08-17 · Status: Accepted (kullanıcı) · Class: Product decision + Platform invariant + Commercial rule
+Karar (RISK-PRICE-001 çözümü, OQ-PRICE-001):
+- Opsiyon anındaki `liste_fiyati`+`para_birimi` opsiyona yazılır (3 RPC'de atomik). **İşlem-anı OLGU, bağlayıcı değil** — Projedar taahhüt icra etmez (bağlayıcı kilit TR'de satış-vaadi sözleşmesidir, opsiyon değil → hukuki risk alınmadı).
+- DEĞİŞMEZ #2 korunur: `birim` tek CANLI kaynak; snapshot ayrı olgu, hiçbir yüzey snapshot'ı "fiyat" olarak servis etmez.
+- Sapma rozeti YALNIZ danışman (`opsiyonlarim`): "opsiyon anı: X · güncel: Y (↑kırmızı/↓yeşil)". Müşteri `/p`'de yalnız canlı fiyat.
+- Edit-guard: satılmış birimde liste fiyatı DB trigger'ıyla korunur (admin hariç); opsiyonlu birimde fiyat değişince opsiyon sahibine DB trigger bildirim.
+- İleri-uyumlu: aynı kolon üstüne Option B (bağlayıcı kilit + config + min(snapshot,canlı) + hukuk onayı) sonradan eklenebilir. Kod `db/2026-08-17b_opsiyon-fiyat-snapshot.sql` · rozet `opsiyonlarim/page.tsx`.
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

@@ -32,6 +32,12 @@ function kalanSure(iso: string | null): { metin: string; bitti: boolean; acil: b
   return { metin: `${Math.floor(saat / 24)} gün ${saat % 24} saat`, bitti: false, acil: false };
 }
 
+/** A2/RISK-PRICE-001: opsiyon anındaki fiyat vs güncel canlı fiyat sapması (yalnız danışmana). */
+function fiyatSapmasi(snapshot: number | null, guncel: number | null): { yukari: boolean; snapshot: number } | null {
+  if (snapshot == null || guncel == null || snapshot === guncel) return null;
+  return { yukari: guncel > snapshot, snapshot };
+}
+
 type OpsiyonSatir = {
   id: string;
   durum: BirimDurum;
@@ -42,6 +48,8 @@ type OpsiyonSatir = {
   musteri_ad: string | null;
   musteri_tel: string | null;
   uzatildi: boolean | null;
+  liste_fiyati_snapshot: number | null;
+  para_birimi_snapshot: string | null;
   birim: {
     id: string;
     daire_no: string | null;
@@ -64,7 +72,7 @@ export default async function Opsiyonlarim() {
   const { data } = await supabase
     .from("opsiyon")
     .select(
-      "id, durum, kilit_bitis, created_at, dogrulandi, dogrulama_bitis, musteri_ad, musteri_tel, uzatildi, birim:birim_id(id, daire_no, kat, liste_fiyati, para_birimi, durum, proje:proje_id(id, ad, il, ilce, opsiyon_ayar), tip:tip_id(ad, oda))",
+      "id, durum, kilit_bitis, created_at, dogrulandi, dogrulama_bitis, musteri_ad, musteri_tel, uzatildi, liste_fiyati_snapshot, para_birimi_snapshot, birim:birim_id(id, daire_no, kat, liste_fiyati, para_birimi, durum, proje:proje_id(id, ad, il, ilce, opsiyon_ayar), tip:tip_id(ad, oda))",
     )
     .eq("satici_id", user?.id ?? "")
     .in("durum", ["opsiyonlu", "satis_beklemede"])
@@ -222,6 +230,19 @@ export default async function Opsiyonlarim() {
                         <td className="text-ink-soft">{b?.tip?.oda ?? b?.tip?.ad ?? "—"}</td>
                         <td className="mono font-semibold text-navy">
                           {b?.liste_fiyati != null ? `${fmt(Number(b.liste_fiyati))} ${ps}` : "—"}
+                          {(() => {
+                            const s = fiyatSapmasi(o.liste_fiyati_snapshot, b?.liste_fiyati ?? null);
+                            if (!s) return null;
+                            return (
+                              <span
+                                className="mt-0.5 block text-[10px] font-normal"
+                                style={{ color: s.yukari ? "var(--color-red)" : "var(--color-green)" }}
+                                title="Opsiyon aldığındaki fiyat — müşteriye bu değeri quote etmiş olabilirsin"
+                              >
+                                {s.yukari ? "↑" : "↓"} opsiyon anı: {fmt(s.snapshot)} {PARA_SIMGE[o.para_birimi_snapshot ?? "TRY"] ?? "₺"}
+                              </span>
+                            );
+                          })()}
                         </td>
                         <td>
                           <span className="lead-pill" style={{ background: "var(--color-navy-soft)", color: renk }}>
@@ -297,6 +318,18 @@ export default async function Opsiyonlarim() {
                       <span className="mono font-semibold text-navy">
                         {b?.liste_fiyati != null ? `${fmt(Number(b.liste_fiyati))} ${ps}` : "—"}
                       </span>
+                      {(() => {
+                        const s = fiyatSapmasi(o.liste_fiyati_snapshot, b?.liste_fiyati ?? null);
+                        if (!s) return null;
+                        return (
+                          <span
+                            className="mono mt-0.5 block text-[9.5px] font-normal"
+                            style={{ color: s.yukari ? "var(--color-red)" : "var(--color-green)" }}
+                          >
+                            {s.yukari ? "↑" : "↓"} ops. anı {fmt(s.snapshot)}
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
                   {o.musteri_ad ? (
