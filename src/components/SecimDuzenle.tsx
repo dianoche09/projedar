@@ -20,7 +20,9 @@ export function useSecim(): SecimCtx | null {
 
 const inpCls =
   "rounded-lg border border-hair bg-paper px-2.5 py-2 text-sm text-ink outline-none transition-colors focus:border-teal";
-const DURUMLAR: BirimDurum[] = ["musait", "planli", "opsiyonlu", "satis_beklemede", "satildi", "stop"];
+// C1/INV-SALE-001: 'satildi' toplu durumdan çıkarıldı — satış tek tek "Satışı kapat" ile
+// (hakediş + satıcı atfı). Toplu çip satışı hakediş/atıfsız kalırdı.
+const DURUMLAR: BirimDurum[] = ["musait", "planli", "opsiyonlu", "satis_beklemede", "stop"];
 
 /**
  * Üretici ızgarasının çevresine sarılır: "Toplu düzenle" moduna geçince dairelere

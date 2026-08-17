@@ -153,10 +153,13 @@ export async function opsiyonSuresiCalistir(): Promise<CronSonuc> {
 
   // Süresi dolan opsiyonlar: (a) kesin opsiyon kilit_bitis geçti, VEYA (b) geçici kilit doğrulama
   // penceresi doldu (dogrulandi=false + dogrulama_bitis geçti). İkisi de serbest bırakılır.
+  // B3/XP-03: YALNIZ 'opsiyonlu' serbest bırakılır. 'satis_beklemede' (danışman satışı bildirdi,
+  // müteahhit teyidi bekliyor) opsiyon-kilit zamanlayıcısıyla AUTO-SERBEST BIRAKILMAZ — aksi halde
+  // sözleşme imzalanırken birim tekrar müsait olup çift-satılabilir.
   const { data: dolanlar, error: secErr } = await supabase
     .from("opsiyon")
     .select("id, birim_id, satici_id, birim:birim_id(proje_id)")
-    .in("durum", ["opsiyonlu", "satis_beklemede"])
+    .eq("durum", "opsiyonlu")
     .or(`kilit_bitis.lt.${simdi},and(dogrulandi.is.false,dogrulama_bitis.lt.${simdi})`);
 
   if (secErr) {

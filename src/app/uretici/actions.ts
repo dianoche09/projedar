@@ -398,6 +398,13 @@ export async function birimDurumGuncelle(formData: FormData) {
   const durum = durumSemasi.safeParse(formData.get("durum"));
   if (!durum.success) hataya(`/uretici/proje/${proje_id}`, "Geçersiz durum");
 
+  // C1/INV-SALE-001: tek satış-kapama yolu. Ham 'satildi' burada YASAK — "Satışı kapat" akışı
+  // (birimSatisKapat) zorunlu: hakediş defteri + satıcı atfı orada yazılır. Aksi halde grid çipiyle
+  // yapılan satış hakediş/atıfsız kalıp "kim sattı" ile tutarsız olur.
+  if (durum.success && durum.data === "satildi") {
+    hataya(`/uretici/proje/${proje_id}`, "Satışı 'Satışı kapat' ile tamamla — hakediş ve satıcı atfı için.");
+  }
+
   // Duruma göre not (opsiyon: kim/ne zaman; satış: alıcı vb.). Boş = notu temizle.
   const notRaw = formData.get("durum_notu");
   const durum_notu =
@@ -831,6 +838,11 @@ export async function birimTopluGuncelle(formData: FormData) {
   const guncelle: Record<string, unknown> = { son_guncelleme: new Date().toISOString() };
   const durum = durumSemasi.safeParse(formData.get("durum"));
   if (durum.success) guncelle.durum = durum.data;
+  // C1/INV-SALE-001: TOPLU 'satildi' YASAK — satış tek tek "Satışı kapat" ile tamamlanır
+  // (her satış için hakediş + satıcı atfı + tutar). Toplu çip satışı hakediş/atıfsız kalırdı.
+  if (durum.success && durum.data === "satildi") {
+    hataya(`/uretici/proje/${proje_id}`, "Toplu satış yapılamaz — her daireyi 'Satışı kapat' ile tek tek tamamla (hakediş + satıcı atfı).");
+  }
   const fiyatRaw = String(formData.get("liste_fiyati") ?? "").trim();
   if (fiyatRaw) guncelle.liste_fiyati = Number(fiyatRaw);
 
