@@ -31,4 +31,12 @@ Karar: admin panelinde stok/birim/fiyat CRUD yok; admin gelir/hesap/doğrulama/d
 Date: (drift düzeltmesi, 2026-08-14 doğrulandı) · Status: Accepted · Class: Product decision
 Karar: Emlakçı paneli `/danisman` (kod). Dokümanlarda geçen `/havuz` ESKİ. `HAVUZ_ROL` sabiti kod-içi ad olarak kalmış olabilir ama route `/danisman`. Not: doc 02/04 güncellenmeli (drift).
 
+## DDR-008 — Tahsis de-allocation → aktif opsiyon/lead cascade (B1)
+Date: 2026-08-17 · Status: Accepted (kullanıcı kararı) · Class: Commercial rule + Platform invariant
+Karar (OQ-TAHSIS-001 çözümü):
+- **Askıya alma (askida, geçici):** aktif opsiyon **grandfather** (doğal süresine yaşar; yeni işlem zaten görünürlük gittiği için bloke). Lead danışmanda **kalır** + işaretlenir + müteahhit bilgilendirilir.
+- **Kaldırma (kaldirildi, kalıcı):** müteahhit **açık karar verir** (aktif opsiyonu serbest bırak / süresine bırak); seçmezse **varsayılan = grandfather** (yıkıcı değil). Lead aynı (kalır + işaret + bildirim). Projedar hakem DEĞİL (Sistem-Kuralları "arbitraj yapmaz").
+- **Zorunlu companion (P1):** (1) aktif opsiyon sahibi danışman, tahsisi olmasa da o **birimi görebilir** (görünürlük çatlağı fix); (2) de-alloc danışman opsiyonu **uzatamaz** (`opsiyon_uzat`'a tahsis/guard). DEĞİŞMEZ #3 (tek aktif opsiyon) korunur → grandfather birim ayağın altından satılamaz.
+Neden: askıya alma idari duraklama; canlı müşteriyi öldürmek orantısız. Kaldırma ilişkiyi bitirir ama canlı opsiyon çoğu zaman süren-satış → feda kararı müteahhidin. Detay brif: MODE A (2026-08-17). Supersedes INV-CANDIDATE-003 gap.
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

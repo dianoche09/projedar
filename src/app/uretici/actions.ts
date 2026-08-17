@@ -1348,22 +1348,39 @@ export async function tahsisDurumGuncelle(formData: FormData) {
 }
 
 // ── Toplu lifecycle — ATOMİK (DB RPC tahsis_toplu; update+audit tek transaction). Invariant 2. ──
+// B1/DDR-008: kaldır anında kapsamdaki aktif opsiyon = grandfather (default). opsiyon_karar='serbest'
+// ise müteahhit bilinçli olarak önce opsiyonları serbest bırakır (opsiyon_serbest_birak_manuel), sonra kaldırır.
 export async function tahsisTopluAksiyon(formData: FormData) {
   const proje_id = String(formData.get("proje_id"));
   const aksiyon = String(formData.get("aksiyon")); // askiya_al|devam|kaldir|uzat
   const ids = formData.getAll("tahsis_ids").map(String).filter((s) => UUID_RE.test(s));
   const gunRaw = String(formData.get("gun") ?? "").trim();
+  const opsiyonKarar = String(formData.get("opsiyon_karar") ?? ""); // "" | "serbest" | "sure"
   const geri = `/uretici/tahsis?proje=${proje_id}`;
   if (!UUID_RE.test(proje_id) || ids.length === 0) hataya(geri, "Seçim yok");
   if (!["askiya_al", "devam", "kaldir", "uzat"].includes(aksiyon)) hataya(geri, "Geçersiz aksiyon");
 
   const supabase = await createClient();
+
+  // B1: kaldır + "serbest" seçimi → kapsamdaki aktif opsiyonları müteahhit onayıyla serbest bırak.
+  let serbestSay = 0;
+  if (aksiyon === "kaldir" && opsiyonKarar === "serbest") {
+    const { data: aktifOps } = await supabase.rpc("tahsis_aktif_opsiyonlar", { p_proje_id: proje_id, p_ids: ids });
+    const opsIds = ((aktifOps ?? []) as { opsiyon_id: string }[]).map((o) => o.opsiyon_id);
+    if (opsIds.length > 0) {
+      const { data: sd, error: se } = await supabase.rpc("opsiyon_serbest_birak_manuel", { p_ids: opsIds });
+      if (se) hataya(geri, se.message);
+      serbestSay = Number(sd ?? 0);
+    }
+  }
+
   const { data, error } = await supabase.rpc("tahsis_toplu", {
     p_proje_id: proje_id, p_ids: ids, p_aksiyon: aksiyon, p_gun: gunRaw ? Number(gunRaw) : null,
   });
   if (error) hataya(geri, error.message);
   revalidatePath(geri);
-  basariya(geri, formData, `${data ?? 0} tahsis güncellendi`);
+  const ek = serbestSay > 0 ? ` · ${serbestSay} opsiyon serbest bırakıldı` : "";
+  basariya(geri, formData, `${data ?? 0} tahsis güncellendi${ek}`);
 }
 
 // ⚠️ HARD DELETE — normal kullanıcı akışından ÇIKARILDI (kullanıcıya görünen "Kaldır" = tahsisDurumGuncelle('kaldirildi')).

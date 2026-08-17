@@ -7,6 +7,7 @@ import { PerspektifToggle } from "./_components/PerspektifToggle";
 import { TopluBar } from "./_components/TopluBar";
 import { TahsisDuzenleModal } from "./_components/TahsisDuzenleModal";
 import { StokMercek } from "./_components/StokMercek";
+import { TahsisKaldir } from "./_components/TahsisKaldir";
 
 /* =========================================================
    TAHSİS — Distribution Control Center (MOAT). Hangi kapsam kime açık, komisyon ne.
@@ -466,7 +467,7 @@ export default async function UreticiTahsis({
                                     ) : (
                                       <DurumButon tahsisId={t.id} projeId={t.proje_id} hedef="aktif" etiket="Devam" />
                                     )}
-                                    <DurumButon tahsisId={t.id} projeId={t.proje_id} hedef="kaldirildi" etiket="Kaldır" tehlike />
+                                    <TahsisKaldir tahsisId={t.id} projeId={t.proje_id} />
                                   </div>
                                 )}
                               </td>
