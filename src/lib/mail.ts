@@ -236,7 +236,7 @@ export function davetMaili(o: {
   const konum = o.il ? `${o.il} bölgesinde ` : "";
   const govde =
     `Merhaba, ${konum}${s.rol} olarak ${o.firma} ekibini Projedar ağına davet ediyoruz. ` +
-    `Projedar ile ${s.fayda}. Komisyon yok; çift satış yapısal olarak engelli.` +
+    `Projedar ile ${s.fayda}. Projedar satış komisyonundan pay almaz; çift satış yapısal olarak engelli.` +
     (o.ekMesaj ? `\n\n${o.ekMesaj}` : "");
   return mailKabuk({
     preheader: `${o.firma} — Projedar davet`,

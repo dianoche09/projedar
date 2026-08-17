@@ -11,7 +11,7 @@ export const contentType = "image/png";
 
 // OG kartında görünen tüm karakterler — Google Fonts subset (yalnız bu glyph'ler indirilir).
 const GLYPHS =
-  "Projedar Canlı konut stoğu dağıtım ağı projedar.com Tek doğru kaynak · Çift satış kalkanı Komisyon yok müsait opsiyon satıldı 2 dk önce";
+  "Projedar Canlı konut stoğu dağıtım ağı projedar.com Tek doğru kaynak · Çift satış kalkanı Komisyondan pay almaz müsait opsiyon satıldı 2 dk önce";
 
 async function loadFont(family: string, weight: number): Promise<ArrayBuffer> {
   const url = `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(GLYPHS)}`;
@@ -101,7 +101,7 @@ export default async function OgImage() {
             <span style={{ color: "#e9eef4" }}>&nbsp;konut stoğu dağıtım ağı</span>
           </div>
           <span style={{ fontSize: 28, fontWeight: 400, color: "#9fb2c4", marginTop: 8 }}>
-            Tek doğru kaynak · Çift satış kalkanı · Komisyon yok
+            Tek doğru kaynak · Çift satış kalkanı · Komisyondan pay almaz
           </span>
         </div>
 

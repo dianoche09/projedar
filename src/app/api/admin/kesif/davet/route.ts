@@ -11,10 +11,10 @@ const TAKIP_GUN = 3;
 
 /** Segmente göre WhatsApp davet cümlesi (müteahhit ≠ ofis/emlakçı pitch'i). */
 const WA_PITCH: Record<string, string> = {
-  muteahhit: "Projenizi bağımsız emlakçı ağına canlı dağıtın, tek noktadan stok/fiyat kontrolü, komisyon yok.",
-  proje: "Projenizi bağımsız emlakçı ağına canlı dağıtın, komisyon yok.",
-  ofis: "Size tahsisli konut projelerini tek canlı havuzdan görüp ekibinizle paylaşın, komisyon yok.",
-  emlakci: "Size tahsisli konut projelerini tek canlı havuzdan görüp müşterinizle paylaşın, komisyon yok.",
+  muteahhit: "Projenizi bağımsız emlakçı ağına canlı dağıtın, tek noktadan stok/fiyat kontrolü; Projedar satış komisyonundan pay almaz.",
+  proje: "Projenizi bağımsız emlakçı ağına canlı dağıtın; Projedar satış komisyonundan pay almaz.",
+  ofis: "Size tahsisli konut projelerini tek canlı havuzdan görüp ekibinizle paylaşın; satış komisyonunun tamamı sizde kalır.",
+  emlakci: "Size tahsisli konut projelerini tek canlı havuzdan görüp müşterinizle paylaşın; kazancınızın tamamı sizde, Projedar komisyondan pay almaz.",
 };
 
 /**

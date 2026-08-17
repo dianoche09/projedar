@@ -56,7 +56,7 @@ export function B2BCta() {
           {[
             [ShieldCheck, "Tahsis sende: tüm proje, tek blok ya da seçili daireler"],
             [Radio, "Yüzlerce yetkili danışmana tek noktadan ulaş"],
-            [CircleSlash, "Komisyon yok, sabit yıllık anlaşma; markan yıpranmaz"],
+            [CircleSlash, "Satış komisyonundan pay almayız; sabit yıllık anlaşma, markan yıpranmaz"],
           ].map(([Icon, t]) => {
             const I = Icon as typeof CircleSlash;
             return (

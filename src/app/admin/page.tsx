@@ -219,7 +219,7 @@ export default async function AdminPanel() {
           <div className="mt-3 flex items-end gap-2.5">
             <span className="mono text-[34px] font-semibold leading-none tracking-tight text-navy">{fmtPara(mrr)}</span>
           </div>
-          <p className="mt-3 text-xs text-gray">ofis + üretici abonelikleri (komisyon yok)</p>
+          <p className="mt-3 text-xs text-gray">ofis + üretici abonelikleri (satış komisyonundan pay alınmaz)</p>
         </div>
 
         {/* Onay bekleyen (amber) */}

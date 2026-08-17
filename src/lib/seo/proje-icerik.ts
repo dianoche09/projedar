@@ -25,7 +25,7 @@ const GIRIS_VARYANTLARI: string[] = [
   "Bir müteahhit projesini Projedar ağına eklediğinde, seçtiği danışmanlar daireleri canlı fiyatla ve çift satış riski olmadan paylaşabilir.",
   "Projedar bir ilan portalı değil, müteahhit kontrollü bir konut stoğu dağıtım ağıdır; bu sayfa projenin ağdaki B2B görünürlüğüdür.",
   "Projeyi tanıyan gayrimenkul danışmanları, Projedar üzerinden müteahhidin tahsis ettiği daireleri tek doğru kaynaktan takip edebilir.",
-  "Bu proje için Projedar, fiyatı ve stoğu tek noktada tutan, komisyonsuz ve tahsisli bir satış altyapısı sunar.",
+  "Bu proje için Projedar, fiyatı ve stoğu tek noktada tutan, tahsisli ve satış komisyonundan pay almayan bir satış altyapısı sunar.",
 ];
 
 const SUREC_VARYANTLARI: string[] = [
@@ -38,7 +38,7 @@ const SUREC_VARYANTLARI: string[] = [
 ];
 
 const ETIKET_VARYANTLARI: string[] = [
-  "Canlı stok, komisyon yok",
+  "Canlı stok, komisyondan pay almaz",
   "Tahsisli satış ağı",
   "Müteahhit kontrollü dağıtım",
   "Tek doğru kaynak",
