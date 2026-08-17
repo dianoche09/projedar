@@ -42,7 +42,7 @@ export default async function SertifikaSayfasi({ params }: { params: Promise<{ i
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/giris");
+  if (!user) redirect("/login");
 
   const { data } = await supabase
     .from("opsiyon")

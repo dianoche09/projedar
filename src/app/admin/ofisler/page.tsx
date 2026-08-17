@@ -22,7 +22,7 @@ export default async function OfislerSayfasi({
   const [{ data: ofisler }, { data: profiller }, { data: paketler }, { data: abonelikler }] = await Promise.all([
     supabase.from("ofis").select("id, ad, marka, il, ilce").order("ad"),
     supabase.from("profiles").select("rol, ofis_id"),
-    supabase.from("abonelik_paketi").select("id, ad, fiyat_aylik, kota_koltuk").order("siralama"),
+    supabase.from("abonelik_paketi").select("id, ad, fiyat_aylik, kota_koltuk").eq("hedef", "ofis").eq("aktif", true).order("siralama"),
     supabase.from("abonelik").select("ofis_id, paket_id, durum").in("durum", ["deneme", "aktif"]),
   ]);
 
