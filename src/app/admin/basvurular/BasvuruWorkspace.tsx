@@ -370,6 +370,9 @@ function Dosya({ veri, ofisler }: { veri: DosyaVeri; ofisler: { id: string; ad: 
       {/* KARAR PANELİ */}
       <div className="border-t border-hair bg-soft/60 px-6 py-4">
         <div className="flex flex-wrap items-end gap-3.5">
+          {/* Rol/onay kararı YALNIZ yeni hesap onayında (durum=onay_bekliyor). Zaten aktif hesap
+              sadece KYC belgesi için kuyruğa girmişse rol butonu gösterme → yanlış tıkla rol düşmesin. */}
+          {veri.durum === "onay_bekliyor" ? (
           <form action={kullaniciOnayla} className="flex flex-wrap items-end gap-3.5">
             <input type="hidden" name="kullanici_id" value={veri.id} />
             <label className="flex flex-col gap-1.5 text-[11px] font-semibold text-gray">
@@ -405,6 +408,7 @@ function Dosya({ veri, ofisler }: { veri: DosyaVeri; ofisler: { id: string; ad: 
               </button>
             </div>
           </form>
+          ) : null}
 
           {veri.belge_durumu === "beklemede" ? (
             <div className="flex items-center gap-2">
