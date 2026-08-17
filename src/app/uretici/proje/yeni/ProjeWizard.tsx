@@ -284,7 +284,8 @@ export function ProjeWizard({
                   <input type="checkbox" name="kat_karsiligi" defaultChecked={!!(kunye as Record<string, unknown>).kat_karsiligi} className="size-4" /> Kat karşılığı proje
                 </label>
                 <textarea name="malzeme" defaultValue={Array.isArray((kunye as Record<string, unknown>).malzeme) ? ((kunye as Record<string, string[]>).malzeme).join("\n") : ""} placeholder="Malzeme (her satır: Pencere · Schüco)" rows={2} className={`min-h-[72px] w-full rounded-xl border border-hair bg-card px-3.5 py-2.5 text-[15px] text-ink outline-none focus:border-teal sm:col-span-2`} />
-                <input name="donati" defaultValue={Array.isArray((kunye as Record<string, unknown>).donati) ? ((kunye as Record<string, string[]>).donati).join(", ") : ""} placeholder="Sosyal donatı (virgülle: Havuz, Fitness)" className={`${inpCls} sm:col-span-2`} />
+                {/* Sosyal donatı / özellikler kurulum ekranında OzellikSecici ile girilir (filtrelenebilir
+                    taksonomi). Sihirbazda ayrı serbest-metin donati alanı yok: kaydedilmiyordu + kunye'yi eziyordu. */}
                 <div className="sm:col-span-2"><SubmitButton varyant="outline">İmar bilgisini kaydet</SubmitButton></div>
               </form>
               <p className="mt-3 text-xs text-gray">

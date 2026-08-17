@@ -838,6 +838,28 @@ export async function birimTopluGuncelle(formData: FormData) {
     hataya(`/uretici/proje/${proje_id}`, "Durum veya fiyat gir (en az biri).");
   }
 
+  // birim↔opsiyon desync kalkanı (tekil birimDurumGuncelle ile birebir): toplu durum
+  //   opsiyonlu/satış-bekleyen DIŞINA çekiyorsa hayalet opsiyon kalmasın. Aktif→satildi:
+  //   opsiyon yaşam döngüsünü kapat; diğer durumlarda serbest bırak (unique index yeni opsiyona izin versin).
+  if (durum.success && durum.data !== "opsiyonlu" && durum.data !== "satis_beklemede") {
+    const { data: aktifOps } = await supabase
+      .from("opsiyon")
+      .select("id")
+      .in("birim_id", idler)
+      .in("durum", ["opsiyonlu", "satis_beklemede"]);
+    const opsIdler = (aktifOps ?? []).map((o) => o.id as string);
+    if (opsIdler.length) {
+      if (durum.data === "satildi") {
+        await supabase
+          .from("opsiyon")
+          .update({ durum: "satildi", sonuc: "satildi", sonuc_at: new Date().toISOString() })
+          .in("id", opsIdler);
+      } else {
+        await supabase.from("opsiyon").delete().in("id", opsIdler);
+      }
+    }
+  }
+
   const { error } = await supabase
     .from("birim")
     .update(guncelle)
@@ -1491,6 +1513,14 @@ export async function projeKunyeGuncelle(formData: FormData) {
     return s === "" ? null : s;
   };
 
+  const supabase = await createClient();
+  // Mevcut kunye'yi oku: OzellikSecici İÇERMEYEN formlar (ör. yeni-proje sihirbazı imar adımı)
+  // ozellikler'i EZMESİN (veri kaybı fix). Selector'lu formlar `ozellik_var` marker'ı gönderir →
+  // o zaman parseOzellikler geçerli (boş = "tümünü temizle" niyeti); marker yoksa mevcut korunur.
+  const { data: mevcutProje } = await supabase.from("proje").select("kunye").eq("id", proje_id).single();
+  const mevcutKunye = (mevcutProje?.kunye ?? {}) as Record<string, unknown>;
+  const ozellikFormda = formData.has("ozellik_var");
+
   const kunye = {
     ruhsat_tarihi: metin(formData.get("ruhsat_tarihi")),
     yapi_denetim: metin(formData.get("yapi_denetim")),
@@ -1505,10 +1535,9 @@ export async function projeKunyeGuncelle(formData: FormData) {
       .filter(Boolean),
     // Yapılandırılmış öznitelikler (sabit sözlük, filtrelenebilir). Eski serbest-metin
     // donati/daire_ozellikleri/yakin_cevre okuOzellikler() ile geri-uyumlu okunur.
-    ozellikler: parseOzellikler(formData),
+    ozellikler: ozellikFormda ? parseOzellikler(formData) : (mevcutKunye.ozellikler ?? {}),
   };
 
-  const supabase = await createClient();
   const { error } = await supabase
     .from("proje")
     .update({

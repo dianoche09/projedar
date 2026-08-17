@@ -8,6 +8,9 @@ import { OZELLIK_KATEGORILERI, type Ozellikler } from "@/lib/ozellikler";
 export function OzellikSecici({ current }: { current: Ozellikler }) {
   return (
     <div className="sm:col-span-2 space-y-4 rounded-xl border border-slate-200/60 bg-slate-50/50 p-4">
+      {/* Bu form ozellikler'i düzenler: action mevcut değeri EZEBİLİR (boş = tümünü temizle).
+          Selector içermeyen formlar (sihirbaz imar adımı) bu marker'ı göndermez → ozellikler korunur. */}
+      <input type="hidden" name="ozellik_var" value="1" />
       <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Özellikler (filtrelenebilir)</p>
       {OZELLIK_KATEGORILERI.map((kat) => {
         const secili = new Set(current[kat.key] ?? []);
