@@ -281,28 +281,31 @@ function paketGirdi(formData: FormData) {
 
 /** Yeni üyelik paketi tanımla — ad/fiyat/kota tamamen admin girer (hardcode yok). */
 export async function paketEkle(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const parsed = paketGirdi(formData);
   if (!parsed.success) return;
   const supabase = await createClient();
-  await supabase.from("abonelik_paketi").insert(parsed.data);
+  const { data: yeni } = await supabase.from("abonelik_paketi").insert(parsed.data).select("id").single();
+  await kayitYaz({ tip: "hesap", profileId: adminId, payload: { eylem: "paket_ekle", hedef: yeni?.id ?? null, yeni: parsed.data } });
   revalidatePath("/admin");
 }
 
 /** Mevcut paketi düzenle (fiyat/kota/özellik/aktiflik). */
 export async function paketDuzenle(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const id = zUuid.safeParse(formData.get("id"));
   const parsed = paketGirdi(formData);
   if (!id.success || !parsed.success) return;
   const supabase = await createClient();
+  const { data: eskiP } = await supabase.from("abonelik_paketi").select("ad, fiyat_aylik, kota_koltuk, aktif").eq("id", id.data).single();
   await supabase.from("abonelik_paketi").update(parsed.data).eq("id", id.data);
+  await kayitYaz({ tip: "hesap", profileId: adminId, payload: { eylem: "paket_duzenle", hedef: id.data, eski: eskiP ?? null, yeni: parsed.data } });
   revalidatePath("/admin");
 }
 
 /** Paketi sil — atanmış aktif abonelik varsa silmek yerine pasifleştirir. */
 export async function paketSil(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const id = zUuid.safeParse(formData.get("id"));
   if (!id.success) return;
   const supabase = await createClient();
@@ -311,11 +314,13 @@ export async function paketSil(formData: FormData) {
     .select("id", { count: "exact", head: true })
     .eq("paket_id", id.data)
     .in("durum", ["deneme", "aktif"]);
-  if (count && count > 0) {
+  const pasiflendi = !!(count && count > 0);
+  if (pasiflendi) {
     await supabase.from("abonelik_paketi").update({ aktif: false }).eq("id", id.data);
   } else {
     await supabase.from("abonelik_paketi").delete().eq("id", id.data);
   }
+  await kayitYaz({ tip: "hesap", profileId: adminId, payload: { eylem: pasiflendi ? "paket_pasiflendi" : "paket_sil", hedef: id.data } });
   revalidatePath("/admin");
 }
 
@@ -413,6 +418,9 @@ export async function kullaniciGuncelle(formData: FormData) {
   }
 
   const supabase = await createClient();
+  // E2/INV-AUDIT-001: state-değiştiren admin mutasyonu denetime yazılır (before/after).
+  const { data: eski } = await supabase
+    .from("profiles").select("rol, ofis_id, durum").eq("id", parsed.data.kullanici_id).single();
   // Kategorizasyon (segment tahsis için): marka/il/ilce/uzmanlik. Boş + ofis varsa → ofisten türet.
   const kat: { marka: string | null; il: string | null; ilce: string | null; uzmanlik: string | null } = {
     marka: String(formData.get("marka") ?? "").trim() || null,
@@ -444,6 +452,20 @@ export async function kullaniciGuncelle(formData: FormData) {
       uzmanlik: kat.uzmanlik,
     })
     .eq("id", parsed.data.kullanici_id);
+
+  // Denetim: rol/ofis/durum değişimi (rol→admin = yüksek-riskli privilege escalation işareti).
+  const adminYukseltme = parsed.data.rol === "admin" && eski?.rol !== "admin";
+  await kayitYaz({
+    tip: "hesap",
+    profileId: adminId,
+    payload: {
+      eylem: "kullanici_guncelle",
+      hedef: parsed.data.kullanici_id,
+      eski: { rol: eski?.rol ?? null, ofis_id: eski?.ofis_id ?? null, durum: eski?.durum ?? null },
+      yeni: { rol: parsed.data.rol, ofis_id: parsed.data.ofis_id || null, durum: parsed.data.durum },
+      ...(adminYukseltme ? { yuksek_riskli: true, not: "role→admin yükseltme" } : {}),
+    },
+  });
   revalidatePath("/admin/kullanicilar");
   revalidatePath("/admin");
 }
@@ -463,7 +485,7 @@ const OlusturSchema = z.object({
  * e-postalanır ve ilk girişte KENDİ şifresini belirler.
  */
 export async function kullaniciOlustur(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const parsed = OlusturSchema.safeParse({
     email: formData.get("email"),
     ad: formData.get("ad"),
@@ -498,6 +520,18 @@ export async function kullaniciOlustur(formData: FormData) {
     .from("profiles")
     .update({ ad, telefon: telefon ?? null, rol, ofis_id: ofis_id || null, durum: "aktif" })
     .eq("id", created.user.id);
+
+  // Denetim (E2/INV-AUDIT-001): hesap oluşturma (rol=admin ise yüksek-riskli).
+  await kayitYaz({
+    tip: "hesap",
+    profileId: adminId,
+    payload: {
+      eylem: "kullanici_olustur",
+      hedef: created.user.id,
+      yeni: { email, rol, ofis_id: ofis_id || null, durum: "aktif" },
+      ...(rol === "admin" ? { yuksek_riskli: true, not: "admin hesap oluşturma" } : {}),
+    },
+  });
 
   // Kurulum bağlantısı e-postala (best-effort). Mail düşmezse detay sayfasından tekrar gönderilebilir.
   const link = await kurulumLinkiGonder(admin, await istekOrigin(), email, ad, "kurulum");
@@ -562,7 +596,7 @@ const UreticiEkleSchema = z.object({
  * Düz-metin parola YOK: sahip kurulum bağlantısıyla kendi şifresini belirler.
  */
 export async function ureticiEkle(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const parsed = UreticiEkleSchema.safeParse({
     ad: formData.get("ad"),
     vergi_no: (formData.get("vergi_no") as string) || undefined,
@@ -600,8 +634,23 @@ export async function ureticiEkle(formData: FormData) {
     sahip_id: created.user.id,
     dogrulanmis: true,
   });
-  if (e2) redirect(`/admin/ureticiler?hata=${encodeURIComponent(e2.message)}`);
+  if (e2) {
+    // Kısmi başarısızlık: sahip hesabı zaten açıldı (aktif) ama firma kaydı düştü → denetimsiz
+    // ayrıcalıklı hesap kalmasın (Issue A). Hata-yolu audit'i.
+    await kayitYaz({
+      tip: "hesap",
+      profileId: adminId,
+      payload: { eylem: "uretici_ekle_kismi_basarisiz", hedef: created.user.id, not: "sahip hesabı açıldı, firma kaydı başarısız", hata: e2.message },
+    });
+    redirect(`/admin/ureticiler?hata=${encodeURIComponent(e2.message)}`);
+  }
 
+  // Denetim (E2/INV-AUDIT-001): üretici hesabı oluşturuldu — dogrulanmis:true admin kararı olarak kayıtlı (F4).
+  await kayitYaz({
+    tip: "hesap",
+    profileId: adminId,
+    payload: { eylem: "uretici_ekle", hedef: created.user.id, yeni: { firma: d.ad, sahip_email: d.sahip_email, dogrulanmis_otomatik: true } },
+  });
   const link = await kurulumLinkiGonder(admin, await istekOrigin(), d.sahip_email, d.sahip_ad, "kurulum");
   revalidatePath("/admin/ureticiler");
   redirect(
@@ -626,7 +675,7 @@ const OfisEkleSchema = z.object({
  * Düz-metin parola YOK: yetkili kurulum bağlantısıyla kendi şifresini belirler.
  */
 export async function ofisEkle(formData: FormData) {
-  await adminGuard();
+  const adminId = await adminGuard();
   const parsed = OfisEkleSchema.safeParse({
     ad: formData.get("ad"),
     marka: (formData.get("marka") as string) || undefined,
@@ -665,6 +714,12 @@ export async function ofisEkle(formData: FormData) {
     user_metadata: { ad: d.yetkili_ad },
   });
   if (e2 || !created.user) {
+    // Kısmi başarısızlık: ofis kaydı açıldı ama yetkili kullanıcı düştü → orphan ofis denetimsiz kalmasın.
+    await kayitYaz({
+      tip: "hesap",
+      profileId: adminId,
+      payload: { eylem: "ofis_ekle_kismi_basarisiz", hedef: ofis.id, not: "ofis açıldı, yetkili kullanıcı başarısız", hata: e2?.message ?? null },
+    });
     redirect(`/admin/ofisler?hata=${encodeURIComponent(e2?.message ?? "Yetkili oluşturulamadı")}`);
   }
   await admin
@@ -672,6 +727,12 @@ export async function ofisEkle(formData: FormData) {
     .update({ ad: d.yetkili_ad, rol: "ofis_yetkili", ofis_id: ofis.id, durum: "aktif" })
     .eq("id", created.user.id);
 
+  // Denetim (E2/INV-AUDIT-001): ofis hesabı + yetkili oluşturuldu.
+  await kayitYaz({
+    tip: "hesap",
+    profileId: adminId,
+    payload: { eylem: "ofis_ekle", hedef: ofis.id, yeni: { ofis: d.ad, yetkili_email: d.yetkili_email } },
+  });
   const link = await kurulumLinkiGonder(admin, await istekOrigin(), d.yetkili_email, d.yetkili_ad, "kurulum");
   revalidatePath("/admin/ofisler");
   redirect(

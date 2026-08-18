@@ -22,6 +22,7 @@ export type OlayTip =
   | "acilis" // cron: planlı birim açılış tarihi gelip müsait oldu (talep spike sinyali)
   | "ilgi" // emlakçı: planlı birime "açılınca haber ver" (açılış öncesi talep sinyali)
   | "seo_yayin" // admin: projeye public_slug verildi (SEO sayfası yayınlandı + IndexNow)
+  | "hesap" // admin: hesap/üretici/ofis oluştur+düzenle + paket CRUD (governance; payload eski/yeni; rol→admin yuksek_riskli)
   | "tahsis" // üretici: tahsis lifecycle audit (olustur/guncelle/askiya_al/devam/kaldir; payload eski/yeni)
   | "kurucu"; // lansman popup: kurucu üyelik e-posta yakalama (anonim; ticari e-ileti onaylı)
 

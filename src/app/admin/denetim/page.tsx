@@ -19,8 +19,9 @@ const TIP_RENK: Record<string, { ad: string; dot: string; rozet: string; baslik:
   dogrulama: { ad: "doğrulama", dot: "#1e9b8a", rozet: "bg-teal/12 text-teal-d", baslik: "Üretici doğrulama" },
   abonelik: { ad: "abonelik", dot: "#13314b", rozet: "bg-navy/10 text-navy", baslik: "Abonelik atandı" },
   kurucu: { ad: "kurucu", dot: "#1e9b8a", rozet: "bg-teal/12 text-teal-d", baslik: "Kurucu kaydı" },
+  hesap: { ad: "hesap", dot: "#13314b", rozet: "bg-navy/10 text-navy", baslik: "Hesap / paket işlemi" },
 };
-const FILTRELER = ["opsiyon", "satis", "durum", "lead", "paylasim", "onay", "dogrulama", "abonelik", "kurucu"];
+const FILTRELER = ["opsiyon", "satis", "durum", "lead", "paylasim", "onay", "dogrulama", "abonelik", "hesap", "kurucu"];
 const FILTRE_ETIKET: Record<string, string> = {
   opsiyon: "Opsiyon",
   satis: "Satış",
@@ -30,6 +31,7 @@ const FILTRE_ETIKET: Record<string, string> = {
   onay: "Onay",
   dogrulama: "Doğrulama",
   abonelik: "Abonelik",
+  hesap: "Hesap",
   kurucu: "Kurucu",
 };
 
