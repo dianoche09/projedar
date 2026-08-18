@@ -36,7 +36,7 @@ Next.js (App Router, TypeScript, strict) + Tailwind · Supabase (Postgres + Auth
 
 ## Komutlar
 - `npm run dev` · `npm run build` · `npm run lint`
-- **Supabase migration/SQL/RLS = HER ZAMAN browser Dashboard → SQL Editor.** MCP `apply_migration`/`execute_sql` bu projede `Unauthorized` (access token yok, non-interactive OAuth yok); `supabase db push` de yok. Migration dosyasını `db/` altına yaz, sonra kullanıcıya SQL'i **hazır kopyalanır blok** olarak ver — "browser'dan uygula" diye ayrıca uzun uzun anlatma, sadece bloğu sun. Detay: memory `supabase-apply-browser.md`.
+- **Supabase migration/SQL/RLS = Claude KENDİSİ uygular (Management API).** `SUPABASE_ACCESS_TOKEN` shell'de export'lu (`.env`'de görünmez → `printenv` ile doğrula, ASLA echo etme). Yöntem: migration dosyasını `db/` altına yaz → `jq -Rs '{query:.}' < db/DOSYA.sql | curl -s -X POST "https://api.supabase.com/v1/projects/svksxtirsbwawvmnojps/database/query" -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" -H "Content-Type: application/json" -d @-`. DDL başarı = `[]`. Uygulama sonrası `pg_proc`/`information_schema`/`pg_trigger` ile DOĞRULA. `create or replace`/`if not exists` idempotent yaz. MCP `apply_migration`=read-only, `execute_sql`=Unauthorized → MCP kullanma, doğrudan curl. Kullanıcıya kopyalatma; sadece token yoksa browser fallback. Detay: memory `supabase-apply-browser.md`.
 
 ## SEO / GEO politikası (skill discovery)
 - **SEO/GEO işlerinin kalite kaynağı = `kolayseo` skill.** Her SEO/GEO işinde **önce
