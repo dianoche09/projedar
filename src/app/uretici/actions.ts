@@ -1201,6 +1201,20 @@ export async function tahsisEkle(formData: FormData) {
 
   const supabase = await createClient();
   const actorId = (await supabase.auth.getUser()).data.user?.id ?? null;
+
+  // B4/U-01: münhasır kapsam çakışması → UYAR + açık override (blok değil). Override yoksa reddet;
+  // müteahhit "münhasırlık onayı" işaretleyince munhasir_override=1 ile tekrar gelir (audit'e yazılır).
+  // DAİMA kontrol et (override'ı da server-side doğrula: override=1 ama gerçek çakışma yoksa etiketleme).
+  const munhasirOverride = formData.get("munhasir_override") === "1";
+  const { data: cakismalarRaw } = await supabase.rpc("tahsis_munhasir_cakisma", {
+    p_proje_id: proje_id, p_kapsam: kapsam, p_munhasir: terim.munhasir,
+  });
+  const cakismalar = (cakismalarRaw ?? []) as { tahsis_id?: string; ornek_daire?: string | null }[];
+  if (cakismalar.length > 0 && !munhasirOverride) {
+    const ornek = cakismalar[0]?.ornek_daire;
+    hataya(geri, `Bu kapsam başka bir aktif tahsisle çakışıyor — münhasırlık geçersiz olur${ornek ? ` (örn. Daire ${ornek})` : ""}. Yine de oluşturmak için "münhasırlık onayı"nı işaretleyip tekrar dene.`);
+  }
+
   const { error } = await supabase.from("tahsis").insert(
     alicilar.map((a) => ({
       proje_id,
@@ -1218,6 +1232,16 @@ export async function tahsisEkle(formData: FormData) {
     })),
   );
   if (error) hataya(geri, error.message);
+
+  // B4: GERÇEK çakışmaya rağmen bilinçli override edildiyse audit'e yaz — çakışan tahsis/daire dahil (forensik).
+  if (cakismalar.length > 0 && munhasirOverride) {
+    await kayitYaz({
+      tip: "tahsis",
+      projeId: proje_id,
+      profileId: actorId,
+      payload: { eylem: "munhasir_override", kapsam, munhasir: terim.munhasir, cakisan: cakismalar.map((c) => ({ tahsis_id: c.tahsis_id ?? null, ornek_daire: c.ornek_daire ?? null })) },
+    });
+  }
 
   // Bildirim: danışman + ofis üyeleri + segment/herkes fan-out (yalnız DOĞRULANMIŞ; in-app, cap 500)
   try {
@@ -1325,10 +1349,22 @@ export async function tahsisGuncelle(formData: FormData) {
     updated_by: (await supabase.auth.getUser()).data.user?.id ?? null,
   };
 
+  // B4/U-01: münhasır kapsam çakışması → uyar + açık override (kendini hariç tut). Override server-side doğrulanır.
+  const munhasirOverride = formData.get("munhasir_override") === "1";
+  const { data: cakismalarRaw } = await supabase.rpc("tahsis_munhasir_cakisma", {
+    p_proje_id: proje_id, p_kapsam: kapsam, p_munhasir: yeni.munhasir, p_haric_id: tahsis_id,
+  });
+  const cakismalar = (cakismalarRaw ?? []) as { tahsis_id?: string; ornek_daire?: string | null }[];
+  if (cakismalar.length > 0 && !munhasirOverride) {
+    const ornek = cakismalar[0]?.ornek_daire;
+    hataya(geri, `Bu kapsam başka bir aktif tahsisle çakışıyor — münhasırlık geçersiz olur${ornek ? ` (örn. Daire ${ornek})` : ""}. Yine de kaydetmek için "münhasırlık onayı"nı işaretle.`);
+  }
+
   const { error } = await supabase.from("tahsis").update(yeni).eq("id", tahsis_id);
   if (error) hataya(geri, error.message);
 
-  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: { aksiyon: "guncelle", tahsis_id, eski, yeni } });
+  const overrideEdildi = cakismalar.length > 0 && munhasirOverride;
+  await kayitYaz({ tip: "tahsis", projeId: proje_id, payload: { aksiyon: "guncelle", tahsis_id, eski, yeni, ...(overrideEdildi ? { munhasir_override: true, cakisan: cakismalar.map((c) => ({ tahsis_id: c.tahsis_id ?? null, ornek_daire: c.ornek_daire ?? null })) } : {}) } });
   revalidatePath(geri);
   basariya(geri, formData, "Tahsis güncellendi");
 }

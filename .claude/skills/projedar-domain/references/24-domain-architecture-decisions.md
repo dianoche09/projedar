@@ -66,4 +66,12 @@ Karar (audit F-D1, Option B):
 - Conflation guard: lead durumunu 'opsiyon' etiketlemek kilit yaratmaz; yalnız RPC yaratır. Kod: `LeadForm.tsx` · `leadler/[id]/page.tsx` + `TutTalebiOpsiyon.tsx`. Migration YOK (pür app).
 - **Yöntem davranışı (MODE B P2 → bilinçli karar):** köprü daima `opsiyon_al_gecici` çağırır (müşteri ekli + müteahhit doğrulama checkpoint'i = lead→hold için tutarlı semantik). **onay** yöntemli projede buton YERİNE "daire detayından talep oluştur" notu (dead-end önlendi). **dogrudan** yöntemli projede köprü geçici-checkpoint verir (2sa doğrulama; days-lock yerine bilinçli olarak müteahhide görünürlük/onay noktası). Açık backlog: LEGAL "öncelikli/hızla" copy cilası; ileride köprünün proje yöntemini birebir aynalaması istenirse per-method routing.
 
+## DDR-012 — Münhasır tahsis çakışması: uyar + açık override (B4)
+Date: 2026-08-18 · Status: Accepted (kullanıcı) · Class: Commercial rule (enforcement: server RPC + action guard, UI-only değil)
+Karar (U-01/INV-EXCL-001):
+- Münhasır tahsis kapsamı başka aktif tahsisle (aynı birimleri paylaşarak) çakışırsa **BLOK değil, UYAR + açık override**. Müteahhit bilinçli onaylarsa geçer, override audit'e yazılır (`tip=tahsis, eylem=munhasir_override`). Projedar münhasırlığı icra etmez ama sessiz bozulmayı önler + kaydeder.
+- Çakışma = yeni kapsam ile mevcut aktif tahsis kapsamı ≥1 birim paylaşır VE taraflardan biri münhasır (`tahsis_munhasir_cakisma` RPC, `birim_kapsaminda` kesişimi; boş kapsam=tüm proje). Düzenlemede `p_haric_id` ile kendini hariç tutar. Owner-guard'lı.
+- Katman: server enforcement (`tahsisEkle`+`tahsisGuncelle`) = teeth; client confirm (create + edit form) = smooth override UX (imperative hidden `munhasir_override`, re-entry guard). RPC yoksa graceful (server yakalar). Override server-side DOĞRULANIR (RPC daima çalışır; çakışma yoksa override etiketlenmez) + audit çakışan tahsis/daire içerir (forensik). Kod: `db/2026-08-18b_munhasir-cakisma.sql`.
+- **Kabul edilen limitasyon (MODE B P2c):** check-then-insert concurrency race — eşzamanlı iki çakışan münhasır tahsis ikisi de geçebilir (hard lock EKLENMEDİ; lock "block"a kayardı, karara aykırı). Münhasır SOFT commercial rule; çift-satış kalkanı DEĞİL (o `opsiyon`'da kalır). P3: RPC `baslangic`'i yok sayar → future-dated tahsis de çakışmada sayılır (bilinçli, daha doğru).
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

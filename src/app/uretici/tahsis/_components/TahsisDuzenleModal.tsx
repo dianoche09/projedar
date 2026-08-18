@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { tahsisGuncelle } from "@/app/uretici/actions";
+import { createClient } from "@/lib/supabase/client";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 
 /* Tahsis düzenle modalı — TahsisForm alan setini (hedef TEK-seçim + kapsam + gelişmiş şartlar)
@@ -173,6 +174,46 @@ function ModalGovde({
   const [modu, setModu] = useState<Modu>(baslangicModu);
   const [kapsamTip, setKapsamTip] = useState<"tum" | "belirli">(kapsamVar ? "belirli" : "tum");
   const [komisyon, setKomisyon] = useState<"yuzde" | "sabit" | "yok">(tahsis.komisyon_tip);
+  const overrideRef = useRef<HTMLInputElement>(null);
+  const gectiRef = useRef(false);
+
+  // B4/U-01: kaydetmede münhasır kapsam çakışmasını ön-kontrol (kendini hariç tut); çakışmada müteahhit
+  // onaylarsa munhasir_override=1 ile geçir (server enforcement ayrıca doğrular).
+  async function kontrolluGonder(e: React.FormEvent<HTMLFormElement>) {
+    if (gectiRef.current) { gectiRef.current = false; return; }
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const munhasir = fd.get("munhasir") === "on";
+    const kapsam: Record<string, string[]> = {};
+    if (fd.get("kapsam_tip") === "belirli") {
+      for (const k of ["bloklar", "katlar", "tipler", "turler", "birimler"]) {
+        const v = fd.getAll(k).map(String).filter(Boolean);
+        if (v.length) kapsam[k] = v;
+      }
+    }
+    let cakisma = false;
+    let ornek: string | null | undefined;
+    try {
+      const { data } = await createClient().rpc("tahsis_munhasir_cakisma", {
+        p_proje_id: tahsis.proje_id, p_kapsam: kapsam, p_munhasir: munhasir, p_haric_id: tahsis.id,
+      });
+      const list = (data ?? []) as { ornek_daire?: string | null }[];
+      cakisma = list.length > 0;
+      ornek = list[0]?.ornek_daire;
+    } catch {
+      /* RPC yok/hata → server enforcement yakalar */
+    }
+    if (cakisma) {
+      const ok = window.confirm(
+        `Bu kapsam başka bir aktif tahsisle çakışıyor — münhasırlık geçersiz olur${ornek ? ` (örn. Daire ${ornek})` : ""}. Yine de kaydedilsin mi?`,
+      );
+      if (!ok) return;
+      if (overrideRef.current) overrideRef.current.value = "1";
+    }
+    gectiRef.current = true;
+    form.requestSubmit();
+  }
 
   // bitis → kalan gün (edit süreyi şimdiden yeniden başlatır; add-form ile aynı semantik)
   const bitisGun = useMemo(() => {
@@ -224,9 +265,10 @@ function ModalGovde({
           </button>
         </div>
 
-        <form action={tahsisGuncelle} className="grid gap-4">
+        <form action={tahsisGuncelle} onSubmit={kontrolluGonder} className="grid gap-4">
           <input type="hidden" name="tahsis_id" value={tahsis.id} />
           <input type="hidden" name="proje_id" value={tahsis.proje_id} />
+          <input ref={overrideRef} type="hidden" name="munhasir_override" defaultValue="" />
           <input type="hidden" name="hedef_modu" value={modu} />
 
           {/* 1 — HEDEF (tek) */}

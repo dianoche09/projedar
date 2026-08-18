@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { tahsisEkle } from "@/app/uretici/actions";
+import { createClient } from "@/lib/supabase/client";
 import { SubmitButton } from "@/components/ui/SubmitButton";
 import { TahsisHedef } from "./TahsisHedef";
 
@@ -64,6 +65,44 @@ export function TahsisForm({
 }) {
   const [kapsamTip, setKapsamTip] = useState<"tum" | "belirli">("tum");
   const [komisyon, setKomisyon] = useState<"yuzde" | "sabit" | "yok">("yuzde");
+  const overrideRef = useRef<HTMLInputElement>(null);
+  const gectiRef = useRef(false);
+
+  // B4/U-01: submit'te münhasır kapsam çakışmasını ön-kontrol et; çakışma varsa müteahhit onaylarsa
+  // munhasir_override=1 ile geçirir (server enforcement ayrıca doğrular). Re-entry gectiRef ile korunur.
+  async function kontrolluGonder(e: React.FormEvent<HTMLFormElement>) {
+    if (gectiRef.current) { gectiRef.current = false; return; } // ikinci tetik → gerçek submit'e izin ver
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const munhasir = fd.get("munhasir") === "on";
+    const kapsam: Record<string, string[]> = {};
+    if (fd.get("kapsam_tip") === "belirli") {
+      for (const k of ["bloklar", "katlar", "tipler", "turler", "birimler"]) {
+        const v = fd.getAll(k).map(String).filter(Boolean);
+        if (v.length) kapsam[k] = v;
+      }
+    }
+    let cakisma = false;
+    let ornek: string | null | undefined;
+    try {
+      const { data } = await createClient().rpc("tahsis_munhasir_cakisma", { p_proje_id: projeId, p_kapsam: kapsam, p_munhasir: munhasir });
+      const list = (data ?? []) as { ornek_daire?: string | null }[];
+      cakisma = list.length > 0;
+      ornek = list[0]?.ornek_daire;
+    } catch {
+      /* RPC yok/hata → server enforcement yakalar; formu geçir */
+    }
+    if (cakisma) {
+      const ok = window.confirm(
+        `Bu kapsam başka bir aktif tahsisle çakışıyor — münhasırlık geçersiz olur${ornek ? ` (örn. Daire ${ornek})` : ""}. Yine de oluşturulsun mu?`,
+      );
+      if (!ok) return;
+      if (overrideRef.current) overrideRef.current.value = "1";
+    }
+    gectiRef.current = true;
+    form.requestSubmit();
+  }
 
   // Blok adı eşlemesi (daire grubunda başlık için)
   const blokAd = useMemo(() => new Map(bloklar.map((b) => [b.id, b.ad])), [bloklar]);
@@ -86,8 +125,9 @@ export function TahsisForm({
   }, [birimler, blokAd]);
 
   return (
-    <form action={tahsisEkle} className="grid gap-4 rounded-2xl border border-dashed border-hair bg-card/50 p-4">
+    <form action={tahsisEkle} onSubmit={kontrolluGonder} className="grid gap-4 rounded-2xl border border-dashed border-hair bg-card/50 p-4">
       <input type="hidden" name="proje_id" value={projeId} />
+      <input ref={overrideRef} type="hidden" name="munhasir_override" defaultValue="" />
       {geriYol ? <input type="hidden" name="geri_yol" value={geriYol} /> : null}
 
       {/* 1 — HEDEF: segment/ofis/danışman seçici (müteahhit isim aramaz; segmente açar) */}
