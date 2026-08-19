@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { tahsisEkle } from "@/app/uretici/actions";
 import { createClient } from "@/lib/supabase/client";
 import { SubmitButton } from "@/components/ui/SubmitButton";
@@ -68,6 +68,44 @@ export function TahsisForm({
   const overrideRef = useRef<HTMLInputElement>(null);
   const gectiRef = useRef(false);
 
+  // N13: AKIBET ÖNİZLEMESİ — seçilen kapsam kaç satılabilir birimi açacak + proaktif B4 çakışma.
+  // Tek kaynak RPC (tahsis_kapsam_ozet: birim_kapsaminda ile RLS-özdeş sayım + owner-guard). Debounce'lu.
+  const formRef = useRef<HTMLFormElement>(null);
+  const onizlemeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [onizleme, setOnizleme] = useState<{ birim: number; cakisma: boolean; ornek: string | null } | null>(null);
+
+  function onizlemeGuncelle(form: HTMLFormElement) {
+    if (onizlemeTimer.current) clearTimeout(onizlemeTimer.current);
+    onizlemeTimer.current = setTimeout(async () => {
+      const fd = new FormData(form);
+      const munhasir = fd.get("munhasir") === "on";
+      const kapsam: Record<string, string[]> = {};
+      if (fd.get("kapsam_tip") === "belirli") {
+        for (const k of ["bloklar", "katlar", "tipler", "turler", "birimler"]) {
+          const v = fd.getAll(k).map(String).filter(Boolean);
+          if (v.length) kapsam[k] = v;
+        }
+      }
+      try {
+        const { data } = await createClient().rpc("tahsis_kapsam_ozet", {
+          p_proje_id: projeId,
+          p_kapsam: kapsam,
+          p_munhasir: munhasir,
+        });
+        const d = data as { yetki?: boolean; birim_sayi?: number; cakisma?: boolean; ornek_daire?: string | null } | null;
+        setOnizleme(d?.yetki ? { birim: d.birim_sayi ?? 0, cakisma: !!d.cakisma, ornek: d.ornek_daire ?? null } : null);
+      } catch {
+        setOnizleme(null);
+      }
+    }, 300);
+  }
+
+  // İlk yük + tüm↔belirli geçişinde önizlemeyi tazele (çip değişimleri form onChange ile).
+  useEffect(() => {
+    if (formRef.current) onizlemeGuncelle(formRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kapsamTip]);
+
   // B4/U-01: submit'te münhasır kapsam çakışmasını ön-kontrol et; çakışma varsa müteahhit onaylarsa
   // munhasir_override=1 ile geçirir (server enforcement ayrıca doğrular). Re-entry gectiRef ile korunur.
   async function kontrolluGonder(e: React.FormEvent<HTMLFormElement>) {
@@ -125,7 +163,13 @@ export function TahsisForm({
   }, [birimler, blokAd]);
 
   return (
-    <form action={tahsisEkle} onSubmit={kontrolluGonder} className="grid gap-4 rounded-2xl border border-dashed border-hair bg-card/50 p-4">
+    <form
+      ref={formRef}
+      action={tahsisEkle}
+      onSubmit={kontrolluGonder}
+      onChange={(e) => onizlemeGuncelle(e.currentTarget)}
+      className="grid gap-4 rounded-2xl border border-dashed border-hair bg-card/50 p-4"
+    >
       <input type="hidden" name="proje_id" value={projeId} />
       <input ref={overrideRef} type="hidden" name="munhasir_override" defaultValue="" />
       {geriYol ? <input type="hidden" name="geri_yol" value={geriYol} /> : null}
@@ -269,6 +313,24 @@ export function TahsisForm({
         </p>
         </div>
       </details>
+
+      {/* N13: AKIBET ÖNİZLEMESİ — destructive-scope onaysız kalmasın */}
+      {onizleme ? (
+        <div
+          className={`rounded-xl border px-3 py-2.5 text-[12.5px] ${
+            onizleme.cakisma ? "border-amber/40 bg-amber-soft text-amber" : "border-teal/30 bg-teal/5 text-ink"
+          }`}
+        >
+          <span>
+            Bu tahsis <span className="font-bold">{onizleme.birim} satılabilir birimi</span> seçtiğin kişilere açacak.
+          </span>
+          {onizleme.cakisma ? (
+            <span className="mt-1 block font-semibold">
+              Dikkat: bu kapsam başka bir aktif tahsisle çakışıyor{onizleme.ornek ? ` (örn. Daire ${onizleme.ornek})` : ""}, münhasırlık geçersiz olabilir.
+            </span>
+          ) : null}
+        </div>
+      ) : null}
 
       <SubmitButton className="justify-self-start">Tahsis et</SubmitButton>
     </form>
