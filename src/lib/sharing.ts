@@ -1,4 +1,4 @@
-import { createHmac, randomBytes } from "crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
@@ -27,11 +27,15 @@ export function generateShareToken(emlakciId: string, birimId: string): string {
 }
 
 /**
- * Token'ın doğruluğunu kontrol eder.
+ * Token'ın doğruluğunu kontrol eder. Constant-time karşılaştırma (timingSafeEqual) —
+ * `===` karakter-karakter erken çıktığından token'ı timing ile sızdırabilirdi. Uzunluk
+ * gizli değil (sabit 16 hex) → önce uzunluk eşitliği, sonra sabit-zaman byte kıyası.
  */
 export function verifyShareToken(emlakciId: string, birimId: string, token: string): boolean {
-  const expected = generateShareToken(emlakciId, birimId);
-  return expected === token;
+  const beklenen = Buffer.from(generateShareToken(emlakciId, birimId));
+  const gelen = Buffer.from(token ?? "");
+  if (beklenen.length !== gelen.length) return false;
+  return timingSafeEqual(beklenen, gelen);
 }
 
 /* ────────────────────────────────────────────────────────────────────────
