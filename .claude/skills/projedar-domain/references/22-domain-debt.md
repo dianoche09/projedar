@@ -30,3 +30,24 @@ Current: `fiyat_kurali` şema var, iş mantığı yok; `opsiyon_talep.kod` terk 
 
 ## DOMAIN-DEBT-007 — Yurtdışı kolonları boş
 Current: `proje` para_birimi≠TRY/golden_visa/diller boş (doc 04:200). Future: uluslararası faz.
+
+## DOMAIN-DEBT-008 — Tarihsel yanlış-etiketli `sure_doldu` expiry event'leri (backfill YOK)
+Current: N10 fix'inden (`666675c`, 2026-08-19) önce Vercel günlük cron'u geçici-kilit (dogrulandi=false) expiry'lerini düz `sure_doldu` bastı; oysa doğrusu `dogrulama_sure_doldu` (INV-CRON-002). Fix ileriye dönük; geçmiş `events` satırları düzeltilmedi.
+Not covered: güven-skoru RPC bu tarihsel satırlarda `dusen` sayımını eksik görür → etkilenen müteahhitte doğrulama oranı marjinal yüksek. Volume düşük (pg_cron 15dk'da çoğunu doğru etiketle yakalıyordu; Vercel yalnız 03:00 örtüşmesinde kapıyordu) + skor `talep+gecici >= 3` eşiğiyle gated.
+Karar: **backfill YAPMA** (owner + CDO onayı) — event append-only/immutable (INV-EVENT-001); düşük hacim düzeltmenin denetim-bütünlüğü riskini haklı çıkarmaz. Risk: RISK-CRON-001 residual (bilgi). Revisit: yalnız bir müteahhit güven-skoru itirazı bu döneme dayanırsa manuel incele.
+
+## DOMAIN-DEBT-009 — `hakedis` migration bilinçli uygulanmadı (Option L) + tek artık okuyucu
+Current: `db/2026-08-09_hakedis-defteri.sql` yazıldı ama **hiç uygulanmadı** ve Option L (DDR-014) ile uygulanmayacak — hakediş canlı-hesap ayna olarak çözüldü, kalıcı defter/ödeme-durumu REDDEDİLDİ (INV-COMM-002).
+Karar: **migration'ı uygulama** (owner + CDO). Payment-ledger yeniden açılmaz; yalnız salt-earned-snapshot (accuracy) ayrı kararla değerlendirilebilir (DDR-014 tradeoff notları).
+**Artık okuyucu (P2, MODE B N4 bulgusu):** `src/app/uretici/stok/page.tsx:62` hâlâ `from("hakedis").select("birim_id,emlakci_id")` çağırıyor → müteahhit stok grid'inde satılan birimin "satan danışman" adını buradan çözüyor (`saticiAd`, `:98-100`). Tablo olmadığından `data=null` (graceful, crash yok) ama **satılan birimlerde satan danışman adı HİÇ görünmez** — Option L'de kalıcı. `birimSatisKapat`'tan writer kaldırıldığı için tek yazar da yok.
+Fix (küçük, Option L ile tutarlı): kaynağı `hakedis` yerine `opsiyon` (`sonuc='satildi'` + `satici_id`) yap — `/uretici/hakedis`'in zaten kullandığı desen. Affected: /uretici/stok grid "kim sattı" kolonu.
+Not: `birim_satici_kazanci` RPC (tablo değil, fonksiyon) canlı kalır ve iki hakediş sayfasının da tutar kaynağıdır — silinmez.
+
+## DOMAIN-DEBT-KYC-01 — KYC override audit non-atomik (fire-and-forget)
+Current: `belgeKarar` onay yolunda UPDATE profiles + UPDATE kullanici_belge ÖNCE, sonra `kayitYaz` (fire-and-forget,
+hatayı yutar — `src/lib/events.ts:49-56`), sonra redirect. Override başarılı olup audit INSERT sessizce düşerse
+`belge_durumu='dogrulandi'` kalıcı olur ama override gerekçesi/eksik-set kaydı KAYBOLUR → INV-AUDIT-001 zayıflar.
+Ayrıca iki UPDATE transaction'da değil (2. fail → kullanici_belge=dogrulandi ama profiles eski; fail-safe: erişim VERİLMEZ).
+Not covered: yüksek-şiddet override için garantili iz. Risk: governance/denetlenebilirlik. Affected: /admin belgeKarar, denetim UI.
+Temporary mitigation: yok (pre-existing pattern tüm auditlerde). Future: override'ı tek RPC'de (SECURITY DEFINER) profiles+belge+events
+atomik yaz, ya da en az override yolunda audit hatasını yut-ma. Revisit: KYC override sıklığı artınca / denetim ihtilafında.

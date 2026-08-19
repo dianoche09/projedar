@@ -43,8 +43,10 @@ Status: Open · Impact: High · Likelihood: Plausible · Detectability: Difficul
 Senaryo: `satis_beklemede`'ye geçişte opsiyon `opsiyonlu` + eski `kilit_bitis` kalıyor; expiry cron (`isler.ts:159-182`, `db/2026-08-05:22-29`) siliyor → trigger birimi `musait` yapıyor. Sözleşme imzalanırken birim tekrar opsiyonlanabilir. Enforcement: INV-STATE-001. Audit B3/XP-03.
 
 ## RISK-CRON-001 — İki opsiyon-expiry scheduler, audit divergence
-Status: Open · Impact: Low · Likelihood: Frequent · Detectability: Delayed · Recovery: Manual
-Senaryo: pg_cron (15dk) + Vercel (günlük) ikisi de aynı satırı silip event yazıyor; etiket farklı (`dogrulama_sure_doldu` vs hep `sure_doldu`) → "neden serbest kaldı" belirsiz, SoR ambiguous. Fix: tek sahip. Audit N10/XP-05.
+Status: Resolved-pending-tests (`666675c`, 2026-08-19) · Impact: Low · Likelihood: Frequent → n/a · Detectability: Delayed · Recovery: Automatic
+Senaryo (çözülmeden önce): pg_cron (15dk) + Vercel (günlük) ikisi de aynı satırı silip event yazıyor; etiket farklı (`dogrulama_sure_doldu` vs hep düz `sure_doldu`) → "neden serbest kaldı" belirsiz + güven-skoru `dusen` yanlış sayımı (denominator eksilir → doğrulama oranı şişer), 03:00 örtüşmesinde çift-event.
+Çözüm (corrected-B, MODE A onaylı): tek yetkili `opsiyon_serbest_birak()` fonksiyonu `DELETE … RETURNING`-tabanlı (idempotent, tek etiket kaynağı); pg_cron=primary, Vercel=`rpc()` failsafe + count>0 anomaly log (monitor-only DEĞİL). INV-CRON-001/002. Divergence + çift-event + etiket-yanlışı retire edildi.
+Residual: yalnız ÇİFT arıza (pg_cron ölü VE Vercel günlük fail) → opsiyon `opsiyonlu` kilitli kalır = **çift-satış-güvenli** (INV-OPT-001 kalkanı + B3 hold), müteahhit panelinde görünür (opsiyonlu > kilit_bitis). Ek makineye gerek yok (P2). Historical mislabel: DOMAIN-DEBT-008 (backfill yok). Testler: T-CRON-001..005 (`references/25`), henüz yazılmadı → RISK-TEST-001 kapsamında.
 
 ## RISK-PRICEVIS-001 — Gizli fiyat (`fiyat_gorunur=false`) 3 yüzeyden sızıyor
 Status: Open · Impact: High · Likelihood: Frequent · Detectability: Delayed · Recovery: Dispute
