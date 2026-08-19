@@ -69,7 +69,7 @@ begin
       r.emlakci_id, 'sistem', 'Fiyat düştü',
       coalesce((select ad from proje where id = r.proje_id), 'Bir proje')
         || ' projesinde ' || r.daire_sayisi || ' dairede fiyat düştü.',
-      '/havuz/proje/' || r.proje_id
+      '/danisman/proje/' || r.proje_id
     );
   end loop;
 

@@ -10,7 +10,10 @@
     "typecheck": "tsc --noEmit",
     "typecheck:scripts": "tsc -p tsconfig.scripts.json --noEmit",
     "test:seo-inventory": "npx tsx tests/seo-komuta/inventory-smoke.ts",
-    "verify": "npm run typecheck && npm run typecheck:scripts && npm run test:seo-inventory && npm run build"
+    "test:domain": "npx tsx tests/domain/lead-visibility.test.ts && npx tsx tests/domain/no-dead-links.test.ts",
+    "test:db": "npx tsx tests/domain/db-invariants.test.ts",
+    "test": "npm run test:seo-inventory && npm run test:domain && npm run test:db",
+    "verify": "npm run typecheck && npm run typecheck:scripts && npm run test && npm run build"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",

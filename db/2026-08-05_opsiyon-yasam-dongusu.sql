@@ -47,7 +47,7 @@ begin
     select satici_id, 'sistem', 'Opsiyon süresi yaklaşıyor',
       proje_ad || ' · Daire ' || coalesce(daire_no,'?') || ' · opsiyonun ' ||
         greatest(1, round(extract(epoch from (kilit_bitis-now()))/3600))::int::text || ' saat içinde bitiyor',
-      '/havuz/opsiyonlarim'
+      '/danisman/opsiyonlarim'
     from tetik returning 1
   ),
   upd as ( update opsiyon set hatirlatildi=true where id in (select id from tetik) returning 1 )
