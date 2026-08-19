@@ -96,7 +96,7 @@ export default async function AdminPanel() {
       .limit(4),
     supabase.from("ofis").select("id, ad, marka"),
     supabase.from("profiles").select("rol, ofis_id"),
-    supabase.from("abonelik_paketi").select("id, ad, fiyat_aylik"),
+    supabase.from("abonelik_paketi").select("id, ad, fiyat_aylik, para_birimi"),
     supabase.from("abonelik").select("ofis_id, paket_id, durum").in("durum", ["deneme", "aktif"]),
     supabase
       .from("profiles")
@@ -138,11 +138,25 @@ export default async function AdminPanel() {
   const toplamKul = uretici + ofisYetkili + emlakci;
   const dogrulanmamisSay = (ureticiler ?? []).filter((u) => !u.dogrulanmis).length;
   const paketMap = new Map((paketler ?? []).map((p) => [p.id, p]));
-  const mrr = (abonelikler ?? []).reduce((t, a) => t + (Number(paketMap.get(a.paket_id)?.fiyat_aylik) || 0), 0);
+  // N8: MRR = yalnız AKTİF abonelik (deneme yinelenen gelir değil), para birimine göre GRUPLU
+  // (USD paket TRY toplamını şişirmesin). Deneme ayrı sayılır.
+  const aktifAbonelikler = (abonelikler ?? []).filter((a) => a.durum === "aktif");
+  const denemeSay = (abonelikler ?? []).filter((a) => a.durum === "deneme").length;
+  const mrrByCur = new Map<string, number>();
+  for (const a of aktifAbonelikler) {
+    const p = paketMap.get(a.paket_id);
+    if (!p) continue;
+    const cur = (p.para_birimi as string) || "TRY";
+    mrrByCur.set(cur, (mrrByCur.get(cur) ?? 0) + (Number(p.fiyat_aylik) || 0));
+  }
+  // Gösterim sırası: TRY önce, sonra alfabetik
+  const mrrSatirlari = [...mrrByCur.entries()].sort(([a], [b]) =>
+    a === "TRY" ? -1 : b === "TRY" ? 1 : a.localeCompare(b)
+  );
   const bekleyenSay = (bekleyenler ?? []).length;
-  const aktifAbonelik = abonelikler?.length ?? 0;
+  const aktifAbonelik = aktifAbonelikler.length;
   const ofisSay = ofisler?.length ?? 0;
-  const ofisAktifAbonelik = (abonelikler ?? []).filter((a) => a.ofis_id).length;
+  const ofisAktifAbonelik = aktifAbonelikler.filter((a) => a.ofis_id).length;
   const emlakciUretOran = uretici > 0 ? (emlakci / uretici).toFixed(1) : "—";
 
   // Ofis abonelik haritası (kısa liste)
@@ -216,10 +230,23 @@ export default async function AdminPanel() {
             <span className="text-[12.5px] font-semibold text-ink-soft">Aylık Yinelenen Gelir (MRR)</span>
             <span className="rozet bg-teal/12 text-teal-d">{aktifAbonelik} aktif abonelik</span>
           </div>
-          <div className="mt-3 flex items-end gap-2.5">
-            <span className="mono text-[34px] font-semibold leading-none tracking-tight text-navy">{fmtPara(mrr)}</span>
+          <div className="mt-3 flex flex-wrap items-end gap-x-3 gap-y-1">
+            {mrrSatirlari.length === 0 ? (
+              <span className="mono text-[34px] font-semibold leading-none tracking-tight text-navy">{fmtPara(0)}</span>
+            ) : (
+              mrrSatirlari.map(([cur, tut], i) => (
+                <span
+                  key={cur}
+                  className={`mono font-semibold leading-none tracking-tight text-navy ${i === 0 ? "text-[34px]" : "text-[18px] opacity-80"}`}
+                >
+                  {fmtPara(tut, cur)}
+                </span>
+              ))
+            )}
           </div>
-          <p className="mt-3 text-xs text-gray">ofis + üretici abonelikleri (satış komisyonundan pay alınmaz)</p>
+          <p className="mt-3 text-xs text-gray">
+            yalnız aktif ofis + üretici abonelikleri{denemeSay > 0 ? ` · ${denemeSay} deneme hariç` : ""} (satış komisyonundan pay alınmaz)
+          </p>
         </div>
 
         {/* Onay bekleyen (amber) */}
