@@ -46,7 +46,7 @@ export default async function UreticiStok({
     : "tumu") as "acik" | "opsiyon" | "satildi" | "planli" | "kapali" | "tumu";
   const supabase = await createClient();
 
-  const [{ data: projeler }, { data: birimRaw }, { data: bloklar }, { data: tipler }, { data: opsiyonRaw }, { data: hakedisRaw }] =
+  const [{ data: projeler }, { data: birimRaw }, { data: bloklar }, { data: tipler }, { data: opsiyonRaw }, { data: satisRaw }] =
     await Promise.all([
       supabase.from("proje").select("id, ad, para_birimi").order("created_at", { ascending: false }),
       supabase
@@ -58,8 +58,9 @@ export default async function UreticiStok({
       supabase.from("daire_tipi").select("id, ad, oda, net_m2, taban_fiyat, plan_url"),
       // Aktif opsiyonlar → "kim tuttu" (RLS: üretici kendi projesinin opsiyonunu görür)
       supabase.from("opsiyon").select("birim_id, satici_id, durum").in("durum", ["opsiyonlu", "satis_beklemede"]),
-      // Satışlar → "kim sattı" (hakedis tablosu; migration yoksa data null → graceful)
-      supabase.from("hakedis").select("birim_id, emlakci_id"),
+      // Satışlar → "kim sattı": kapanan opsiyon (sonuc='satildi'). Hakediş SAKLANMAZ (Option L/N4);
+      // satıcı atfı tek kaynaktan (opsiyon.satici_id) okunur — /uretici/hakedis ile aynı.
+      supabase.from("opsiyon").select("birim_id, satici_id").eq("sonuc", "satildi"),
     ]);
 
   // Per-daire görsel (birim.gorsel_url) — best-effort: kolon yoksa (migration bekliyor) sayfa kırılmasın
@@ -81,8 +82,8 @@ export default async function UreticiStok({
 
   // "Kim tuttu / kim sattı" — satici/emlakci id → ad (admin client; profiles_self RLS bypass, yalnız bu üreticinin satırlarındaki id'ler)
   const opsBirimSatici = new Map((opsiyonRaw ?? []).map((o) => [o.birim_id as string, o.satici_id as string]));
-  const hakedisBirimEmlakci = new Map((hakedisRaw ?? []).map((h) => [h.birim_id as string, h.emlakci_id as string]));
-  const kisiIds = [...new Set([...opsBirimSatici.values(), ...hakedisBirimEmlakci.values()].filter(Boolean))];
+  const satisBirimSatici = new Map((satisRaw ?? []).map((s) => [s.birim_id as string, s.satici_id as string]));
+  const kisiIds = [...new Set([...opsBirimSatici.values(), ...satisBirimSatici.values()].filter(Boolean))];
   let adById = new Map<string, string | null>();
   if (kisiIds.length) {
     const admin = createAdminClient();
@@ -96,7 +97,7 @@ export default async function UreticiStok({
       return id ? adById.get(id) ?? "Danışman" : null;
     }
     if (b.durum === "satildi") {
-      const id = hakedisBirimEmlakci.get(b.id);
+      const id = satisBirimSatici.get(b.id);
       return id ? adById.get(id) ?? "Danışman" : null;
     }
     return null;
