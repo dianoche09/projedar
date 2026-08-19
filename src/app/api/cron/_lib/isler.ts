@@ -104,17 +104,6 @@ export async function stokAcilisCalistir(): Promise<CronSonuc> {
   };
 }
 
-type DolanOpsiyon = {
-  id: string;
-  birim_id: string;
-  satici_id: string;
-  birim: { proje_id: string } | { proje_id: string }[] | null;
-};
-
-function projeIdCoz(b: DolanOpsiyon["birim"]): string | null {
-  if (!b) return null;
-  return Array.isArray(b) ? b[0]?.proje_id ?? null : b.proje_id ?? null;
-}
 
 /**
  * Opsiyon süre aşımı: süresi dolan aktif opsiyonları temizler
@@ -149,63 +138,33 @@ export async function fiyatKuraliCalistir(): Promise<CronSonuc> {
 
 export async function opsiyonSuresiCalistir(): Promise<CronSonuc> {
   const supabase = createAdminClient();
-  const simdi = new Date().toISOString();
 
-  // Süresi dolan opsiyonlar: (a) kesin opsiyon kilit_bitis geçti, VEYA (b) geçici kilit doğrulama
-  // penceresi doldu (dogrulandi=false + dogrulama_bitis geçti). İkisi de serbest bırakılır.
-  // B3/XP-03: YALNIZ 'opsiyonlu' serbest bırakılır. 'satis_beklemede' (danışman satışı bildirdi,
-  // müteahhit teyidi bekliyor) opsiyon-kilit zamanlayıcısıyla AUTO-SERBEST BIRAKILMAZ — aksi halde
-  // sözleşme imzalanırken birim tekrar müsait olup çift-satılabilir.
-  const { data: dolanlar, error: secErr } = await supabase
-    .from("opsiyon")
-    .select("id, birim_id, satici_id, birim:birim_id(proje_id)")
-    .eq("durum", "opsiyonlu")
-    .or(`kilit_bitis.lt.${simdi},and(dogrulandi.is.false,dogrulama_bitis.lt.${simdi})`);
-
-  if (secErr) {
-    console.error("Opsiyon süre aşımı (seçim) cron hatası:", secErr);
-    return { status: 500, govde: { hata: secErr.message } };
-  }
-
-  const liste = (dolanlar ?? []) as DolanOpsiyon[];
-  if (liste.length === 0) {
-    return {
-      status: 200,
-      govde: { basarili: true, temizlenen: 0, mesaj: "Süresi dolan opsiyon yok." },
-    };
-  }
-
-  // Sil (Trigger otomatik olarak birimleri 'musait' yapar ve son_guncelleme yeniler).
-  const { error } = await supabase
-    .from("opsiyon")
-    .delete()
-    .in(
-      "id",
-      liste.map((o) => o.id),
-    );
-
+  // N10/INV-CRON-001: opsiyon-expiry'nin TEK yetkili implementasyonu = DB fonksiyonu opsiyon_serbest_birak()
+  // (pg_cron 15dk = primary). Vercel günlük çağrı yalnız FAILSAFE: aynı fonksiyonu rpc ile çağırır, kendi
+  // SELECT/DELETE/label mantığını YENİDEN YAZMAZ (eski flat 'sure_doldu' audit divergence'i buradan geliyordu).
+  // Fonksiyon B3'ü korur (yalnız durum='opsiyonlu'), label'ı tek-kaynaktan ayırır (dogrulama_sure_doldu vs
+  // sure_doldu) ve delete-returning ile idempotenttir (çift-event yok). pg_cron güncelse count=0 döner;
+  // count>0 → pg_cron gecikti/öldü anomalisi → guard'lı hata logu (failsafe yine de birimi serbest bıraktı).
+  const { data, error } = await supabase.rpc("opsiyon_serbest_birak");
   if (error) {
-    console.error("Opsiyon zaman aşımı cron hatası:", error);
+    console.error("Opsiyon süre aşımı failsafe (rpc) hatası:", error);
     return { status: 500, govde: { hata: error.message } };
   }
-
-  // Audit (MVP-17): süre dolması = otomatik iptal
-  await kayitlarYaz(
-    liste.map((o) => ({
-      tip: "opsiyon" as const,
-      profileId: o.satici_id,
-      projeId: projeIdCoz(o.birim),
-      birimId: o.birim_id,
-      payload: { eylem: "sure_doldu" },
-    })),
-  );
-
+  const temizlenen = Number(data) || 0;
+  if (temizlenen > 0) {
+    console.error(
+      `pg_cron opsiyon-serbest gecikme/ariza: gunluk failsafe ${temizlenen} opsiyon serbest birakti`,
+    );
+  }
   return {
     status: 200,
     govde: {
       basarili: true,
-      temizlenen: liste.length,
-      mesaj: `Süresi dolan ${liste.length} opsiyon temizlendi; birimler otomatik 'müsait' (trigger).`,
+      temizlenen,
+      mesaj:
+        temizlenen > 0
+          ? `Failsafe: ${temizlenen} opsiyon serbest bırakıldı (pg_cron gecikmiş olabilir).`
+          : "Süresi dolan opsiyon yok (pg_cron güncel).",
     },
   };
 }
