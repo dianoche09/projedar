@@ -1,6 +1,6 @@
 # 17 — Risk Register (living)
 
-> Status: CURRENT · Last verified: 2026-08-14 · Seed: ilk full audit (2026-08-14)
+> Status: CURRENT · Last verified: 2026-08-20 · Seed: ilk full audit (2026-08-14)
 > Şablon: Impact(Critical/High/Medium/Low) · Likelihood(Frequent/Plausible/Unlikely) · Detectability(Immediate/Delayed/Difficult) · Recovery(Automatic/Manual/Dispute/Irreversible)
 
 ## RISK-TEST-001 — Kritik invariant'larda otomatik test yok
@@ -28,15 +28,17 @@ Status: Open · Impact: Medium · Likelihood: Plausible · Detectability: Delaye
 Senaryo: Geçerli public paylaşım linki olan biri `/api/etkilesim`'e sınırsız event basabilir (throttle/log yok, `src/app/api/etkilesim/route.ts`). `tahsis_ozet` "değişiklik" sayacını ve audit zincirini kirletir. Karşılaştır: `/api/lead` throttle'lı.
 Kontrol: IP/token throttle + log.
 
-## RISK-SHARE-001 — HMAC token 64-bit + non-constant-time compare
-Status: Open · Impact: Low · Likelihood: Unlikely · Detectability: Difficult · Recovery: Manual
-Senaryo: Paylaşım token'ı `HMAC-SHA256(...).slice(0,16)` = 64-bit truncated (`src/lib/sharing.ts:26`); `verifyShareToken` `expected===token` (timingSafeEqual değil, `:32-35`). Brute/timing marjinal ama mevcut; token hem PII lead hem event kapısı.
-Kontrol: token uzunluğunu artır + `timingSafeEqual`.
+## RISK-SHARE-001 — Paylaşım token: timing + iptal-edilemez capability
+Status: Resolved (2026-08-20 · DDR-015 · commits `5e038f2`,`c9f39c0`,`9532bda`) · Impact: Low · Likelihood: Unlikely · Detectability: Difficult · Recovery: Manual
+Senaryo (çözülmeden önce): `HMAC-SHA256(...).slice(0,16)`=64-bit token hem `===` (non-constant-time) hem **her yolun tek iptal-edilemez yetki kimliği** (`/api/lead`+`/api/etkilesim` yalnız `verifyShareToken` ile; kısa-kod mikrositesi bile token türetiyordu) → `aktif=false` yalnız render'ı iptal, lead-capture'ı etmiyordu; leaked link kalıcı PII+fiyat capability.
+Çözüm: (1) `timingSafeEqual` (timing oracle kapandı); (2) **kod=uçtan-uca yetki kimliği** → `aktif=false` render+lead+etkileşimi tutarlı iptal eder (R1 kapandı: kod-yolunda token client'a hiç gitmez); (3) uzun link emisyonu deprecate + fail-closed. Guessing zaten NON-ISSUE (64-bit online-only + canlı-durum gate).
+Residual (kabul): legacy 3-parça link render backward-compat, **iptal edilemez** (durumsuz) — mitigasyon = break-glass `LEAD_SHARE_SECRET` rotasyonu (R2 mitigated; tüm legacy linkleri geçersizler, kısa kodlar sağ çıkar). Runbook: `docs/GUVENLIK-RUNBOOK.md`.
 
 ## RISK-SECRET-001 — BYOK pazarlama anahtarları plaintext
-Status: Open · Impact: Medium · Likelihood: Unlikely · Detectability: Difficult · Recovery: Manual
-Senaryo: `pazarlama_entegrasyon` API anahtarları plaintext (doc 04:98; Vault Faz-2). DB erişimi → anahtar sızıntısı.
-Kontrol: Supabase Vault / şifreleme.
+Status: Accepted-with-runbook (2026-08-20 · DDR-015 · `a167339`; Vault ERTELENDİ) · Impact: Medium · Likelihood: Unlikely · Detectability: Difficult · Recovery: Manual (vendor-rotate)
+Senaryo: `pazarlama_entegrasyon` API anahtarları plaintext. RLS deny-all (rls on + 0 policy → yalnız service-role okur) DOĞRULANDI → app-kullanıcısına sızmaz; residual = DB dump/backup/log/support erişimi.
+Kabul gerekçesi: anahtarlar **rotatable 3.-parti secret** → at-rest exposure blast-radius = "vendor'da yenile"; no-key-logging audit TEMİZ (encryption'ın kapatamadığı log-vektörü kapalı); hiçbir SECURITY DEFINER expose etmiyor. **`force=true` burada güvenlik kontrolü DEĞİL** (service_role bypassrls; residual tehditler RLS'ten geçmez). Solo-operatör için runbook+no-log > encryption ROI.
+Kontrol (ertelenen, PROJECT DECISION): backup/at-rest tehdidi önceliklenirse Supabase **Vault** (root key DB dışında Supabase KMS). Break-glass runbook: `docs/GUVENLIK-RUNBOOK.md`. Regresyon: db-invariants testi RLS deny-all assert eder.
 
 ## RISK-STATE-001 — `satis_beklemede` birim cron ile serbest kalıyor (çift-satış açığı)
 Status: Open · Impact: High · Likelihood: Plausible · Detectability: Difficult · Recovery: Dispute

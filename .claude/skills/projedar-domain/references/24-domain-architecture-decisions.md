@@ -1,6 +1,6 @@
 # 24 — Domain Architecture Decisions (ADR, living)
 
-> Status: CURRENT · Last verified: 2026-08-14
+> Status: CURRENT · Last verified: 2026-08-20
 > DEĞİŞMEZLER (CLAUDE.md) = kabul edilmiş ADR'ler olarak kaydedildi. Yeni karar buraya; çelişen eski kararı supersede et.
 
 ## DDR-001 — RLS-önce görünürlük, tahsis üzerinden
@@ -97,5 +97,20 @@ Karar (N4 · MODE A→L): Danışman hakediş ekranı **canlı-hesaplanan salt-b
 - **Option L (seçildi):** saf canlı görünüm, tablo/backfill yok. Neden: geçmiş satışlar otomatik görünür (backfill sorunu yok); `/uretici` (müteahhit) ile `/danisman` (danışman) **aynı RPC** (`birim_satici_kazanci`) → cross-panel sayı tutarlı. Enforcement: INV-COMM-002. Kod: `src/app/danisman/hakedis/page.tsx`, `EmlakciNav.tsx`; `birimSatisKapat`'tan ölü hakediş upsert kaldırıldı.
 - **Kabul edilen limitasyonlar (Option L tradeoff, MODE A'da belgeliydi):** (1) müteahhit override tutarı hiçbir yerde saklanmaz → yalnız liste-fiyatı tahmini gösterilir; (2) satış sonrası liste fiyatı düzenlenirse hesaplanan hakediş **kayar** (işlem-anı dondurulmaz); (3) satış sonrası tahsis çekilirse danışman kendi kapanan satışının **daire meta**'sını (proje/daire adı) kaybedebilir (tutar RPC'den gelir, meta RLS-gated). İleride "durable earned snapshot" istenirse: ödeme alanları OLMADAN reduced tablo + iki paneli de snapshot'a çevir (ayrı karar; bu ADR'yi ezmeden).
 - İleri-uyumlu: payment-tracking asla eklenmez (INV-COMM-002 bağlar); yalnız earned-snapshot (accuracy) yeniden açılabilir.
+
+## DDR-015 — Kısa kod (`paylasim_kod`) = kanonik paylaşım YETKİ kimliği; uzun link emisyonu deprecate (güvenlik-sertleştirme bloğu)
+Date: 2026-08-20 · Status: Accepted (owner) · Class: Platform invariant + Product decision · MODE A→C
+Karar (OQ-SHARE-001 çözümü + RISK-SHARE-001/RISK-SECRET-001 · commits `5e038f2`,`c9f39c0`,`9532bda`,`a167339`):
+- **Tespit (MODE A):** deterministik `HMAC-SHA256(secret,"emlakci:birim").slice(0,16)` (64-bit) token yalnız render değil, **her yolun tek yetki kimliğiydi** — kısa kod ile gelen mikrosite bile `p/[...slug]/page.tsx:124`'te token'ı türetip `/api/lead`+`/api/etkilesim`'e veriyordu; iki API **yalnız** `verifyShareToken` ile yetkilendiriyordu. Sonuç: `paylasim_kod.aktif=false` **yalnız render'ı** iptal ediyordu; lead-capture + etkileşim (asıl hassas aksiyon) iptal EDİLEMEZ kalıyordu. Yani "kısa kod iptal edilebilir" yarı-doğruydu.
+- **Threat honesty:** token guessing NON-ISSUE (64-bit online-only ≈ 18M yıl, + lead ayrıca canlı-durum gate'li `api/lead:45-62`/N11). Gerçek boşluk = **iptal edilebilirlik + leak kalıcılığı**, guessing değil. Bu yüzden P2 (zayıf lifecycle + recovery yok), P1 değil.
+- **Kabul edilen tasarım:**
+  1. **Constant-time compare** (`5e038f2`): `verifyShareToken` `timingSafeEqual` (uzunluk sabit 16 hex, gizli değil → önce length, sonra sabit-zaman byte). Timing oracle kapandı.
+  2. **kod = uçtan-uca yetki kimliği** (`c9f39c0`, OQ-SHARE-001 GERÇEK closure): `slugCoz` artık `{emlakciId, birimId, kod|null}` döner. Mikrosite kod'u LeadForm/FavoriButton/OdemeSlider'a geçirir; client kod varken `{kod}` POST eder; `/api/lead`+`/api/etkilesim` `paylasimKoduCoz(kod)` (**`aktif=true` kontrolü içinde**) ile çözer ve **(emlakci,birim)'i KOD'DAN türetir — client id'lerine güvenmez** (`api/lead/route.ts:40-45`, `api/etkilesim/route.ts:17-24`). Kod varken deterministik token **client'a türetilmez/gönderilmez** (`p/[...slug]/page.tsx:126` `kod ? "" : generateShareToken`). Böylece `aktif=false` **render + lead + etkileşim'i TUTARLI** iptal eder.
+  3. **Uzun link emisyonu deprecate + fail-closed** (`9532bda`): 3 emisyon sitesi (katalog/proje/benzer) kod yoksa **kalıcı uzun link BASMAZ** → boş bırakır (paylaşım o birim için graceful degrade), kullanılmayan `generateShareToken` import'ları temizlendi. **PRODUCT DECISION:** nadir "paylaşım geçici yok, tekrar dene" > sessizce iptal-edilemez kalıcı capability basmak.
+  4. **Legacy 3-parça link:** `verifyShareToken` yalnız **render backward-compat** için korunur (zaten dağıtılmış WhatsApp linkleri ölmesin). Bu linkler **iptal edilemez** (durumsuz). **Break-glass recovery = `LEAD_SHARE_SECRET` rotasyonu** (tüm legacy linkleri topluca geçersizler; kısa kodlar DB-backed olduğu için rotasyondan sağ çıkar → kod'u primary yapmanın bir nedeni daha). Runbook: `docs/GUVENLIK-RUNBOOK.md`.
+- **Neden blocklist YOK:** guessing infeasible + leaked link'i bilmeden bloke edilemez; secret rotation daha ucuz break-glass. Gold-plating reddedildi.
+- **Konum tutarlılığı (NEVER CONFLATE):** public paylaşım izni ≠ private B2B stok erişimi; UI-disabled ≠ server authz — yetki server-side kod-çözümünde, client id'leri authoritative değil.
+- **BYOK (a167339):** RISK-SECRET-001 → **accepted-with-runbook** (Vault ERTELENDİ). RLS deny-all doğrulandı (rls on + 0 policy → yalnız service-role okur); **no-key-logging audit TEMİZ** (hiçbir `anahtarlariOku` çıktısı console/stringify'a ulaşmıyor); **hiçbir SECURITY DEFINER anahtarları expose etmiyor** (tüm `db/*.sql` tarandı). **`force=true` burada güvenlik kontrolü DEĞİL** (`service_role` bypassrls; residual tehditler dump/backup/log RLS'ten geçmez). Anahtarlar **rotatable 3.-parti secret** → at-rest exposure blast-radius = "vendor'da yenile" (runbook), bu yüzden encryption'ın marjinal değeri düşük; solo-operatör için runbook+no-log > encryption. Regresyon: db-invariants testi RLS deny-all assert eder.
+- **Açık kalan (ayrı):** OQ-PRICEVIS-001 — tahsis revoke/expire olunca dolaşımdaki `/p/{kod}` **otomatik** deaktive olmuyor (`aktif` manuel); kod-yolu artık iptal-yeteneğini VERİR ama tahsis-cascade'e bağlı DEĞİL. Ayrı PRODUCT DECISION.
 
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`

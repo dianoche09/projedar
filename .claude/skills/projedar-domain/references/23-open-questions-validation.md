@@ -1,6 +1,6 @@
 # 23 — Open Questions / Validation Required (living)
 
-> Status: CURRENT · Last verified: 2026-08-19
+> Status: CURRENT · Last verified: 2026-08-20
 > Etiket: PROJECT DECISION REQUIRED · EXTERNAL DOMAIN EXPERT · REGULATORY · LEGAL. Sessizce koda çevirme.
 
 ## OQ-TAHSIS-001 — Tahsis revoke edilince aktif opsiyon ne olmalı? [PROJECT DECISION]
@@ -30,8 +30,11 @@ E3/DDR-013: gerçek erasure kurulmadan önce hukuk cevabı gerekir:
 3. Aktif satış/hakediş olan emlakçı silinince hakediş+satış anonimleştirilip saklansın (şema RESTRICT zaten zorluyor) — onay?
 4. KYC belgeleri (`kullanici_belge` + `kyc-belge` bucket) hemen mi silinsin, N yıl mı saklansın (KYC/doğrulama yükümlülüğü)?
 
-## OQ-SHARE-001 — Satış/opsiyon sonrası dolaşımdaki paylaşım kodları deaktive edilmeli mi? [PRODUCT DECISION]
-Bugün `paylasim_kod.aktif` manuel; mikrosite canlı bastığı için satıldı görünür ama link hâlâ geçerli.
+## OQ-SHARE-001 — Paylaşım revoke tutarlılığı [RESOLVED 2026-08-20 → DDR-015]
+RESOLVED (owner, güvenlik-sertleştirme bloğu · commits `5e038f2`,`c9f39c0`,`9532bda`).
+**MODE A bulgusu (orijinal soruyu genişletti):** sorun yalnız "render iptal edilse de link geçerli" değildi — API yetki kapısı da (`/api/lead`+`/api/etkilesim`) `aktif`'i **bypass ediyordu** (deterministik HMAC token'la yetkilendiriyorlardı; kısa-kod mikrositesi bile token türetiyordu, `p/[...slug]/page.tsx:124`). Yani `aktif=false` yalnız render'ı iptal ediyor, lead-capture+etkileşimi ETMİYORDU.
+**Çözüm (DDR-015):** kısa kod = uçtan-uca yetki kimliği; `slugCoz` kod döner, iki API `paylasimKoduCoz` (`aktif=true`) ile çözer + (emlakci,birim)'i kod'dan türetir (client id'leri güvenilmez), kod-yolunda token client'a hiç gitmez → `aktif=false` render+lead+etkileşimi TUTARLI iptal eder. Uzun link emisyonu deprecate (fail-closed); legacy 3-parça link render backward-compat, iptal edilemez, break-glass=`LEAD_SHARE_SECRET` rotasyonu.
+**Kalan alt-soru (hâlâ açık, OQ-PRICEVIS-001'e bağlı):** `aktif` bugün **manuel**; satış/opsiyon/tahsis-revoke sonrası dolaşımdaki kod **otomatik** deaktive OLMUYOR. Otomatik cascade istenirse ayrı PRODUCT DECISION.
 
 ## OQ-UR-001 — Üretici `dogrulanmis` güven rozeti kanıt-tabanlı mı, admin-attestation mı? [PRODUCT DECISION]
 N12 kapanışı: `ureticiEkle` (`src/app/admin/actions.ts:704-706,719-724`) üreticiyi `dogrulanmis:true` başlatır, `vergi_no`
