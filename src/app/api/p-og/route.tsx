@@ -30,20 +30,34 @@ async function loadFont(family: string, weight: number, text: string): Promise<A
   return (await fetch(src[1])).arrayBuffer();
 }
 
-async function buildImage(subset: string, node: ReactElement): Promise<ImageResponse> {
-  const text = ALFABE + " " + subset;
-  const [outfit800, inter600, inter400] = await Promise.all([
-    loadFont("Outfit", 800, text),
-    loadFont("Inter", 600, text),
-    loadFont("Inter", 400, text),
-  ]);
-  return new ImageResponse(node, {
-    ...size,
-    fonts: [
+// PERF/WhatsApp: fontları SABİT ALFABE subset'iyle bir kez yükle ve module-scope memoize et.
+// Eskiden her istek per-daire `&text=` ile 6 Google Fonts fetch yapıyordu (~6sn) → WhatsApp bot
+// timeout'una takılıp OG kartını çekemiyordu ("sadece text gidiyor"). ALFABE tüm TR harf/rakam/
+// sembolü kapsadığından proje/daire/danışman adları render olur; sıcak instance'ta ağ fetch'i yok.
+type FontDef = { name: string; data: ArrayBuffer; weight: 400 | 600 | 800; style: "normal" };
+let fontCache: Promise<FontDef[]> | null = null;
+function getFonts(): Promise<FontDef[]> {
+  if (!fontCache) {
+    fontCache = Promise.all([
+      loadFont("Outfit", 800, ALFABE),
+      loadFont("Inter", 600, ALFABE),
+      loadFont("Inter", 400, ALFABE),
+    ]).then(([outfit800, inter600, inter400]): FontDef[] => [
       { name: "Outfit", data: outfit800, weight: 800, style: "normal" },
       { name: "Inter", data: inter600, weight: 600, style: "normal" },
       { name: "Inter", data: inter400, weight: 400, style: "normal" },
-    ],
+    ]);
+  }
+  return fontCache;
+}
+
+async function buildImage(node: ReactElement): Promise<ImageResponse> {
+  return new ImageResponse(node, {
+    ...size,
+    fonts: await getFonts(),
+    // Kart SABİT bilgi taşır (fiyat/durum yok) → agresif CDN cache güvenli. İlk üretimden sonra
+    // WhatsApp/CDN cache'ten milisaniyede alır (timeout'a takılmaz). Değişirse 1 gün içinde tazelenir.
+    headers: { "Cache-Control": "public, max-age=3600, s-maxage=86400, stale-while-revalidate=604800" },
   });
 }
 
@@ -74,7 +88,7 @@ export async function GET(request: Request): Promise<Response> {
   } catch {
     coz = null;
   }
-  if (!coz) return buildImage("", genericNode());
+  if (!coz) return buildImage(genericNode());
   const emlakci = coz.emlakciId;
   const birim = coz.birimId;
 
@@ -82,7 +96,7 @@ export async function GET(request: Request): Promise<Response> {
   try {
     supabase = createAdminClient();
   } catch {
-    return buildImage("", genericNode());
+    return buildImage(genericNode());
   }
 
   const { data } = await supabase
@@ -99,7 +113,7 @@ export async function GET(request: Request): Promise<Response> {
   const p = (data as any)?.proje;
   const t = (data as any)?.tip;
   /* eslint-enable @typescript-eslint/no-explicit-any */
-  if (!data || !p) return buildImage("", genericNode());
+  if (!data || !p) return buildImage(genericNode());
 
   // Paylaşan danışman — kartın ön planı BİZ değil, proje + bu projeyi paylaşan danışman.
   const { data: prof } = await supabase
@@ -128,7 +142,6 @@ export async function GET(request: Request): Promise<Response> {
   const konum = [p?.ilce, p?.il].filter(Boolean).join(", ");
   const daireEtiket = data.daire_no ? `Daire ${data.daire_no}` : data.kat != null ? `${data.kat}. kat` : null;
   const daireOzet = [daireEtiket, t?.oda, data.net_m2 ? `${data.net_m2} m²` : null].filter(Boolean).join("  ·  ");
-  const subset = [projeAd, konum, daireOzet, danismanAd, danismanTel].filter(Boolean).join(" ");
 
   const node = (
     <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", background: ZEMIN, fontFamily: "Inter" }}>
@@ -198,5 +211,5 @@ export async function GET(request: Request): Promise<Response> {
     </div>
   );
 
-  return buildImage(subset, node);
+  return buildImage(node);
 }
