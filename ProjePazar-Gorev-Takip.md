@@ -156,7 +156,10 @@
 | SEC-emit | Uzun-link emisyonu fail-closed (iptal-edilemez link basılmaz) | 9532bda |
 | SEC-byok | BYOK: RLS deny-all doğrulandı + no-log denetimi temiz + rotate runbook | a167339 |
 
-**Güvenlik kalan (opsiyonel/ertelendi):** BYOK Vault at-rest şifreleme (owner kararı, DB-dump tehdidi önceliklenirse); behavioral concurrency test harness (çift-satış runtime yarışı T-OPT-001/002).
+| SEC-etkilesim | `/api/etkilesim` durum-gate (INV-SHARE-003) — satılan dairede favori/ödeme sinyali reddedilir | 0593733 |
+| SHARE-lifecycle | Karar: degrade-not-kill (CDO REVISE). Satış `aktif`'e dokunmaz; satılan link "Satıldı + benzer" gösterir; `aktif=false` yalnız revoke. OQ-SHARE-001 KAPANDI | (karar) |
+
+**Güvenlik kalan (opsiyonel/ertelendi):** BYOK Vault at-rest şifreleme (owner kararı, DB-dump tehdidi önceliklenirse); behavioral concurrency test harness (çift-satış runtime yarışı T-OPT-001/002); premature (mevcut hacim 10 kullanıcı): pagination/N+1.
 
 ### ⏳ Düzeltme/açıklama (kullanıcı geri bildirimi)
 | # | Görev | Not |
