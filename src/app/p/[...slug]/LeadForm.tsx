@@ -7,11 +7,14 @@ export default function LeadForm({
   birimId,
   emlakciId,
   token,
+  kod,
 }: {
   projeId: string;
   birimId: string;
   emlakciId: string;
   token: string;
+  /** Yeni kısa link kodu (iptal edilebilir). Varsa yetki bundan çözülür; yoksa legacy token. */
+  kod?: string | null;
 }) {
   const [ad, setAd] = useState("");
   const [telefon, setTelefon] = useState("");
@@ -36,10 +39,9 @@ export default function LeadForm({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // kod varsa yetki ondan çözülür (iptal edilebilir); yoksa legacy token+id'ler.
+          ...(kod ? { kod } : { birimId, emlakciId, token }),
           projeId,
-          birimId,
-          emlakciId,
-          token,
           ad,
           telefon,
           kvkk,

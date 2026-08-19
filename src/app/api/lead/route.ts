@@ -2,16 +2,20 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeTelefon } from "@/lib/telefon";
-import { verifyShareToken } from "@/lib/sharing";
+import { verifyShareToken, paylasimKoduCoz } from "@/lib/sharing";
 import { bildirimYaz } from "@/lib/bildirim";
 import { birimLeadKabulEdilebilir, type BirimDurum } from "@/lib/types";
 
-// Public endpoint — girdi Zod ile doğrulanır, imzalı paylaşım token'ı zorunludur (forge engeli).
+// Public endpoint — girdi Zod ile doğrulanır. Yetki İKİ biçimde: (a) `kod` (yeni kısa link) →
+// paylasimKoduCoz aktif=true kontrolü ile çözülür = İPTAL EDİLEBİLİR; (b) emlakci+birim+imzalı token
+// (eski uzun link) → verifyShareToken = geriye-uyum, iptal edilemez. Kod varsa emlakci/birim ONDAN türetilir
+// (client'ın gönderdiği id'lere güvenilmez). OQ-SHARE-001: aktif=false artık lead'i de durdurur.
 const leadSemasi = z.object({
+  kod: z.string().min(1).max(24).optional(),
   projeId: z.string().uuid().nullish(),
-  birimId: z.string().uuid("Geçersiz birim"),
-  emlakciId: z.string().uuid("Geçersiz danışman"),
-  token: z.string().min(1, "Geçersiz istek"),
+  birimId: z.string().uuid().optional(),
+  emlakciId: z.string().uuid().optional(),
+  token: z.string().min(1).optional(),
   ad: z.string().trim().min(2, "Ad-soyad gir").max(80, "Ad-soyad çok uzun"),
   telefon: z.string().trim().min(7, "Geçerli bir telefon gir").max(20, "Geçerli bir telefon gir"),
   kvkk: z.literal(true, { message: "KVKK onayı zorunludur." }),
@@ -28,10 +32,27 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    const { projeId, birimId, emlakciId, token, ad, telefon, niyet } = sonuc.data;
+    const { kod, projeId, ad, telefon, niyet } = sonuc.data;
 
-    // İmzalı paylaşım token'ı doğrula (/api/etkilesim ile aynı desen) — sahte lead/PII yazımını engeller
-    if (!verifyShareToken(emlakciId, birimId, token)) {
+    // Yetki + (emlakci, birim) çözümü — kod öncelikli (iptal edilebilir), yoksa legacy imzalı token.
+    let emlakciId: string;
+    let birimId: string;
+    if (kod) {
+      const coz = await paylasimKoduCoz(kod); // aktif=true kontrolü içinde → iptal edilmişse null
+      if (!coz) {
+        return NextResponse.json({ hata: "Paylaşım linki geçersiz veya iptal edilmiş." }, { status: 400 });
+      }
+      emlakciId = coz.emlakciId;
+      birimId = coz.birimId;
+    } else if (
+      sonuc.data.emlakciId &&
+      sonuc.data.birimId &&
+      sonuc.data.token &&
+      verifyShareToken(sonuc.data.emlakciId, sonuc.data.birimId, sonuc.data.token)
+    ) {
+      emlakciId = sonuc.data.emlakciId;
+      birimId = sonuc.data.birimId;
+    } else {
       return NextResponse.json({ hata: "Geçersiz istek" }, { status: 400 });
     }
 

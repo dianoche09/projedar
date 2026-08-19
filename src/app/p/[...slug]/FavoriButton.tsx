@@ -8,11 +8,14 @@ export function FavoriButton({
   birim,
   proje,
   token,
+  kod,
 }: {
   emlakci: string;
   birim: string;
   proje: string;
   token: string;
+  /** Yeni kısa link kodu (iptal edilebilir). Varsa yetki bundan çözülür; yoksa legacy token. */
+  kod?: string | null;
 }) {
   const [favori, setFavori] = useState(false);
   const anahtar = `favori:${birim}`;
@@ -42,7 +45,7 @@ export function FavoriButton({
       void fetch("/api/etkilesim", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ emlakci, birim, proje, token, tip: "favori" }),
+        body: JSON.stringify({ ...(kod ? { kod } : { emlakci, birim, token }), proje, tip: "favori" }),
       }).catch(() => {});
     }
   }

@@ -132,14 +132,18 @@ export async function paylasimKodlariAl(
  */
 export async function slugCoz(
   slug: string[] | undefined,
-): Promise<{ emlakciId: string; birimId: string } | null> {
+): Promise<{ emlakciId: string; birimId: string; kod: string | null } | null> {
   if (!slug) return null;
   if (slug.length === 3) {
+    // Eski imzalı uzun link — iptal edilemez (kod yok). Geriye-uyum için render'da desteklenir.
     const [emlakciId, birimId, token] = slug;
-    return verifyShareToken(emlakciId, birimId, token) ? { emlakciId, birimId } : null;
+    return verifyShareToken(emlakciId, birimId, token) ? { emlakciId, birimId, kod: null } : null;
   }
   if (slug.length === 1) {
-    return paylasimKoduCoz(slug[0]);
+    // Yeni kısa kod — iptal edilebilir (aktif=false → çözüm null). kod'u geri döndür ki
+    // etkileşim/lead API'leri de kod üzerinden yetkilendirilsin (render+aksiyon tutarlı revoke).
+    const coz = await paylasimKoduCoz(slug[0]);
+    return coz ? { ...coz, kod: slug[0] } : null;
   }
   return null;
 }

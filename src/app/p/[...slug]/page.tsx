@@ -119,9 +119,11 @@ export default async function PublicBirimPage({
   if (!coz) {
     notFound();
   }
-  const { emlakciId: emlakci, birimId: birim } = coz;
-  // Etkileşim API'leri (favori/lead/ödeme sinyali) imzalı token bekler → türet (URL'de olmasa da).
-  const token = generateShareToken(emlakci, birim);
+  const { emlakciId: emlakci, birimId: birim, kod } = coz;
+  // Etkileşim API'leri kod öncelikli yetkilendirir (iptal edilebilir). KOD VARSA deterministik token
+  // client'a HİÇ gönderilmez → sızdırılıp revocation baypas edilemez (R1 kapanır). Yalnız eski uzun
+  // link (kod yok; token zaten URL'de) için türetilir → geriye-uyum.
+  const token = kod ? "" : generateShareToken(emlakci, birim);
 
   // 2. RLS bypass eden admin client'ı ile veriyi çek (public ziyaretçiler RLS'e takılmamalı)
   const supabase = createAdminClient();
@@ -470,6 +472,7 @@ export default async function PublicBirimPage({
                   birim={b.id}
                   proje={p?.id ?? ""}
                   token={token}
+                  kod={kod}
                 />
                 {eklentiler.length > 0 ? (
                   <div className="mt-4 space-y-1 border-t border-hair pt-3 text-sm">
@@ -666,14 +669,14 @@ export default async function PublicBirimPage({
             {/* Favori — anonim sinyal (PDF'te gizli) */}
             {b.satilabilir ? (
               <div className="print:hidden">
-                <FavoriButton emlakci={emlakci} birim={birim} proje={p?.id ?? ""} token={token} />
+                <FavoriButton emlakci={emlakci} birim={birim} proje={p?.id ?? ""} token={token} kod={kod} />
               </div>
             ) : null}
 
             {/* Lead Formu — baskıda gizli (müşteriye PDF'te gerekmez) */}
             <div className="print:hidden">
               {b.satilabilir && bDurum === "musait" ? (
-                <LeadForm projeId={p?.id} birimId={b.id} emlakciId={emlakci} token={token} />
+                <LeadForm projeId={p?.id} birimId={b.id} emlakciId={emlakci} token={token} kod={kod} />
               ) : bDurum === "planli" && b.satisa_acilis ? (
                 <div className="rounded-2xl border border-navy/20 bg-navy/[0.03] p-5 text-center">
                   <p className="text-sm font-semibold text-navy">

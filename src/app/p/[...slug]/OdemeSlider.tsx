@@ -22,6 +22,7 @@ export function OdemeSlider({
   birim,
   proje,
   token,
+  kod,
 }: {
   liste: number;
   psim: string;
@@ -33,6 +34,8 @@ export function OdemeSlider({
   birim: string;
   proje: string;
   token: string;
+  /** Yeni kısa link kodu (iptal edilebilir). Varsa yetki bundan çözülür; yoksa legacy token. */
+  kod?: string | null;
 }) {
   const [pesinatPct, setPesinatPct] = useState(() => Math.min(80, Math.max(10, varsayilanPesinat ?? 30)));
   const [taksit, setTaksit] = useState(() =>
@@ -51,7 +54,7 @@ export function OdemeSlider({
     void fetch("/api/etkilesim", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ emlakci, birim, proje, token, tip: "odeme_hesap" }),
+      body: JSON.stringify({ ...(kod ? { kod } : { emlakci, birim, token }), proje, tip: "odeme_hesap" }),
     }).catch(() => {});
   };
 
