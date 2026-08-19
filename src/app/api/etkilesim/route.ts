@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyShareToken, paylasimKoduCoz } from "@/lib/sharing";
+import { birimLeadKabulEdilebilir, type BirimDurum } from "@/lib/types";
 
 /**
  * Mikrosite anonim etkileşim sinyali (favori vb.) → events.
@@ -33,6 +34,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ hata: "Geçersiz tip" }, { status: 400 });
     }
     const supabase = createAdminClient();
+
+    // INV-SHARE-003: satılan/terminal birimde anonim sinyal (favori/ödeme) YAZILMAZ — canlı durum
+    // gate (/api/lead N11 ile aynı: musait/opsiyonlu/satis_beklemede kabul, terminal red). "Ölü
+    // envanter aktivitesi"ni durduran doğru katman bu (paylaşımı 404 yapmak değil).
+    const { data: birimRow } = await supabase.from("birim").select("durum, satilabilir").eq("id", birim).single();
+    if (!birimRow || !birimLeadKabulEdilebilir(birimRow.durum as BirimDurum, birimRow.satilabilir as boolean)) {
+      return NextResponse.json({ hata: "Geçersiz istek" }, { status: 400 });
+    }
+
     await supabase.from("events").insert({
       tip,
       profile_id: emlakci,
