@@ -120,7 +120,14 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const toplamMusait = projeler.reduce((t, p) => t + p.musait, 0);
   const toplamOpsiyon = projeler.reduce((t, p) => t + p.opsiyon, 0);
   const uretSayi = useMemo(() => new Set(projeler.map((p) => `${p.il ?? ""}|${p.ilce ?? ""}`)).size, [projeler]);
-  const sonSenkron = projeler[0]?.son_guncelleme ? zamanOnce(projeler[0].son_guncelleme) : null;
+  // N5: havuz statik snapshot (realtime yalnız proje detayda). Rozet realtime "Canlı" pulsu
+  // yerine, en taze son_guncelleme'ye göre DÜRÜST tazelik kademesi gösterir (DEĞİŞMEZ #5).
+  const sonGuncIso = projeler.reduce<string | null>(
+    (acc, p) => (!acc || p.son_guncelleme > acc ? p.son_guncelleme : acc),
+    null,
+  );
+  const sonSenkron = sonGuncIso ? zamanOnce(sonGuncIso) : null;
+  const havuzTaze = sonGuncIso ? tazelikKademe(sonGuncIso) : null;
 
   const tipAcKapa = (t: string) => setTip((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
   const turAcKapa = (t: string) => setTur((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
@@ -158,10 +165,12 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
       <header className="belir mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <div className="mb-1.5 flex items-center gap-2.5">
-            <span className="rozet" style={{ background: "rgba(47,179,107,.12)", color: "var(--color-green)" }}>
-              <span className="freshdot nabiz" style={{ background: "var(--color-green)" }} />
-              Canlı
-            </span>
+            {havuzTaze ? (
+              <span className="rozet" style={{ background: havuzTaze.zemin, color: havuzTaze.renk }} title={havuzTaze.ipucu}>
+                <span className="freshdot" style={{ background: havuzTaze.renk }} />
+                {havuzTaze.eski ? "Güncellenmedi" : "Canlı stok"}
+              </span>
+            ) : null}
             {sonSenkron ? (
               <span className="text-[12.5px] font-medium text-[var(--ink-faint)]">
                 son senkron <span className="mono text-ink-soft">{sonSenkron}</span>
