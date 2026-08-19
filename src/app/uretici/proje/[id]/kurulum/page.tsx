@@ -357,17 +357,11 @@ export default async function ProjeKurulum({
           <input name="vade_farki_pct" type="number" step="0.1" placeholder="Vade farkı % (0 = vade farksız)" className={inpCls} />
           <div className="sm:col-span-3"><SubmitButton>Ödeme planını uygula</SubmitButton></div>
         </form>
-        <p className="mt-2 text-xs text-gray">
-          Önce <code className="rounded bg-soft px-1 font-mono">db/2026-06-28_odeme-plani.sql</code> migration&apos;ı Supabase SQL Editor&apos;den çalıştırılmalı.
-        </p>
       </Bolum>
 
       {/* Dinamik Fiyat Kuralları — deterministik zam/indirim otomasyonu */}
       <Bolum baslik="Dinamik Fiyat Kuralları" aciklama="Süre / satış adedi / satış yüzdesi / takvim tetiğine göre otomatik zam-indirim. Otomatik uygula ya da önce sana öneri düşür — sen seç.">
         <FiyatKurallari projeId={id} ayar={fiyatAyar} kurallar={fiyatKurallar} tipler={tipler ?? []} />
-        <p className="mt-3 text-xs text-gray">
-          Önce <code className="rounded bg-soft px-1 font-mono">db/2026-08-11_dinamik-fiyat.sql</code> migration&apos;ı Supabase SQL Editor&apos;den çalıştırılmalı.
-        </p>
       </Bolum>
 
       {/* ── Mahal Listesi ── */}
