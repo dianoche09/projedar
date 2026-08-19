@@ -147,6 +147,17 @@
 
 **Kalan (P3/LATER, bu batch dışı):** ölçek (pagination/N+1), güvenlik-sertleştirme (HMAC 64-bit token + non-constant-time, BYOK plaintext), abuse metrik self-inflate, KVKK erasure Option B (hukuk), + küçük UX (E2b yuksek_riskli rozet, D-12 rakip opsiyon ETA vs).
 
+### ✅ 2026-08-19/20 — Test altyapısı + Güvenlik-sertleştirme
+| # | Görev | Commit |
+|---|-------|--------|
+| T1 | Domain test katmanı (`npm test`/`verify`): N11 lead doğruluk tablosu + N1 no-dead-links guard + DB yapısal invariant'lar (çift-satış index, cron, trigger, RLS deny-all). Guard eski `/havuz`'u yakaladı → düzeltildi | bb55ba3 |
+| SEC-token | Constant-time compare (timingSafeEqual) | 5e038f2 |
+| SEC-revoke | kod-as-authz: paylaşım iptali artık render+lead+etkileşimde gerçek (OQ-SHARE-001) | c9f39c0 |
+| SEC-emit | Uzun-link emisyonu fail-closed (iptal-edilemez link basılmaz) | 9532bda |
+| SEC-byok | BYOK: RLS deny-all doğrulandı + no-log denetimi temiz + rotate runbook | a167339 |
+
+**Güvenlik kalan (opsiyonel/ertelendi):** BYOK Vault at-rest şifreleme (owner kararı, DB-dump tehdidi önceliklenirse); behavioral concurrency test harness (çift-satış runtime yarışı T-OPT-001/002).
+
 ### ⏳ Düzeltme/açıklama (kullanıcı geri bildirimi)
 | # | Görev | Not |
 |---|-------|-----|
