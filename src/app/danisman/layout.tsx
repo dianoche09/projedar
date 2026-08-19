@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { cikisYap } from "@/app/(auth)/login/actions";
-import { panelYolu } from "@/lib/roller";
+import { panelYolu, ROL_KISI_ETIKET, ORG_ROLLER, type Rol } from "@/lib/roller";
 import { Logo } from "@/components/Logo";
 import { BottomNav } from "@/components/ui/BottomNav";
 import { EmlakciNav } from "@/components/ui/EmlakciNav";
@@ -23,7 +23,18 @@ export default async function HavuzLayout({ children }: { children: React.ReactN
     redirect(profil ? panelYolu(profil.rol) : "/");
   }
   const adminMi = profil.rol === "admin";
-  const dogrulanmadi = !adminMi && profil.belge_durumu !== "dogrulandi";
+  // N3: ofis/marka/arsa = admin'in aktif oluşturduğu Faz-1 org rolleri (KYC belge akışı YOK).
+  // KYC "doğrulanmadı — belge yükle" gate'i yalnız emlakçıya uygulanır; org rollerine yanlış
+  // (yüklenecek belgesi olmayan) demo-uyarısı gösterilmez, onlara dürüst "konsol Faz-2" banner'ı çıkar.
+  const orgRol = ORG_ROLLER.includes(profil.rol as Rol);
+  const dogrulanmadi = !adminMi && !orgRol && profil.belge_durumu !== "dogrulandi";
+  const profilEtiket = adminMi
+    ? "Admin · Danışman görünümü"
+    : orgRol
+      ? ROL_KISI_ETIKET[profil.rol as Rol]
+      : dogrulanmadi
+        ? "Danışman"
+        : "Onaylı Danışman";
   const { count: bildirimSayi } = await supabase
     .from("bildirim")
     .select("id", { count: "exact", head: true })
@@ -83,7 +94,7 @@ export default async function HavuzLayout({ children }: { children: React.ReactN
             </span>
             <div className="min-w-0 flex-1">
               <div className="truncate text-[13px] font-semibold leading-tight text-slate-800">{ad}</div>
-              <div className="mt-0.5 truncate text-[11px] text-slate-400">{adminMi ? "Admin · Danışman görünümü" : "Onaylı Danışman"}</div>
+              <div className="mt-0.5 truncate text-[11px] text-slate-400">{profilEtiket}</div>
             </div>
             <form action={cikisYap}>
               <button
@@ -139,8 +150,12 @@ export default async function HavuzLayout({ children }: { children: React.ReactN
 
           {dogrulanmadi ? (
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200/50 bg-amber-soft px-4 py-2.5 text-xs text-amber-700">
-              <span className="font-semibold">Hesabın doğrulanmadı — yalnız demo projeyi görüyorsun.</span>
+              <span className="font-semibold">Hesabın doğrulanmadı, yalnız demo projeyi görüyorsun.</span>
               <Link href="/danisman/dogrulama" className="shrink-0 font-bold text-amber-700 hover:underline">Belgeni yükle →</Link>
+            </div>
+          ) : orgRol ? (
+            <div className="flex flex-wrap items-center gap-2 border-b border-amber-200/50 bg-amber-soft px-4 py-2.5 text-xs text-amber-700">
+              <span className="font-semibold">Ofis konsolun Faz-2&apos;de geliyor. Şu an demo projeyle sistemi inceleyebilirsin.</span>
             </div>
           ) : null}
 

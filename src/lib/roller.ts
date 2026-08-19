@@ -29,6 +29,19 @@ export const ROL_ETIKET: Record<Rol, string> = {
   arsa_sahibi: "Arsa sahibi",
 };
 
+/** Rol → KİŞİ etiketi (sidebar profil altında; panel adı ROL_ETIKET'ten ayrı). */
+export const ROL_KISI_ETIKET: Record<Rol, string> = {
+  admin: "Admin",
+  uretici: "Üretici",
+  emlakci: "Danışman",
+  ofis_yetkili: "Ofis Yetkilisi",
+  marka_yetkili: "Marka Yetkilisi",
+  arsa_sahibi: "Arsa Sahibi",
+};
+
+/** Faz-1'de ayrı paneli olmayan, /danisman havuzuna park edilen org rolleri (belge/KYC akışı dışı). */
+export const ORG_ROLLER: readonly Rol[] = ["ofis_yetkili", "marka_yetkili", "arsa_sahibi"];
+
 /** Rol'e göre panel yolu. Bilinmeyen/null rol → "/". */
 export function panelYolu(rol: string | null | undefined): string {
   return rol && rol in ROL_PANEL ? ROL_PANEL[rol as Rol] : "/";
