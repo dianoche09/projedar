@@ -45,7 +45,7 @@ export default async function OfislerSayfasi({
           <>
             <span className="font-medium">{liste.length} ofis · {aktifAbonelik} aktif abonelik</span>
             <span className="text-hair">·</span>
-            <span className="mono text-xs text-gray">paket · koltuk kapasitesi (ana gelir)</span>
+            <span className="mono text-xs text-gray">paket · koltuk kapasitesi</span>
           </>
         }
         sag={<span className="rozet mono bg-teal/12 text-teal-d">{aktifAbonelik} aktif abonelik</span>}
@@ -115,10 +115,16 @@ export default async function OfislerSayfasi({
                       </div>
                     </td>
                     <td>
-                      <span className={`mono text-[12.5px] font-semibold ${asim ? "text-red" : "text-ink-soft"}`}>
+                      {/* N7: kota koltuk aboneliği ileri-faz gelir kaldıracı + atamayı yalnız admin yapar
+                          → hard-enforce YOK; aşım kırmızı "ihlal" değil, amber "üst pakete geç / kotayı artır" sinyali. */}
+                      <span className={`mono text-[12.5px] font-semibold ${asim ? "text-amber" : "text-ink-soft"}`}>
                         {kullanim}{kota != null ? `/${kota}` : ""}
                       </span>
-                      {asim ? <span className="rozet ml-1.5 bg-red/12 text-red">aşım</span> : null}
+                      {asim ? (
+                        <span className="rozet ml-1.5 bg-amber-soft text-amber" title="Koltuk kotası aşıldı — üst pakete geç ya da paket kotasını artır">
+                          kota aşıldı · pakete bak
+                        </span>
+                      ) : null}
                     </td>
                     <td>
                       {ab ? (
