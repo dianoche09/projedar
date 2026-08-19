@@ -23,6 +23,13 @@ admin herhangi bir birime gerçek opsiyon yaratabilir (`db/2026-08-13_opsiyon-ad
 ## OQ-EIDS-001 — Tahsis hangi işlemlerde "ilan" sayılır? [REGULATORY + LEGAL]
 V2 B.4: "muaf/ilan değil" kesin hüküm olarak kullanılmaz. `references/27`.
 
+## OQ-KVKK-001..004 — Gerçek erasure (Option B) retention kuralları [REGULATORY + LEGAL VALIDATION REQUIRED]
+E3/DDR-013: gerçek erasure kurulmadan önce hukuk cevabı gerekir:
+1. Anonimleştirilmiş ticari/satış kaydı saklama süresi (TTK/VUK, ör. 10 yıl)?
+2. Buyer (non-user) self-servis erasure kanalı olsun mu, yoksa yalnız danışman/müteahhit üzerinden mi? (bugün buyer kanalı yok)
+3. Aktif satış/hakediş olan emlakçı silinince hakediş+satış anonimleştirilip saklansın (şema RESTRICT zaten zorluyor) — onay?
+4. KYC belgeleri (`kullanici_belge` + `kyc-belge` bucket) hemen mi silinsin, N yıl mı saklansın (KYC/doğrulama yükümlülüğü)?
+
 ## OQ-SHARE-001 — Satış/opsiyon sonrası dolaşımdaki paylaşım kodları deaktive edilmeli mi? [PRODUCT DECISION]
 Bugün `paylasim_kod.aktif` manuel; mikrosite canlı bastığı için satıldı görünür ama link hâlâ geçerli.
 

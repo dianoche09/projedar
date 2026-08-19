@@ -15,7 +15,9 @@ type Talep = {
 
 const DURUM_STIL: Record<Talep["durum"], { et: string; cls: string }> = {
   beklemede: { et: "Beklemede", cls: "bg-amber-soft text-amber" },
-  islendi: { et: "İşlendi", cls: "bg-green-soft text-green" },
+  // E3/KVKK: "İşlendi" yeşil rozeti imha yapıldığını iddia ediyordu — ama otomatik erasure YOK.
+  // Dürüst etiket: talep alındı, gerçek imha manuel/ayrı yapılır (yalan-uyum kaldırıldı).
+  islendi: { et: "Alındı · manuel işlenecek", cls: "bg-amber-soft text-amber" },
   reddedildi: { et: "Reddedildi", cls: "bg-soft text-gray" },
 };
 
@@ -55,9 +57,11 @@ export default async function HesapSilmeTalepleri() {
         }
       />
 
-      <p className="text-sm text-ink-soft">
-        Kullanıcı hesap/veri silme talepleri. &quot;İşlendi&quot; işaretlemek talebi kapatır ama
-        hesabı otomatik silmez — gerçek silmeyi Kullanıcılar ekranından yap, sonra burada işaretle.
+      <p className="rounded-xl border border-amber/30 bg-amber-soft/50 p-3 text-[13px] leading-relaxed text-ink-soft">
+        <b className="text-ink">Otomatik erasure henüz yok.</b> Bu buton talebi yalnız
+        &quot;alındı — manuel işlenecek&quot; olarak işaretler (iz/takip). Gerçek KVKK m.7 imhası
+        (auth hesabı silme + PII anonimleştirme; ticari/hukuki kayıtlar için yasal-minimum saklama)
+        ayrıca yapılır — retention kuralları hukuk onayına bağlıdır. Bu işaretleme imha DEĞİLDİR.
       </p>
 
       <div className="belir belir-1 space-y-3">
@@ -94,8 +98,8 @@ export default async function HesapSilmeTalepleri() {
                 {t.durum === "beklemede" ? (
                   <div className="flex shrink-0 gap-2">
                     <form action={talebiIsle.bind(null, t.id, "islendi")}>
-                      <SubmitButton varyant="green" className="min-h-9 px-3 text-[12.5px]" bekleyenMetin="…">
-                        İşlendi
+                      <SubmitButton varyant="outline" className="min-h-9 px-3 text-[12.5px]" bekleyenMetin="…">
+                        Alındı işaretle
                       </SubmitButton>
                     </form>
                     <form action={talebiIsle.bind(null, t.id, "reddedildi")}>

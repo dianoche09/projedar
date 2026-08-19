@@ -74,4 +74,12 @@ Karar (U-01/INV-EXCL-001):
 - Katman: server enforcement (`tahsisEkle`+`tahsisGuncelle`) = teeth; client confirm (create + edit form) = smooth override UX (imperative hidden `munhasir_override`, re-entry guard). RPC yoksa graceful (server yakalar). Override server-side DOĞRULANIR (RPC daima çalışır; çakışma yoksa override etiketlenmez) + audit çakışan tahsis/daire içerir (forensik). Kod: `db/2026-08-18b_munhasir-cakisma.sql`.
 - **Kabul edilen limitasyon (MODE B P2c):** check-then-insert concurrency race — eşzamanlı iki çakışan münhasır tahsis ikisi de geçebilir (hard lock EKLENMEDİ; lock "block"a kayardı, karara aykırı). Münhasır SOFT commercial rule; çift-satış kalkanı DEĞİL (o `opsiyon`'da kalır). P3: RPC `baslangic`'i yok sayar → future-dated tahsis de çakışmada sayılır (bilinçli, daha doğru).
 
+## DDR-013 — KVKK erasure: dürüst etiket şimdi, gerçek erasure hukuk-gated (E3)
+Date: 2026-08-19 · Status: Accepted (Option A) · Class: Legal/compliance + Product decision · Gerçek erasure LEGAL VALIDATION REQUIRED
+Karar (audit F7):
+- **Option A ship edildi:** `hesap_silme_talebi` "İşlendi" yeşil rozeti (imha yapıldı iddiası) → dürüst "Alındı · manuel işlenecek" (amber); buton "Alındı işaretle"; yanıltıcı "Kullanıcılar'dan sil" kopyası → "otomatik erasure yok, bu işaret İMHA DEĞİL" uyarısı. `talebiIsle`'ye E2 audit (`tip=hesap, eylem=kvkk_talep_isaret`). **Yalan-uyum (admin-imzalı false erasure beyanı) kaldırıldı** — hukuki bağımlılık yok.
+- **Option B (gerçek erasure) ERTELENDİ, hukuk onayına bağlı:** `hesabiImhaEt` = auth silme + PII anonimleştirme (RESTRICT FK'ye saygılı — opsiyon/satis geçmişi olan kullanıcı SİLİNEMEZ, anonimleştirilir) + KYC bucket temizle + events payload PII scrub + audit; terminal `imha_edildi` yalnız gerçek operasyon set eder.
+- **P1 şema bulgusu:** `opsiyon.satici_id`/`satis.talep_eden_id → profiles` RESTRICT → "sadece deleteUser" imkânsız; anonymize-in-place zorunlu. Buyer PII (lead/opsiyon) ayrı data-subject → user erasure'ı sessizce buyer kaydını silmez.
+- Hukuk açık soruları: `references/23` OQ-KVKK-*.
+
 ## Bekleyen kararlar → `references/23-open-questions-validation.md`
