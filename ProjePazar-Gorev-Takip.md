@@ -18,12 +18,14 @@
 | AU-N1 | `/havuz`→`/danisman` bildirim linkleri (cron) 404 fix | 🔵 kod push (`59250d1`) · SQL uygulanma teyidi bekliyor (Block 1) |
 | AU-E1 | Admin opsiyon bypass'ı demo-only + UI gate | ✅ canlı (kod `59250d1` + SQL uygulandı 2026-08-17) |
 | AU-A1 | Gizli fiyat 3 yüzey redaksiyon (tek-kaynak) | ✅ canlı (kod `59250d1` + SQL uygulandı 2026-08-17, MODE B P1 dahil) |
-| AU-B1 | Tahsis revoke → aktif opsiyon/lead kararı (MODE A) | PROJECT DECISION |
-| AU-A2 | Opsiyon fiyat snapshot (MODE A) | PROJECT DECISION |
-| AU-N2 | Cross-agent lead first-touch kararı (MODE A) | moat, PROJECT DECISION |
-| AU-D1 | Sahte "tutma" vaadi kopyası + geçici-opsiyon köprüsü | LEGAL |
+| AU-B1 | Tahsis revoke → aktif opsiyon/lead kararı | ✅ karar+kod (`c8647c2`, DDR-008) · SQL uygula (`db/2026-08-17_tahsis-devir-opsiyon-lead.sql`) |
+| AU-A2 | Opsiyon fiyat snapshot | ✅ karar+kod (`5604eee`, DDR-009, Option A) · SQL uygula (`db/2026-08-17b_opsiyon-fiyat-snapshot.sql`) |
+| AU-N2 | Cross-agent lead çakışma (first-touch) | ✅ karar+kod (`229e286`, DDR-010, Option A) · SQL uygula (`db/2026-08-17c_lead-cakisma.sql`) |
+| AU-D1 | Sahte "tutma" vaadi kopyası + geçici-opsiyon köprüsü | ✅ karar+kod (`c5e7165`, DDR-011, Option B) · migration yok · LEGAL: final metin cilası |
 | AU-B2 | bulk opsiyon desync (`birimTopluGuncelle` opsiyon senkronu) | ✅ canlı (`fedec6a`, 2026-08-17) |
-| AU-B3/C1 | satis_beklemede cron koruması · tek satış kapama | lifecycle (bekliyor) |
+| AU-B3 | satis_beklemede cron koruması (çift-satış) | ✅ kod · SQL uygula (`db/2026-08-18_satis-beklemede-cron-koru.sql`) |
+| AU-C1 | tek satış kapama yolu (ham satildi guard) | ✅ kod (INV-SALE-001) |
+| AU-C1b | Excel import `satildi` = doğrudan satış (danışman yok/hakediş yok); tag/provenance istenirse ekle | ⏳ follow-up (bilinçli izin) |
 
 ## Panel Kalite Denetimi — kod-turu (2026-08-17)
 | # | Görev | Durum |
@@ -38,7 +40,9 @@
 | QA-P2b | sertifika /giris→/login · ofis paket hedef filtresi · hesap-silme adminGuard | ✅ canlı (`ce6c00e`) |
 | QA-P2c | middleware rol-kapısı + null-profil · yanlış-role redirect · e-Devlet link · N+1 perf | ⏳ bekliyor (auth-hassas) |
 | QA-LIVE | Canlı browser QA turu (runtime/UX kırıkları) — erişim/test hesabı bekliyor | ⏳ bekliyor |
-| AU-E2/E3 | admin audit event'leri + gerçek KVKK erasure | governance/LEGAL |
+| AU-E2 | admin governance denetim event'leri (INV-AUDIT-001) | ✅ kod (7 aksiyon + hata-yolu + denetim UI) · migration yok |
+| AU-E2b | denetim feed'de `yuksek_riskli` kırmızı rozet/filtre (P3) · paket eski snapshot tam (P3) | ⏳ follow-up |
+| AU-E3 | gerçek KVKK erasure (silme tiyatro) | ⏳ LEGAL (bekliyor) |
 | AU-T1 | Kritik invariant test altyapısı (her P1 testiyle) | P0-adjacent |
 
 ## Aktif oturum: emlakçı/danışman paneli elden geçirme (2026-08-13/14)
@@ -124,6 +128,24 @@
 |---|-------|--------|
 | T35 | Olanaklar & Özellikler (OzellikGoster) "saçma" görünüm → 2-kolon kompakt grid + kategori sayacı | (bu push) |
 | T33 (kısmi) | Liste sayfaları 1240'a genişledi (leadler/paylastiklarim/performans) + leadler başlığı ortak `SayfaBaslik`; dar form/detay sayfaları kasıtlı dar bırakıldı ("mantıklı düşün") | (bu push) |
+
+### ✅ 2026-08-19 — P2 Audit-Fix Batch (CDO domain gate ile, "sıradan devam et")
+| # | Görev | Commit |
+|---|-------|--------|
+| WhatsApp OG | Paylaşımda kart gelmiyordu (OG üretimi ~6s, cache yok) → font memoize + force-cache + CDN cache (HIT ~0.33s) | 75e2dd3, 251c93b |
+| N11 | Satılan/çekilmiş dairede paylaşım-linki lead reddi (server-side guard, `birimLeadKabulEdilebilir`) | 366cf43 |
+| N6 | KYC onayı zorunlu belge (MYS) kontrolü + gerekçeli manuel override + audit | 4e3d734 |
+| N9 | Kurulum sayfasındaki bayat "migration çalıştır" dev notları kaldırıldı (prod'da uygulu doğrulandı) | 21a2fb5 |
+| N12 | RESOLVED-BY-E2 (kod yok; izli audit zaten var, OQ-UR-001 açıldı) | — |
+| N7 | Koltuk kotası "sahte kontrol" → dürüst amber sinyal (enforce değil; ileri-faz lever) | 60a65ee |
+| N8 | MRR yalnız aktif + para birimine göre gruplu (deneme hariç) | cb27b1a |
+| N10 | Opsiyon-expiry tek yetkili fonksiyon (delete-returning, idempotent) + Vercel failsafe, audit hizalı | 666675c |
+| N3 | Org rolleri (ofis/marka/arsa) için dürüst /danisman durumu + rol etiketi | e1d4cc1 |
+| N4 | Danışman hakediş görünümü (canlı ayna, tablo yok, ödeme-defteri bloklandı) + DEBT-009 | 37baf38, e35cf08 |
+| N5 | Havuz header'ında dürüst tazelik rozeti (sahte "Canlı" pulsu yerine) | cee72dc |
+| N13 | Tahsis akıbet önizlemesi (kaç birim + proaktif münhasır çakışma, owner-guard'lı RPC) | 0e8ef7d |
+
+**Kalan (P3/LATER, bu batch dışı):** ölçek (pagination/N+1), güvenlik-sertleştirme (HMAC 64-bit token + non-constant-time, BYOK plaintext), abuse metrik self-inflate, KVKK erasure Option B (hukuk), + küçük UX (E2b yuksek_riskli rozet, D-12 rakip opsiyon ETA vs).
 
 ### ⏳ Düzeltme/açıklama (kullanıcı geri bildirimi)
 | # | Görev | Not |
