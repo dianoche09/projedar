@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeTelefon } from "@/lib/telefon";
 import { verifyShareToken } from "@/lib/sharing";
 import { bildirimYaz } from "@/lib/bildirim";
+import { birimLeadKabulEdilebilir, type BirimDurum } from "@/lib/types";
 
 // Public endpoint — girdi Zod ile doğrulanır, imzalı paylaşım token'ı zorunludur (forge engeli).
 const leadSemasi = z.object({
@@ -41,12 +42,27 @@ export async function POST(request: Request) {
 
     const supabase = createAdminClient();
 
-    // Etkin proje: form projeId'si yoksa birimden çöz (çakışma scope'u PROJE bazlı — N2).
-    let effProje: string | null = projeId ?? null;
-    if (!effProje) {
-      const { data: bp } = await supabase.from("birim").select("proje_id").eq("id", birimId).single();
-      effProje = (bp?.proje_id as string | null) ?? null;
+    // Birimin CANLI durumunu oku — lead kabulü için TEK yetki kapısı (N11/INV-N11-A).
+    // Paylaşım token'ı sabit/taklit-edilebilir; UI'nın formu gizlemesi yetki DEĞİLDİR.
+    const { data: birimRow } = await supabase
+      .from("birim")
+      .select("proje_id, durum, satilabilir")
+      .eq("id", birimId)
+      .single();
+    if (!birimRow) {
+      return NextResponse.json({ hata: "Daire bulunamadı." }, { status: 404 });
     }
+    if (!birimLeadKabulEdilebilir(birimRow.durum as BirimDurum, birimRow.satilabilir as boolean)) {
+      // Satıldı/kiralandı/stop/planlı/paylaşıma-kapalı → lead/event/bildirim/N2 YAZILMAZ.
+      // Yarış hâli (form dolarken satıldı) da 500 değil, sıcak yönlendirmeli 409 verir.
+      return NextResponse.json(
+        { hata: "Bu daire artık müsait değil. Danışmanınız sizi benzer dairelerle arayabilir." },
+        { status: 409 }
+      );
+    }
+
+    // Etkin proje: form projeId'si yoksa birimden çöz (çakışma scope'u PROJE bazlı — N2).
+    const effProje: string | null = projeId ?? ((birimRow.proje_id as string | null) ?? null);
 
     // Dedupe: yalnız AYNI danışmanın aynı birime son 10dk'daki tekrar gönderimi (çift-tık) yutulur.
     // P2 fix (N2): farklı danışman ARTIK yutulmuyor — meşru ikinci danışman lead'i oluşur + çakışma işaretlenir.

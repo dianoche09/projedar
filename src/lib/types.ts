@@ -72,6 +72,21 @@ export const DURUM_ETIKET: Record<BirimDurum, string> = {
   kiralandi: "Kiralandı",
 };
 
+/**
+ * Paylaşım/mikrosite üzerinden lead (müşteri talebi) kabul edilebilir mi?
+ * N11 (INV-N11-A): kabul kümesi = satilabilir=true VE durum ∈ {musait, opsiyonlu, satis_beklemede}.
+ * opsiyonlu/satis_beklemede = geçici tutma (sık çözülür) → yarış anında sıcak alıcıyı kaybetme
+ * (kullanıcı kararı 2026-08-19: Kabul). Terminal/geri-çekilmiş durumlar (satildi/kiralandi/stop/planli)
+ * ve satilabilir=false → reddedilir. API bu kuralın TEK yetki kapısıdır (paylaşım token'ı sabit/taklit-
+ * edilebilir); UI formu yalnız 'musait'te proaktif gösterir (daha katı alt-küme → daima tutarlı).
+ */
+export function birimLeadKabulEdilebilir(durum: BirimDurum, satilabilir: boolean): boolean {
+  return (
+    satilabilir === true &&
+    (durum === "musait" || durum === "opsiyonlu" || durum === "satis_beklemede")
+  );
+}
+
 export const ASAMA_ETIKET: Record<InsaatAsama, string> = {
   planlama: "Planlama",
   temel: "Temel",
