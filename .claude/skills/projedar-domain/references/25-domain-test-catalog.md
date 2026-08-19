@@ -27,6 +27,10 @@
 | T-LEAD-001 | INV-LEAD-002 | api | Aynı telefon+birim 10dk içinde 2. lead | 429, tek satır | P1 |
 | T-LEAD-002 | INV-LEAD-003 | RLS | Üretici toplu lead SELECT | 0 satır (yalnız birebir sorgu) | P1 |
 | T-SHARE-001 | INV-SHARE-001 | api | Geçersiz HMAC token → mikrosite | `notFound()` | P1 |
+| T-SHARE-002 | INV-SHARE-002 | integration | Birim `satildi` + kod `aktif=true` → mikrosite aç | 404 DEĞİL: "Satıldı" rozeti + lead formu YOK + "benzer daireler" (müsait) render; `paylasim_kod` satırı MUTASYONA UĞRAMAZ (satış sonrası `aktif`/satır değişmez) | P1 |
+| T-SHARE-003 | INV-SHARE-002 | integration | `birimSatisKapat` çalışır | `paylasim_kod` tablosunda o birime ait hiçbir satır değişmez (aktif=true kalır); satış yalnız `birim.durum`+opsiyon lifecycle'ı değiştirir | P1 |
+| T-SHARE-004 | INV-SHARE-003 | api | `/api/etkilesim` favori/ödeme, birim `satildi`/terminal | reddedilir (`birimLeadKabulEdilebilir` false), event YAZILMAZ — kod `aktif` olsa bile | P1 |
+| T-SHARE-005 | INV-SHARE-002 | api | Kod `aktif=false` (kasıtlı revoke) → mikrosite + `/api/lead` + `/api/etkilesim` | hepsi reddeder (render 404, API'ler geçersiz); re-share `paylasimKodAl` AYNI ölü kodu döner (revoke yapışır) | P1 |
 | T-PRICE-001 | INV-PRICE-001 | integration | Fiyat değişir → mikrosite yeniden yüklenir | canlı yeni fiyat | P2 |
 | T-EVENT-001 | RISK-EVENT-001 | api | `/api/etkilesim` flood | (throttle eklendikten sonra) rate-limit | P2 |
 | T-CRON-001 | INV-CRON-001 | concurrency | Aynı overdue set üzerinde 2 eşzamanlı `select opsiyon_serbest_birak()` | toplam delete=N, event=N, birim başına 0 duplicate event | P1 |
