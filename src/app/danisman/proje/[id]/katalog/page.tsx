@@ -3,7 +3,7 @@ import { after } from "next/server";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
-import { generateShareToken, paylasimKodlariAl } from "@/lib/sharing";
+import { paylasimKodlariAl } from "@/lib/sharing";
 import { kayitYaz } from "@/lib/events";
 import { projeKapak } from "@/lib/gorsel";
 import { ASAMA_ETIKET, DURUM_ETIKET, DURUM_BG, type InsaatAsama, type BirimDurum } from "@/lib/types";
@@ -102,9 +102,8 @@ export default async function KatalogSayfasi({
     odeme: odemeOzet(x.odeme_plani as OdemePlani),
     oda: (x.tip?.oda as string | null) ?? null,
     plan_url: (x.tip?.plan_url as string | null) ?? null,
-    link: katalogKodlar.get(x.id as string)
-      ? `${appUrl}/p/${katalogKodlar.get(x.id as string)}`
-      : `${appUrl}/p/${emlakciId}/${x.id}/${generateShareToken(emlakciId, x.id)}`,
+    // Fail-closed (güvenlik): kod yoksa (nadir DB hatası) iptal-EDİLEMEZ uzun link BASMA → boş bırak.
+    link: katalogKodlar.get(x.id as string) ? `${appUrl}/p/${katalogKodlar.get(x.id as string)}` : "",
   }));
   /* eslint-enable @typescript-eslint/no-explicit-any */
 

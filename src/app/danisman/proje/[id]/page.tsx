@@ -6,7 +6,7 @@ import { ASAMA_ETIKET, fmtPara, type InsaatAsama } from "@/lib/types";
 import { EmlakciStok } from "@/components/EmlakciStok";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
 import { projeKapak } from "@/lib/gorsel";
-import { generateShareToken, paylasimKodlariAl } from "@/lib/sharing";
+import { paylasimKodlariAl } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { GuvenRozeti } from "@/components/GuvenRozeti";
@@ -184,9 +184,8 @@ export default async function HavuzProjeDetay({
   const shareUrlMap = Object.fromEntries(
     stok.map((b) => [
       b.id,
-      kodMap.get(b.id)
-        ? `${appUrl}/p/${kodMap.get(b.id)}`
-        : `${appUrl}/p/${emlakciId}/${b.id}/${generateShareToken(emlakciId, b.id)}`,
+      // Fail-closed (güvenlik): kod yoksa iptal-EDİLEMEZ uzun link BASMA → boş (paylaşım devre dışı).
+      kodMap.get(b.id) ? `${appUrl}/p/${kodMap.get(b.id)}` : "",
     ]),
   );
 

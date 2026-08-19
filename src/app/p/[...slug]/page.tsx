@@ -220,10 +220,8 @@ export default async function PublicBirimPage({
     para_birimi: x.para_birimi as string | null,
     oda: (x.tip?.oda as string | null) ?? null,
     plan_url: (x.tip?.plan_url as string | null) ?? null,
-    // Kısa kod varsa /p/{kod}; yoksa (tablo yok/hata) imzalı uzun linke düş.
-    link: benzerKodlar.get(x.id as string)
-      ? `/p/${benzerKodlar.get(x.id as string)}`
-      : `/p/${emlakci}/${x.id}/${generateShareToken(emlakci, x.id)}`,
+    // Fail-closed (güvenlik): kısa kod varsa /p/{kod}; yoksa iptal-EDİLEMEZ uzun link BASMA → boş.
+    link: benzerKodlar.get(x.id as string) ? `/p/${benzerKodlar.get(x.id as string)}` : "",
   }));
 
   const eklentiler = ((eklentiRaw ?? []) as any[]).map((x) => ({
