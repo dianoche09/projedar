@@ -411,21 +411,44 @@ function Dosya({ veri, ofisler }: { veri: DosyaVeri; ofisler: { id: string; ad: 
           ) : null}
 
           {veri.belge_durumu === "beklemede" ? (
-            <div className="flex items-center gap-2">
-              <form action={belgeKarar}>
-                <input type="hidden" name="profile_id" value={veri.id} />
-                <input type="hidden" name="karar" value="onay" />
-                <button className="rounded-xl border border-green/35 bg-green/12 px-3.5 py-2.5 text-[13px] font-semibold text-teal-d transition-colors hover:bg-green/20">
-                  Belge Doğrula ✓
-                </button>
-              </form>
-              <form action={belgeKarar}>
-                <input type="hidden" name="profile_id" value={veri.id} />
-                <input type="hidden" name="karar" value="red" />
-                <button className="rounded-xl border border-red/30 bg-card px-3.5 py-2.5 text-[13px] font-semibold text-red transition-colors hover:bg-red-soft">
-                  Belge Reddet
-                </button>
-              </form>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <form action={belgeKarar}>
+                  <input type="hidden" name="profile_id" value={veri.id} />
+                  <input type="hidden" name="karar" value="onay" />
+                  <button className="rounded-xl border border-green/35 bg-green/12 px-3.5 py-2.5 text-[13px] font-semibold text-teal-d transition-colors hover:bg-green/20">
+                    Belge Doğrula ✓
+                  </button>
+                </form>
+                <form action={belgeKarar}>
+                  <input type="hidden" name="profile_id" value={veri.id} />
+                  <input type="hidden" name="karar" value="red" />
+                  <button className="rounded-xl border border-red/30 bg-card px-3.5 py-2.5 text-[13px] font-semibold text-red transition-colors hover:bg-red-soft">
+                    Belge Reddet
+                  </button>
+                </form>
+              </div>
+              {/* N6: zorunlu belge (MYS) eksik/AI-flag → tek-tık onay bloklanır; gerekçeli manuel doğrulama */}
+              <details className="rounded-xl border border-amber/30 bg-amber/5 px-3 py-2">
+                <summary className="cursor-pointer text-[12px] font-semibold text-amber">
+                  Belge eksik? Gerekçeli manuel doğrula
+                </summary>
+                <form action={belgeKarar} className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <input type="hidden" name="profile_id" value={veri.id} />
+                  <input type="hidden" name="karar" value="onay" />
+                  <input type="hidden" name="override" value="1" />
+                  <input
+                    name="gerekce"
+                    required
+                    minLength={5}
+                    placeholder="Doğrulama gerekçesi (ör. MYS no e-Devlet'te doğrulandı)"
+                    className="flex-1 rounded-lg border border-line bg-card px-3 py-2 text-[12px] text-navy placeholder:text-gray focus:border-navy focus:outline-none"
+                  />
+                  <button className="rounded-xl border border-amber/40 bg-amber/12 px-3.5 py-2 text-[12px] font-semibold text-amber transition-colors hover:bg-amber/20">
+                    Gerekçeli doğrula
+                  </button>
+                </form>
+              </details>
             </div>
           ) : null}
         </div>

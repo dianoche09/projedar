@@ -143,21 +143,92 @@ export async function ureticiyeAbonelikAta(formData: FormData) {
 }
 
 // ── KYC belge doğrulama (admin onay/red → emlakçı belge_durumu; trigger 'dogrulandi'ya yalnız admin izin verir) ──
+// N6/INV-KYC-001: onay, canlı-stok güven kapısıdır (belge_durumu='dogrulandi' → danışman canlı stoğa erişir).
+// Zorunlu belge (MYS) yoksa VEYA AI 'geçersiz' işaretlediyse tek-tık onay BLOKLANIR; admin ancak gerekçeli
+// override ile onaylar (MYS barkodu e-Devlet/YAMBİS'te elle doğrulanır — API yok). Kanıt tabanı: dosya da yoksa
+// beyan edilen MYS no bulunmalı. Her override yüksek-şiddet iz kaydına yazılır (E2/INV-AUDIT-001).
+const ROL_ZORUNLU_BELGE: Record<string, string[]> = { emlakci: ["mesleki_yeterlilik"] };
+
 export async function belgeKarar(formData: FormData): Promise<void> {
   const adminId = await adminGuard();
   const profileId = String(formData.get("profile_id"));
   const karar = String(formData.get("karar"));
+  const override = String(formData.get("override") ?? "") === "1";
+  const gerekce = String(formData.get("gerekce") ?? "").trim();
   if (!zUuid.safeParse(profileId).success || (karar !== "onay" && karar !== "red")) {
     redirect("/admin/basvurular?hata=" + encodeURIComponent("Geçersiz istek"));
   }
-  const yeni = karar === "onay" ? "dogrulandi" : "red";
   const supabase = await createClient();
-  await supabase.from("kullanici_belge").update({ durum: yeni }).eq("profile_id", profileId).eq("durum", "beklemede");
-  await supabase.from("profiles").update({ belge_durumu: yeni }).eq("id", profileId);
-  await kayitYaz({ tip: "dogrulama", profileId: adminId, payload: { hedef: profileId, karar: yeni } });
+
+  if (karar === "red") {
+    await supabase.from("kullanici_belge").update({ durum: "red" }).eq("profile_id", profileId).eq("durum", "beklemede");
+    await supabase.from("profiles").update({ belge_durumu: "red" }).eq("id", profileId);
+    await kayitYaz({ tip: "dogrulama", profileId: adminId, payload: { hedef: profileId, karar: "red" } });
+    revalidatePath("/admin/basvurular");
+    revalidatePath("/admin");
+    redirect(`/admin/basvurular?mesaj=${encodeURIComponent("Belgeler reddedildi")}`);
+  }
+
+  // karar === "onay": zorunlu belge varlığı + AI-flag kontrolü
+  const { data: prof } = await supabase
+    .from("profiles")
+    .select("rol, talep_rol, profil_detay")
+    .eq("id", profileId)
+    .single();
+  const rolEtkin =
+    (prof?.rol as string | null) === "emlakci" || (prof?.talep_rol as string | null) === "emlakci"
+      ? "emlakci"
+      : ((prof?.rol as string | null) ?? (prof?.talep_rol as string | null) ?? "");
+  const zorunlu = ROL_ZORUNLU_BELGE[rolEtkin];
+  if (!zorunlu) {
+    // belge_durumu kapısı yalnız danışmanda anlamlı; üretici/ofis kullaniciOnayla'dan geçer.
+    redirect("/admin/basvurular?hata=" + encodeURIComponent("Belge doğrulama yalnız danışman rolünde geçerli"));
+  }
+
+  const { data: belgeler } = await supabase
+    .from("kullanici_belge")
+    .select("tip, ai_sonuc")
+    .eq("profile_id", profileId)
+    .in("durum", ["beklemede", "dogrulandi"]);
+  const mevcutTipler = new Set((belgeler ?? []).map((b) => String(b.tip)));
+  const eksik = zorunlu.filter((t) => !mevcutTipler.has(t));
+  const aiFlagli = (belgeler ?? [])
+    .filter((b) => (b.ai_sonuc as { gecerli?: boolean } | null)?.gecerli === false)
+    .map((b) => String(b.tip));
+
+  if (eksik.length > 0 || aiFlagli.length > 0) {
+    if (!override || gerekce.length < 5) {
+      redirect(
+        "/admin/basvurular?hata=" +
+          encodeURIComponent("Zorunlu belge eksik veya AI dikkat — 'manuel doğrula' ile en az 5 karakter gerekçe girin")
+      );
+    }
+    // Kanıt tabanı: dosya yoksa beyan edilen MYS no bulunmalı — dayanaksız override yok.
+    const mysNo = ((prof?.profil_detay as Record<string, unknown> | null)?.["mys_belge_no"] as string | null) ?? null;
+    if (eksik.includes("mesleki_yeterlilik") && !mysNo) {
+      redirect(
+        "/admin/basvurular?hata=" +
+          encodeURIComponent("Belge de yok, beyan edilen MYS no da yok — override dayanağı yok")
+      );
+    }
+  }
+
+  await supabase.from("kullanici_belge").update({ durum: "dogrulandi" }).eq("profile_id", profileId).eq("durum", "beklemede");
+  await supabase.from("profiles").update({ belge_durumu: "dogrulandi" }).eq("id", profileId);
+  await kayitYaz({
+    tip: "dogrulama",
+    profileId: adminId,
+    payload: {
+      hedef: profileId,
+      karar: "dogrulandi",
+      zorunlu_karsilandi: eksik.length === 0 && aiFlagli.length === 0,
+      kanit_belge_tipleri: Array.from(mevcutTipler),
+      override: eksik.length > 0 || aiFlagli.length > 0 ? { eksik, ai_flagli: aiFlagli, gerekce } : null,
+    },
+  });
   revalidatePath("/admin/basvurular");
   revalidatePath("/admin");
-  redirect(`/admin/basvurular?mesaj=${encodeURIComponent(karar === "onay" ? "Danışman doğrulandı" : "Belgeler reddedildi")}`);
+  redirect(`/admin/basvurular?mesaj=${encodeURIComponent("Danışman doğrulandı")}`);
 }
 
 // ── Başvuru dosyası: tek başvuranın tüm detayı (service-role yalnız sunucuda, DEĞİŞMEZ #1) ──
