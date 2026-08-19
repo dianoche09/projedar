@@ -72,11 +72,13 @@ export function TahsisForm({
   // Tek kaynak RPC (tahsis_kapsam_ozet: birim_kapsaminda ile RLS-özdeş sayım + owner-guard). Debounce'lu.
   const formRef = useRef<HTMLFormElement>(null);
   const onizlemeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onizlemeSeq = useRef(0); // out-of-order RPC yanıtı eskimiş sayıyı basmasın (MODE B P2)
   const [onizleme, setOnizleme] = useState<{ birim: number; cakisma: boolean; ornek: string | null } | null>(null);
 
   function onizlemeGuncelle(form: HTMLFormElement) {
     if (onizlemeTimer.current) clearTimeout(onizlemeTimer.current);
     onizlemeTimer.current = setTimeout(async () => {
+      const seq = ++onizlemeSeq.current;
       const fd = new FormData(form);
       const munhasir = fd.get("munhasir") === "on";
       const kapsam: Record<string, string[]> = {};
@@ -92,10 +94,11 @@ export function TahsisForm({
           p_kapsam: kapsam,
           p_munhasir: munhasir,
         });
+        if (seq !== onizlemeSeq.current) return; // daha yeni bir sorgu başladı → bu yanıtı yut
         const d = data as { yetki?: boolean; birim_sayi?: number; cakisma?: boolean; ornek_daire?: string | null } | null;
         setOnizleme(d?.yetki ? { birim: d.birim_sayi ?? 0, cakisma: !!d.cakisma, ornek: d.ornek_daire ?? null } : null);
       } catch {
-        setOnizleme(null);
+        if (seq === onizlemeSeq.current) setOnizleme(null);
       }
     }, 300);
   }
