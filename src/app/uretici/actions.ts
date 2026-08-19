@@ -528,27 +528,11 @@ export async function birimSatisKapat(formData: FormData) {
   const satici_id = (ops?.satici_id as string | undefined) ?? undefined;
 
   if (satici_id) {
-    // Tutar: override varsa onu, yoksa tahsis komisyonundan hesapla (RPC yetki guard'lı)
-    const override = String(formData.get("tutar") ?? "").trim();
-    let tutar: number | null = override !== "" && Number.isFinite(Number(override)) ? Number(override) : null;
-    if (tutar == null) {
-      const { data: hesap } = await supabase.rpc("birim_satici_kazanci", { p_birim_id: birim_id, p_satici: satici_id });
-      tutar = typeof hesap === "number" ? hesap : null;
-    }
-    const { data: b } = await supabase.from("birim").select("para_birimi").eq("id", birim_id).single();
-    // Hakediş defteri: birim başına tek (unique birim_id) → upsert
-    await supabase.from("hakedis").upsert(
-      {
-        birim_id,
-        proje_id,
-        uretici_id: uid,
-        emlakci_id: satici_id,
-        tutar,
-        para_birimi: (b?.para_birimi as string | null) ?? "TRY",
-      },
-      { onConflict: "birim_id" },
-    );
-    // Opsiyon yaşam döngüsünü kapat (aktif → satildi; cron "süre doldu israf" saymasın)
+    // N4/DEĞİŞMEZ: Hakediş SAKLANMAZ. /uretici/hakedis ve /danisman/hakedis komisyonu canlı
+    // hesaplar (birim_satici_kazanci: liste fiyatı × tahsis komisyonu); Projedar ödeme/alacak
+    // defteri tutmaz, satış komisyonundan pay almaz. (Eski `hakedis` upsert'i tablo hiç
+    // uygulanmadığı için sessiz no-op'tu; ölü para-yolu kaldırıldı.)
+    // Opsiyon yaşam döngüsünü kapat (aktif → satildi; cron "süre doldu israf" saymasın).
     await supabase
       .from("opsiyon")
       .update({ durum: "satildi", sonuc: "satildi", sonuc_at: new Date().toISOString() })
