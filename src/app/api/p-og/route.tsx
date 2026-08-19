@@ -24,10 +24,12 @@ const ALFABE =
 
 async function loadFont(family: string, weight: number, text: string): Promise<ArrayBuffer> {
   const url = `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&text=${encodeURIComponent(text)}`;
-  const css = await (await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } })).text();
+  // ALFABE sabit → font URL'i her istekte AYNI → Next Data Cache (force-cache) instance'lar arası
+  // saklar; soğuk-start'ta bile ağ fetch'i minimuma iner (WhatsApp MISS süresi düşer).
+  const css = await (await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" }, cache: "force-cache" })).text();
   const src = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/);
   if (!src) throw new Error(`OG font yüklenemedi: ${family}`);
-  return (await fetch(src[1])).arrayBuffer();
+  return (await fetch(src[1], { cache: "force-cache" })).arrayBuffer();
 }
 
 // PERF/WhatsApp: fontları SABİT ALFABE subset'iyle bir kez yükle ve module-scope memoize et.
