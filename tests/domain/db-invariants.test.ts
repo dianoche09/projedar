@@ -69,6 +69,15 @@ async function main(): Promise<void> {
   );
   dogru(bool(kazanc[0]?.guard), "N4: birim_satici_kazanci authz-guard (yalnız kendi kazancı / proje sahibi)");
 
+  // GÜVENLİK — BYOK anahtarları: RLS açık + SIFIR policy = deny-all (yalnız service-role okur)
+  const byok = await sorgu(
+    `select
+       (select relrowsecurity from pg_class where relname='pazarlama_entegrasyon') rls_acik,
+       (select count(*) from pg_policies where tablename='pazarlama_entegrasyon') policy_sayi`,
+  );
+  dogru(bool(byok[0]?.rls_acik), "GÜVENLİK: pazarlama_entegrasyon RLS açık");
+  dogru(Number(byok[0]?.policy_sayi) === 0, "GÜVENLİK: pazarlama_entegrasyon 0 policy (authenticated/anon deny-all)");
+
   ozet("DB invariants");
 }
 
