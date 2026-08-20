@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="tr" class="js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Emlakçı havuzu</title>
+<script>document.documentElement.classList.add('js');</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   Projedar · EMLAKÇI DASHBOARD (Emil design-engineering motoru)
+   Gerçek tokenlar: globals.css @theme (Outfit / Inter / Geist Mono)
+   Sinyal: müsait #2fb36b · opsiyon #e3a12c · satıldı #d15a4e
+   Aksan: teal #1e9b8a · tek radius ölçeği · tek aksan
+   Emil imzası: :active scale, kademeli giriş, tut-onayla (asimetrik),
+   paylaş morph, tazelik nabzı, ısınınca gecikmesiz ipucu, tam reduced-motion.
+   ========================================================= */
+:root{
+  --ink:#10243a; --ink-soft:#46586b; --ink-faint:#5e6d84;
+  --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676;
+  --teal-btn:#147a6a; --teal-btn-h:#116050; --teal-ink:#127060;
+  --musait:#2fb36b; --opsiyon:#e3a12c; --satildi:#d15a4e;
+  --paper:#eef1f6; --paper-2:#e9edf4; --card:#ffffff;
+  --soft:#f5f8fa; --teal-soft:#e2f3f0; --green-soft:#e5f5ec;
+  --amber-soft:#fbf0da; --red-soft:#f8e7e4; --navy-soft:#eaf0f5;
+  --cizgi:rgba(16,36,58,.08); --cizgi-2:rgba(16,36,58,.12);
+  --golge-1:0 1px 2px rgba(16,36,58,.04), 0 2px 6px rgba(16,36,58,.05);
+  --golge-2:0 2px 6px rgba(16,36,58,.05), 0 12px 28px rgba(16,36,58,.08);
+  --golge-3:0 4px 12px rgba(16,36,58,.07), 0 24px 56px rgba(16,36,58,.12);
+  /* Emil easing */
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-io:cubic-bezier(0.77,0,0.175,1);
+  --ease-drawer:cubic-bezier(0.32,0.72,0,1);
+  /* tek radius ölçeği */
+  --r-xs:8px; --r-sm:11px; --r:14px; --r-lg:20px; --r-xl:26px;
+}
+*{ box-sizing:border-box; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-feature-settings:"cv11" 1,"ss01" 1;
+  background:
+    radial-gradient(1200px 700px at 80% -10%, rgba(30,155,138,.09), transparent 60%),
+    radial-gradient(1000px 620px at -6% 6%, rgba(19,49,75,.06), transparent 55%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  background-attachment:fixed; min-height:100vh;
+}
+.display{ font-family:'Outfit',sans-serif; letter-spacing:-.02em; }
+.mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+h1,h2,h3{ text-wrap:balance; margin:0; }
+p{ text-wrap:pretty; margin:0; }
+::selection{ background:rgba(30,155,138,.18); }
+
+/* ---------- press feedback (Emil: anlık, active üstünde) ---------- */
+button,a,[role="button"]{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.press{ transition:transform .13s var(--ease-out), background-color .16s ease, box-shadow .22s var(--ease-out), border-color .16s ease, color .16s ease; }
+.press:active{ transform:scale(0.97); }
+:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; border-radius:6px; }
+
+/* ---------- wordmark ---------- */
+.mark{ font-family:'Outfit',sans-serif; font-weight:700; font-size:19px; letter-spacing:-.02em; color:var(--ink); }
+.mark b{ color:var(--teal-d); font-weight:700; }
+
+/* ---------- top bar (Apple translucent material) ---------- */
+.topbar{ position:sticky; top:0; z-index:60;
+  background:rgba(238,241,246,.74); backdrop-filter:blur(20px) saturate(1.5); -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border-bottom:1px solid var(--cizgi); }
+
+/* ---------- sidebar rail ---------- */
+.rail-item{ display:flex; align-items:center; gap:12px; padding:10px 13px; border-radius:var(--r); color:var(--ink-soft);
+  font-weight:500; font-size:14.5px; position:relative; cursor:pointer;
+  transition:background .18s ease, color .18s ease; }
+.rail-item:hover{ background:rgba(16,36,58,.05); color:var(--ink); }
+.rail-item.active{ background:#fff; color:var(--navy); font-weight:600; box-shadow:var(--golge-1); }
+.rail-item.active::before{ content:""; position:absolute; left:-11px; top:50%; transform:translateY(-50%);
+  width:4px; height:20px; border-radius:4px; background:var(--teal); }
+.rail-item svg{ width:19px; height:19px; flex:none; opacity:.9; }
+
+/* ---------- card ---------- */
+.card{ background:var(--card); border:1px solid var(--cizgi); border-radius:var(--r-lg); box-shadow:var(--golge-2); }
+.unit{ overflow:hidden; }
+.lift{ transition:transform .34s var(--ease-out), box-shadow .34s var(--ease-out), border-color .34s ease; }
+@media (hover:hover) and (pointer:fine){
+  .lift:hover{ transform:translateY(-4px); box-shadow:var(--golge-3); border-color:rgba(30,155,138,.22); }
+}
+.unit.press:active{ transform:scale(0.985); }
+.unit.komut{ transition:transform .34s var(--ease-out), box-shadow .34s var(--ease-out), border-color .34s ease, opacity .5s var(--ease-out); }
+.unit.satili{ opacity:.62; }
+
+/* ---------- unit imagery ---------- */
+.thumb{ position:relative; aspect-ratio:16/10; overflow:hidden; background:#dde5ec; }
+.thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out); }
+@media (hover:hover) and (pointer:fine){ .unit:hover .thumb img{ transform:scale(1.045); } }
+.thumb::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,21,34,.02) 0%, rgba(7,21,34,.34) 100%); }
+.thumb .ust{ position:absolute; z-index:2; top:11px; left:11px; right:11px; display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.thumb .alt{ position:absolute; z-index:2; bottom:11px; left:13px; right:13px; color:#fff; }
+
+/* ---------- freshness (imza: nokta + "X dk önce") ---------- */
+.taze{ display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:500; white-space:nowrap; }
+.taze .nokta{ width:7px; height:7px; border-radius:50%; flex:none; background:var(--musait); position:relative; }
+.taze .nokta::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--musait); opacity:.5; animation:ping 2.6s var(--ease-out) infinite; }
+@keyframes ping{ 0%{ transform:scale(.55); opacity:.6; } 80%,100%{ transform:scale(1.55); opacity:0; } }
+.taze.t-taze{ color:#1f7d4c; }
+.taze.t-7{ color:var(--ink-soft); }
+.taze.t-7 .nokta{ background:var(--musait); } .taze.t-7 .nokta::after{ display:none; }
+.taze.t-eski{ color:var(--opsiyon); }
+.taze.t-eski .nokta{ background:var(--opsiyon); } .taze.t-eski .nokta::after{ display:none; }
+.taze.t-olu{ color:var(--satildi); }
+.taze.t-olu .nokta{ background:var(--satildi); } .taze.t-olu .nokta::after{ display:none; }
+/* thumb üstünde beyaz zeminli tazelik pili */
+.taze-pil{ background:rgba(255,255,255,.94); border-radius:999px; padding:4px 9px 4px 8px; box-shadow:var(--golge-1); backdrop-filter:blur(4px); }
+
+/* ---------- durum rozeti ---------- */
+.durum{ display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:11.5px; font-weight:600; line-height:1; white-space:nowrap; }
+.durum .d{ width:6px; height:6px; border-radius:50%; flex:none; }
+.d-musait{ background:var(--green-soft); color:#1f7d4c; } .d-musait .d{ background:var(--musait); }
+.d-opsiyon{ background:var(--amber-soft); color:#9a6a12; } .d-opsiyon .d{ background:var(--opsiyon); }
+.d-satildi{ background:var(--red-soft); color:#a23f34; } .d-satildi .d{ background:var(--satildi); }
+/* thumb üstündeki opak rozet */
+.durum.opak{ background:rgba(255,255,255,.94); box-shadow:var(--golge-1); backdrop-filter:blur(4px); }
+.durum.opak.d-musait{ color:#1f7d4c; } .durum.opak.d-opsiyon{ color:#9a6a12; } .durum.opak.d-satildi{ color:#a23f34; }
+
+/* ---------- buttons ---------- */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  min-height:40px; padding:0 14px; border-radius:var(--r); font-weight:600; font-size:13px; line-height:1;
+  border:1px solid transparent; cursor:pointer; }
+.btn svg{ width:15px; height:15px; }
+.btn-ghost{ background:#fff; color:var(--ink); border-color:var(--cizgi-2); }
+.btn-ghost:hover{ border-color:rgba(16,36,58,.24); background:rgba(16,36,58,.02); }
+.btn-action{ background:var(--teal-btn); color:#fff; }
+.btn-action:hover{ background:var(--teal-btn-h); box-shadow:0 8px 20px rgba(20,122,106,.28); }
+
+/* ---------- Paylaş morph (Emil: tatmin edici durum dönüşümü) ---------- */
+.paybtn{ position:relative; overflow:hidden; }
+.paybtn .lbl{ display:inline-flex; align-items:center; gap:7px; transition:opacity .2s ease, transform .28s var(--ease-out), filter .2s ease; }
+.paybtn .ok{ position:absolute; inset:0; display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  opacity:0; transform:translateY(70%); filter:blur(3px); transition:opacity .2s ease, transform .34s var(--ease-out), filter .2s ease;
+  background:#1faa5b; color:#fff; }
+.paybtn.done .lbl{ opacity:0; transform:translateY(-70%); filter:blur(3px); }
+.paybtn.done .ok{ opacity:1; transform:translateY(0); filter:blur(0); }
+
+/* ---------- Opsiyon al: tut-onayla (asimetrik zamanlama) ---------- */
+.hold{ position:relative; overflow:hidden; background:#fff; color:var(--ink); border:1px solid var(--cizgi-2); }
+.hold:hover{ border-color:rgba(30,155,138,.4); }
+.hold .fill{ position:absolute; inset:0; z-index:0; background:linear-gradient(90deg, var(--teal) 0%, var(--teal-d) 100%);
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path .2s var(--ease-out); } /* bırakış: hızlı geri çekilme */
+.hold.tutuluyor .fill{ clip-path:inset(0 0 0 0); transition:clip-path 1.15s linear; } /* basış: kararlı, yavaş dolum */
+.hold .ct{ position:relative; z-index:1; display:inline-flex; align-items:center; gap:7px; transition:color .25s ease; }
+.hold.tutuluyor .ct{ color:#fff; }
+.hold .ipucu{ position:absolute; z-index:1; inset:0; display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  color:#fff; font-size:12px; opacity:0; pointer-events:none; transition:opacity .18s ease; }
+.hold.tutuluyor .ipucu{ opacity:1; }
+.hold.tutuluyor .ct{ opacity:0; }
+.hold.bagli{ background:var(--amber-soft); border-color:rgba(227,161,44,.4); }
+.hold.bagli .ct{ color:#9a6a12; }
+
+/* ---------- micro tooltip (ısınınca gecikmesiz) ---------- */
+.tt{ position:relative; }
+.tt .bubble{ position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%) translateY(4px) scale(.96);
+  transform-origin:bottom center;
+  background:var(--ink); color:#fff; font-size:11px; font-weight:500; line-height:1; white-space:nowrap;
+  padding:6px 8px; border-radius:8px; box-shadow:var(--golge-2); opacity:0; pointer-events:none;
+  transition:opacity .16s var(--ease-out) .45s, transform .16s var(--ease-out) .45s; z-index:20; }
+.tt .bubble::after{ content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:5px solid transparent; border-top-color:var(--ink); }
+@media (hover:hover) and (pointer:fine){
+  .tt:hover .bubble{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+  /* ısınmışken (aynı toolbar) gecikmeyi atla + animasyonu kes */
+  .warm .tt:hover .bubble{ transition-delay:0s; transition-duration:0ms; }
+}
+
+/* ---------- canlı akış pili (üst bar) ---------- */
+.canli{ display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:600; color:#1f7d4c;
+  background:var(--green-soft); border:1px solid rgba(47,179,107,.24); padding:6px 11px 6px 9px; border-radius:999px; }
+.canli .dot{ width:7px; height:7px; border-radius:50%; background:var(--musait); position:relative; }
+.canli .dot::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--musait); opacity:.5; animation:ping 2.6s var(--ease-out) infinite; }
+
+/* ---------- kademeli giriş (Emil stagger 30-80ms) ---------- */
+.js [data-stag]{ opacity:0; transform:translateY(14px); }
+.js [data-stag].gir{ animation:gir .5s var(--ease-out) both; }
+@keyframes gir{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+
+/* ---------- flash (satır komut sonrası kısa parıltı) ---------- */
+@keyframes flash{ 0%{ box-shadow:0 0 0 0 rgba(30,155,138,0), var(--golge-2); }
+  30%{ box-shadow:0 0 0 3px rgba(30,155,138,.28), var(--golge-3); } 100%{ box-shadow:0 0 0 0 rgba(30,155,138,0), var(--golge-2); } }
+.flash{ animation:flash 1.1s var(--ease-out); }
+
+/* ---------- toast ---------- */
+.toast{ position:fixed; z-index:90; left:50%; bottom:88px; transform:translateX(-50%) translateY(16px) scale(.97);
+  background:var(--ink); color:#fff; font-size:13px; font-weight:500; padding:11px 16px; border-radius:999px;
+  box-shadow:var(--golge-3); opacity:0; pointer-events:none;
+  transition:opacity .28s var(--ease-out), transform .34s var(--ease-out); display:inline-flex; align-items:center; gap:9px; }
+.toast.acik{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+@media (min-width:1024px){ .toast{ bottom:28px; } }
+
+/* ---------- mobil alt sekme ---------- */
+.tabbar{ position:fixed; z-index:70; left:0; right:0; bottom:0;
+  background:rgba(255,255,255,.86); backdrop-filter:blur(20px) saturate(1.5); -webkit-backdrop-filter:blur(20px) saturate(1.5);
+  border-top:1px solid var(--cizgi); padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+  display:grid; grid-template-columns:repeat(5,1fr); }
+.tab{ display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px 2px; border-radius:12px;
+  color:var(--ink-faint); font-size:10.5px; font-weight:500; cursor:pointer; transition:color .18s ease; }
+.tab svg{ width:22px; height:22px; }
+.tab.active{ color:var(--teal-d); }
+@media (min-width:1024px){ .tabbar{ display:none; } }
+
+/* segment kontrol */
+.seg{ display:inline-flex; padding:3px; background:rgba(16,36,58,.05); border-radius:var(--r); gap:2px; }
+.seg button{ padding:7px 13px; border-radius:11px; font-size:12.5px; font-weight:600; color:var(--ink-soft);
+  background:transparent; border:0; cursor:pointer; transition:color .18s ease, background .22s var(--ease-out), box-shadow .22s var(--ease-out); }
+.seg button.on{ background:#fff; color:var(--navy); box-shadow:var(--golge-1); }
+
+/* KPI mini */
+.kpi{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; font-weight:600; }
+
+/* reduced motion: tüm hareketi kes, opasite/renk kalır */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  .js [data-stag]{ opacity:1 !important; transform:none !important; }
+  .hold .fill, .hold.tutuluyor .fill{ transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ÜST BAR ============ -->
+<header class="topbar">
+  <div class="mx-auto max-w-[1240px] px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3 min-w-0">
+      <span class="mark">Proje<b>dar</b></span>
+      <span class="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-[var(--teal-soft)] text-[var(--teal-ink)] text-[11px] font-semibold px-2.5 py-1">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7z"/></svg>
+        Doğrulanmış danışman
+      </span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="canli" title="Havuz canlı"><span class="dot"></span>Havuz canlı</span>
+      <button class="hidden sm:inline-flex items-center gap-2 press" style="background:transparent;border:0;cursor:pointer">
+        <span class="w-9 h-9 rounded-full bg-[var(--navy)] text-white grid place-items-center text-[13px] font-semibold display">SK</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ GÖVDE: rail + içerik ============ -->
+<div class="mx-auto max-w-[1240px] px-4 sm:px-6 flex gap-8 pt-6 pb-28 lg:pb-12">
+
+  <!-- SOL RAIL (desktop) -->
+  <aside class="hidden lg:flex flex-col w-56 shrink-0 sticky top-[88px] self-start gap-1.5">
+    <div class="rail-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Havuz
+    </div>
+    <div class="rail-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      Leadler <span class="ml-auto kpi text-[11px] text-[var(--ink-faint)]">6</span>
+    </div>
+    <div class="rail-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+      Paylaş
+    </div>
+    <div class="rail-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Opsiyon <span class="ml-auto kpi text-[11px] text-[var(--opsiyon)]">2</span>
+    </div>
+    <div class="rail-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
+      Profil
+    </div>
+
+    <div class="card mt-4 p-4">
+      <p class="text-[11px] font-semibold uppercase tracking-[.1em] text-[var(--ink-faint)]">Bu ay</p>
+      <div class="mt-3 flex items-baseline justify-between">
+        <span class="text-[13px] text-[var(--ink-soft)]">Paylaşım</span><span class="kpi text-[15px]">37</span>
+      </div>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-[13px] text-[var(--ink-soft)]">Opsiyon</span><span class="kpi text-[15px]">2</span>
+      </div>
+      <div class="mt-2 flex items-baseline justify-between">
+        <span class="text-[13px] text-[var(--ink-soft)]">Komisyon payın</span><span class="kpi text-[15px] text-[var(--teal-ink)]">%100</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- İÇERİK -->
+  <main class="flex-1 min-w-0">
+
+    <!-- başlık satırı -->
+    <div class="flex flex-wrap items-end justify-between gap-4" data-stag>
+      <div>
+        <h1 class="display text-[26px] sm:text-[30px] font-semibold tracking-[-.02em]">Sana tahsisli havuz</h1>
+        <p class="mt-1.5 text-[14px] text-[var(--ink-soft)]">
+          Yalnız sana açılan müteahhit stoğu, tek canlı ekranda. Fiyat paylaşımda canlı değerden basılır.
+        </p>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="taze t-taze"><span class="nokta"></span><span id="ustTaze">şimdi güncellendi</span></span>
+      </div>
+    </div>
+
+    <!-- filtre + sayaç şeridi -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mt-5" data-stag>
+      <div class="seg" role="tablist" aria-label="Durum süzgeci">
+        <button class="on" data-filtre="hepsi" role="tab" aria-selected="true">Tümü <span class="kpi">6</span></button>
+        <button data-filtre="musait" role="tab" aria-selected="false">Müsait <span class="kpi">4</span></button>
+        <button data-filtre="opsiyon" role="tab" aria-selected="false">Opsiyon <span class="kpi">1</span></button>
+        <button data-filtre="satildi" role="tab" aria-selected="false">Satıldı <span class="kpi">1</span></button>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-[12px] text-[var(--ink-faint)]">
+        <span>3 proje</span><span class="w-px h-4 bg-[var(--cizgi-2)]"></span>
+        <span><span class="kpi text-[var(--ink-soft)]">6</span> birim tahsisli</span>
+      </div>
+    </div>
+
+    <!-- BİRİM IZGARASI -->
+    <div id="izgara" class="grid gap-5 mt-6 sm:grid-cols-2 xl:grid-cols-3">
+      <!-- kartlar JS ile üretilir -->
+    </div>
+
+  </main>
+</div>
+
+<!-- ============ MOBİL ALT SEKME ============ -->
+<nav class="tabbar" aria-label="Ana gezinme">
+  <button class="tab active">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+    Havuz
+  </button>
+  <button class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+    Leadler
+  </button>
+  <button class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+    Paylaş
+  </button>
+  <button class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Opsiyon
+  </button>
+  <button class="tab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>
+    Profil
+  </button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2fd39a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastMetin">Link canlı fiyatla hazır</span>
+</div>
+
+<script>
+/* =========================================================
+   Örnek veri — gerçek üründe kaynak Supabase Realtime.
+   Görseller /gorseller/render-*.jpg (public/gorseller).
+   ========================================================= */
+const BIRIMLER = [
+  { kod:"A-14-3", proje:"Kule Rezidans", konum:"Çankaya, Ankara", tip:"3+1", net:148, fiyat:"₺11,40M", durum:"musait", dk:2,  img:"render-kule-rezidans.jpg" },
+  { kod:"B-9-2",  proje:"Çankaya Vadi",  konum:"Çankaya, Ankara", tip:"2+1", net:96,  fiyat:"₺7,25M",  durum:"musait", dk:8,  img:"render-cankaya-vadi.jpg" },
+  { kod:"C-6-4",  proje:"Sahil Konutları", konum:"Muratpaşa, Antalya", tip:"4+1", net:190, fiyat:"₺14,80M", durum:"opsiyon", dk:21, img:"render-sahil-konutlari.jpg" },
+  { kod:"D-2-1",  proje:"Bahçe Evleri",  konum:"Yenimahalle, Ankara", tip:"3+1", net:152, fiyat:"₺9,60M",  durum:"musait", dk:43, img:"render-bahce-evleri.jpg" },
+  { kod:"E-11-5", proje:"Meydan Park",   konum:"Kadıköy, İstanbul", tip:"1+1", net:62,  fiyat:"₺4,35M",  durum:"satildi", dk:72, img:"render-meydan-park.jpg" },
+  { kod:"A-17-1", proje:"Kule Rezidans", konum:"Çankaya, Ankara", tip:"4+1", net:205, fiyat:"₺16,20M", durum:"musait", dk:3,  img:"render-kule-rezidans.jpg" },
+];
+
+const DURUM = {
+  musait:{ etiket:"Müsait", sinif:"d-musait" },
+  opsiyon:{ etiket:"Opsiyon", sinif:"d-opsiyon" },
+  satildi:{ etiket:"Satıldı", sinif:"d-satildi" },
+};
+
+function tazeMetin(dk){
+  if(dk < 60) return { s: dk<=0?"şimdi":dk+" dk önce", k: dk<=3?"t-taze":"t-7" };
+  const sa = Math.floor(dk/60);
+  return { s: sa+" sa önce", k:"t-eski" };
+}
+
+function kartHTML(b, i){
+  const d = DURUM[b.durum];
+  const t = tazeMetin(b.dk);
+  const tazeSinif = b.durum==="satildi" ? "t-olu" : t.k;
+  const satili = b.durum==="satildi";
+  return `
+  <article class="card unit lift press komut ${satili?'satili':''}" data-kod="${b.kod}" data-durum="${b.durum}" data-stag style="animation-delay:${i*55}ms">
+    <div class="thumb">
+      <img src="/gorseller/${b.img}" alt="${b.proje} projesi render görseli" loading="lazy" />
+      <div class="ust">
+        <span class="taze ${tazeSinif} taze-pil" data-taze><span class="nokta"></span><span class="taze-metin">${satili?"1 sa önce":t.s}</span></span>
+        <span class="durum opak ${d.sinif}" data-rozet><span class="d"></span><span class="rozet-metin">${d.etiket}</span></span>
+      </div>
+      <div class="alt">
+        <p class="display text-[15px] font-semibold leading-tight" style="text-shadow:0 1px 4px rgba(7,21,34,.5)">${b.proje}</p>
+        <p class="text-[11.5px] opacity-90 mt-0.5" style="text-shadow:0 1px 3px rgba(7,21,34,.5)">${b.konum}</p>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="mono text-[13px] font-semibold">${b.kod}</span>
+            <span class="mono text-[11.5px] text-[var(--ink-soft)]">${b.tip} · ${b.net} m²</span>
+          </div>
+          <p class="text-[11px] text-[var(--ink-faint)] mt-1">Fiyat paylaşımda canlı basılır</p>
+        </div>
+        <span class="mono text-[19px] font-semibold tracking-[-.01em]" data-fiyat>${b.fiyat}</span>
+      </div>
+
+      <div class="flex items-stretch gap-2 mt-4 warm">
+        <span class="tt flex-1">
+          <button class="btn btn-ghost w-full press" data-gor>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            Gör
+          </button>
+          <span class="bubble">Kat planı ve ödeme planını aç</span>
+        </span>
+        <span class="tt flex-1">
+          <button class="btn btn-action w-full press paybtn" data-paylas ${satili?'disabled style="opacity:.5;cursor:not-allowed"':''}>
+            <span class="lbl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Paylaş</span>
+            <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 6L9 17l-5-5"/></svg>Link hazır</span>
+          </button>
+          <span class="bubble">Müşteriye canlı fiyatlı link</span>
+        </span>
+      </div>
+
+      <div class="mt-2 warm" data-ops-sar>
+        <button class="btn hold w-full press" data-opsiyon aria-label="Basılı tutarak opsiyonla kilitle" ${satili?'disabled style="opacity:.5;cursor:not-allowed"':''}>
+          <span class="fill"></span>
+          <span class="ct">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            ${b.durum==="opsiyon" ? "Opsiyonlu · senin kilidin" : "Opsiyon al · basılı tut"}
+          </span>
+          <span class="ipucu">Kilitleniyor, basılı tut…</span>
+        </button>
+      </div>
+    </div>
+  </article>`;
+}
+
+const izgara = document.getElementById("izgara");
+izgara.innerHTML = BIRIMLER.map(kartHTML).join("");
+
+/* opsiyon durumundaki kartın hold butonunu başta "bağlı" göster */
+document.querySelectorAll('.unit').forEach(u=>{
+  if(u.dataset.durum==='opsiyon'){ u.querySelector('.hold')?.classList.add('bagli'); }
+});
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- kademeli giriş (IntersectionObserver + reveal-güvenliği) ---------- */
+if(!reduce){
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("gir"); io.unobserve(e.target); } });
+  }, { threshold:.12, rootMargin:"0px 0px -40px 0px" });
+  document.querySelectorAll("[data-stag]").forEach(el=>io.observe(el));
+  /* güvenlik ağı: headless/tam-sayfa yakalamada kaydırma olmadan da hiçbir kart boş kalmaz */
+  setTimeout(()=>{ document.querySelectorAll("[data-stag]:not(.gir)").forEach(el=>el.classList.add("gir")); }, 1400);
+} else {
+  document.querySelectorAll("[data-stag]").forEach(el=>el.classList.add("gir"));
+}
+
+/* ---------- toast ---------- */
+const toast = document.getElementById("toast");
+const toastMetin = document.getElementById("toastMetin");
+let toastZaman;
+function toastGoster(metin){
+  toastMetin.textContent = metin;
+  toast.classList.add("acik");
+  clearTimeout(toastZaman);
+  toastZaman = setTimeout(()=>toast.classList.remove("acik"), 2400);
+}
+
+/* ---------- Paylaş morph ---------- */
+izgara.addEventListener("click",(e)=>{
+  const pb = e.target.closest("[data-paylas]");
+  if(pb && !pb.disabled){
+    if(pb.classList.contains("done")) return;
+    pb.classList.add("done");
+    toastGoster("Link canlı fiyatla hazır, WhatsApp'a kopyalandı");
+    setTimeout(()=>pb.classList.remove("done"), 1900);
+  }
+  const gor = e.target.closest("[data-gor]");
+  if(gor){ toastGoster("Kat planı ve ödeme planı açılıyor"); }
+});
+
+/* ---------- Opsiyon al: tut-onayla (asimetrik) ---------- */
+const HOLD_MS = 1150;
+document.querySelectorAll("[data-opsiyon]").forEach(btn=>{
+  let t0=0, tamamZaman=null, tutuyor=false;
+  const kart = btn.closest(".unit");
+
+  const bitir = (commit)=>{
+    tutuyor=false;
+    btn.classList.remove("tutuluyor");
+    clearTimeout(tamamZaman);
+    if(commit) commitOpsiyon(kart, btn);
+  };
+
+  const basla = (ev)=>{
+    if(btn.disabled || btn.classList.contains("bagli")) return;
+    ev.preventDefault();
+    tutuyor=true; t0=Date.now();
+    btn.classList.add("tutuluyor");
+    if(btn.setPointerCapture && ev.pointerId!=null){ try{ btn.setPointerCapture(ev.pointerId); }catch(_){} }
+    if(reduce){ commitOpsiyon(kart, btn); tutuyor=false; btn.classList.remove("tutuluyor"); return; }
+    tamamZaman = setTimeout(()=>{ if(tutuyor) bitir(true); }, HOLD_MS);
+  };
+  const birak = ()=>{ if(!tutuyor) return;
+    const gecen = Date.now()-t0;
+    bitir(gecen >= HOLD_MS-40); /* tam süre tutulduysa commit */
+  };
+
+  btn.addEventListener("pointerdown", basla);
+  btn.addEventListener("pointerup", birak);
+  btn.addEventListener("pointerleave", ()=>{ if(tutuyor) bitir(false); });
+  btn.addEventListener("pointercancel", ()=>bitir(false));
+  /* klavye erişimi: Space/Enter anında onaylar */
+  btn.addEventListener("keydown",(e)=>{ if((e.key===" "||e.key==="Enter") && !btn.disabled && !btn.classList.contains("bagli")){ e.preventDefault(); commitOpsiyon(kart, btn); } });
+});
+
+function commitOpsiyon(kart, btn){
+  if(btn.classList.contains("bagli")) return;
+  /* durumu opsiyona çevir */
+  kart.dataset.durum = "opsiyon";
+  const rozet = kart.querySelector("[data-rozet]");
+  rozet.className = "durum opak d-opsiyon";
+  rozet.querySelector(".rozet-metin").textContent = "Opsiyon";
+  /* tazelik → şimdi */
+  const taze = kart.querySelector("[data-taze]");
+  taze.className = "taze t-taze taze-pil";
+  taze.querySelector(".taze-metin").textContent = "şimdi";
+  /* buton bağlı görünümü */
+  btn.classList.remove("tutuluyor");
+  btn.classList.add("bagli");
+  btn.querySelector(".ct").innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Opsiyonlu · senin kilidin`;
+  /* kart parıltısı + toast */
+  if(!reduce){ kart.classList.remove("flash"); void kart.offsetWidth; kart.classList.add("flash"); }
+  const kod = kart.dataset.kod;
+  toastGoster(kod + " senin için kilitlendi, kimse üstüne satamaz");
+}
+
+/* ---------- durum süzgeci ---------- */
+const seg = document.querySelector(".seg");
+seg.addEventListener("click",(e)=>{
+  const b = e.target.closest("button[data-filtre]"); if(!b) return;
+  seg.querySelectorAll("button").forEach(x=>{ x.classList.remove("on"); x.setAttribute("aria-selected","false"); });
+  b.classList.add("on"); b.setAttribute("aria-selected","true");
+  const f = b.dataset.filtre;
+  document.querySelectorAll(".unit").forEach(u=>{
+    const gor = (f==="hepsi") || (u.dataset.durum===f);
+    u.style.display = gor ? "" : "none";
+  });
+});
+
+/* ---------- mobil alt sekme aktiflik ---------- */
+document.querySelectorAll(".tabbar .tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".tabbar .tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+  });
+});
+
+/* ---------- üst tazelik sayacı (hafif canlılık) ---------- */
+if(!reduce){
+  let n=0;
+  setInterval(()=>{ n++; document.getElementById("ustTaze").textContent = (n===0?"şimdi güncellendi":n+" dk önce güncellendi"); }, 60000);
+}
+</script>
+</body>
+</html>

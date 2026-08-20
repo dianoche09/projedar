@@ -10,6 +10,7 @@ import { paylasimKodlariAl } from "@/lib/sharing";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { GuvenRozeti } from "@/components/GuvenRozeti";
+import { Galeri } from "@/components/Galeri";
 import { DalgaTeaser } from "@/components/DalgaTeaser";
 import { KatalogSecici, type SeciBirim } from "./KatalogSecici";
 
@@ -331,25 +332,8 @@ export default async function HavuzProjeDetay({
       {fotolar.length > 0 ? (
         <div className="kart mt-5 p-5 sm:p-6">
           <BolumBaslik>Görseller · {fotolar.length}</BolumBaslik>
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {fotolar.map((f) => (
-              <a
-                key={f.id}
-                href={f.url!}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block aspect-[4/3] overflow-hidden rounded-2xl border border-hair bg-soft"
-                title={f.ad ?? "Görseli büyüt"}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={f.url!}
-                  alt={f.ad ?? "Proje görseli"}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </a>
-            ))}
-          </div>
+          {/* T20: yeni-sekme yerine tıkla-büyüt lightbox (paylaşımlı Galeri; klavye + prev/next) */}
+          <Galeri fotolar={fotolar.map((f) => f.url!)} ad={proje.ad} />
         </div>
       ) : null}
 

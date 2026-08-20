@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Parcel 1: secondary-950 (#020617), top-left -->
+  <polygon points="3.2,5.6 19.5,3.2 22.4,16.8 6.1,19.2" fill="#020617" opacity="0.9"/>
+  <!-- Parcel 2: primary-600 (#26946a), bottom-right -->
+  <polygon points="13.8,11.2 28.8,13.4 26.2,25.6 11.2,23.4" fill="#26946a" opacity="0.95"/>
+  <!-- Parcel 3: primary-300 (#6ee7b7), overlay blend -->
+  <polygon points="8,16 20.8,17.9 18.2,25.6 10.6,23.7" fill="#6ee7b7" style="mix-blend-mode:overlay" opacity="0.8"/>
+</svg>

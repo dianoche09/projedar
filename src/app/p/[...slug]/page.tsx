@@ -10,7 +10,7 @@ import { Logo } from "@/components/Logo";
 import { YazdirButonu } from "./YazdirButonu";
 import { FavoriButton } from "./FavoriButton";
 import { OdemeSlider } from "./OdemeSlider";
-import { Galeri } from "./Galeri";
+import { Galeri } from "@/components/Galeri";
 import { FiyatTrend, type FiyatNokta } from "@/components/FiyatTrend";
 import { OzellikGoster } from "@/components/OzellikGoster";
 import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";

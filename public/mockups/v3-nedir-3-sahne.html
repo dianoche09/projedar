@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar nedir? — Konsept 3: Sakin Ürün Sahnesi (v3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#13314b; --teal:#1e9b8a; --paper:#f4f2ee; --card-bg:#ffffff;
+  --ink:#0f2638; --ink-soft:#5e6b78; --line:#dce3e8;
+  --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --font-disp:"Bricolage Grotesque", sans-serif;
+  --font-body:"Instrument Sans", sans-serif;
+  --font-mono:"Geist Mono", monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased; line-height:1.5; padding-bottom:80px;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.disp{font-family:var(--font-disp)}
+.mono{font-family:var(--font-mono)}
+
+/* HERO SAHNE */
+.hero-scene{
+  text-align:center; padding:90px 0 60px; position:relative; overflow:hidden;
+}
+.hero-scene h1{
+  font-family:var(--font-disp); font-size:clamp(38px,6vw,68px); font-weight:800;
+  letter-spacing:-0.03em; color:var(--navy); line-height:1.02; max-width:860px; margin:0 auto;
+}
+.hero-scene p{
+  font-size:20px; color:var(--ink-soft); max-width:680px; margin:20px auto 0; line-height:1.6;
+}
+
+/* PRODUCT BEATS */
+.beat-container{display:flex;flex-direction:column;gap:80px;margin-top:40px}
+.beat-card{
+  background:#fff; border:1px solid var(--line); border-radius:28px;
+  padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+  box-shadow:0 12px 36px -10px rgba(19,49,75,0.06);
+}
+@media(max-width:860px){.beat-card{grid-template-columns:1fr;padding:32px;gap:24px}}
+
+.beat-card.reverse{direction:rtl}
+.beat-card.reverse .beat-content{direction:ltr}
+.beat-card.reverse .beat-visual{direction:ltr}
+
+.beat-tag{
+  display:inline-flex; align-items:center; gap:6px; font-family:var(--font-mono);
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.15em;
+  color:var(--teal); background:rgba(30,155,138,0.1); padding:4px 12px; border-radius:6px; margin-bottom:16px;
+}
+.beat-content h2{font-family:var(--font-disp);font-size:32px;font-weight:800;color:var(--navy);line-height:1.15;margin-bottom:12px}
+.beat-content p{font-size:16px;color:var(--ink-soft);line-height:1.65;margin-bottom:20px}
+.beat-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.beat-list li{font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:8px}
+
+/* MOCKUP VISUAL SLICE */
+.beat-visual{
+  background:var(--paper); border:1px solid var(--line); border-radius:20px;
+  padding:24px; position:relative; overflow:hidden;
+}
+.mock-window{
+  background:#fff; border-radius:14px; border:1px solid var(--line);
+  box-shadow:0 8px 24px rgba(0,0,0,0.06); padding:16px;
+}
+.mock-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.mock-row:last-child{border-bottom:none}
+
+/* FOOTER BANNER */
+.hero-footer{
+  margin-top:80px; text-align:center; background:var(--navy); color:#fff;
+  border-radius:28px; padding:60px 32px; position:relative; overflow:hidden;
+}
+.hero-footer h2{font-family:var(--font-disp);font-size:36px;font-weight:800}
+.hero-footer p{font-size:18px;opacity:0.85;margin-top:10px;max-width:600px;margin-inline:auto}
+.btn-group{display:flex;justify-content:center;gap:16px;margin-top:32px;flex-wrap:wrap}
+.btn-main{background:var(--teal);color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;text-decoration:none;transition:all 0.2s}
+.btn-main:hover{background:#168576;transform:translateY(-2px)}
+.btn-outline{background:rgba(255,255,255,0.1);color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.2)}
+.btn-outline:hover{background:rgba(255,255,255,0.2)}
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <!-- HERO SCENE -->
+  <section class="hero-scene">
+    <div class="beat-tag">SAKİN ÜRÜN SAHNESİ · APPLE-VARİ DİZAYN</div>
+    <h1 class="disp">Yeni Konut Stoğunun Canlı Dağıtım Ağındasınız.</h1>
+    <p>Projedar, gayrimenkul üreticisi ile yetkili satış danışmanını doğrudan bağlayan saf altyapıdır. İlan portalı veya komisyoncu değildir.</p>
+  </section>
+
+  <!-- BEAT CARDS -->
+  <div class="beat-container">
+    <!-- BEAT 1 -->
+    <div class="beat-card">
+      <div class="beat-content">
+        <div class="beat-tag">BEAT 01 · GÜVENLİK</div>
+        <h2>Çift Satış Kalkanı (DB Kilidi)</h2>
+        <p>İki ayrı emlakçının veya satış temsilcisinin aynı daireyi satması hukuki bir felakettir. Projedar veritabanı seviyesinde partial-unique kilit uygular.</p>
+        <ul class="beat-list">
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> 48 saatlik otomatik opsiyon süresi</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Müşteri teyidi şartlı kilit</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Çift rezervasyonu %100 engelleyen mimari</li>
+        </ul>
+      </div>
+
+      <div class="beat-visual">
+        <div class="mock-window">
+          <div class="mono" style="font-size:11px;color:var(--teal);margin-bottom:8px">DB_INDEX: opsiyon_tek_aktif</div>
+          <div class="mock-row">
+            <span class="mono" style="font-size:12px;font-weight:600">A-BLOK · D:104</span>
+            <span class="mono" style="font-size:11px;color:var(--amber);background:rgba(227,161,44,0.1);padding:3px 8px;border-radius:4px">● KİLİTLİ (34:12)</span>
+          </div>
+          <div class="mock-row">
+            <span class="mono" style="font-size:12px;font-weight:600">A-BLOK · D:105</span>
+            <span class="mono" style="font-size:11px;color:var(--green);background:rgba(47,179,107,0.1);padding:3px 8px;border-radius:4px">● MÜSAİT</span>
+          </div>
+          <div class="mock-row">
+            <span class="mono" style="font-size:12px;font-weight:600">B-BLOK · D:201</span>
+            <span class="mono" style="font-size:11px;color:var(--red);background:rgba(209,90,78,0.1);padding:3px 8px;border-radius:4px">● SATILDI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEAT 2 -->
+    <div class="beat-card reverse">
+      <div class="beat-content">
+        <div class="beat-tag">BEAT 02 · KONTROL</div>
+        <h2>Granüler Tahsis Yetkisi</h2>
+        <p>Müteahhit projeyi kamuya açmak zorunda değildir. Hangi emlak ofisinin hangi blok veya daireyi hangi şartla satabileceğini granüler belirler.</p>
+        <ul class="beat-list">
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Satır-seviye RLS izole görünürlük</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Ofis veya danışman bazlı özel kontenjan</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Rakiplere fiyat sızmasını önleyen gizli mod</li>
+        </ul>
+      </div>
+
+      <div class="beat-visual">
+        <div class="mock-window">
+          <div class="mono" style="font-size:11px;color:var(--navy);margin-bottom:8px">TAHSİS KURALI: OFİS_A</div>
+          <div class="mock-row">
+            <span style="font-size:13px;font-weight:600">Kapsam</span>
+            <span class="mono" style="font-size:12px;color:var(--teal)">A-Blok Kat 1..5</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-size:13px;font-weight:600">Komisyon</span>
+            <span class="mono" style="font-size:12px;color:var(--navy)">%2.5 (Özel)</span>
+          </div>
+          <div class="mock-row">
+            <span style="font-size:13px;font-weight:600">Münhasırlık</span>
+            <span class="mono" style="font-size:12px;color:var(--green)">Aktif</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEAT 3 -->
+    <div class="beat-card">
+      <div class="beat-content">
+        <div class="beat-tag">BEAT 03 · KAZANÇ</div>
+        <h2>Emlakçı İçin Kendi Markasıyla Tek Tık Paylaşım</h2>
+        <p>Danışman canlı stoktaki daireyi kendi logosu, kendi fotoğrafı ve kendi WhatsApp bağlantısı ile müşterisine mikrosite olarak iletir.</p>
+        <ul class="beat-list">
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Güvenli HMAC token'lı özel mikrosite</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Müşteri adayı (lead) doğrudan danışmana düşer</li>
+          <li><span style="color:var(--teal);font-weight:bold">✓</span> Kazancın %100'ü danışmanındır</li>
+        </ul>
+      </div>
+
+      <div class="beat-visual">
+        <div class="mock-window" style="border-color:var(--teal)">
+          <div class="mono" style="font-size:11px;color:var(--teal);margin-bottom:8px">PAYLAŞIM MİKROSİTESİ</div>
+          <div style="font-size:14px;font-weight:700;color:var(--navy)">Ahmet Yılmaz Gayrimenkul</div>
+          <div style="font-size:12px;color:var(--ink-soft);margin-top:2px">Marina Konakları · 3+1 Daire 101</div>
+          <div style="margin-top:12px;background:var(--teal);color:#fff;text-align:center;padding:8px;border-radius:8px;font-size:12px;font-weight:600">
+            WhatsApp İle Bilgi Al 💬
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER BANNER -->
+  <div class="hero-footer">
+    <h2>Projedar Ağına Katılın</h2>
+    <p>Yeni konut satışında tek doğru kaynakla çalışmaya hemen başlayın.</p>
+    <div class="btn-group">
+      <a href="/kayit?rol=emlakci" class="btn-main">Danışman Olarak Katıl</a>
+      <a href="/kayit?rol=uretici" class="btn-outline">Projeni Ağa Ekle</a>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

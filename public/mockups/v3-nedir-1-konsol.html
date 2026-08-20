@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar nedir? — Konsept 1: Canlı Ürün Konsolu (v3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --navy:#13314b; --navy-dark:#0c1f30; --teal:#1e9b8a; --teal-light:#e2f3f0;
+  --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+  --paper:#f4f2ee; --card-bg:#ffffff; --ink:#0f2638; --ink-soft:#5e6b78;
+  --line:#dce3e8; --line-dark:rgba(255,255,255,0.12);
+  --font-disp:"Bricolage Grotesque", sans-serif;
+  --font-body:"Instrument Sans", sans-serif;
+  --font-mono:"Geist Mono", monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink); font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased; line-height:1.5; padding-bottom:60px;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.disp{font-family:var(--font-disp)}
+.mono{font-family:var(--font-mono)}
+
+/* TOP BAR */
+header.bar{
+  background:var(--navy); color:#fff; padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.1);
+  position:sticky; top:0; z-index:100; backdrop-filter:blur(10px);
+}
+.bar-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--font-disp);font-weight:800;font-size:22px;color:#fff;text-decoration:none;letter-spacing:-0.02em}
+.logo span{color:var(--teal)}
+.badge-live{
+  display:inline-flex;align-items:center;gap:8px;background:rgba(47,179,107,0.15);
+  border:1px solid rgba(47,179,107,0.3);color:#4ade80;padding:5px 12px;border-radius:20px;
+  font-family:var(--font-mono);font-size:12px;font-weight:500;
+}
+.pulse-dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.3)}}
+
+/* HERO SECTION */
+.hero{padding:54px 0 36px;text-align:center}
+.eyebrow{font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:0.2em;color:var(--teal);font-weight:600;margin-bottom:12px}
+.hero h1{font-family:var(--font-disp);font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-0.03em;color:var(--navy);line-height:1.08}
+.hero p{max-width:720px;margin:16px auto 0;font-size:18px;color:var(--ink-soft);line-height:1.6}
+
+/* SIMULATOR COCKPIT */
+.cockpit{
+  background:#fff; border:1px solid var(--line); border-radius:24px;
+  box-shadow:0 20px 50px -15px rgba(19,49,75,0.12); overflow:hidden; margin-top:24px;
+}
+.cockpit-header{
+  background:var(--navy); color:#fff; padding:16px 24px; display:flex; align-items:center;
+  justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.cockpit-title{font-family:var(--font-mono);font-size:13px;letter-spacing:0.05em;color:rgba(255,255,255,0.8);display:flex;align-items:center;gap:10px}
+.cockpit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+
+@media(max-width:860px){.cockpit-grid{grid-template-columns:1fr}}
+
+.panel{background:#fff;padding:28px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.panel-tag{font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:0.08em}
+.tag-uretici{background:rgba(19,49,75,0.08);color:var(--navy)}
+.tag-emlakci{background:var(--teal-light);color:var(--teal)}
+
+/* UNIT CARDS GRID */
+.unit-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.unit-card{
+  border:1px solid var(--line); border-radius:14px; padding:14px; background:#fff;
+  transition:all 0.3s ease; position:relative; overflow:hidden;
+}
+.unit-card.active{border-color:var(--teal);box-shadow:0 6px 16px rgba(30,155,138,0.15)}
+.unit-card .status{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;margin-top:8px}
+.status-musait{color:var(--green)}
+.status-opsiyon{color:var(--amber)}
+.status-satildi{color:var(--red)}
+
+/* CONTROLS BAR */
+.controls{background:var(--paper);padding:24px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;justify-content:between;gap:16px}
+.btn-sim{
+  background:var(--navy); color:#fff; border:none; padding:12px 20px; border-radius:12px;
+  font-family:var(--font-body); font-weight:600; font-size:14px; cursor:pointer;
+  transition:all 0.2s ease; display:inline-flex; align-items:center; gap:8px;
+}
+.btn-sim:hover{background:var(--teal);transform:translateY(-1px)}
+.btn-sim-outline{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.btn-sim-outline:hover{background:var(--navy);color:#fff}
+
+/* LOG LOGGING FEED */
+.log-box{
+  background:var(--navy-dark); color:#a0b4c8; font-family:var(--font-mono); font-size:12px;
+  padding:16px 24px; border-top:1px solid rgba(255,255,255,0.08); display:flex; flex-direction:column; gap:6px;
+}
+.log-item{display:flex;gap:12px}
+.log-time{color:var(--teal)}
+.log-text{color:#e2e8f0}
+
+/* PILLARS MATRIX */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:48px}
+.pillar-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:32px}
+.pillar-card h3{font-family:var(--font-disp);font-size:20px;color:var(--navy);margin-bottom:8px}
+.pillar-card p{font-size:14.5px;color:var(--ink-soft);line-height:1.6}
+
+/* CTA */
+.cta-banner{
+  margin-top:54px; background:linear-gradient(135deg, var(--navy) 0%, #1a4366 100%);
+  border-radius:24px; padding:48px 32px; color:#fff; text-align:center; position:relative; overflow:hidden;
+}
+.cta-btns{display:flex;justify-content:center;gap:16px;margin-top:28px;flex-wrap:wrap}
+.btn-primary{background:var(--teal);color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;text-decoration:none;transition:all 0.2s}
+.btn-primary:hover{background:#168576;transform:translateY(-2px)}
+.btn-secondary{background:rgba(255,255,255,0.12);color:#fff;padding:14px 28px;border-radius:14px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.2)}
+.btn-secondary:hover{background:rgba(255,255,255,0.2)}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap bar-inner">
+    <a href="#" class="logo">Projedar<span>.com</span></a>
+    <div class="badge-live">
+      <div class="pulse-dot"></div>
+      <span>CANLI AĞ SİMÜLASYONU</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <p class="eyebrow">Berrak Güven · Canlı Konut Stoğu Dağıtım Ağ Altyapısı</p>
+    <h1 class="disp">Projedar Nedir? Sayfa Değil, Canlı Ağın Kendisi.</h1>
+    <p>Üretici (müteahhit) stoğunu ve fiyatını tek merkezden yönetir; yetkili gayrimenkul danışmanı anında canlı görür ve müşterisine sunar. Çift satış kilitlidir, bilgi eskimaz.</p>
+  </section>
+
+  <!-- INTERACTIVE SIMULATOR -->
+  <div class="cockpit">
+    <div class="cockpit-header">
+      <div class="cockpit-title">
+        <span class="mono" style="color:var(--teal)">SYSTEM_STATUS: ACTIVE</span>
+        <span>|</span>
+        <span>Supabase Realtime + DB Row-Level Security</span>
+      </div>
+      <div class="mono" style="font-size:12px;color:rgba(255,255,255,0.6)">● 2 dakika önce güncellendi</div>
+    </div>
+
+    <div class="cockpit-grid">
+      <!-- MÜTEAHHİT KOKPİTİ -->
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="disp" style="font-size:18px;color:var(--navy)">1. Üretici Kokpiti (Müteahhit)</h2>
+            <p style="font-size:12px;color:var(--ink-soft)">Stok, Fiyat ve Granüler Tahsis Kontrol Noktası</p>
+          </div>
+          <span class="panel-tag tag-uretici">Stok Sahibi</span>
+        </div>
+
+        <div class="unit-list" id="ureticiGrid">
+          <div class="unit-card active" id="u-101">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">A-BLOK · D:101 (3+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px" id="p-101">8.450.000 ₺</div>
+            <div class="status status-musait" id="s-101">● MÜSAİT (CANLI)</div>
+          </div>
+          <div class="unit-card" id="u-102">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">A-BLOK · D:102 (2+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px">5.900.000 ₺</div>
+            <div class="status status-opsiyon">● OPSİYONLU (34s)</div>
+          </div>
+          <div class="unit-card" id="u-103">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">B-BLOK · D:201 (4+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px">12.200.000 ₺</div>
+            <div class="status status-satildi">● SATILDI</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EMLAKÇI HAVUZU -->
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <h2 class="disp" style="font-size:18px;color:var(--navy)">2. Emlakçı Havuzu (Danışman)</h2>
+            <p style="font-size:12px;color:var(--ink-soft)">Tahsis Edilmiş Canlı Proje Portföyü</p>
+          </div>
+          <span class="panel-tag tag-emlakci">Yetkili Satıcı</span>
+        </div>
+
+        <div class="unit-list" id="emlakciGrid">
+          <div class="unit-card active" id="e-101">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">A-BLOK · D:101 (3+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px" id="ep-101">8.450.000 ₺</div>
+            <div class="status status-musait" id="es-101">● MÜSAİT (%2 Komisyon)</div>
+          </div>
+          <div class="unit-card" id="e-102">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">A-BLOK · D:102 (2+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px">5.900.000 ₺</div>
+            <div class="status status-opsiyon">● KİLİTLİ (Başka Ofis)</div>
+          </div>
+          <div class="unit-card" id="e-103">
+            <div class="mono" style="font-size:12px;color:var(--ink-soft)">B-BLOK · D:201 (4+1)</div>
+            <div class="disp" style="font-size:16px;font-weight:700;margin-top:4px">12.200.000 ₺</div>
+            <div class="status status-satildi">● SATILDI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <span class="mono" style="font-size:12px;font-weight:600;color:var(--ink-soft)">ETKİLEŞİMLİ SİMÜLATÖR KONTROLLERİ:</span>
+      <button class="btn-sim" onclick="simuleOpsiyon()">⚡ Simüle Et: Daire 101'e Opsiyon Kilidi Koy (48 Saat)</button>
+      <button class="btn-sim btn-sim-outline" onclick="simuleZam()">📈 Simüle Et: Müteahhit %5 Zam Yaptı</button>
+      <button class="btn-sim btn-sim-outline" onclick="simuleSatis()">✅ Simüle Et: Üretici Satışı Onayladı</button>
+    </div>
+
+    <!-- EVENT LOG -->
+    <div class="log-box">
+      <div class="log-item"><span class="log-time">[08:14:02 UTC]</span><span class="log-text">Sistem hazır: Postgres partial unique index 'opsiyon_tek_aktif' devrede.</span></div>
+      <div class="log-item" id="lastLog"><span class="log-time">[08:14:05 UTC]</span><span class="log-text">Canlı senkronizasyon aktif. Değişiklikler 500ms altında tüm ağa yansır.</span></div>
+    </div>
+  </div>
+
+  <!-- THREE PILLARS -->
+  <div class="pillars">
+    <div class="pillar-card">
+      <span class="mono" style="color:var(--teal);font-size:12px;font-weight:600">01 / DÜRÜSTLÜK</span>
+      <h3 class="disp">Tek Doğru Bilgi</h3>
+      <p>Stok dağınık Excel dosyalarında veya WhatsApp sohbetlerinde kaybolmaz. Bir fiyat değiştiğinde tüm ağ aynı anda güncellenir. "Bu daire duruyor mu?" sorusuna kesin cevap.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="mono" style="color:var(--teal);font-size:12px;font-weight:600">02 / GÜVENLİK</span>
+      <h3 class="disp">Granüler Tahsis & DB Kilidi</h3>
+      <p>Müteahhit hangi danışmanın hangi bloğu, katı veya daireyi satabileceğini kendi seçer. Veritabanı seviyesinde çift satış kilidi ile hukuki ve itibar riski sıfırlanır.</p>
+    </div>
+    <div class="pillar-card">
+      <span class="mono" style="color:var(--teal);font-size:12px;font-weight:600">03 / ŞEFFAFLIK</span>
+      <h3 class="disp">Komisyonsuz Saf Altyapı</h3>
+      <p>Projedar bir emlak brokerı veya komisyoncu değildir. Satış komisyonuna ortak olmaz. Üreticiden abonelik alır, danışmana ücretsiz altyapı ve tazelik vaat eder.</p>
+    </div>
+  </div>
+
+  <!-- CALL TO ACTION -->
+  <div class="cta-banner">
+    <h2 class="disp" style="font-size:32px;font-weight:800">Projedar Ağına Bugün Katılın</h2>
+    <p style="margin-top:8px;opacity:0.85">İster stok yöneten müteahhit olun, ister yetkili satış yapan gayrimenkul danışmanı.</p>
+    <div class="cta-btns">
+      <a href="/kayit?rol=emlakci" class="btn-primary">Danışman Olarak Ücretsiz Katıl</a>
+      <a href="/kayit?rol=uretici" class="btn-secondary">Projeni Ağa Ekle</a>
+    </div>
+  </div>
+</main>
+
+<script>
+function simuleOpsiyon(){
+  document.getElementById('s-101').className = 'status status-opsiyon';
+  document.getElementById('s-101').innerText = '● OPSİYONLU (48s Kilit)';
+  document.getElementById('es-101').className = 'status status-opsiyon';
+  document.getElementById('es-101').innerText = '● KİLİTLİ (Opsiyonlu)';
+  addLog("Opsiyon RPC tetiklendi: Daire 101 için 48 saatlik DB kilidi (opsiyon_tek_aktif) oluşturuldu.");
+}
+function simuleZam(){
+  document.getElementById('p-101').innerText = '8.872.500 ₺';
+  document.getElementById('ep-101').innerText = '8.872.500 ₺';
+  addLog("Üretici Kokpiti: Daire 101 fiyatı %5 artırıldı. Realtime syndication ile emlakçı ekranına anında yansıdı.");
+}
+function simuleSatis(){
+  document.getElementById('s-101').className = 'status status-satildi';
+  document.getElementById('s-101').innerText = '● SATILDI';
+  document.getElementById('es-101').className = 'status status-satildi';
+  document.getElementById('es-101').innerText = '● SATILDI';
+  addLog("Üretici Onayı: Daire 101 'Satıldı' olarak kilitlendi. 'Kim getirdi' iz zincirine satış kaydı yazıldı.");
+}
+function addLog(msg){
+  var time = new Date().toISOString().substring(11,19);
+  var logBox = document.querySelector('.log-box');
+  var div = document.createElement('div');
+  div.className = 'log-item';
+  div.innerHTML = '<span class="log-time">['+time+' UTC]</span><span class="log-text">'+msg+'</span>';
+  logBox.appendChild(div);
+}
+</script>
+
+</body>
+</html>

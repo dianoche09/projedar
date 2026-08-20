@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projedar — Bina Kesiti (Canlı Stok)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Signature "Bina Kesiti" view. Emil design-eng: origin-aware popover (scale from tapped cell,
+       not center), hover lift, staggered reveal, correct easing/timing, reduced-motion. */
+    :root{
+      --zemin:#eef1f6;--zemin-2:#e9edf4;
+      --ink:#10243a;--ink-soft:#46586b;--navy:#13314b;--teal:#1e9b8a;
+      --kart:#fff;--cizgi:rgba(16,36,58,.08);
+      --musait:#2fb36b;--opsiyon:#e3a12c;--satildi:#d15a4e;--pasif:#98a2b3;
+      --ease-out:cubic-bezier(0.23,1,0.32,1);
+    }
+    *{box-sizing:border-box;-webkit-font-smoothing:antialiased;}
+    body{font-family:'Instrument Sans',sans-serif;color:var(--ink);
+      background:radial-gradient(1000px 500px at 80% -10%,rgba(30,155,138,.08),transparent 60%),linear-gradient(180deg,var(--zemin),var(--zemin-2));background-attachment:fixed;}
+    .display{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;}
+    .mono{font-family:'Geist Mono',monospace;font-variant-numeric:tabular-nums;}
+    .card{background:var(--kart);border:1px solid var(--cizgi);border-radius:20px;box-shadow:0 2px 6px rgba(16,36,58,.05),0 12px 28px rgba(16,36,58,.08);}
+    /* Unit cell: only transform/opacity animate (Emil perf rule) */
+    .unit{
+      position:relative;border-radius:12px;padding:9px 10px;cursor:pointer;
+      border:1px solid var(--cizgi);
+      opacity:1;transform:translateY(0) scale(1);
+      transition:transform 180ms var(--ease-out),box-shadow 180ms var(--ease-out),opacity .5s var(--ease-out);
+    }
+    @media (hover:hover) and (pointer:fine){
+      .unit:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(16,36,58,.14);}
+    }
+    .unit:active{transform:scale(0.97);}
+    .u-musait{background:rgba(47,179,107,.12);border-color:rgba(47,179,107,.28);}
+    .u-opsiyon{background:rgba(227,161,44,.14);border-color:rgba(227,161,44,.30);}
+    .u-satildi{background:rgba(209,90,78,.10);border-color:rgba(209,90,78,.26);opacity:.85;}
+    .u-code{font-family:'Geist Mono',monospace;font-weight:600;font-size:12.5px;font-variant-numeric:tabular-nums;}
+    .u-meta{font-size:10.5px;color:var(--ink-soft);}
+    .u-price{font-family:'Geist Mono',monospace;font-size:11px;font-weight:500;margin-top:2px;}
+    /* Popover: origin-aware, scales from tapped cell. Never scale(0). */
+    #pop{
+      position:fixed;z-index:50;width:260px;
+      transform-origin:var(--po,center);
+      opacity:0;transform:scale(.94);pointer-events:none;
+      transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out);
+    }
+    #pop.show{opacity:1;transform:scale(1);pointer-events:auto;}
+    .live-dot{width:7px;height:7px;border-radius:999px;background:var(--musait);position:relative;display:inline-block;}
+    .live-dot::after{content:"";position:absolute;inset:-4px;border-radius:999px;border:2px solid var(--musait);opacity:.5;animation:ping 2.4s var(--ease-out) infinite;}
+    @keyframes ping{0%{transform:scale(.7);opacity:.6;}100%{transform:scale(1.9);opacity:0;}}
+    .btn{min-height:40px;transition:transform 150ms var(--ease-out),background 150ms ease;}
+    .btn:active{transform:scale(0.97);}
+    .floor-label{font-family:'Geist Mono',monospace;font-size:11px;color:var(--ink-soft);}
+    @media (prefers-reduced-motion:reduce){
+      .unit,#pop,.btn{transition:opacity .2s ease;transform:none!important;}
+      .live-dot::after{animation:none;}
+    }
+  </style>
+</head>
+<body>
+  <div class="max-w-[1080px] mx-auto px-5 py-8">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div>
+        <div class="text-[13px]" style="color:var(--ink-soft)">Meydan Rezidans, Çankaya</div>
+        <h1 class="display text-[26px] font-bold leading-tight">A Blok, bina kesiti</h1>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1.5 text-[12px] mono px-2.5 py-1 rounded-full" style="background:rgba(47,179,107,.1);color:#1f7d4d"><span class="live-dot"></span> canlı · 4 dk önce</div>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex flex-wrap items-center gap-4 mb-5 text-[12.5px]" style="color:var(--ink-soft)">
+      <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(47,179,107,.5)"></span>Müsait</span>
+      <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(227,161,44,.55)"></span>Opsiyon</span>
+      <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(209,90,78,.5)"></span>Satıldı</span>
+      <span class="ml-auto text-[12px]">Bir daireye dokun, detay açılsın</span>
+    </div>
+
+    <!-- Building section -->
+    <div class="card p-4 md:p-6">
+      <div id="bina" class="space-y-2.5"></div>
+    </div>
+    <p class="text-[12px] mt-5" style="color:var(--ink-soft)">Mockup: Emil design-eng craft (origin-aware popover, stagger, spring-free CSS) + kilitli Projedar tasarım dili. Gerçek veri değildir.</p>
+  </div>
+
+  <!-- Origin-aware popover -->
+  <div id="pop">
+    <div class="card p-4" style="border-top:4px solid var(--teal)">
+      <div class="flex items-start justify-between">
+        <div>
+          <div class="u-code text-[16px]" id="p-code">A-12</div>
+          <div class="text-[12.5px]" style="color:var(--ink-soft)" id="p-meta">3+1 · 142m² net · Güney cephe</div>
+        </div>
+        <span id="p-badge" class="inline-block px-2 py-0.5 rounded-full text-[11px]">Müsait</span>
+      </div>
+      <div class="mono text-[22px] font-semibold mt-3" id="p-price">₺8.75M</div>
+      <div class="flex items-center gap-1.5 text-[11.5px] mt-1" style="color:var(--ink-soft)"><span class="live-dot"></span> Fiyat 4 dk önce güncellendi</div>
+      <div class="grid grid-cols-2 gap-2 mt-4">
+        <button class="btn inline-flex justify-center items-center rounded-full text-[13px] font-semibold text-white" style="background:var(--navy)">Paylaş</button>
+        <button class="btn inline-flex justify-center items-center rounded-full text-[13px] font-medium" style="background:var(--zemin);border:1px solid var(--cizgi)">Opsiyon al</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Floors 8..1, 5 units each
+    const types=['1+1 · 64m²','2+1 · 98m²','3+1 · 142m²','3+1 · 138m²','4+1 · 176m²'];
+    const price=['4.10','6.20','8.75','8.40','11.40'];
+    const statuses=['musait','opsiyon','satildi'];
+    const badge={musait:['Müsait','rgba(47,179,107,.14)','#1f7d4d'],opsiyon:['Opsiyon','rgba(227,161,44,.16)','#a7761a'],satildi:['Satıldı','rgba(209,90,78,.14)','#a53f34']};
+    const bina=document.getElementById('bina');
+    let idx=0;
+    for(let f=8; f>=1; f--){
+      const rowWrap=document.createElement('div');
+      rowWrap.className='flex items-center gap-3';
+      const lab=document.createElement('div');
+      lab.className='floor-label w-9 text-right shrink-0';
+      lab.textContent=f+'. kat';
+      rowWrap.appendChild(lab);
+      const grid=document.createElement('div');
+      grid.className='grid grid-cols-5 gap-2 flex-1';
+      for(let u=0;u<5;u++){
+        // deterministic-ish status pattern
+        const st = (f===8&&u<4)?'musait' : ((f+u)%7===0?'satildi':((f+u)%3===0?'opsiyon':'musait'));
+        const num = 'A-'+(f*10+u+1);
+        const ti = (f+u)%5;
+        const cell=document.createElement('div');
+        cell.className='unit u-'+st;
+        if(!reduce){cell.style.opacity='0';cell.style.transform='translateY(8px)';}
+        cell.dataset.code=num; cell.dataset.type=types[ti]; cell.dataset.price=price[ti]; cell.dataset.st=st;
+        cell.innerHTML=`<div class="u-code">${num}</div><div class="u-meta">${types[ti].split(' · ')[0]}</div><div class="u-price">₺${price[ti]}M</div>`;
+        grid.appendChild(cell);
+        if(!reduce){ requestAnimationFrame(()=>setTimeout(()=>{cell.style.opacity='';cell.style.transform='';}, 22*idx)); }
+        idx++;
+      }
+      rowWrap.appendChild(grid);
+      bina.appendChild(rowWrap);
+    }
+
+    // Origin-aware popover
+    const pop=document.getElementById('pop');
+    function openPop(cell){
+      const st=cell.dataset.st, [bl,bg,fg]=badge[st];
+      document.getElementById('p-code').textContent=cell.dataset.code;
+      const [t,area]=cell.dataset.type.split(' · ');
+      document.getElementById('p-meta').textContent=`${t} · ${area} net · Güney cephe`;
+      document.getElementById('p-price').textContent='₺'+cell.dataset.price+'M';
+      const b=document.getElementById('p-badge'); b.textContent=bl; b.style.background=bg; b.style.color=fg;
+
+      const r=cell.getBoundingClientRect();
+      const pw=260, ph=210, gap=10;
+      let left=r.left + r.width/2 - pw/2;
+      left=Math.max(12, Math.min(left, innerWidth-pw-12));
+      let top=r.bottom+gap, oy='top';
+      if(top+ph>innerHeight-12){ top=r.top-ph-gap; oy='bottom'; }
+      // origin = where the cell is relative to popover (Emil: scale from trigger)
+      const ox=Math.round(r.left+r.width/2-left);
+      pop.style.left=left+'px'; pop.style.top=top+'px';
+      pop.style.setProperty('--po', `${ox}px ${oy==='top'?'0':'100%'}`);
+      pop.classList.add('show');
+    }
+    function closePop(){ pop.classList.remove('show'); }
+    bina.addEventListener('click', e=>{
+      const cell=e.target.closest('.unit'); if(!cell) return;
+      e.stopPropagation(); openPop(cell);
+    });
+    document.addEventListener('click', e=>{ if(!pop.contains(e.target)) closePop(); });
+    addEventListener('scroll', closePop, {passive:true});
+    addEventListener('keydown', e=>{ if(e.key==='Escape') closePop(); });
+  </script>
+</body>
+</html>

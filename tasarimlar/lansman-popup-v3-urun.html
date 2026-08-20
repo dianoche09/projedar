@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Lansman Popup — ürün odaklı (3 varyasyon)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10243a; --ink-soft:#46586b; --ink-faint:#7d8da0;
+    --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676; --green:#2fb36b; --amber:#e3a12c;
+    --paper:#eef1f6; --card:#fff; --soft:#f5f8fa; --navy-soft:#eaf0f5;
+    --cizgi:rgba(16,36,58,.09); --cizgi-2:rgba(16,36,58,.13);
+    --g1:0 1px 2px rgba(16,36,58,.05),0 2px 6px rgba(16,36,58,.05);
+    --g2:0 2px 6px rgba(16,36,58,.06),0 14px 34px rgba(16,36,58,.10);
+    --g3:0 10px 24px rgba(16,36,58,.13),0 34px 70px rgba(16,36,58,.18);
+    --ease:cubic-bezier(.23,1,.32,1);
+  }
+  *{ box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  body{ margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); min-height:100vh;
+    background:linear-gradient(180deg,#eef1f6,#e7ebf2); padding:32px 22px 56px; }
+  .mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+  .head{ max-width:1360px; margin:0 auto 24px; }
+  .head h1{ font-family:'Outfit'; font-size:21px; font-weight:700; letter-spacing:-.3px; margin:0; }
+  .head p{ margin:6px 0 0; font-size:13px; color:var(--ink-soft); }
+  .grid{ max-width:1360px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:26px; align-items:start; }
+  .lbl{ display:flex; align-items:center; gap:9px; margin:0 2px 12px; }
+  .lbl .n{ display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:var(--navy); color:#fff; font-family:'Geist Mono'; font-size:12px; font-weight:600; }
+  .lbl b{ font-family:'Outfit'; font-size:14px; } .lbl span{ font-size:12px; color:var(--ink-faint); }
+
+  .pop{ position:relative; width:100%; border-radius:24px; overflow:hidden; background:#fff; border:1px solid var(--cizgi); box-shadow:var(--g3); }
+  .close{ position:absolute; right:13px; top:13px; z-index:3; width:30px; height:30px; border:none; border-radius:50%; background:rgba(255,255,255,.7); backdrop-filter:blur(6px); color:var(--ink-soft); display:grid; place-items:center; cursor:pointer; box-shadow:var(--g1); }
+
+  /* ---------- ürün görsel bandı ---------- */
+  .band{ position:relative; padding:16px 16px 18px; background:linear-gradient(180deg,var(--navy-soft),#f3f6f9); border-bottom:1px solid var(--cizgi); }
+  .band-h{ display:flex; align-items:center; justify-content:space-between; margin-bottom:11px; padding:0 2px; }
+  .brand{ display:flex; align-items:center; gap:7px; font-family:'Outfit'; font-weight:700; font-size:12.5px; color:var(--navy); }
+  .brand .lg{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.5px; width:15px; height:15px; }
+  .brand .lg span{ border-radius:1.5px; background:var(--navy); opacity:.24; } .brand .lg span.on{ opacity:1; background:var(--teal); }
+  .pool{ font-family:'Geist Mono'; font-size:10.5px; color:var(--ink-soft); }
+  .pool b{ color:var(--teal-d); }
+
+  .pcard{ display:flex; align-items:center; gap:11px; background:#fff; border:1px solid var(--cizgi); border-radius:13px; padding:9px 11px; box-shadow:var(--g1); }
+  .pcard + .pcard{ margin-top:7px; }
+  .pico{ flex:none; width:32px; height:32px; border-radius:9px; display:grid; place-items:center; background:var(--navy-soft); color:var(--navy); }
+  .pname{ font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.1; }
+  .pmeta{ font-size:10.5px; color:var(--ink-faint); margin-top:2px; }
+  .pstat{ margin-left:auto; display:inline-flex; align-items:center; gap:5px; background:rgba(47,179,107,.12); color:#1f7d4c; border-radius:999px; padding:3px 9px; font-size:10.5px; font-weight:600; white-space:nowrap; }
+  .gd{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+
+  /* dashboard tablo (V2) */
+  .tbl{ background:#fff; border:1px solid var(--cizgi); border-radius:13px; overflow:hidden; box-shadow:var(--g1); }
+  .trow{ display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:10px; padding:9px 12px; }
+  .trow + .trow{ border-top:1px solid var(--cizgi); }
+  .trow.hd{ background:var(--soft); }
+  .th{ font-size:9.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); }
+  .tn{ font-size:12.5px; font-weight:600; color:var(--ink); }
+  .tnum{ font-family:'Geist Mono'; font-size:11.5px; color:var(--ink-soft); }
+  .tchip{ display:inline-flex; align-items:center; gap:5px; font-family:'Geist Mono'; font-size:11px; font-weight:600; color:#1f7d4c; }
+
+  /* editorial tek kart (V3) */
+  .one{ display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--cizgi); border-radius:14px; padding:12px 13px; box-shadow:var(--g1); }
+
+  /* ---------- gövde ---------- */
+  .body{ padding:18px 22px 20px; }
+  .title{ font-family:'Outfit'; font-weight:800; font-size:22px; letter-spacing:-.4px; line-height:1.12; color:var(--ink); margin:0; }
+  .sub{ font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:9px 0 0; }
+  .cta{ display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-top:16px; padding:13px 16px; border:none; border-radius:13px; background:var(--navy); color:#fff; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; box-shadow:var(--g1); transition:transform .16s var(--ease), background .16s; }
+  .cta:hover{ background:#0e2740; transform:translateY(-1px); }
+  .cta:active{ transform:scale(.99); }
+  .sec{ display:block; width:100%; text-align:center; margin-top:11px; background:none; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:13px; color:var(--ink-soft); transition:color .15s; }
+  .sec:hover{ color:var(--teal-d); }
+  .trust{ display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:15px; padding-top:13px; border-top:1px solid var(--cizgi); font-size:11px; color:var(--ink-faint); }
+  .trust s{ text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+  .trust .k{ width:5px; height:5px; border-radius:50%; background:var(--teal); }
+  .sep{ color:var(--cizgi-2); }
+  svg{ display:block; }
+
+  @media (max-width:1120px){ .grid{ grid-template-columns:1fr; max-width:440px; } }
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Lansman Popup · ürün odaklı — değer önce, rol sonra</h1>
+    <p>Aynı mesaj mimarisi (favori metin + tek ana CTA danışman + müteahhit link + güven satırı). Farklı olan üst görselin ürün yorumu. Gerçek proje kartları, neon 3D yok.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ============ V1 · ÜRÜN KARTI ============ -->
+    <div>
+      <div class="lbl"><span class="n">1</span><b>Ürün kartı</b><span>· proje kartları</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="band">
+          <div class="band-h">
+            <span class="brand"><span class="lg"><span class="on"></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span class="on"></span></span> Projedar canlı havuz</span>
+            <span class="pool"><b>3</b> proje · <b>28</b> güncel stok</span>
+          </div>
+          <div class="pcard">
+            <span class="pico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <div><div class="pname">Meridyen Vadi</div><div class="pmeta mono">İstanbul · 42 bağımsız bölüm</div></div>
+            <span class="pstat"><span class="gd"></span>12 satışa açık</span>
+          </div>
+          <div class="pcard">
+            <span class="pico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <div><div class="pname">Park Yaşam</div><div class="pmeta mono">Kadıköy · 18 bağımsız bölüm</div></div>
+            <span class="pstat"><span class="gd"></span>7 satışa açık</span>
+          </div>
+          <div class="pcard">
+            <span class="pico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <div><div class="pname">Çankaya Panorama</div><div class="pmeta mono">Ankara · 31 bağımsız bölüm</div></div>
+            <span class="pstat"><span class="gd"></span>9 satışa açık</span>
+          </div>
+        </div>
+        <div class="body">
+          <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <div class="trust"><s><span class="k"></span>Ücretsiz temel hesap</s><span class="sep">·</span><s>İşlem komisyonu yok</s><span class="sep">·</span><s>Güncel proje stoğu</s></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ V2 · HAFİF DASHBOARD ============ -->
+    <div>
+      <div class="lbl"><span class="n">2</span><b>Hafif dashboard</b><span>· canlı havuz tablosu</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="band">
+          <div class="band-h">
+            <span class="brand"><span class="lg"><span class="on"></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span class="on"></span></span> Canlı Havuz</span>
+            <span class="pool"><b>3</b> proje · <b>28</b> güncel stok</span>
+          </div>
+          <div class="tbl">
+            <div class="trow hd"><span class="th">Proje</span><span class="th">Bölüm</span><span class="th">Satışa açık</span></div>
+            <div class="trow"><span class="tn">Meridyen Vadi</span><span class="tnum">42</span><span class="tchip"><span class="gd"></span>12</span></div>
+            <div class="trow"><span class="tn">Park Yaşam</span><span class="tnum">18</span><span class="tchip"><span class="gd"></span>7</span></div>
+            <div class="trow"><span class="tn">Çankaya Panorama</span><span class="tnum">31</span><span class="tchip"><span class="gd"></span>9</span></div>
+          </div>
+        </div>
+        <div class="body">
+          <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <div class="trust"><s><span class="k"></span>Ücretsiz temel hesap</s><span class="sep">·</span><s>İşlem komisyonu yok</s><span class="sep">·</span><s>Güncel proje stoğu</s></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ V3 · SADE EDITORIAL ============ -->
+    <div>
+      <div class="lbl"><span class="n">3</span><b>Sade editorial</b><span>· tipografi önde</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="body" style="padding-top:24px">
+          <span class="brand" style="font-size:11px; letter-spacing:.02em"><span class="lg"><span class="on"></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span><span></span><span class="on"></span></span> Projedar</span>
+          <h2 class="title" style="font-size:24px; margin-top:14px">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <div class="one" style="margin-top:16px">
+            <span class="pico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <div style="flex:1"><div class="pname">Meridyen Vadi · Park Yaşam · +1</div><div class="pmeta mono">3 proje · 28 bağımsız bölüm satışa açık</div></div>
+            <span class="pstat"><span class="gd"></span>canlı</span>
+          </div>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <div class="trust"><s><span class="k"></span>Ücretsiz temel hesap</s><span class="sep">·</span><s>İşlem komisyonu yok</s><span class="sep">·</span><s>Güncel proje stoğu</s></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

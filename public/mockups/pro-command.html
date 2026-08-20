@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projedar · Müteahhit Komuta Merkezi</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* sinyal (kilitli) */
+    --green: #2fb36b;  --green-b: #37d99a;
+    --amber: #e3a12c;  --amber-b: #eab23f;
+    --red:   #d15a4e;  --red-b:   #dd6a5e;
+    --teal:  #1e9b8a;  --teal-b:  #2fd3bc;
+    /* koyu kokpit yüzey/metin */
+    --ink:   #eef4fa;
+    --soft:  #a8bccc;
+    --faint: #6e8496;
+    --line:  rgba(255,255,255,0.09);
+    --line2: rgba(255,255,255,0.14);
+    --panel: rgba(9, 24, 39, 0.62);
+    --card:  linear-gradient(180deg, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.028) 100%);
+    /* Emil eğrileri */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-io:  cubic-bezier(0.77, 0, 0.175, 1);
+    --r-sm: 11px; --r-md: 15px; --r-lg: 20px;
+  }
+
+  * { -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  html {
+    scroll-behavior: smooth;
+    background:
+      radial-gradient(1100px 560px at 84% -12%, rgba(30,155,138,0.20), transparent 58%),
+      radial-gradient(880px 480px at -6% 8%, rgba(19,49,75,0.55), transparent 55%),
+      radial-gradient(760px 420px at 50% 118%, rgba(47,179,107,0.10), transparent 55%),
+      linear-gradient(162deg, #071522 0%, #0a1f33 50%, #0c2740 100%);
+    background-attachment: fixed;
+  }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+  .font-display { font-family: "Outfit", sans-serif; letter-spacing: -0.02em; }
+  .mono { font-family: "Geist Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+  /* ışık ızgara dokusu */
+  .grid-doku {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  /* ---- cam kart ---- */
+  .glass {
+    background: var(--card);
+    border: 1px solid var(--line2);
+    border-radius: var(--r-lg);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 14px 40px rgba(2,10,18,0.42);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .glass-hover {
+    transition: transform 0.34s var(--ease-out), border-color 0.34s var(--ease-out), box-shadow 0.34s var(--ease-out);
+  }
+  .glass-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(47,211,188,0.42);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 20px 54px rgba(2,10,18,0.55), 0 0 34px rgba(47,211,188,0.13);
+  }
+
+  /* ---- sinyal üst kenarı (KPI) ---- */
+  .sig-top { position: relative; overflow: hidden; }
+  .sig-top::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--_c, var(--teal-b)); opacity: 0.95;
+    box-shadow: 0 0 18px var(--_c, var(--teal-b));
+  }
+
+  /* ---- sidebar nav ---- */
+  .nav-it {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 13px; border-radius: 13px;
+    color: var(--soft); font-weight: 500; font-size: 14px;
+    position: relative; cursor: pointer;
+    transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+  }
+  .nav-it:hover { background: rgba(255,255,255,0.05); color: var(--ink); }
+  .nav-it.on { background: rgba(47,211,188,0.10); color: #eafffb; font-weight: 600; }
+  .nav-it.on::before {
+    content: ""; position: absolute; left: -10px; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 20px; border-radius: 3px;
+    background: var(--teal-b); box-shadow: 0 0 12px var(--teal-b);
+  }
+  .nav-it .ic { width: 18px; height: 18px; flex: none; opacity: 0.9; }
+  .nav-it .cnt { margin-left: auto; font-size: 11px; }
+
+  /* ---- durum rozeti ---- */
+  .durum {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 9px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap;
+  }
+  .durum .n { width: 6px; height: 6px; border-radius: 50%; flex: none; }
+  .d-musait  { background: rgba(47,179,107,0.15); color: #6fe0a6; }
+  .d-musait .n { background: var(--green-b); box-shadow: 0 0 8px rgba(55,217,154,0.6); }
+  .d-opsiyon { background: rgba(227,161,44,0.16); color: #f0c26a; }
+  .d-opsiyon .n { background: var(--amber-b); box-shadow: 0 0 8px rgba(234,178,63,0.5); }
+  .d-satildi { background: rgba(209,90,78,0.16); color: #eb9086; }
+  .d-satildi .n { background: var(--red-b); }
+
+  /* ---- tazelik ---- */
+  .taze { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; white-space: nowrap; }
+  .taze .n { width: 6px; height: 6px; border-radius: 50%; flex: none; }
+  .t-taze  { color: #7fe0ac; } .t-taze .n  { background: var(--green-b); box-shadow: 0 0 0 3px rgba(55,217,154,0.16); }
+  .t-orta  { color: var(--soft); } .t-orta .n { background: var(--green); }
+  .t-eski  { color: #f0c26a; } .t-eski .n  { background: var(--amber-b); }
+  .t-cok   { color: #eb9086; } .t-cok .n   { background: var(--red-b); }
+
+  /* ---- veri tablosu ---- */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .tbl th {
+    text-align: left; padding: 10px 16px;
+    font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--faint); border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  .tbl td { padding: 13px 16px; border-bottom: 1px solid var(--line); color: var(--ink); white-space: nowrap; vertical-align: middle; }
+  .tbl tbody tr { transition: background 0.16s var(--ease-out); }
+  .tbl tbody tr:hover { background: rgba(255,255,255,0.035); }
+  .tbl tbody tr:last-child td { border-bottom: none; }
+
+  /* ---- segmented ---- */
+  .seg { display: inline-flex; padding: 3px; border-radius: 12px; background: rgba(0,0,0,0.28); border: 1px solid var(--line); }
+  .seg button {
+    border: 0; cursor: pointer; padding: 6px 15px; border-radius: 9px; background: transparent;
+    color: var(--soft); font-size: 12.5px; font-weight: 600; font-family: inherit;
+    transition: color 0.2s var(--ease-out), background 0.24s var(--ease-out), box-shadow 0.24s var(--ease-out);
+  }
+  .seg button.on { background: rgba(47,211,188,0.16); color: #eafffb; box-shadow: inset 0 0 0 1px rgba(47,211,188,0.30); }
+
+  /* ---- buton ---- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    border-radius: 12px; font-weight: 600; font-size: 13px; font-family: inherit;
+    min-height: 40px; padding: 0 15px; cursor: pointer; white-space: nowrap; border: 1px solid transparent;
+    transition: transform 0.12s var(--ease-out), background 0.18s var(--ease-out), border-color 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
+  }
+  .btn-teal { background: linear-gradient(180deg, #23b6a3, #1a8676); color: #fff; box-shadow: 0 6px 18px rgba(30,155,138,0.30), inset 0 1px 0 rgba(255,255,255,0.18); }
+  .btn-teal:hover { box-shadow: 0 10px 26px rgba(30,155,138,0.40), inset 0 1px 0 rgba(255,255,255,0.22); }
+  .btn-ghost { background: rgba(255,255,255,0.045); color: var(--ink); border-color: var(--line2); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.24); }
+  .btn:active, .chip:active, .nav-it:active, .seg button:active, .hucre:active { transform: scale(0.97); }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px;
+    border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+    font-size: 12.5px; font-weight: 500; color: var(--soft); cursor: pointer;
+    transition: background 0.16s var(--ease-out), border-color 0.16s var(--ease-out), color 0.16s var(--ease-out);
+  }
+  .chip:hover { border-color: rgba(255,255,255,0.22); color: var(--ink); }
+
+  /* ---- bina kesiti hücre ---- */
+  .kesit-wrap { display: none; }
+  .hucre {
+    border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 46px; font-size: 10px; font-weight: 600; cursor: pointer; position: relative; color: #071522;
+    transition: transform 0.18s var(--ease-out), box-shadow 0.18s var(--ease-out);
+  }
+  .hucre:hover { transform: translateY(-3px) scale(1.06); box-shadow: 0 10px 22px rgba(0,0,0,0.4); z-index: 5; }
+  .h-musait  { background: linear-gradient(150deg, #37c178, #2fb36b); }
+  .h-opsiyon { background: linear-gradient(150deg, #eab23f, #e3a12c); }
+  .h-satildi { background: linear-gradient(150deg, #dd6a5e, #d15a4e); color: #fff; }
+  .h-bos { background: rgba(255,255,255,0.05); color: var(--faint); cursor: default; }
+  .h-bos:hover { transform: none; box-shadow: none; }
+
+  /* ---- nabız ---- */
+  @keyframes nabiz { 0% { box-shadow: 0 0 0 0 rgba(55,217,154,0.55); } 70% { box-shadow: 0 0 0 7px rgba(55,217,154,0); } 100% { box-shadow: 0 0 0 0 rgba(55,217,154,0); } }
+  .nabiz { animation: nabiz 2.2s infinite; }
+
+  /* ---- tarama çizgisi ---- */
+  @keyframes tarama { 0% { transform: translateY(-100%); opacity: 0; } 45% { opacity: 1; } 100% { transform: translateY(2400%); opacity: 0; } }
+  .tarama { animation: tarama 5s linear infinite; }
+
+  /* ---- kademeli giriş (stagger) ---- */
+  @keyframes belir { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .belir { opacity: 0; animation: belir 0.55s var(--ease-out) forwards; }
+  @keyframes belirR { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+  .belirR { opacity: 0; animation: belirR 0.55s var(--ease-out) forwards; }
+
+  /* ---- tooltip (origin-aware) ---- */
+  .tip { position: relative; }
+  .tip .bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform-origin: bottom center;
+    transform: translateX(-50%) scale(0.96); opacity: 0; pointer-events: none;
+    background: #0d2740; border: 1px solid var(--line2); color: var(--ink);
+    font-size: 11.5px; font-weight: 500; padding: 6px 10px; border-radius: 9px; white-space: nowrap;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.5);
+    transition: opacity 0.14s var(--ease-out), transform 0.14s var(--ease-out);
+  }
+  .tip:hover .bubble { opacity: 1; transform: translateX(-50%) scale(1); }
+
+  /* ---- olay feed satırı ---- */
+  @keyframes olayGir { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .olay-gir { animation: olayGir 0.45s var(--ease-out); }
+
+  /* ---- mini spark bar ---- */
+  .spark { display: flex; align-items: flex-end; gap: 3px; height: 34px; }
+  .spark i { width: 6px; border-radius: 2px 2px 0 0; background: linear-gradient(180deg, var(--teal-b), rgba(47,211,188,0.25)); }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.24); background-clip: padding-box; }
+
+  button:focus-visible, [role="button"]:focus-visible, a:focus-visible {
+    outline: 2px solid var(--teal-b); outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important; scroll-behavior: auto !important;
+    }
+    .belir, .belirR { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-doku fixed inset-0 opacity-70 pointer-events-none" aria-hidden="true"></div>
+
+<div class="relative flex h-screen overflow-hidden">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="hidden lg:flex w-[248px] flex-none flex-col border-r border-[var(--line)] px-4 py-5" style="background: rgba(6,17,29,0.5); backdrop-filter: blur(10px);">
+    <!-- marka -->
+    <div class="flex items-center gap-2.5 px-2 pb-6">
+      <div class="grid size-9 place-items-center rounded-xl" style="background: linear-gradient(150deg, rgba(47,211,188,0.28), rgba(47,211,188,0.06)); border: 1px solid rgba(47,211,188,0.4); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 0 22px rgba(47,211,188,0.2);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-b)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+      </div>
+      <div class="font-display text-[19px] font-bold tracking-tight">Proje<span style="color: var(--green-b)">dar</span></div>
+    </div>
+
+    <div class="px-2 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em]" style="color: var(--faint)">Komuta</div>
+    <nav class="flex flex-col gap-1">
+      <a class="nav-it on"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Genel Bakış</a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 9h.01M9 13h.01M9 17h.01M15 9h.01M15 13h.01M15 17h.01"/></svg>Projeler<span class="cnt mono" style="color:var(--faint)">4</span></a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg>Stok<span class="cnt mono" style="color:var(--faint)">312</span></a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Tahsis</a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Opsiyonlar<span class="cnt mono" style="color:var(--amber-b)">37</span></a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Leadler<span class="cnt mono" style="color:var(--green-b)">+146</span></a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>Talep Radarı</a>
+      <a class="nav-it"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Raporlar</a>
+    </nav>
+
+    <div class="mt-auto">
+      <div class="glass rounded-2xl p-3.5" style="border-radius: 16px;">
+        <div class="flex items-center gap-2 text-[11.5px] font-semibold" style="color: var(--teal-b)">
+          <span class="size-2 rounded-full nabiz" style="background: var(--teal-b)"></span> Concierge hattı
+        </div>
+        <p class="mt-1.5 text-[11.5px] leading-relaxed" style="color: var(--soft)">Stok yükleme veya toplu fiyat için ekip devrede.</p>
+      </div>
+      <div class="mt-3 flex items-center gap-3 px-1">
+        <div class="grid size-9 flex-none place-items-center rounded-full font-display text-[13px] font-bold text-[#071522]" style="background: linear-gradient(150deg, #37d99a, #2fb36b)">MY</div>
+        <div class="min-w-0">
+          <div class="truncate text-[13px] font-semibold">Meydan Yapı</div>
+          <div class="truncate text-[11px]" style="color: var(--faint)">Müteahhit · Kurumsal</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ ANA KOLON ============ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+
+    <!-- ---- ÜST BAR ---- -->
+    <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-[var(--line)] px-5 py-3.5" style="background: rgba(7,20,34,0.72); backdrop-filter: blur(16px) saturate(1.3);">
+      <div class="lg:hidden font-display text-[17px] font-bold">Proje<span style="color:var(--green-b)">dar</span></div>
+      <div class="hidden sm:flex flex-col">
+        <h1 class="font-display text-[16px] font-bold leading-none">Müteahhit Komuta Merkezi</h1>
+        <span class="mt-1 text-[11.5px]" style="color: var(--faint)">Meydan Yapı · 4 aktif proje · 312 birim canlı</span>
+      </div>
+
+      <div class="ml-auto flex items-center gap-2.5">
+        <div class="taze t-taze hidden md:inline-flex rounded-full px-3 py-1.5" style="background: rgba(47,179,107,0.10); border: 1px solid rgba(47,179,107,0.22);">
+          <span class="n nabiz"></span> Senkron <span class="mono">4 dk önce</span>
+        </div>
+        <button class="chip hidden sm:inline-flex" style="height:40px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Ara
+          <span class="mono ml-1 rounded-md px-1.5 py-0.5 text-[10px]" style="background: rgba(255,255,255,0.07); color: var(--faint)">⌘K</span>
+        </button>
+        <button class="chip tip" style="width:40px; height:40px; padding:0; justify-content:center;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="absolute right-2.5 top-2.5 size-2 rounded-full" style="background: var(--amber-b); box-shadow: 0 0 8px var(--amber-b)"></span>
+          <span class="bubble">3 yeni bildirim</span>
+        </button>
+        <div class="tip grid size-10 flex-none place-items-center rounded-full font-display text-[13px] font-bold text-[#071522]" style="background: linear-gradient(150deg, #37d99a, #2fb36b); cursor: pointer;">
+          MY
+          <span class="bubble">Meydan Yapı · Müteahhit</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ---- İÇERİK ---- -->
+    <main class="flex-1 overflow-y-auto px-5 py-6">
+
+      <!-- KPI ŞERİDİ -->
+      <section class="grid grid-cols-2 gap-4 xl:grid-cols-4">
+        <!-- müsait -->
+        <div class="glass glass-hover sig-top p-5 belir" style="--_c: var(--green-b); animation-delay: 40ms;">
+          <div class="flex items-center justify-between">
+            <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--faint)">Müsait birim</span>
+            <span class="durum d-musait"><span class="n"></span>canlı</span>
+          </div>
+          <div class="mono mt-3 text-[38px] font-semibold leading-none" style="color: var(--green-b)">208</div>
+          <div class="mt-2.5 flex items-center gap-1.5 text-[11.5px]" style="color: var(--soft)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green-b)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            <span class="mono" style="color: var(--green-b)">+11</span> bu hafta · 312 toplam
+          </div>
+        </div>
+        <!-- opsiyon -->
+        <div class="glass glass-hover sig-top p-5 belir" style="--_c: var(--amber-b); animation-delay: 90ms;">
+          <div class="flex items-center justify-between">
+            <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--faint)">Aktif opsiyon</span>
+            <span class="durum d-opsiyon"><span class="n"></span>tutulu</span>
+          </div>
+          <div class="mono mt-3 text-[38px] font-semibold leading-none" style="color: var(--amber-b)">37</div>
+          <div class="mt-2.5 flex items-center gap-1.5 text-[11.5px]" style="color: var(--soft)">
+            <span class="mono" style="color: var(--amber-b)">9</span> bugün süresi doluyor
+          </div>
+        </div>
+        <!-- lead -->
+        <div class="glass glass-hover sig-top p-5 belir" style="--_c: var(--teal-b); animation-delay: 140ms;">
+          <div class="flex items-center justify-between">
+            <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--faint)">Haftalık lead</span>
+            <span class="text-[10.5px] mono" style="color: var(--faint)">7 gün</span>
+          </div>
+          <div class="mono mt-3 text-[38px] font-semibold leading-none" style="color: var(--teal-b)">146</div>
+          <div class="mt-2.5 flex items-center gap-1.5 text-[11.5px]" style="color: var(--soft)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--teal-b)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            <span class="mono" style="color: var(--teal-b)">+%18</span> önceki döneme göre
+          </div>
+        </div>
+        <!-- eskiyen -->
+        <div class="glass glass-hover sig-top p-5 belir" style="--_c: var(--red-b); animation-delay: 190ms;">
+          <div class="flex items-center justify-between">
+            <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--faint)">Eskiyen stok</span>
+            <span class="durum d-satildi"><span class="n"></span>dikkat</span>
+          </div>
+          <div class="mono mt-3 text-[38px] font-semibold leading-none" style="color: var(--red-b)">12</div>
+          <div class="mt-2.5 flex items-center gap-1.5 text-[11.5px]" style="color: var(--soft)">
+            8 günden uzun güncellenmedi
+          </div>
+        </div>
+      </section>
+
+      <!-- ANA IZGARA: TABLO + SAĞ RAY -->
+      <section class="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-[1fr_360px]">
+
+        <!-- ==== STOK PANELİ ==== -->
+        <div class="glass belir overflow-hidden" style="animation-delay: 230ms; padding: 0;">
+          <div class="flex flex-wrap items-center gap-3 border-b border-[var(--line)] px-5 py-4">
+            <div>
+              <h2 class="font-display text-[16px] font-bold leading-none">Canlı stok havuzu</h2>
+              <p class="mt-1.5 text-[11.5px]" style="color: var(--faint)">Tek doğru kaynak · fiyat ve durum anlık</p>
+            </div>
+            <div class="ml-auto flex items-center gap-2.5">
+              <button class="chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Filtre</button>
+              <div class="seg" role="tablist">
+                <button class="on" id="segTablo" role="tab" aria-selected="true">Tablo</button>
+                <button id="segKesit" role="tab" aria-selected="false">Bina kesiti</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLO GÖRÜNÜMÜ -->
+          <div id="viewTablo" class="overflow-x-auto">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Kod</th><th>Tip</th><th class="text-right">Net m²</th><th class="text-right">Fiyat</th><th>Durum</th><th>Son güncelleme</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="tblBody"><!-- JS --></tbody>
+            </table>
+            <div class="flex items-center justify-between border-t border-[var(--line)] px-5 py-3 text-[11.5px]" style="color: var(--faint)">
+              <span>Çankaya Vadi · <span class="mono">A Blok</span> · 24 birimden 8'i gösteriliyor</span>
+              <div class="flex items-center gap-2">
+                <button class="chip" style="height:30px">Önceki</button>
+                <button class="chip" style="height:30px">Sonraki</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BİNA KESİTİ GÖRÜNÜMÜ -->
+          <div id="viewKesit" class="kesit-wrap p-5">
+            <div class="flex items-center gap-4 pb-4 text-[11.5px]" style="color: var(--soft)">
+              <span class="flex items-center gap-1.5"><span class="size-2.5 rounded" style="background: var(--green)"></span>Müsait</span>
+              <span class="flex items-center gap-1.5"><span class="size-2.5 rounded" style="background: var(--amber)"></span>Opsiyon</span>
+              <span class="flex items-center gap-1.5"><span class="size-2.5 rounded" style="background: var(--red)"></span>Satıldı</span>
+              <span class="flex items-center gap-1.5"><span class="size-2.5 rounded" style="background: rgba(255,255,255,0.10)"></span>Boş</span>
+            </div>
+            <div id="kesitGrid" class="space-y-1.5"><!-- JS --></div>
+          </div>
+        </div>
+
+        <!-- ==== SAĞ RAY ==== -->
+        <div class="flex flex-col gap-5">
+
+          <!-- TALEP RADARI İÇGÖRÜ KARTI -->
+          <div class="glass glass-hover belirR p-5" style="animation-delay: 280ms;">
+            <div class="flex items-center gap-2">
+              <span class="grid size-7 place-items-center rounded-lg" style="background: rgba(47,211,188,0.14); border: 1px solid rgba(47,211,188,0.3);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal-b)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              </span>
+              <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--teal-b)">Talep Radarı</span>
+              <span class="mono ml-auto text-[10px] rounded-md px-1.5 py-0.5" style="background: rgba(255,255,255,0.06); color: var(--faint)">7 gün</span>
+            </div>
+
+            <p class="mt-3.5 text-[14.5px] font-medium leading-relaxed">
+              <span class="font-semibold" style="color: var(--teal-b)">A Blok 7. kat 3+1</span> son 7 günde
+              <span class="mono font-semibold" style="color: var(--green-b)">%42</span> daha fazla görüntülendi.
+            </p>
+
+            <div class="mt-4 flex items-end justify-between">
+              <div class="spark">
+                <i style="height: 38%"></i><i style="height: 46%"></i><i style="height: 40%"></i>
+                <i style="height: 58%"></i><i style="height: 62%"></i><i style="height: 78%"></i>
+                <i style="height: 100%"></i>
+              </div>
+              <div class="text-right">
+                <div class="mono text-[22px] font-semibold leading-none" style="color: var(--teal-b)">318</div>
+                <div class="text-[10.5px]" style="color: var(--faint)">görüntülenme</div>
+              </div>
+            </div>
+
+            <div class="mt-4 rounded-xl px-3.5 py-3" style="background: rgba(47,211,188,0.07); border: 1px solid rgba(47,211,188,0.18);">
+              <div class="flex items-start gap-2">
+                <svg class="mt-0.5 flex-none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal-b)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+                <p class="text-[12px] leading-relaxed" style="color: var(--soft)">Talep yoğun. Fiyatı gözden geçir veya bu tipi öne çıkan emlakçılara tahsis et.</p>
+              </div>
+              <button class="btn btn-teal mt-3 w-full" style="min-height:36px; font-size:12.5px;">Tahsisi genişlet</button>
+            </div>
+          </div>
+
+          <!-- BUGÜNKÜ HAREKET -->
+          <div class="glass belirR overflow-hidden" style="animation-delay: 330ms; padding: 0;">
+            <div class="flex items-center justify-between border-b border-[var(--line)] px-5 py-3.5">
+              <span class="text-[11.5px] font-semibold uppercase tracking-wide" style="color: var(--soft)">Bugünkü hareket</span>
+              <span class="taze t-taze"><span class="n nabiz"></span>canlı akış</span>
+            </div>
+            <div class="relative">
+              <div class="tarama pointer-events-none absolute inset-x-0 top-0 h-px" style="background: linear-gradient(90deg, transparent, rgba(47,211,188,0.6), transparent);" aria-hidden="true"></div>
+              <ul id="feed" class="divide-y" style="border-color: var(--line);"><!-- JS --></ul>
+            </div>
+            <div class="border-t border-[var(--line)] px-5 py-3 text-center">
+              <button class="text-[12px] font-semibold" style="color: var(--teal-b); background:transparent; border:0; cursor:pointer;">Tüm hareketi gör</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+  // ---- STOK VERİSİ ----
+  const STOK = [
+    { kod: "A-12-3", tip: "3+1", net: 142, fiyat: "₺8.75M", durum: "musait",  taze: "4 dk önce",  tk: "t-taze" },
+    { kod: "A-12-4", tip: "2+1", net: 96,  fiyat: "₺6.20M", durum: "opsiyon", taze: "18 dk önce", tk: "t-taze" },
+    { kod: "B-07-1", tip: "4+1", net: 178, fiyat: "₺11.40M", durum: "musait",  taze: "2 sa önce",  tk: "t-orta" },
+    { kod: "B-07-2", tip: "3+1", net: 138, fiyat: "₺8.55M", durum: "satildi", taze: "dün",        tk: "t-orta" },
+    { kod: "C-03-5", tip: "1+1", net: 64,  fiyat: "₺4.15M", durum: "musait",  taze: "6 dk önce",  tk: "t-taze" },
+    { kod: "C-03-6", tip: "2+1", net: 92,  fiyat: "₺5.90M", durum: "opsiyon", taze: "41 dk önce", tk: "t-orta" },
+    { kod: "A-09-2", tip: "3+1", net: 140, fiyat: "₺8.68M", durum: "musait",  taze: "12 dk önce", tk: "t-taze" },
+    { kod: "D-15-3", tip: "4+1", net: 186, fiyat: "₺12.10M", durum: "musait",  taze: "9 gün önce", tk: "t-cok" },
+  ];
+  const DURUM = {
+    musait:  '<span class="durum d-musait"><span class="n"></span>Müsait</span>',
+    opsiyon: '<span class="durum d-opsiyon"><span class="n"></span>Opsiyon</span>',
+    satildi: '<span class="durum d-satildi"><span class="n"></span>Satıldı</span>',
+  };
+  const tbody = document.getElementById("tblBody");
+  STOK.forEach((r, i) => {
+    const tr = document.createElement("tr");
+    tr.className = "belir";
+    tr.style.animationDelay = (260 + i * 45) + "ms";
+    tr.innerHTML = `
+      <td><span class="mono font-semibold" style="font-size:13px">${r.kod}</span></td>
+      <td style="color: var(--soft)">${r.tip}</td>
+      <td class="text-right mono" style="color: var(--soft)">${r.net}</td>
+      <td class="text-right"><span class="mono font-semibold" style="color: var(--ink)">${r.fiyat}</span></td>
+      <td>${DURUM[r.durum]}</td>
+      <td><span class="taze ${r.tk}"><span class="n"></span>${r.taze}</span></td>
+      <td class="text-right">
+        <span class="tip">
+          <button class="chip" style="width:32px;height:32px;padding:0;justify-content:center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </button>
+          <span class="bubble" style="right:0;left:auto;transform-origin:top right;transform:scale(0.96);">Emlakçıya paylaş</span>
+        </span>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  // ---- BİNA KESİTİ ----
+  const KAT = [8, 7, 6, 5, 4, 3, 2, 1];
+  const H = {
+    8: ["musait","musait","opsiyon","musait"],
+    7: ["opsiyon","musait","musait","satildi"],
+    6: ["satildi","musait","opsiyon","musait"],
+    5: ["musait","satildi","musait","musait"],
+    4: ["musait","opsiyon","satildi","musait"],
+    3: ["satildi","musait","musait","opsiyon"],
+    2: ["musait","musait","satildi","musait"],
+    1: ["bos","satildi","musait","satildi"],
+  };
+  const HC = { musait:"h-musait", opsiyon:"h-opsiyon", satildi:"h-satildi", bos:"h-bos" };
+  const HL = { musait:"Müsait", opsiyon:"Opsiyon", satildi:"Satıldı", bos:"Ticari" };
+  const kgrid = document.getElementById("kesitGrid");
+  KAT.forEach(k => {
+    const row = document.createElement("div");
+    row.className = "flex items-center gap-2";
+    row.innerHTML = `<span class="mono w-8 flex-none text-right text-[11px]" style="color: var(--faint)">${k}.</span>`;
+    const cells = document.createElement("div");
+    cells.className = "grid flex-1 gap-1.5";
+    cells.style.gridTemplateColumns = "repeat(4, 1fr)";
+    H[k].forEach((d, j) => {
+      const c = document.createElement("div");
+      c.className = "hucre " + HC[d];
+      c.innerHTML = `<span>${String.fromCharCode(65)}-${k}-${j+1}</span><span style="opacity:.85;font-weight:500">${HL[d]}</span>`;
+      cells.appendChild(c);
+    });
+    row.appendChild(cells);
+    kgrid.appendChild(row);
+  });
+
+  // ---- SEGMENTED TOGGLE ----
+  const segT = document.getElementById("segTablo"), segK = document.getElementById("segKesit");
+  const vT = document.getElementById("viewTablo"), vK = document.getElementById("viewKesit");
+  function show(kesit) {
+    segT.classList.toggle("on", !kesit); segK.classList.toggle("on", kesit);
+    segT.setAttribute("aria-selected", String(!kesit)); segK.setAttribute("aria-selected", String(kesit));
+    vT.style.display = kesit ? "none" : "block";
+    vK.style.display = kesit ? "block" : "none";
+  }
+  segT.addEventListener("click", () => show(false));
+  segK.addEventListener("click", () => show(true));
+
+  // ---- BUGÜNKÜ HAREKET FEED ----
+  const HAVUZ = [
+    { c: "var(--amber-b)", ikon: "◷", metin: "Çankaya Vadi · A-7-2 opsiyona alındı", vurgu: "opsiyon", z: "az önce" },
+    { c: "var(--teal-b)",  ikon: "▲", metin: "Kule Rezidans · B-04 fiyat güncellendi", vurgu: "+%2,3", z: "3 dk önce" },
+    { c: "var(--green-b)", ikon: "↗", metin: "Sahil Konutları · B-07 emlakçıya paylaşıldı", vurgu: "canlı fiyat", z: "9 dk önce" },
+    { c: "var(--red-b)",   ikon: "✓", metin: "Meydan Park · C-12 satıldı", vurgu: "kapandı", z: "21 dk önce" },
+    { c: "var(--green-b)", ikon: "+", metin: "Çankaya Vadi · 6 yeni daire eklendi", vurgu: "+6 birim", z: "44 dk önce" },
+    { c: "var(--amber-b)", ikon: "◷", metin: "Kule Rezidans · A-09 opsiyona alındı", vurgu: "opsiyon", z: "1 sa önce" },
+  ];
+  const feed = document.getElementById("feed");
+  function renderFeed(list, animFirst) {
+    feed.innerHTML = "";
+    list.forEach((o, i) => {
+      const li = document.createElement("li");
+      li.className = "flex items-center gap-3 px-5 py-3.5" + (animFirst && i === 0 ? " olay-gir" : "");
+      if (animFirst && i === 0) li.style.background = "rgba(255,255,255,0.03)";
+      li.innerHTML = `
+        <span class="grid size-7 flex-none place-items-center rounded-lg text-[13px]" style="background: color-mix(in srgb, ${o.c} 16%, transparent); color: ${o.c}">${o.ikon}</span>
+        <span class="flex-1 text-[12.5px] leading-snug" style="color: var(--ink)">${o.metin}</span>
+        <span class="mono flex-none rounded-md px-2 py-0.5 text-[10px] font-semibold" style="background: color-mix(in srgb, ${o.c} 14%, transparent); color: ${o.c}">${o.vurgu}</span>`;
+      feed.appendChild(li);
+    });
+  }
+  renderFeed(HAVUZ, false);
+
+  // canlı akış: yeni olay başa eklenir (reduced-motion kapalıysa)
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduce) {
+    let cur = HAVUZ.slice();
+    const EK = [
+      { c: "var(--teal-b)",  ikon: "↗", metin: "Meydan Park · D-15 emlakçıya paylaşıldı", vurgu: "canlı fiyat", z: "az önce" },
+      { c: "var(--green-b)", ikon: "▲", metin: "Sahil Konutları · A-03 fiyat güncellendi", vurgu: "+%1,4", z: "az önce" },
+      { c: "var(--amber-b)", ikon: "◷", metin: "Çankaya Vadi · C-05 opsiyona alındı", vurgu: "opsiyon", z: "az önce" },
+    ];
+    let ei = 0;
+    setInterval(() => {
+      cur = [EK[ei % EK.length], ...cur].slice(0, 6);
+      ei++;
+      renderFeed(cur, true);
+    }, 4200);
+  }
+</script>
+</body>
+</html>

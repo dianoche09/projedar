@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Lansman Popup — 4 Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10243a; --ink-soft:#46586b; --ink-faint:#7d8da0;
+    --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676;
+    --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e;
+    --paper:#eef1f6; --card:#fff; --gray:#5e6b78;
+    --cizgi:rgba(16,36,58,.08); --cizgi-2:rgba(16,36,58,.12);
+    --g1:0 1px 2px rgba(16,36,58,.05),0 3px 8px rgba(16,36,58,.06);
+    --g2:0 2px 6px rgba(16,36,58,.06),0 14px 34px rgba(16,36,58,.10);
+    --g3:0 6px 16px rgba(16,36,58,.10),0 30px 64px rgba(16,36,58,.16);
+    --ease:cubic-bezier(.23,1,.32,1);
+  }
+  *{ box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  body{
+    margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); min-height:100vh;
+    background:
+      radial-gradient(1100px 640px at 80% -6%, rgba(30,155,138,.10), transparent 60%),
+      radial-gradient(900px 560px at -6% 10%, rgba(19,49,75,.07), transparent 55%),
+      linear-gradient(180deg,#eef1f6,#e7ebf2);
+    padding:34px 24px 56px;
+  }
+  .font-d{ font-family:'Outfit',sans-serif; }
+  .mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+
+  .head{ max-width:1120px; margin:0 auto 26px; }
+  .head h1{ font-family:'Outfit'; font-size:22px; font-weight:700; letter-spacing:-.3px; margin:0; }
+  .head p{ margin:6px 0 0; font-size:13.5px; color:var(--ink-soft); }
+
+  .grid{ max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:30px 30px; }
+  .cell{ }
+  .lbl{ display:flex; align-items:center; gap:9px; margin:0 4px 12px; }
+  .lbl b{ font-family:'Outfit'; font-size:14px; font-weight:700; color:var(--ink); }
+  .lbl span{ font-size:12px; color:var(--ink-faint); }
+  .lbl .n{ display:grid; place-items:center; width:24px; height:24px; border-radius:8px; background:var(--navy); color:#fff; font-family:'Geist Mono'; font-size:12px; font-weight:600; }
+
+  /* ---------- POPUP base ---------- */
+  .pop{ position:relative; width:100%; max-width:452px; border-radius:26px; overflow:hidden; }
+  .close{ position:absolute; top:15px; right:15px; width:30px; height:30px; border:none; background:transparent; color:var(--ink-faint); border-radius:50%; display:grid; place-items:center; cursor:pointer; transition:background .15s var(--ease),color .15s; }
+  .close:hover{ background:rgba(16,36,58,.06); color:var(--ink); }
+  .eyebrow{ display:flex; align-items:center; gap:8px; font-family:'Geist Mono'; font-size:11px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; }
+  .dot{ position:relative; width:7px; height:7px; }
+  .dot i{ position:absolute; inset:0; border-radius:50%; background:var(--teal); }
+  .dot::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--teal); opacity:.6; animation:pulse 2s var(--ease) infinite; }
+  @keyframes pulse{ 0%{transform:scale(1);opacity:.6} 100%{transform:scale(2.6);opacity:0} }
+  .title{ font-family:'Outfit'; font-weight:800; letter-spacing:-.5px; line-height:1.06; }
+  .sub{ line-height:1.5; }
+  .cta{ display:flex; align-items:center; gap:14px; text-decoration:none; transition:transform .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease), box-shadow .18s var(--ease); }
+  .cta:active{ transform:scale(.985); }
+  .tile{ flex:none; width:44px; height:44px; border-radius:13px; display:grid; place-items:center; }
+  .cta b{ display:block; font-size:14.5px; font-weight:700; }
+  .cta p{ margin:2px 0 0; font-size:12.5px; line-height:1.35; }
+  .chev{ flex:none; transition:transform .18s var(--ease); }
+  .cta:hover .chev{ transform:translateX(3px); }
+  .later{ display:block; width:100%; text-align:center; background:none; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:13px; transition:color .15s; }
+  svg{ display:block; }
+
+  /* ================= V1 · SPATIAL AÇIK ================= */
+  .v1{ border:1px solid var(--cizgi); box-shadow:var(--g3);
+       background:radial-gradient(130% 80% at 50% -12%, rgba(30,155,138,.13), transparent 58%), linear-gradient(180deg,#fff,#fbfcfe); }
+  .v1 .bar{ position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg,var(--navy),var(--teal)); }
+  .v1 .body{ padding:30px 26px 22px; }
+  .v1 .eyebrow{ color:var(--teal-d); }
+  .v1 .title{ font-size:27px; color:var(--ink); margin:12px 0 0; }
+  .v1 .sub{ font-size:14.5px; color:var(--ink-soft); margin:10px 0 0; }
+  .v1 .cta{ margin-top:10px; padding:15px; border:1px solid var(--cizgi); border-radius:17px; background:#fff; box-shadow:var(--g1); }
+  .v1 .cta:hover{ transform:translateY(-2px); border-color:rgba(30,155,138,.45); box-shadow:var(--g2); }
+  .v1 .cta.on{ border-color:rgba(30,155,138,.45); }
+  .v1 .t-navy{ background:rgba(19,49,75,.06); color:var(--navy); }
+  .v1 .t-teal{ background:rgba(30,155,138,.10); color:var(--teal-d); }
+  .v1 .cta b{ color:var(--ink); } .v1 .cta p{ color:var(--ink-soft); }
+  .v1 .chev{ color:var(--ink-faint); }
+  .v1 .later{ margin-top:16px; color:var(--ink-soft); }
+  .v1 .later:hover{ color:var(--teal-d); }
+  .v1 .foot{ display:flex; align-items:center; justify-content:center; gap:7px; margin-top:16px; padding-top:14px; border-top:1px solid var(--cizgi); font-family:'Geist Mono'; font-size:11px; color:var(--ink-faint); }
+  .v1 .foot i{ width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  /* ================= V2 · KOYU KOMUTA ================= */
+  .v2{ border:1px solid rgba(255,255,255,.09); box-shadow:var(--g3);
+       background:
+         repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 40px),
+         radial-gradient(120% 70% at 50% -10%, rgba(30,155,138,.22), transparent 55%),
+         linear-gradient(165deg,#15364f,#0d1f30); }
+  .v2 .close{ color:rgba(255,255,255,.5); } .v2 .close:hover{ background:rgba(255,255,255,.08); color:#fff; }
+  .v2 .bar{ position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg,var(--teal),transparent); }
+  .v2 .body{ padding:30px 26px 24px; }
+  .v2 .eyebrow{ color:#5fd1bf; }
+  .v2 .dot i,.v2 .dot::after{ background:var(--green); }
+  .v2 .title{ font-size:27px; color:#fff; margin:13px 0 0; }
+  .v2 .sub{ font-size:14px; color:rgba(255,255,255,.62); margin:9px 0 0; }
+  .v2 .cta{ margin-top:9px; padding:14px 15px; border:1px solid rgba(255,255,255,.10); border-radius:15px; background:rgba(255,255,255,.035); }
+  .v2 .cta:hover{ transform:translateY(-2px); border-color:rgba(30,155,138,.6); background:rgba(30,155,138,.10); }
+  .v2 .cta.on{ border-color:rgba(30,155,138,.5); background:rgba(30,155,138,.09); }
+  .v2 .tile{ background:rgba(255,255,255,.06); color:#8fe3d4; }
+  .v2 .cta b{ color:#fff; } .v2 .cta p{ color:rgba(255,255,255,.58); }
+  .v2 .chev{ color:rgba(255,255,255,.5); }
+  .v2 .later{ margin-top:15px; color:rgba(255,255,255,.55); }
+  .v2 .later:hover{ color:#8fe3d4; }
+  .v2 .foot{ display:flex; align-items:center; justify-content:center; gap:7px; margin-top:15px; padding-top:13px; border-top:1px solid rgba(255,255,255,.08); font-family:'Geist Mono'; font-size:11px; color:rgba(255,255,255,.42); }
+  .v2 .foot i{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+
+  /* ================= V3 · EDITORIAL ================= */
+  .v3{ border:1px solid var(--cizgi); box-shadow:var(--g3); background:#fff; padding-left:6px; }
+  .v3::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; background:linear-gradient(180deg,var(--teal),var(--navy)); }
+  .v3 .body{ padding:34px 30px 26px; }
+  .v3 .eyebrow{ color:var(--teal-d); }
+  .v3 .title{ font-size:36px; color:var(--ink); margin:16px 0 0; letter-spacing:-.8px; }
+  .v3 .sub{ font-size:15px; color:var(--ink-soft); margin:14px 0 0; max-width:34ch; }
+  .v3 .list{ margin-top:22px; border-top:1px solid var(--cizgi); }
+  .v3 .cta{ padding:17px 2px; border-bottom:1px solid var(--cizgi); border-radius:0; }
+  .v3 .cta:hover{ padding-left:6px; }
+  .v3 .tile{ width:38px; height:38px; border-radius:11px; background:var(--paper); color:var(--navy); }
+  .v3 .cta.two .tile{ color:var(--teal-d); }
+  .v3 .cta b{ font-size:15.5px; color:var(--ink); }
+  .v3 .cta p{ color:var(--ink-soft); font-size:12.5px; }
+  .v3 .chev{ color:var(--ink); }
+  .v3 .later{ margin-top:20px; text-align:left; color:var(--ink-soft); }
+  .v3 .later:hover{ color:var(--teal-d); }
+
+  /* ================= V4 · BLUEPRINT / AĞ ================= */
+  .v4{ border:1px solid var(--cizgi); box-shadow:var(--g3); background:#fff; }
+  .v4 .band{ position:relative; height:96px; overflow:hidden; border-bottom:1px solid var(--cizgi);
+    background:
+      linear-gradient(0deg, rgba(255,255,255,.9), rgba(255,255,255,0)),
+      repeating-linear-gradient(90deg, rgba(19,49,75,.06) 0 1px, transparent 1px 22px),
+      repeating-linear-gradient(0deg, rgba(19,49,75,.06) 0 1px, transparent 1px 22px),
+      radial-gradient(90% 120% at 50% -20%, rgba(30,155,138,.14), transparent 60%),
+      #f7f9fb; }
+  .v4 .band svg{ position:absolute; inset:0; margin:auto; }
+  .v4 .body{ padding:22px 26px 22px; }
+  .v4 .eyebrow{ color:var(--teal-d); }
+  .v4 .title{ font-size:26px; color:var(--ink); margin:11px 0 0; }
+  .v4 .sub{ font-size:14px; color:var(--ink-soft); margin:9px 0 0; }
+  .v4 .cta{ margin-top:9px; padding:14px 15px; border:1px solid var(--cizgi); border-radius:15px; background:#fff; }
+  .v4 .cta:hover{ transform:translateY(-2px); border-color:rgba(30,155,138,.45); box-shadow:var(--g2); }
+  .v4 .cta.on{ border-color:rgba(30,155,138,.4); }
+  .v4 .t-navy{ background:rgba(19,49,75,.06); color:var(--navy); border-radius:11px; }
+  .v4 .t-teal{ background:rgba(30,155,138,.10); color:var(--teal-d); border-radius:11px; }
+  .v4 .cta b{ color:var(--ink); } .v4 .cta p{ color:var(--ink-soft); }
+  .v4 .chev{ color:var(--ink-faint); }
+  .v4 .later{ margin-top:15px; color:var(--ink-soft); }
+  .v4 .later:hover{ color:var(--teal-d); }
+
+  @media (max-width:1000px){ .grid{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Lansman Popup · 4 tasarım yönü</h1>
+    <p>Metin aynı (onaylanan). Farklı olan tasarım dili. Bir numara seç: V1 Spatial Açık · V2 Koyu Komuta · V3 Editorial · V4 Blueprint.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ===== V1 ===== -->
+    <div class="cell">
+      <div class="lbl"><span class="n">1</span><b>Spatial Açık</b><span>· ferah, premium, güven</span></div>
+      <div class="pop v1">
+        <span class="bar"></span>
+        <button class="close" aria-label="Kapat"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="body">
+          <p class="eyebrow"><span class="dot"><i></i></span> Lansmana özel</p>
+          <h2 class="title">Ağ yeni açıldı</h2>
+          <p class="sub">Projedar'a erken katılanlara ücretsiz erişim ve öncelik. Sen kimsin?</p>
+          <a class="cta on" href="#">
+            <span class="tile t-navy"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <span style="flex:1"><b>Müteahhit / proje sahibiyim</b><p>Stok, fiyat ve tahsis tek panelde. Ücretsiz başla.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <a class="cta" href="#">
+            <span class="tile t-teal"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span style="flex:1"><b>Gayrimenkul danışmanıyım</b><p>Tahsisli projeleri canlı gör; kazancının %100'ü sende.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <button class="later">Şimdi hazır değilim, açılınca haber ver →</button>
+          <div class="foot"><i></i> Canlı proje satış ağı</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== V2 ===== -->
+    <div class="cell">
+      <div class="lbl"><span class="n">2</span><b>Koyu Komuta</b><span>· terminal, ciddi, veri-odaklı</span></div>
+      <div class="pop v2">
+        <span class="bar"></span>
+        <button class="close" aria-label="Kapat"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="body">
+          <p class="eyebrow"><span class="dot"><i></i></span> Lansmana özel</p>
+          <h2 class="title">Ağ yeni açıldı</h2>
+          <p class="sub">Projedar'a erken katılanlara ücretsiz erişim ve öncelik. Sen kimsin?</p>
+          <a class="cta on" href="#">
+            <span class="tile"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <span style="flex:1"><b>Müteahhit / proje sahibiyim</b><p>Stok, fiyat ve tahsis tek panelde. Ücretsiz başla.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <a class="cta" href="#">
+            <span class="tile"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span style="flex:1"><b>Gayrimenkul danışmanıyım</b><p>Tahsisli projeleri canlı gör; kazancının %100'ü sende.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <button class="later">Şimdi hazır değilim, açılınca haber ver →</button>
+          <div class="foot"><i></i> Canlı proje satış ağı</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== V3 ===== -->
+    <div class="cell">
+      <div class="lbl"><span class="n">3</span><b>Editorial</b><span>· iddialı tipografi, sade</span></div>
+      <div class="pop v3">
+        <button class="close" aria-label="Kapat"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="body">
+          <p class="eyebrow"><span class="dot"><i></i></span> Lansmana özel</p>
+          <h2 class="title">Ağ yeni<br>açıldı</h2>
+          <p class="sub">Projedar'a erken katılanlara ücretsiz erişim ve öncelik. Sen kimsin?</p>
+          <div class="list">
+            <a class="cta" href="#">
+              <span class="tile"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+              <span style="flex:1"><b>Müteahhit / proje sahibiyim</b><p>Stok, fiyat ve tahsis tek panelde. Ücretsiz başla.</p></span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+            <a class="cta two" href="#">
+              <span class="tile"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              <span style="flex:1"><b>Gayrimenkul danışmanıyım</b><p>Tahsisli projeleri canlı gör; kazancının %100'ü sende.</p></span>
+              <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+          </div>
+          <button class="later">Şimdi hazır değilim, açılınca haber ver →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== V4 ===== -->
+    <div class="cell">
+      <div class="lbl"><span class="n">4</span><b>Blueprint / Ağ</b><span>· sistem karakteri, marka imzası</span></div>
+      <div class="pop v4">
+        <button class="close" aria-label="Kapat" style="z-index:2"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="band">
+          <svg width="300" height="70" viewBox="0 0 300 70" fill="none">
+            <line x1="40" y1="35" x2="150" y2="35" stroke="rgba(19,49,75,.28)" stroke-width="1.4"/>
+            <line x1="150" y1="35" x2="255" y2="16" stroke="rgba(30,155,138,.5)" stroke-width="1.4"/>
+            <line x1="150" y1="35" x2="255" y2="35" stroke="rgba(30,155,138,.5)" stroke-width="1.4"/>
+            <line x1="150" y1="35" x2="255" y2="54" stroke="rgba(30,155,138,.5)" stroke-width="1.4"/>
+            <circle cx="40" cy="35" r="7" fill="#13314b"/>
+            <circle cx="150" cy="35" r="11" fill="#1e9b8a"/>
+            <circle cx="150" cy="35" r="17" fill="none" stroke="rgba(30,155,138,.35)" stroke-width="1.3"/>
+            <circle cx="255" cy="16" r="5.5" fill="#2fb36b"/>
+            <circle cx="255" cy="35" r="5.5" fill="#e3a12c"/>
+            <circle cx="255" cy="54" r="5.5" fill="#2fb36b"/>
+          </svg>
+        </div>
+        <div class="body">
+          <p class="eyebrow"><span class="dot"><i></i></span> Lansmana özel</p>
+          <h2 class="title">Ağ yeni açıldı</h2>
+          <p class="sub">Projedar'a erken katılanlara ücretsiz erişim ve öncelik. Sen kimsin?</p>
+          <a class="cta on" href="#">
+            <span class="tile t-navy"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+            <span style="flex:1"><b>Müteahhit / proje sahibiyim</b><p>Stok, fiyat ve tahsis tek panelde. Ücretsiz başla.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <a class="cta" href="#">
+            <span class="tile t-teal"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <span style="flex:1"><b>Gayrimenkul danışmanıyım</b><p>Tahsisli projeleri canlı gör; kazancının %100'ü sende.</p></span>
+            <svg class="chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+          <button class="later">Şimdi hazır değilim, açılınca haber ver →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

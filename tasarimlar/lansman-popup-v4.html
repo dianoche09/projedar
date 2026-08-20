@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Lansman Popup V4 (final aday)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10243a; --ink-soft:#46586b; --ink-faint:#7d8da0;
+    --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676; --green:#2fb36b;
+    --paper:#eef1f6; --card:#fff; --soft:#f6f8fb; --navy-soft:#eaf0f5;
+    --cizgi:rgba(16,36,58,.09); --cizgi-2:rgba(16,36,58,.13);
+    --g1:0 1px 2px rgba(16,36,58,.05),0 2px 6px rgba(16,36,58,.05);
+    --g3:0 12px 28px rgba(16,36,58,.14),0 40px 80px rgba(16,36,58,.20);
+    --ease:cubic-bezier(.23,1,.32,1);
+  }
+  *{ box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  body{ margin:0; min-height:100vh; font-family:'Inter',system-ui,sans-serif; color:var(--ink);
+    display:grid; place-items:center; padding:40px 20px;
+    background:radial-gradient(1100px 640px at 78% -8%, rgba(30,155,138,.08), transparent 60%), linear-gradient(180deg,#e9edf3,#dfe4ec); }
+  .mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+
+  .pop{ position:relative; width:100%; max-width:428px; border-radius:26px; background:#fff; border:1px solid var(--cizgi); box-shadow:var(--g3); padding:24px 24px 22px; }
+  .top{ display:flex; align-items:center; justify-content:space-between; }
+  .brand{ display:flex; align-items:center; gap:8px; font-family:'Outfit'; font-weight:700; font-size:15px; color:var(--navy); letter-spacing:-.2px; }
+  .lg{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; width:18px; height:18px; }
+  .lg span{ border-radius:2px; background:var(--navy); opacity:.22; } .lg span.on{ opacity:1; background:var(--teal); } .lg span.mid{ opacity:1; background:var(--navy); }
+  .close{ width:30px; height:30px; border:none; border-radius:50%; background:var(--soft); color:var(--ink-soft); display:grid; place-items:center; cursor:pointer; transition:background .15s,color .15s; }
+  .close:hover{ background:var(--navy-soft); color:var(--ink); }
+
+  .title{ font-family:'Outfit'; font-weight:800; font-size:25px; letter-spacing:-.5px; line-height:1.1; color:var(--ink); margin:18px 0 0; }
+  .sub{ font-size:14px; line-height:1.5; color:var(--ink-soft); margin:9px 0 0; }
+
+  /* ---- canlı havuz preview (tek yüzey, tablo değil) ---- */
+  .pool{ margin-top:16px; border:1px solid var(--cizgi); border-radius:15px; background:linear-gradient(180deg,#fcfdfe,var(--soft)); padding:12px 14px; box-shadow:var(--g1); }
+  .pool-h{ display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+  .live{ display:inline-flex; align-items:center; gap:6px; font-family:'Geist Mono'; font-size:10.5px; font-weight:600; letter-spacing:.04em; color:var(--teal-d); text-transform:uppercase; }
+  .live .d{ position:relative; width:7px; height:7px; }
+  .live .d i{ position:absolute; inset:0; border-radius:50%; background:var(--green); }
+  .live .d::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--green); opacity:.7; animation:pulse 2s var(--ease) infinite; }
+  @keyframes pulse{ 0%{transform:scale(1);opacity:.7} 100%{transform:scale(2.6);opacity:0} }
+  .prow{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:7px 0; }
+  .pname{ font-size:13.5px; font-weight:600; color:var(--ink); }
+  .pchip{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#1f7d4c; white-space:nowrap; }
+  .pchip .gd{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .pchip .mono{ font-size:11.5px; }
+  .pool-f{ margin-top:6px; padding-top:9px; border-top:1px dashed var(--cizgi); font-family:'Geist Mono'; font-size:11px; color:var(--ink-soft); }
+  .pool-f b{ color:var(--ink); font-weight:600; }
+
+  .cta{ display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-top:18px; padding:13.5px 16px; border:none; border-radius:13px; background:var(--navy); color:#fff; font-family:inherit; font-weight:700; font-size:14.5px; cursor:pointer; box-shadow:var(--g1); transition:transform .16s var(--ease), background .16s; }
+  .cta:hover{ background:#0e2740; transform:translateY(-1px); }
+  .cta:active{ transform:scale(.99); }
+  .sec{ display:block; width:100%; text-align:center; margin-top:12px; background:none; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:13px; color:var(--ink-soft); transition:color .15s; }
+  .sec:hover{ color:var(--teal-d); }
+  .trust{ margin-top:15px; padding-top:13px; border-top:1px solid var(--cizgi); text-align:center; font-size:11.5px; line-height:1.6; color:var(--ink-faint); }
+  .trust .k{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--teal); vertical-align:middle; margin-right:5px; }
+  .trust .sep{ color:var(--cizgi-2); margin:0 5px; }
+  svg{ display:block; }
+</style>
+</head>
+<body>
+  <div class="pop">
+    <div class="top">
+      <span class="brand"><span class="lg"><span class="on"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="on"></span></span> Projedar</span>
+      <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+
+    <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+    <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+
+    <div class="pool">
+      <div class="pool-h">
+        <span class="live"><span class="d"><i></i></span> Canlı havuz</span>
+      </div>
+      <div class="prow"><span class="pname">Meridyen Vadi</span><span class="pchip"><span class="gd"></span><span class="mono">12</span> satışa açık</span></div>
+      <div class="prow"><span class="pname">Park Yaşam</span><span class="pchip"><span class="gd"></span><span class="mono">7</span> satışa açık</span></div>
+      <div class="prow"><span class="pname">Çankaya Panorama</span><span class="pchip"><span class="gd"></span><span class="mono">9</span> satışa açık</span></div>
+      <div class="pool-f"><b>3</b> proje · <b>28</b> satışa açık bölüm</div>
+    </div>
+
+    <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+    <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+
+    <p class="trust"><span class="k"></span>Ücretsiz temel hesap<span class="sep">·</span>Projedar işlemden komisyon almaz<span class="sep">·</span>Canlı stok ve fiyat</p>
+  </div>
+</body>
+</html>

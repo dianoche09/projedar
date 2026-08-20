@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProjeTopbar } from "@/components/seo/ProjeTopbar";
 import { KapanisFooter } from "@/components/KapanisFooter";
+import { NedirTabSwitcher } from "./NedirTabSwitcher";
 
 export const revalidate = 3600;
 const SITE = "https://projedar.com";
@@ -99,6 +100,24 @@ export default function Page() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 3 TASARIM KONSEPTİ MOCKUP LAB - İNTERAKTİF CANLI SEKME DEĞİŞTİRİCİ */}
+      <section className="border-t border-[var(--cizgi)] bg-[var(--soft)] px-5 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 text-center sm:text-left">
+            <div>
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-d">Tasarım Laboratuvarı & İnteraktif Deneyim</p>
+              <h2 className="mt-2 font-display text-2xl font-bold text-ink sm:text-3xl">/nedir İçin 3 Yapısal Konsepti Canlı Deneyimleyin</h2>
+            </div>
+            <a href="/mockups/nedir.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-teal hover:underline shrink-0">
+              Lab Karşılaştırma Merkezini Aç ↗
+            </a>
+          </div>
+
+          {/* İNTERAKTİF CANLI SEKME DEĞİŞTİRİCİ BİLEŞENİ */}
+          <NedirTabSwitcher />
         </div>
       </section>
 

@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Çankaya Vadi Konakları · Proje Detay - Projedar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10243a; --ink-soft:#46586b; --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676;
+    --green:#2fb36b; --amber:#e3a12c; --red:#d15a4e; --paper:#eef1f6; --card:#fff; --gray:#5e6b78;
+    --ink-faint:#7d8da0; --cizgi:rgba(16,36,58,.08); --cizgi-2:rgba(16,36,58,.12); --hair:rgba(16,36,58,.08);
+    --soft:#f5f8fa; --navy-soft:#eaf0f5; --green-soft:#e5f5ec; --amber-soft:#fbf0da; --teal-soft:#e2f3f0; --red-soft:#f8e7e4;
+    --golge-1:0 1px 2px rgba(16,36,58,.04),0 2px 6px rgba(16,36,58,.05);
+    --golge-2:0 2px 6px rgba(16,36,58,.05),0 12px 28px rgba(16,36,58,.08);
+    --golge-3:0 4px 12px rgba(16,36,58,.07),0 24px 56px rgba(16,36,58,.12);
+    --font-display:"Outfit"; --font-sans:"Inter"; --font-mono:"Geist Mono";
+    --ease-out:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{color:var(--ink);font-family:var(--font-sans),system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;min-height:100vh;
+    background:radial-gradient(1200px 700px at 78% -8%,rgba(30,155,138,.10),transparent 60%),radial-gradient(1000px 600px at -6% 8%,rgba(19,49,75,.07),transparent 55%),linear-gradient(180deg,#eef1f6 0%,#e9edf4 100%);
+    background-attachment:fixed}
+  h1,h2,h3{text-wrap:balance}
+  .font-display{font-family:var(--font-display),sans-serif;letter-spacing:-.018em}
+  .mono{font-family:var(--font-mono),ui-monospace,monospace;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+  .t-ink{color:var(--ink)} .t-inksoft{color:var(--ink-soft)} .t-faint{color:var(--ink-faint)}
+  .t-navy{color:var(--navy)} .t-teal{color:var(--teal)} .t-teald{color:var(--teal-d)}
+  .t-green{color:var(--green)} .t-amber{color:var(--amber)} .t-red{color:var(--red)} .t-gray{color:var(--gray)}
+
+  .kart{background:#fff;border:1px solid var(--cizgi);border-radius:20px;box-shadow:var(--golge-2);transition:transform .32s var(--ease-out),box-shadow .32s var(--ease-out)}
+  .signal-top{position:relative;overflow:hidden}
+  .signal-top::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--_sig,var(--teal));opacity:.92}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:13px;font-weight:600;font-size:13.5px;line-height:1;min-height:44px;padding:0 16px;cursor:pointer;white-space:nowrap;border:0;
+    transition:transform .1s var(--ease-out),background-color .16s ease,box-shadow .16s ease}
+  .btn:active{transform:scale(.97)}
+  .btn-action{background:var(--teal);color:#fff}
+  .btn-action:hover{background:#1a8676;box-shadow:0 6px 16px rgba(30,155,138,.3)}
+  .btn-wa{background:#1faa5b;color:#fff}
+  .btn-wa:hover{background:#178c4a;box-shadow:0 6px 16px rgba(31,170,91,.3)}
+  .btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--cizgi-2)}
+  .btn-ghost:hover{background:rgba(16,36,58,.04)}
+
+  .rozet{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:600;line-height:1}
+  .freshdot{width:7px;height:7px;border-radius:50%;flex:none;display:inline-block}
+
+  .nav-item{display:flex;align-items:center;gap:13px;padding:11px 14px;border-radius:14px;color:var(--ink-soft);font-weight:500;font-size:14.5px;transition:all .2s ease;position:relative;cursor:pointer;text-decoration:none}
+  .nav-item:hover{background:rgba(16,36,58,.05);color:var(--ink)}
+  .nav-item.active{background:#fff;color:var(--navy);font-weight:600;box-shadow:var(--golge-1)}
+  .nav-item.active::before{content:"";position:absolute;left:-9px;top:50%;transform:translateY(-50%);width:4px;height:20px;border-radius:4px;background:var(--teal)}
+  .nav-ic{width:19px;height:19px;flex:none;opacity:.85}
+
+  .bolum-baslik{font-family:var(--font-mono);border-bottom:1px solid var(--hair);padding-bottom:12px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-faint)}
+
+  /* ---- durum rozeti ---- */
+  .durum{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;line-height:1;white-space:nowrap}
+  .durum .nokta{width:6px;height:6px;border-radius:50%;flex:none}
+  .d-musait{background:var(--green-soft);color:#1f7d4c}.d-musait .nokta{background:var(--green)}
+  .d-opsiyon{background:var(--amber-soft);color:#9a6a12}.d-opsiyon .nokta{background:var(--amber)}
+  .d-satildi{background:var(--red-soft);color:#a23f34}.d-satildi .nokta{background:var(--red)}
+
+  /* ---- bina kesiti hücreleri ---- */
+  .hucre{border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 4px;min-height:54px;font-size:10px;font-weight:600;cursor:pointer;position:relative;transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out);color:#fff;text-align:center;line-height:1.25;flex:1 1 0;min-width:52px}
+  .hucre:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 8px 18px rgba(16,36,58,.22);z-index:5}
+  .hucre:active{transform:translateY(-1px) scale(.99)}
+  .h-musait{background:linear-gradient(150deg,#37c178,#2fb36b)}
+  .h-opsiyon{background:linear-gradient(150deg,#eab23f,#e3a12c)}
+  .h-satildi{background:linear-gradient(150deg,#dd6a5e,#d15a4e);cursor:default}
+  .h-satildi:hover{transform:none;box-shadow:none}
+  .hno{font-family:var(--font-mono);font-size:12px;font-weight:600}
+  .htip{opacity:.85;font-weight:500}
+
+  @keyframes hucrePop{0%{box-shadow:0 0 0 0 rgba(227,161,44,.6)}100%{box-shadow:0 0 0 12px rgba(227,161,44,0)}}
+  .hucre.pop{animation:hucrePop .7s var(--ease-out)}
+
+  /* tablo */
+  .tbl{width:100%;border-collapse:collapse;font-size:13px}
+  .tbl th{text-align:left;padding:9px 14px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);border-bottom:1px solid var(--cizgi);white-space:nowrap}
+  .tbl td{padding:11px 14px;border-bottom:1px solid var(--cizgi);color:var(--ink);white-space:nowrap;vertical-align:middle}
+  .tbl tbody tr{cursor:pointer;transition:background .14s ease}
+  .tbl tbody tr:hover{background:rgba(16,36,58,.025)}
+  .tbl tbody tr:last-child td{border-bottom:none}
+
+  .cip{border-radius:12px;border:1px solid var(--cizgi-2);background:#fff;color:var(--ink-soft);padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .16s ease}
+  .cip:hover{border-color:rgba(30,155,138,.3);background:var(--soft)}
+  .cip.on{border-color:var(--teal);background:var(--teal);color:#fff;box-shadow:var(--golge-1)}
+
+  @keyframes nabiz{0%{box-shadow:0 0 0 0 rgba(47,179,107,.5)}70%{box-shadow:0 0 0 7px rgba(47,179,107,0)}100%{box-shadow:0 0 0 0 rgba(47,179,107,0)}}
+  .nabiz{animation:nabiz 2s infinite}
+
+  @keyframes belir{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .rv{opacity:1}
+  body.js .rv{opacity:0;animation:belir .5s var(--ease-out) forwards;animation-delay:var(--d,0s)}
+
+  .btn:focus-visible,a:focus-visible,.cip:focus-visible,select:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:rgba(16,36,58,.16);border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+
+  /* ---- POPOVER (origin-aware) ---- */
+  #backdrop{position:fixed;inset:0;z-index:50;background:rgba(16,36,58,.28);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .22s ease}
+  #backdrop.acik{opacity:1;pointer-events:auto}
+  #pop{position:fixed;z-index:51;width:340px;max-width:calc(100vw - 24px);background:#fff;border:1px solid rgba(16,36,58,.1);border-radius:20px;box-shadow:var(--golge-3);
+    transform-origin:var(--ox,50%) var(--oy,50%);transform:scale(.9);opacity:0;pointer-events:none;transition:transform .22s var(--ease-out),opacity .18s ease;overflow:hidden}
+  #pop.acik{transform:scale(1);opacity:1;pointer-events:auto}
+
+  /* hold-to-confirm */
+  .hold{position:relative;overflow:hidden;width:100%;border-radius:13px;background:var(--teal);color:#fff;font-weight:700;font-size:13px;min-height:46px;border:0;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none}
+  .hold .fill{position:absolute;inset:0;background:var(--teal-d);clip-path:inset(0 100% 0 0);z-index:0}
+  .hold .lbl{position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;justify-content:center;width:100%}
+  .hold:active{transform:scale(.99)}
+
+  /* toast */
+  #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:60;opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s var(--ease-out);
+    display:flex;align-items:center;gap:10px;border-radius:14px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:600;box-shadow:var(--golge-3);max-width:calc(100vw - 24px)}
+  #toast.acik{opacity:1;transform:translate(-50%,0)}
+
+  .show-mobile{display:none}
+  @media (max-width:860px){
+    .hide-mobile{display:none!important}
+    .show-mobile{display:flex!important}
+    aside.sb{display:none!important}
+    #pop{left:0!important;right:0!important;bottom:0!important;top:auto!important;width:100%!important;max-width:100%!important;border-radius:22px 22px 0 0;transform-origin:bottom center!important;transform:translateY(100%)}
+    #pop.acik{transform:translateY(0)}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    body.js .rv{opacity:1;transform:none;animation:none}
+    .nabiz{animation:none}
+    #pop{transition:opacity .12s ease}
+  }
+</style>
+</head>
+<body>
+<div style="display:flex;min-height:100vh">
+  <!-- SIDEBAR -->
+  <aside class="sb hide-mobile" style="position:sticky;top:0;height:100vh;width:258px;flex:none;display:flex;flex-direction:column;gap:8px;border-right:1px solid var(--cizgi);padding:24px 16px;backdrop-filter:blur(18px);background:rgba(255,255,255,.72)">
+    <div style="display:flex;align-items:center;gap:11px;padding:0 12px;margin-bottom:26px">
+      <span style="position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(145deg,#13314b,#1e9b8a);box-shadow:var(--golge-1)"><span class="freshdot nabiz" style="background:#fff;width:8px;height:8px"></span></span>
+      <span class="font-display" style="font-size:20px;font-weight:800;letter-spacing:-.02em"><span class="t-navy">Proje</span><span class="t-green">dar</span></span>
+    </div>
+    <nav style="flex:1;display:flex;flex-direction:column;gap:6px;overflow-y:auto">
+      <a class="nav-item active" href="dashboard-emlakci.html"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Canlı Ağ<span class="nabiz" style="margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--teal)"></span></a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>Lead'lerim</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><path d="M3 4v4h4"/></svg>Opsiyonlarım</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>Paylaştıklarım</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Performansım</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg>Eşleştir</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l14-7v16L3 13v-2z"/><path d="M7 13v4a2 2 0 0 0 4 0v-2"/></svg>Lansman</a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>Bildirimler<span class="mono" style="margin-left:auto;border-radius:999px;background:var(--red);padding:2px 6px;font-size:10px;font-weight:700;line-height:1;color:#fff">3</span></a>
+      <a class="nav-item" href="#"><svg class="nav-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>Profil</a>
+    </nav>
+    <div style="margin-bottom:8px;border-radius:14px;padding:12px 14px;font-size:11px;line-height:1.6;background:rgba(30,155,138,.07);border:1px solid rgba(30,155,138,.16);color:var(--ink-soft)">
+      <div style="margin-bottom:4px;display:flex;align-items:center;gap:6px;font-weight:600;color:var(--teal)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Tahsisli Erişim</div>
+      Yalnız sana tahsisli stoğu görürsün. Tahsis ve fiyat üreticide.
+    </div>
+    <div class="kart" style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px">
+      <span class="font-display" style="display:grid;place-items:center;width:36px;height:36px;flex:none;border-radius:11px;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(145deg,#13314b,#1e9b8a)">S</span>
+      <div style="min-width:0;flex:1"><div style="font-size:13px;font-weight:600;line-height:1.15;color:#1f2b3a">Selin Aydın</div><div style="margin-top:2px;font-size:11px;color:#94a3b8">Onaylı Danışman</div></div>
+      <button class="btn" title="Çıkış" style="min-height:32px;width:32px;padding:0;background:transparent;color:#94a3b8;border-radius:10px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
+    </div>
+  </aside>
+
+  <!-- İÇERİK -->
+  <div style="display:flex;min-width:0;flex:1;flex-direction:column">
+    <header class="show-mobile" style="position:sticky;top:0;z-index:30;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(148,163,184,.35);background:rgba(255,255,255,.9);padding:12px 16px;backdrop-filter:blur(10px)">
+      <a href="dashboard-emlakci.html" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--teal-d);font-weight:700;font-size:13px"><span aria-hidden>&larr;</span> Havuz</a>
+      <span class="rozet" style="background:var(--green-soft);color:var(--teal-d);border:1px solid rgba(47,179,107,.4)"><span class="nabiz freshdot" style="background:var(--green)"></span>canlı</span>
+    </header>
+
+    <main style="min-width:0;flex:1;padding:24px 16px 96px">
+      <div style="margin:0 auto;max-width:1024px">
+        <a href="dashboard-emlakci.html" class="rv hide-mobile mono" style="--d:0s;margin-bottom:16px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-d);text-decoration:none"><span aria-hidden>&larr;</span> Havuz Listesine Dön</a>
+
+        <!-- HERO -->
+        <div class="rv" style="--d:.04s;position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--hair);box-shadow:var(--golge-2)">
+          <div style="position:relative;width:100%;aspect-ratio:16/6;min-height:230px">
+            <img src="/gorseller/render-cankaya-vadi.jpg" alt="Çankaya Vadi Konakları" style="height:100%;width:100%;object-fit:cover" onerror="this.onerror=null;this.src='/gorseller/proje-fallback.jpg'"/>
+            <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(16,36,58,.86),rgba(16,36,58,.3) 55%,transparent)"></div>
+            <button class="btn btn-wa" id="heroWa" style="position:absolute;right:16px;top:16px;z-index:2;box-shadow:var(--golge-2)"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.05-1.33A10 10 0 1 0 12 2Z"/></svg><span class="wa-label">WhatsApp Paylaş</span></button>
+          </div>
+          <div style="position:absolute;inset:auto 0 0 0;z-index:2;padding:20px 24px">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+              <h1 class="font-display" style="font-size:29px;font-weight:700;letter-spacing:-.02em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3)">Çankaya Vadi Konakları</h1>
+              <span class="rozet" style="background:var(--teal-soft);color:var(--teal-d);box-shadow:var(--golge-1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>Doğrulanmış</span>
+              <span class="rozet" style="background:rgba(255,255,255,.9);color:var(--ink)">Etap 1</span>
+            </div>
+            <p style="margin-top:6px;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:rgba(255,255,255,.88)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>Çankaya, Ankara</p>
+            <div style="margin-top:16px;max-width:560px">
+              <div style="margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:600;color:rgba(255,255,255,.88)"><span>İnşaat: <span style="font-weight:700;color:#fff">Kaba İnşaat</span></span><span class="mono" style="font-weight:700;color:#fff">%62</span></div>
+              <div style="height:8px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.25)"><div style="height:100%;width:62%;border-radius:999px;background:linear-gradient(to right,var(--teal),var(--green))"></div></div>
+              <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 24px;font-size:11px;color:rgba(255,255,255,.8)">
+                <span class="mono"><span style="color:rgba(255,255,255,.6)">Başlama:</span> <span style="font-weight:600;color:#fff">Eyl 2024</span></span>
+                <span class="mono"><span style="color:rgba(255,255,255,.6)">Teslim:</span> <span style="font-weight:600;color:#fff">Ara 2027</span></span>
+                <span class="mono"><span style="color:rgba(255,255,255,.6)">İskân:</span> <span style="font-weight:600;color:#fff">Haz 2028</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="rv" style="--d:.1s;margin-top:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+          <div class="kart signal-top" style="--_sig:var(--navy);padding:16px"><p class="mono" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)">Tahsisli Stok</p><p class="mono t-ink" id="kToplam" style="margin-top:4px;font-size:22px;font-weight:600">24</p></div>
+          <div class="kart signal-top" style="--_sig:var(--green);padding:16px"><p class="mono" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)">Müsait</p><p class="mono t-ink" id="kMusait" style="margin-top:4px;font-size:22px;font-weight:600">15</p></div>
+          <div class="kart signal-top" style="--_sig:var(--amber);padding:16px"><p class="mono" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)">Opsiyonlu</p><p class="mono t-ink" id="kOpsiyon" style="margin-top:4px;font-size:22px;font-weight:600">5</p></div>
+          <div class="kart signal-top" style="--_sig:var(--teal);padding:16px"><p class="mono" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)">Fiyat Aralığı</p><p class="mono t-ink" style="margin-top:4px;font-size:17px;font-weight:600">₺6.80M – ₺14.50M</p></div>
+        </div>
+
+        <!-- FİYAT LİSTESİ · CANLI STOK (daire seviyesi opsiyon buradan alınır) -->
+        <div class="rv" style="--d:.16s;margin-top:32px">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+            <div>
+              <h2 class="font-display" style="font-size:19px;font-weight:600;color:var(--ink)">Fiyat Listesi · Canlı Stok</h2>
+              <p style="margin-top:2px;font-size:12.5px;color:var(--ink-soft)">Bina kesitinde ya da listede bir daireye dokun. Opsiyonu daire bazında sen alırsın.</p>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;color:var(--gray)"><span class="nabiz" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></span>canlı</span>
+          </div>
+
+          <!-- proje geneli stat şeridi -->
+          <div style="margin-top:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+            <div class="kart" style="border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:var(--ink)"></span><span style="font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--gray)">Toplam</span></div><p class="mono" id="sToplam" style="margin-top:2px;font-size:22px;font-weight:600;color:var(--ink)">24</p></div>
+            <div class="kart" style="border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span><span style="font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--gray)">Müsait</span></div><p class="mono" id="sMusait" style="margin-top:2px;font-size:22px;font-weight:600;color:var(--ink)">15</p></div>
+            <div class="kart" style="border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber)"></span><span style="font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--gray)">Opsiyon</span></div><p class="mono" id="sOpsiyon" style="margin-top:2px;font-size:22px;font-weight:600;color:var(--ink)">5</p></div>
+            <div class="kart" style="border-radius:14px;padding:14px"><div style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:var(--red)"></span><span style="font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--gray)">Satıldı</span></div><p class="mono" id="sSatildi" style="margin-top:2px;font-size:22px;font-weight:600;color:var(--ink)">4</p></div>
+          </div>
+
+          <!-- blok sekmeleri -->
+          <div style="margin-top:20px;display:flex;align-items:center;gap:8px">
+            <div id="blokTabs" style="display:flex;flex-wrap:wrap;gap:6px;flex:1"></div>
+          </div>
+
+          <!-- BİNA KESİTİ -->
+          <div class="kart" id="kesitKart" style="margin-top:12px;overflow:hidden;border-radius:20px">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--cizgi);padding:14px 20px">
+              <div style="display:flex;align-items:center;gap:10px"><h3 class="font-display" id="kesitAd" style="font-size:15px;font-weight:700;color:var(--ink)">A Blok</h3><span class="mono" id="kesitAdet" style="border-radius:6px;background:var(--navy-soft);padding:2px 8px;font-size:11px;color:var(--ink-soft)">14 bağımsız bölüm</span></div>
+              <div style="display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--ink-soft)">
+                <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green)"></span><span id="kM">9</span></span>
+                <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber)"></span><span id="kO">3</span></span>
+                <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:var(--red)"></span><span id="kS">2</span></span>
+              </div>
+            </div>
+            <div style="position:relative;overflow:hidden;background:linear-gradient(to bottom,var(--navy),var(--ink));padding:20px">
+              <div style="position:absolute;inset:0;opacity:.4;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px" aria-hidden></div>
+              <div style="position:relative;margin:0 auto;width:100%;max-width:600px">
+                <div style="margin:0 auto;height:12px;width:calc(100% - 28px);border-radius:8px 8px 0 0;background:rgba(30,155,138,.8)"></div>
+                <div style="margin:-1px auto 0;height:8px;width:calc(100% - 56px);border-radius:6px 6px 0 0;background:rgba(30,155,138,.4)"></div>
+                <div id="kesitGovde" style="overflow:hidden;border-radius:0 0 14px 14px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);box-shadow:0 10px 40px rgba(0,0,0,.35);backdrop-filter:blur(3px)"></div>
+                <div style="margin:1px auto 0;height:6px;width:100%;border-radius:0 0 6px 6px;background:rgba(0,0,0,.25)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FİLTRE + LİSTE -->
+          <div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+            <button class="cip on" data-f="">Tümü</button>
+            <button class="cip" data-f="musait">Müsait</button>
+            <button class="cip" data-f="opsiyon">Opsiyon</button>
+            <button class="cip" data-f="satildi">Satıldı</button>
+            <select id="tipF" style="margin-left:auto;border-radius:12px;border:1px solid var(--cizgi-2);background:#fff;padding:7px 12px;font-size:12.5px;font-weight:500;color:var(--ink);outline:none;cursor:pointer"><option value="">Tüm tipler</option><option value="2+1">2+1</option><option value="3+1">3+1</option><option value="4+1">4+1</option></select>
+          </div>
+
+          <div class="kart" style="margin-top:12px;overflow:hidden;border-radius:20px">
+            <div style="overflow-x:auto">
+              <table class="tbl" style="min-width:560px">
+                <thead><tr><th>Kod</th><th>Tip</th><th>Net</th><th>Kat</th><th>Yön</th><th>Fiyat</th><th>Durum</th></tr></thead>
+                <tbody id="daireBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <p id="listeAlt" style="margin-top:8px;text-align:center;font-size:11px;color:var(--gray)">Satıra dokun: detay, paylaşım ve opsiyon</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- MOBİL BOTTOM NAV -->
+    <nav class="show-mobile" style="position:fixed;inset:auto 0 0 0;z-index:40;border-top:1px solid var(--cizgi);background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding-bottom:env(safe-area-inset-bottom)">
+      <div style="margin:0 auto;display:flex;max-width:440px;align-items:stretch">
+        <a href="dashboard-emlakci.html" style="position:relative;display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-size:11px;font-weight:500;color:var(--teal);text-decoration:none"><span style="position:absolute;left:20px;right:20px;top:0;height:2px;border-radius:999px;background:var(--teal)"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Ağ</a>
+        <a href="#" style="display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-size:11px;font-weight:500;color:var(--gray);text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Lead'ler</a>
+        <a href="#" style="display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-size:11px;font-weight:500;color:var(--gray);text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><path d="M12 8v4l3 2"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><path d="M3 4v4h4"/></svg>Opsiyon</a>
+        <a href="#" style="display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-size:11px;font-weight:500;color:var(--gray);text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>Paylaşım</a>
+        <a href="#" style="display:flex;flex:1;flex-direction:column;align-items:center;gap:4px;padding:10px 0;font-size:11px;font-weight:500;color:var(--gray);text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>Profil</a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- POPOVER (origin-aware daire detay) -->
+<div id="backdrop"></div>
+<div id="pop" role="dialog" aria-modal="true" aria-label="Daire detay"></div>
+
+<!-- TOAST -->
+<div id="toast"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg><span id="toastMetin"></span></div>
+
+<script>
+/* ===== Daire modeli - daire seviyesi (BİNA KESİTİ + LİSTE + POPOVER ortak kaynak) ===== */
+const TIP = {
+  "2+1":{net:78,brut:96,taban:6800000},
+  "3+1":{net:112,brut:138,taban:9200000},
+  "4+1":{net:155,brut:188,taban:13000000},
+};
+/* Şematik kat planı (blueprint imzası) - tip'e göre oda sayısı; gerçek KatPlani fallback paritesi. */
+function katPlanSvg(d){
+  const oda = parseInt(d.tip,10) || 2;      // 2+1 -> 2 yatak
+  const s = "rgba(255,255,255,.9)", sf = "rgba(255,255,255,.4)";
+  let rooms = "";
+  // salon (sol büyük)
+  rooms += `<rect x="14" y="14" width="150" height="118" rx="4" fill="rgba(30,155,138,.14)" stroke="${s}" stroke-width="1.5"/>`;
+  rooms += `<text x="89" y="70" fill="${s}" font-size="11" font-family="Geist Mono,monospace" text-anchor="middle">Salon</text>`;
+  rooms += `<path d="M164 40 a26 26 0 0 1 -26 26" fill="none" stroke="${sf}" stroke-width="1"/>`;
+  // mutfak (sol alt)
+  rooms += `<rect x="14" y="136" width="150" height="50" rx="4" fill="rgba(255,255,255,.05)" stroke="${s}" stroke-width="1.5"/>`;
+  rooms += `<text x="89" y="165" fill="${s}" font-size="10" font-family="Geist Mono,monospace" text-anchor="middle">Mutfak</text>`;
+  // sağ kolon: yatak odaları + banyo
+  const sagYuk = 172, gap = 6, n = oda + 1;               // +1 banyo
+  const h = (sagYuk - gap*(n-1)) / n;
+  for(let i=0;i<oda;i++){
+    const y = 14 + i*(h+gap);
+    rooms += `<rect x="170" y="${y}" width="116" height="${h}" rx="4" fill="rgba(255,255,255,.05)" stroke="${s}" stroke-width="1.5"/>`;
+    rooms += `<text x="228" y="${y+h/2+3}" fill="${s}" font-size="9.5" font-family="Geist Mono,monospace" text-anchor="middle">Yatak ${i+1}</text>`;
+  }
+  const yB = 14 + oda*(h+gap);
+  rooms += `<rect x="170" y="${yB}" width="116" height="${h}" rx="4" fill="rgba(227,161,44,.12)" stroke="${s}" stroke-width="1.5"/>`;
+  rooms += `<text x="228" y="${yB+h/2+3}" fill="${s}" font-size="9.5" font-family="Geist Mono,monospace" text-anchor="middle">Banyo</text>`;
+  return `<div style="position:relative;background:linear-gradient(to bottom,var(--navy),var(--ink));padding:12px">
+    <div style="position:absolute;inset:0;opacity:.35;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:20px 20px"></div>
+    <svg viewBox="0 0 300 200" style="position:relative;width:100%;display:block" role="img" aria-label="${d.tip} şematik kat planı">${rooms}</svg>
+    <div style="position:relative;margin-top:6px;display:flex;justify-content:space-between;font-family:Geist Mono,monospace;font-size:10px;color:rgba(255,255,255,.65)"><span>${d.tip} · ${d.net} m²</span><span>Şematik plan</span></div>
+  </div>`;
+}
+function mk(no,blok,kat,tip,durum,yon,manzara,serefiye,fiyat){
+  return {no,blok,kat,tip,durum,yon,manzara,serefiye,fiyat,net:TIP[tip].net,brut:TIP[tip].brut,taban:TIP[tip].taban,taze:"guncel"};
+}
+let DAIRE = [
+  // A Blok (14)
+  mk("A18","A",5,"3+1","musait","Güney","Vadi",8,10250000),
+  mk("A17","A",5,"2+1","opsiyon","Batı","Şehir",8,7620000),
+  mk("A16","A",4,"3+1","musait","Güney","Vadi",6,9980000),
+  mk("A15","A",4,"2+1","musait","Doğu","Park",6,7380000),
+  mk("A14","A",4,"4+1","satildi","Güney","Vadi",6,13600000),
+  mk("A13","A",3,"4+1","musait","Güney","Vadi",4,13950000),
+  mk("A12","A",3,"2+1","opsiyon","Kuzey","Şehir",4,7240000),
+  mk("A11","A",3,"3+1","musait","Batı","Park",4,9740000),
+  mk("A10","A",2,"3+1","musait","Güney","Vadi",2,9560000),
+  mk("A9","A",2,"2+1","musait","Doğu","Park",2,7180000),
+  mk("A8","A",2,"4+1","satildi","Güney","Vadi",2,13200000),
+  mk("A7","A",1,"2+1","musait","Batı","Şehir",0,6980000),
+  mk("A6","A",1,"3+1","musait","Güney","Park",0,9350000),
+  mk("A5","A",1,"2+1","opsiyon","Kuzey","Şehir",0,6900000),
+  // B Blok (10)
+  mk("B20","B",5,"3+1","musait","Güney","Vadi",8,10480000),
+  mk("B19","B",5,"2+1","musait","Batı","Şehir",8,7710000),
+  mk("B18","B",4,"3+1","opsiyon","Doğu","Park",6,9880000),
+  mk("B17","B",4,"2+1","musait","Güney","Vadi",6,7460000),
+  mk("B16","B",3,"4+1","musait","Güney","Vadi",4,14500000),
+  mk("B15","B",3,"3+1","satildi","Kuzey","Şehir",4,9600000),
+  mk("B14","B",2,"2+1","musait","Batı","Park",2,7220000),
+  mk("B13","B",3,"3+1","opsiyon","Güney","Vadi",2,9520000),
+  mk("B12","B",1,"2+1","musait","Doğu","Park",0,6980000),
+  mk("B11","B",1,"3+1","satildi","Güney","Vadi",0,9280000),
+];
+const BLOKLAR = ["A","B"];
+let aktifBlok = "A";
+let durumF = "";
+let tipF = "";
+
+const P = "₺";
+function fmtM(n){ return P + (n/1000000).toFixed(2) + "M"; }
+function fmtTL(n){ return n.toLocaleString("tr-TR") + " " + P; }
+
+const durumCls = {musait:"h-musait",opsiyon:"h-opsiyon",satildi:"h-satildi"};
+const durumBadge = {musait:["d-musait","Müsait"],opsiyon:["d-opsiyon","Opsiyon"],satildi:["d-satildi","Satıldı"]};
+
+/* ---- proje geneli statlar ---- */
+function statGuncelle(){
+  const t=DAIRE.length, m=DAIRE.filter(d=>d.durum==="musait").length, o=DAIRE.filter(d=>d.durum==="opsiyon").length, s=DAIRE.filter(d=>d.durum==="satildi").length;
+  sToplam.textContent=t; sMusait.textContent=m; sOpsiyon.textContent=o; sSatildi.textContent=s;
+  kToplam.textContent=t; kMusait.textContent=m; kOpsiyon.textContent=o;
+  const bb=DAIRE.filter(d=>d.blok===aktifBlok);
+  kM.textContent=bb.filter(d=>d.durum==="musait").length;
+  kO.textContent=bb.filter(d=>d.durum==="opsiyon").length;
+  kS.textContent=bb.filter(d=>d.durum==="satildi").length;
+  kesitAdet.textContent=bb.length+" bağımsız bölüm";
+  kesitAd.textContent=aktifBlok+" Blok";
+}
+
+/* ---- blok sekmeleri ---- */
+function blokTabsCiz(){
+  blokTabs.innerHTML="";
+  BLOKLAR.forEach(b=>{
+    const m=DAIRE.filter(d=>d.blok===b&&d.durum==="musait").length;
+    const btn=document.createElement("button");
+    btn.className="cip"+(b===aktifBlok?" on":"");
+    btn.innerHTML=`${b} Blok <span class="mono" style="margin-left:4px;font-size:11px;color:${b===aktifBlok?'rgba(255,255,255,.85)':'var(--green)'}">${m}</span>`;
+    btn.onclick=()=>{aktifBlok=b;blokTabsCiz();kesitCiz();listeCiz();statGuncelle();};
+    blokTabs.appendChild(btn);
+  });
+}
+
+/* ---- BİNA KESİTİ ---- */
+function kesitCiz(){
+  const bb=DAIRE.filter(d=>d.blok===aktifBlok);
+  const katlar=[...new Set(bb.map(d=>d.kat))].sort((a,b)=>b-a);
+  let html="";
+  katlar.forEach(kat=>{
+    const kd=bb.filter(d=>d.kat===kat).sort((a,b)=>a.no.localeCompare(b.no));
+    html+=`<div style="display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);padding:8px 14px">
+      <span class="mono" style="width:28px;flex:none;text-align:right;font-size:10px;font-weight:600;color:rgba(255,255,255,.45)">K${kat}</span>
+      <div style="display:flex;min-width:0;flex:1;flex-wrap:wrap;gap:6px">`;
+    kd.forEach(d=>{
+      html+=`<div class="hucre ${durumCls[d.durum]}" data-no="${d.no}"><span class="hno">${d.no}</span><span class="htip">${d.tip}</span></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  // zemin giriş
+  html+=`<div style="display:flex;align-items:center;gap:10px;border-top:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);padding:10px 14px">
+    <span class="mono" style="width:28px;flex:none;text-align:right;font-size:10px;font-weight:600;color:rgba(255,255,255,.45)">Z</span>
+    <div style="display:flex;flex:1;align-items:center;gap:8px"><span style="height:24px;flex:1;border-radius:4px;background:rgba(255,255,255,.05)"></span><span class="mono" style="border-radius:6px;background:rgba(30,155,138,.25);padding:4px 12px;font-size:10px;font-weight:600;letter-spacing:.05em;color:rgba(255,255,255,.85)">GİRİŞ</span><span style="height:24px;flex:1;border-radius:4px;background:rgba(255,255,255,.05)"></span></div>
+  </div>`;
+  kesitGovde.innerHTML=html;
+  kesitGovde.querySelectorAll(".hucre").forEach(h=>{
+    h.addEventListener("click",e=>{
+      const d=DAIRE.find(x=>x.no===h.dataset.no);
+      popoverAc(d,e);
+    });
+  });
+}
+
+/* ---- FİLTRELİ LİSTE ---- */
+function listeCiz(){
+  const bb=DAIRE.filter(d=>d.blok===aktifBlok)
+    .filter(d=>!durumF||d.durum===durumF)
+    .filter(d=>!tipF||d.tip===tipF)
+    .sort((a,b)=>b.kat-a.kat||a.no.localeCompare(b.no));
+  daireBody.innerHTML="";
+  if(bb.length===0){ daireBody.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--gray);padding:28px">Bu filtreyle daire yok.</td></tr>`; listeAlt.textContent="0 daire"; return; }
+  bb.forEach(d=>{
+    const [bcls,bmetin]=durumBadge[d.durum];
+    const dot = d.durum==="musait"?"var(--green)":d.durum==="opsiyon"?"var(--amber)":"var(--red)";
+    const tr=document.createElement("tr");
+    tr.dataset.no=d.no;
+    tr.innerHTML=`
+      <td><span style="display:inline-flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:${dot}"></span><span class="mono" style="font-weight:600;color:var(--ink)">${d.no}</span></span></td>
+      <td style="color:var(--ink-soft)">${d.tip}</td>
+      <td class="mono" style="color:var(--ink-soft)">${d.net} m²</td>
+      <td class="mono" style="color:var(--ink-soft)">K${d.kat}</td>
+      <td style="color:var(--ink-soft)">${d.yon}</td>
+      <td class="mono" style="font-weight:600;color:var(--ink)">${fmtM(d.fiyat)}</td>
+      <td><span class="durum ${bcls}"><span class="nokta"></span>${bmetin}</span></td>`;
+    tr.addEventListener("click",e=>popoverAc(d,e));
+    daireBody.appendChild(tr);
+  });
+  listeAlt.textContent=bb.length+" daire · satıra dokun: detay, paylaşım ve opsiyon";
+}
+
+/* ===== POPOVER (origin-aware: tıklanan hücreden ölçeklenir) ===== */
+const backdrop=document.getElementById("backdrop");
+const pop=document.getElementById("pop");
+let holdTimer=null, holdActive=false, holdDaire=null;
+
+function popoverAc(d, evt){
+  holdDaire=d;
+  const musaitEmsal = d.durum==="musait";
+  const [bcls,bmetin]=durumBadge[d.durum];
+  const katKatki = d.serefiye? Math.round(d.taban*d.serefiye/100):0;
+  const planSvg = katPlanSvg(d);
+  let aksiyon="";
+  if(musaitEmsal){
+    aksiyon=`
+      <button class="btn btn-wa" id="popWa" style="width:100%"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.05-1.33A10 10 0 1 0 12 2Z"/></svg><span class="wa-label">WhatsApp ile Paylaş</span></button>
+      <p style="margin-top:8px;text-align:center;font-size:10.5px;font-weight:700;line-height:1.4;color:var(--ink-faint)">Müşterinizle birebir paylaşın. Yetkisiz ilan yasal risk taşır.</p>
+      <button class="hold" id="holdBtn" style="margin-top:8px"><span class="fill"></span><span class="lbl"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span id="holdLbl">Opsiyon Al (basılı tut)</span></span></button>
+      <p style="margin-top:6px;text-align:center;font-size:10px;font-weight:700;line-height:1.4;color:var(--ink-faint)">Basılı tut, kilitle. 48 saat opsiyon. Çift satış imkânsız.</p>`;
+  } else {
+    const kilitMetin = d.durum==="satildi" ? "Bu daire satıldı. Paylaşım ve opsiyon kapalı." : "Başka danışmanda opsiyonlu. Üzerinde işlem yapamazsın.";
+    aksiyon=`<div style="border-radius:14px;border:1px solid var(--hair);background:var(--soft);padding:16px;text-align:center">
+      <div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;color:var(--ink-soft)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>${bmetin} · kilitli</div>
+      <p style="margin-top:6px;font-size:11.5px;font-weight:500;line-height:1.4;color:var(--ink-faint)">${kilitMetin}</p>
+    </div>`;
+  }
+
+  pop.innerHTML=`
+    <div style="max-height:88vh;overflow-y:auto;padding:20px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div>
+          <h3 class="font-display" style="font-size:18px;font-weight:700;letter-spacing:-.01em;color:var(--ink)">Daire ${d.no}</h3>
+          <p style="margin-top:2px;font-size:12px;font-weight:500;color:var(--gray)">${d.tip} · ${d.kat}. kat · ${d.blok} Blok</p>
+        </div>
+        <button id="popKapat" aria-label="Kapat" class="btn" style="min-height:32px;width:32px;padding:0;background:transparent;color:var(--gray);border-radius:10px;font-size:14px;font-weight:700">&times;</button>
+      </div>
+      <span class="durum ${bcls}" style="margin-top:12px"><span class="nokta"></span>${bmetin}</span>
+
+      <div style="margin-top:14px;overflow:hidden;border-radius:14px;border:1px solid var(--hair)">${planSvg}</div>
+
+      <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+        <div style="border-radius:12px;border:1px solid var(--hair);background:var(--soft);padding:9px 11px"><div class="mono" style="font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Oda</div><div style="font-weight:600;color:var(--ink)">${d.tip}</div></div>
+        <div style="border-radius:12px;border:1px solid var(--hair);background:var(--soft);padding:9px 11px"><div class="mono" style="font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Net Alan</div><div class="mono" style="font-weight:600;color:var(--ink)">${d.net} m²</div></div>
+        <div style="border-radius:12px;border:1px solid var(--hair);background:var(--soft);padding:9px 11px"><div class="mono" style="font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Cephe</div><div style="font-weight:600;color:var(--ink)">${d.yon}</div></div>
+        <div style="border-radius:12px;border:1px solid var(--hair);background:var(--soft);padding:9px 11px"><div class="mono" style="font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint)">Manzara</div><div style="font-weight:600;color:var(--ink)">${d.manzara}</div></div>
+      </div>
+
+      <div style="margin-top:14px;border-radius:14px;border:1px solid var(--hair);background:var(--soft);padding:14px;font-family:var(--font-mono);font-size:12px">
+        <div style="display:flex;justify-content:space-between"><span style="font-weight:600;color:var(--gray)">Taban fiyat</span><span style="font-weight:700;color:var(--ink)">${fmtTL(d.taban)}</span></div>
+        ${d.serefiye?`<div style="margin-top:6px;display:flex;justify-content:space-between"><span style="font-weight:600;color:var(--gray)">+ Kat şerefiyesi %${d.serefiye}</span><span style="font-weight:700;color:var(--ink)">+${fmtTL(katKatki)}</span></div>`:""}
+        <div style="margin-top:10px;display:flex;justify-content:space-between;border-top:1px solid var(--cizgi);padding-top:10px"><span style="font-weight:700;color:var(--ink)">Liste fiyatı</span><span style="font-weight:700;color:var(--teal-d)">${fmtTL(d.fiyat)}</span></div>
+      </div>
+
+      <div style="margin-top:16px">${aksiyon}</div>
+
+      <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--cizgi);padding-top:10px;font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--gray)">
+        <span>GÜNCELLİK</span>
+        <span style="display:inline-flex;align-items:center;gap:6px"><span id="tazeDot" style="width:7px;height:7px;border-radius:50%;background:${d.taze==='taze'?'var(--green)':'var(--teal)'}"></span><span id="tazeMetin">${d.taze==='taze'?'az önce':'2 gün önce'} güncellendi</span></span>
+      </div>
+    </div>`;
+
+  // konumla + origin-aware
+  const mobil = window.matchMedia("(max-width:860px)").matches;
+  backdrop.classList.add("acik");
+  if(!mobil && evt){
+    pop.style.width="340px";
+    const pw=340, ph=Math.min(pop.scrollHeight||520, window.innerHeight*0.88);
+    let left = evt.clientX + 14;
+    let top = evt.clientY - 40;
+    if(left+pw > window.innerWidth-12) left = evt.clientX - pw - 14;
+    if(left<12) left=12;
+    if(top+ph > window.innerHeight-12) top = window.innerHeight-ph-12;
+    if(top<12) top=12;
+    pop.style.left=left+"px"; pop.style.top=top+"px";
+    // transform-origin = tıklanan noktanın popover içindeki konumu
+    const ox=Math.max(0,Math.min(pw,evt.clientX-left));
+    const oy=Math.max(0,Math.min(ph,evt.clientY-top));
+    pop.style.setProperty("--ox",ox+"px");
+    pop.style.setProperty("--oy",oy+"px");
+  }
+  requestAnimationFrame(()=>pop.classList.add("acik"));
+
+  document.getElementById("popKapat").onclick=popoverKapat;
+  const popWa=document.getElementById("popWa");
+  if(popWa) popWa.onclick=()=>{
+    const l=popWa.querySelector(".wa-label"), o=l.textContent;
+    l.textContent="Paylaşıma hazır"; popWa.style.background="#178c4a";
+    popWa.animate([{transform:"scale(1)"},{transform:"scale(.94)"},{transform:"scale(1)"}],{duration:260,easing:"cubic-bezier(.16,1,.3,1)"});
+    setTimeout(()=>{l.textContent=o;popWa.style.background="";},1300);
+  };
+  const holdBtn=document.getElementById("holdBtn");
+  if(holdBtn) baglaHold(holdBtn);
+}
+function popoverKapat(){
+  pop.classList.remove("acik"); backdrop.classList.remove("acik");
+  holdIptal();
+}
+backdrop.addEventListener("click",popoverKapat);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")popoverKapat();});
+
+/* ===== HOLD-TO-CONFIRM (asimetrik: ~1.15s doğrusal dolum / 200ms snap bırakış) ===== */
+const HOLD_MS=1150;
+function baglaHold(btn){
+  const fill=btn.querySelector(".fill");
+  const lbl=btn.querySelector("#holdLbl");
+  function start(e){
+    e.preventDefault();
+    if(holdActive) return;
+    holdActive=true;
+    fill.style.transition=`clip-path ${HOLD_MS}ms linear`;
+    requestAnimationFrame(()=>{ fill.style.clipPath="inset(0 0 0 0)"; });
+    lbl.textContent="Basılı tut…";
+    holdTimer=setTimeout(()=>commit(btn),HOLD_MS);
+  }
+  function end(){
+    if(!holdActive) return;
+    holdActive=false;
+    clearTimeout(holdTimer); holdTimer=null;
+    fill.style.transition="clip-path 200ms cubic-bezier(.16,1,.3,1)";
+    fill.style.clipPath="inset(0 100% 0 0)";
+    lbl.textContent="Opsiyon Al (basılı tut)";
+  }
+  btn.addEventListener("pointerdown",start);
+  btn.addEventListener("pointerup",end);
+  btn.addEventListener("pointerleave",end);
+  btn.addEventListener("pointercancel",end);
+}
+function holdIptal(){ holdActive=false; if(holdTimer){clearTimeout(holdTimer);holdTimer=null;} }
+
+function commit(btn){
+  holdActive=false; holdTimer=null;
+  const d=holdDaire; if(!d) return;
+  d.durum="opsiyon"; d.taze="taze"; d.serefiye=d.serefiye; // durum değişti, tazelik resetlendi
+  popoverKapat();
+  // kesit hücresini amber'e çevir + pulse
+  kesitCiz(); listeCiz(); statGuncelle(); blokTabsCiz();
+  const h=kesitGovde.querySelector(`.hucre[data-no="${d.no}"]`);
+  if(h){ h.classList.add("pop"); setTimeout(()=>h.classList.remove("pop"),700); }
+  toastGoster(`Daire ${d.no} opsiyonlandı · 48 saat kilit`);
+}
+
+/* ===== TOAST ===== */
+const toast=document.getElementById("toast"), toastMetin=document.getElementById("toastMetin");
+let toastT=null;
+function toastGoster(m){
+  toastMetin.textContent=m; toast.classList.add("acik");
+  clearTimeout(toastT); toastT=setTimeout(()=>toast.classList.remove("acik"),3200);
+}
+
+/* ===== filtre chip + tip select ===== */
+document.querySelectorAll(".cip[data-f]").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".cip[data-f]").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); durumF=b.dataset.f; listeCiz();
+  });
+});
+document.getElementById("tipF").addEventListener("change",e=>{tipF=e.target.value;listeCiz();});
+
+document.getElementById("heroWa").addEventListener("click",()=>{
+  const b=document.getElementById("heroWa"), l=b.querySelector(".wa-label"), o=l.textContent;
+  l.textContent="Paylaşıma hazır"; b.style.background="#178c4a";
+  b.animate([{transform:"scale(1)"},{transform:"scale(.94)"},{transform:"scale(1)"}],{duration:260,easing:"cubic-bezier(.16,1,.3,1)"});
+  setTimeout(()=>{l.textContent=o;b.style.background="";},1300);
+});
+
+/* init */
+document.body.classList.add("js");
+blokTabsCiz(); kesitCiz(); listeCiz(); statGuncelle();
+</script>
+</body>
+</html>

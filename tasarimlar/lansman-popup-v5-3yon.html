@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Lansman Popup — 3 görsel yönü</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#10243a; --ink-soft:#46586b; --ink-faint:#7d8da0;
+    --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676; --green:#2fb36b;
+    --paper:#eef1f6; --card:#fff; --soft:#f6f8fb; --navy-soft:#eaf0f5;
+    --cizgi:rgba(16,36,58,.09); --cizgi-2:rgba(16,36,58,.13);
+    --g1:0 1px 2px rgba(16,36,58,.05),0 2px 6px rgba(16,36,58,.05);
+    --g3:0 12px 28px rgba(16,36,58,.14),0 40px 80px rgba(16,36,58,.20);
+    --ease:cubic-bezier(.23,1,.32,1);
+  }
+  *{ box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  body{ margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); min-height:100vh;
+    background:linear-gradient(180deg,#e9edf3,#dfe4ec); padding:30px 22px 54px; }
+  .mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+  .head{ max-width:1340px; margin:0 auto 22px; }
+  .head h1{ font-family:'Outfit'; font-size:21px; font-weight:700; letter-spacing:-.3px; margin:0; }
+  .head p{ margin:6px 0 0; font-size:13px; color:var(--ink-soft); }
+  .grid{ max-width:1340px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:26px; align-items:start; }
+  .lbl{ display:flex; align-items:center; gap:9px; margin:0 2px 12px; }
+  .lbl .n{ display:grid; place-items:center; width:24px; height:24px; border-radius:7px; background:var(--navy); color:#fff; font-family:'Geist Mono'; font-size:12px; font-weight:600; }
+  .lbl b{ font-family:'Outfit'; font-size:14px; } .lbl span{ font-size:12px; color:var(--ink-faint); }
+
+  .pop{ position:relative; width:100%; border-radius:24px; overflow:hidden; background:#fff; border:1px solid var(--cizgi); box-shadow:var(--g3); }
+  .close{ position:absolute; right:13px; top:13px; z-index:5; width:30px; height:30px; border:none; border-radius:50%; background:rgba(255,255,255,.78); backdrop-filter:blur(6px); color:var(--ink-soft); display:grid; place-items:center; cursor:pointer; box-shadow:var(--g1); }
+  .lg{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.6px; }
+  .lg span{ border-radius:1.6px; background:var(--navy); opacity:.22; } .lg span.on{ opacity:1; background:var(--teal); } .lg span.mid{ opacity:1; background:var(--navy); }
+
+  /* ===== ortak gövde ===== */
+  .body{ padding:17px 22px 19px; }
+  .title{ font-family:'Outfit'; font-weight:800; font-size:22px; letter-spacing:-.4px; line-height:1.13; color:var(--ink); margin:0; }
+  .sub{ font-size:13.5px; line-height:1.5; color:var(--ink-soft); margin:8px 0 0; }
+  .cta{ display:flex; align-items:center; justify-content:center; width:100%; margin-top:15px; padding:13px 16px; border:none; border-radius:12px; background:var(--navy); color:#fff; font-family:inherit; font-weight:700; font-size:14px; cursor:pointer; box-shadow:var(--g1); transition:transform .16s var(--ease), background .16s; }
+  .cta:hover{ background:#0e2740; transform:translateY(-1px); } .cta:active{ transform:scale(.99); }
+  .sec{ display:block; width:100%; text-align:center; margin-top:11px; background:none; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:12.5px; color:var(--ink-soft); }
+  .sec:hover{ color:var(--teal-d); }
+  .trust{ margin-top:13px; padding-top:12px; border-top:1px solid var(--cizgi); text-align:center; font-size:11px; line-height:1.6; color:var(--ink-faint); }
+  .trust .k{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--teal); vertical-align:middle; margin-right:5px; }
+  .trust .sep{ color:var(--cizgi-2); margin:0 5px; }
+  svg{ display:block; }
+
+  /* ===== DIR 1 · ürün-ağı illüstrasyonu ===== */
+  .net{ position:relative; height:188px; background:radial-gradient(120% 90% at 50% 0%, #eef3f8, #f6f8fb); border-bottom:1px solid var(--cizgi); overflow:hidden; }
+  .net .lines{ position:absolute; inset:0; width:100%; height:100%; }
+  .node{ position:absolute; left:50%; top:16px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:7px; background:var(--navy); color:#fff; border-radius:999px; padding:7px 13px 7px 11px; box-shadow:0 6px 16px rgba(19,49,75,.28); z-index:2; }
+  .node .lg{ width:15px; height:15px; }
+  .node .lg span{ background:#fff; opacity:.35; } .node .lg span.on{ background:var(--teal); opacity:1; } .node .lg span.mid{ background:#fff; opacity:1; }
+  .node b{ font-family:'Outfit'; font-weight:700; font-size:12.5px; letter-spacing:-.2px; }
+  .node .pd{ position:relative; width:7px; height:7px; margin-left:1px; }
+  .node .pd i{ position:absolute; inset:0; border-radius:50%; background:var(--green); }
+  .node .pd::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--green); opacity:.7; animation:pulse 2s var(--ease) infinite; }
+  @keyframes pulse{ 0%{transform:scale(1);opacity:.7} 100%{transform:scale(2.7);opacity:0} }
+  .pc{ position:absolute; z-index:2; display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--cizgi); border-radius:11px; padding:7px 10px; box-shadow:var(--g1); white-space:nowrap; }
+  .pc .pn{ font-size:11.5px; font-weight:700; color:var(--ink); }
+  .pc .ps{ display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; color:#1f7d4c; }
+  .pc .gd{ width:5px; height:5px; border-radius:50%; background:var(--green); }
+  .pc.m{ left:50%; top:72px; transform:translateX(-50%); }
+  .pc.l{ left:14px; top:126px; }
+  .pc.r{ right:14px; top:126px; }
+  .netcap{ position:absolute; left:0; right:0; bottom:9px; text-align:center; font-family:'Geist Mono'; font-size:10px; letter-spacing:.04em; color:var(--teal-d); z-index:2; }
+  .netcap i{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--green); margin-right:5px; vertical-align:middle; }
+
+  /* ===== DIR 2 · arayüz preview ===== */
+  .win{ margin:0; background:linear-gradient(180deg,var(--navy-soft),#eef2f6); border-bottom:1px solid var(--cizgi); padding:14px 16px 16px; }
+  .win-frame{ background:#fff; border:1px solid var(--cizgi); border-radius:13px; overflow:hidden; box-shadow:var(--g1); }
+  .win-bar{ display:flex; align-items:center; justify-content:space-between; padding:9px 12px; border-bottom:1px solid var(--cizgi); background:var(--soft); }
+  .win-t{ display:flex; align-items:center; gap:7px; font-family:'Outfit'; font-weight:700; font-size:12px; color:var(--navy); }
+  .win-live{ display:inline-flex; align-items:center; gap:5px; font-family:'Geist Mono'; font-size:9.5px; color:var(--teal-d); text-transform:uppercase; letter-spacing:.05em; }
+  .win-live i{ position:relative; width:6px; height:6px; }
+  .win-live i::before{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--green); }
+  .wr{ display:flex; align-items:center; gap:10px; padding:9px 12px; }
+  .wr + .wr{ border-top:1px solid var(--cizgi); }
+  .wr .ci{ flex:none; width:30px; height:30px; border-radius:8px; background:var(--navy-soft); color:var(--navy); display:grid; place-items:center; }
+  .wr .wn{ font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.1; }
+  .wr .wc{ font-size:10px; color:var(--ink-faint); margin-top:1px; }
+  .wr .ws{ margin-left:auto; font-size:12px; font-weight:700; color:#1f7d4c; }
+  .wr .ws .mono{ font-size:13px; }
+  .win-foot{ padding:7px 12px; border-top:1px solid var(--cizgi); background:var(--soft); font-family:'Geist Mono'; font-size:9.5px; color:var(--ink-faint); display:flex; align-items:center; gap:6px; }
+  .win-foot i{ width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+  /* ===== DIR 3 · mimari + ürün ===== */
+  .arch{ position:relative; height:206px; overflow:hidden; }
+  .arch img{ width:100%; height:100%; object-fit:cover; object-position:center 44%; display:block; }
+  .arch::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(8,20,34,.06) 0%, rgba(8,20,34,0) 30%, rgba(8,20,34,.55) 100%); }
+  .arch::before{ content:""; position:absolute; inset:auto 0 -1px 0; height:40px; background:linear-gradient(180deg, transparent, #fff); z-index:3; }
+  .ov{ position:absolute; left:14px; bottom:16px; z-index:2; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.6); border-radius:13px; padding:9px 12px; box-shadow:var(--g1); }
+  .ov .on{ font-size:13px; font-weight:800; color:var(--ink); }
+  .ov .om{ font-family:'Geist Mono'; font-size:10px; color:var(--ink-soft); margin-top:1px; }
+  .ov .os{ display:inline-flex; align-items:center; gap:5px; margin-top:6px; background:rgba(47,179,107,.14); color:#1f7d4c; border-radius:999px; padding:3px 9px; font-size:10.5px; font-weight:700; }
+  .ov .gd{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .chips{ position:absolute; right:12px; top:12px; z-index:2; display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .chip{ background:rgba(8,20,34,.42); backdrop-filter:blur(6px); border:1px solid rgba(255,255,255,.14); color:#fff; border-radius:999px; padding:4px 10px; font-size:10.5px; font-weight:600; }
+  .chip b{ color:#7ff0dd; }
+
+  @media (max-width:1140px){ .grid{ grid-template-columns:1fr; max-width:420px; } }
+</style>
+</head>
+<body>
+  <div class="head">
+    <h1>Lansman Popup · 3 görsel yönü — Projedar'a özgü, jenerik değil</h1>
+    <p>Aynı metin/CTA mimarisi. Farklı: üst ~%35 ürün görseli. Dir 1 ürün-ağı (favorin) · Dir 2 arayüz preview · Dir 3 mimari+ürün (fal.ai render). Neon/smart-city yok.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- ===================== DIR 1 ===================== -->
+    <div>
+      <div class="lbl"><span class="n">1</span><b>Ürün-ağı illüstrasyonu</b><span>· favori</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="net">
+          <svg class="lines" viewBox="0 0 360 188" preserveAspectRatio="none" fill="none">
+            <path d="M180 40 L180 68" stroke="rgba(30,155,138,.55)" stroke-width="1.6"/>
+            <path d="M180 44 C150 92, 96 96, 74 122" stroke="rgba(19,49,75,.22)" stroke-width="1.4"/>
+            <path d="M180 44 C210 92, 264 96, 286 122" stroke="rgba(19,49,75,.22)" stroke-width="1.4"/>
+            <circle cx="180" cy="40" r="2.4" fill="var(--teal)"/><circle cx="74" cy="122" r="2.4" fill="rgba(19,49,75,.4)"/><circle cx="286" cy="122" r="2.4" fill="rgba(19,49,75,.4)"/>
+          </svg>
+          <span class="node"><span class="lg"><span class="on"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="on"></span></span><b>Projedar</b><span class="pd"><i></i></span></span>
+          <span class="pc m"><span class="pn">Meridyen Vadi</span><span class="ps"><span class="gd"></span>12 satışa açık</span></span>
+          <span class="pc l"><span class="pn">Park Yaşam</span><span class="ps"><span class="gd"></span>7</span></span>
+          <span class="pc r"><span class="pn">Çankaya Vadi</span><span class="ps"><span class="gd"></span>9</span></span>
+          <div class="netcap"><i></i>Canlı stok ağı · 3 proje · 28 satışa açık bölüm</div>
+        </div>
+        <div class="body">
+          <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <p class="trust"><span class="k"></span>Ücretsiz temel hesap<span class="sep">·</span>Projedar işlemden komisyon almaz<span class="sep">·</span>Canlı stok ve fiyat</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DIR 2 ===================== -->
+    <div>
+      <div class="lbl"><span class="n">2</span><b>Arayüz preview</b><span>· en güvenilir</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="win">
+          <div class="win-frame">
+            <div class="win-bar">
+              <span class="win-t"><span class="lg" style="width:14px;height:14px"><span class="on"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="mid"></span><span></span><span class="on"></span></span> Canlı Havuz</span>
+              <span class="win-live"><i></i> Canlı</span>
+            </div>
+            <div class="wr">
+              <span class="ci"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+              <div><div class="wn">Meridyen Vadi</div><div class="wc">İstanbul</div></div>
+              <span class="ws"><span class="mono">12</span> satışa açık</span>
+            </div>
+            <div class="wr">
+              <span class="ci"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+              <div><div class="wn">Park Yaşam</div><div class="wc">Kadıköy</div></div>
+              <span class="ws"><span class="mono">7</span> satışa açık</span>
+            </div>
+            <div class="win-foot"><i></i> Son veri güncellemesi · şimdi</div>
+          </div>
+        </div>
+        <div class="body">
+          <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <p class="trust"><span class="k"></span>Ücretsiz temel hesap<span class="sep">·</span>Projedar işlemden komisyon almaz<span class="sep">·</span>Canlı stok ve fiyat</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DIR 3 ===================== -->
+    <div>
+      <div class="lbl"><span class="n">3</span><b>Mimari + ürün</b><span>· premium hibrit</span></div>
+      <div class="pop">
+        <button class="close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div class="arch">
+          <img src="mimari-a.jpg" alt="" />
+          <div class="chips">
+            <span class="chip">Park Yaşam · <b>7</b></span>
+            <span class="chip">Çankaya Vadi · <b>9</b></span>
+          </div>
+          <div class="ov">
+            <div class="on">Meridyen Vadi</div>
+            <div class="om">İstanbul · 42 bağımsız bölüm</div>
+            <span class="os"><span class="gd"></span>12 satışa açık</span>
+          </div>
+        </div>
+        <div class="body">
+          <h2 class="title">Size açılan projeleri tek yerde görün.</h2>
+          <p class="sub">Güncel stok, fiyat ve proje bilgilerine erişin. Müşterinize doğru projeyi, doğru bilgiyle sunun.</p>
+          <button class="cta">Ücretsiz danışman hesabı oluştur</button>
+          <button class="sec">Müteahhit / proje geliştiricisiyim →</button>
+          <p class="trust"><span class="k"></span>Ücretsiz temel hesap<span class="sep">·</span>Projedar işlemden komisyon almaz<span class="sep">·</span>Canlı stok ve fiyat</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

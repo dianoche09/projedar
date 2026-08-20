@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projedar — Müteahhit Komuta Merkezi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Dashboard = out of Taste scope → Emil design-eng craft leads.
+       Locked "Spatial Açık" palette. Micro-interactions, correct easing, reduced-motion. */
+    :root {
+      --zemin: #eef1f6; --zemin-2:#e9edf4;
+      --ink:#10243a; --ink-soft:#46586b; --navy:#13314b; --teal:#1e9b8a;
+      --kart:#fff; --cizgi:rgba(16,36,58,.08);
+      --musait:#2fb36b; --opsiyon:#e3a12c; --satildi:#d15a4e;
+      --ease-out:cubic-bezier(0.23,1,0.32,1);
+    }
+    *{box-sizing:border-box;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+    body{font-family:'Instrument Sans',sans-serif;color:var(--ink);background:var(--zemin-2);}
+    .display{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.02em;}
+    .mono{font-family:'Geist Mono',monospace;font-variant-numeric:tabular-nums;}
+    .card{background:var(--kart);border:1px solid var(--cizgi);border-radius:18px;box-shadow:0 2px 6px rgba(16,36,58,.05),0 12px 28px rgba(16,36,58,.07);}
+    /* Nav items: instant feedback, no keyboard-action animation (Emil) */
+    .nav-item{transition:background 140ms ease,color 140ms ease;border-radius:10px;}
+    .nav-item:hover{background:rgba(16,36,58,.05);}
+    .nav-item.active{background:var(--navy);color:#fff;}
+    .nav-item.active svg{color:#fff;}
+    /* KPI stagger entrance */
+    .kpi{opacity:1;transform:translateY(0);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);}
+    @starting-style{.kpi{opacity:0;transform:translateY(10px);}}
+    .k1{transition-delay:.03s;}.k2{transition-delay:.09s;}.k3{transition-delay:.15s;}.k4{transition-delay:.21s;}
+    /* Table row hover, tactile */
+    .row{transition:background 130ms ease;}
+    .row:hover{background:rgba(30,155,138,.05);}
+    /* Buttons */
+    .btn{min-height:38px;transition:transform 150ms var(--ease-out),background 150ms ease,box-shadow 150ms ease;}
+    .btn:active{transform:scale(0.97);}
+    /* Live dot */
+    .live-dot{width:7px;height:7px;border-radius:999px;background:var(--musait);position:relative;display:inline-block;}
+    .live-dot::after{content:"";position:absolute;inset:-4px;border-radius:999px;border:2px solid var(--musait);opacity:.5;animation:ping 2.4s var(--ease-out) infinite;}
+    @keyframes ping{0%{transform:scale(.7);opacity:.6;}100%{transform:scale(1.9);opacity:0;}}
+    .seg{transition:background 140ms ease,color 140ms ease;}
+    .seg.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,36,58,.1);}
+    @media (prefers-reduced-motion: reduce){
+      .kpi,.btn,.row,.nav-item{transition:none;}
+      .live-dot::after{animation:none;}
+    }
+  </style>
+</head>
+<body>
+  <div class="flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-[236px] shrink-0 px-3 py-4 border-r" style="background:var(--zemin);border-color:var(--cizgi)">
+      <div class="px-2 mb-6 flex items-center gap-2">
+        <span class="display text-[19px] font-bold">Proje<span style="color:var(--teal)">dar</span></span>
+      </div>
+      <nav class="flex flex-col gap-0.5 text-[14px]" style="color:var(--ink-soft)">
+        <a class="nav-item active flex items-center gap-2.5 px-3 py-2 font-medium">Genel Bakış</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Projeler</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Stok</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Tahsis</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Opsiyonlar</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Leadler</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Talep Radarı</a>
+        <a class="nav-item flex items-center gap-2.5 px-3 py-2">Raporlar</a>
+      </nav>
+      <div class="mt-auto px-3 py-3 rounded-xl text-[12.5px]" style="background:#fff;border:1px solid var(--cizgi)">
+        <div class="flex items-center gap-2 mb-1"><span class="live-dot"></span><span class="font-medium">Ağ canlı</span></div>
+        <div style="color:var(--ink-soft)">Son senkron <span class="mono">4 dk</span> önce</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 min-w-0">
+      <!-- TOP BAR -->
+      <div class="sticky top-0 z-20 flex items-center justify-between px-5 lg:px-7 h-[60px] border-b backdrop-blur-sm" style="background:rgba(238,241,246,.8);border-color:var(--cizgi)">
+        <div>
+          <div class="display text-[17px] font-semibold leading-tight">Genel Bakış</div>
+          <div class="text-[12px]" style="color:var(--ink-soft)">3 aktif proje · 412 birim</div>
+        </div>
+        <div class="flex items-center gap-2.5">
+          <div class="hidden sm:flex items-center gap-2 px-3 h-[38px] rounded-full text-[13px]" style="background:#fff;border:1px solid var(--cizgi);color:var(--ink-soft)">
+            <span class="mono">⌘K</span> hızlı arama
+          </div>
+          <button class="btn inline-flex items-center px-4 rounded-full text-[13px] font-semibold text-white" style="background:var(--navy)">Yeni birim</button>
+          <div class="w-9 h-9 rounded-full grid place-items-center text-[13px] font-semibold" style="background:var(--teal);color:#fff">MK</div>
+        </div>
+      </div>
+
+      <div class="px-5 lg:px-7 py-6 max-w-[1180px]">
+
+        <!-- KPI STRIP -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 mb-6">
+          <div class="kpi k1 card p-4" style="border-top:3px solid var(--musait)">
+            <div class="text-[12.5px]" style="color:var(--ink-soft)">Müsait birim</div>
+            <div class="mono text-[27px] font-semibold leading-tight mt-1">208</div>
+            <div class="text-[12px] mt-1" style="color:#1f7d4d">%50,5 stokta</div>
+          </div>
+          <div class="kpi k2 card p-4" style="border-top:3px solid var(--opsiyon)">
+            <div class="text-[12.5px]" style="color:var(--ink-soft)">Aktif opsiyon</div>
+            <div class="mono text-[27px] font-semibold leading-tight mt-1">37</div>
+            <div class="text-[12px] mt-1" style="color:#a7761a">9 bugün eklendi</div>
+          </div>
+          <div class="kpi k3 card p-4" style="border-top:3px solid var(--teal)">
+            <div class="text-[12.5px]" style="color:var(--ink-soft)">Bu hafta lead</div>
+            <div class="mono text-[27px] font-semibold leading-tight mt-1">146</div>
+            <div class="text-[12px] mt-1" style="color:var(--teal)">%18 artış</div>
+          </div>
+          <div class="kpi k4 card p-4" style="border-top:3px solid var(--satildi)">
+            <div class="text-[12.5px]" style="color:var(--ink-soft)">Bayat stok</div>
+            <div class="mono text-[27px] font-semibold leading-tight mt-1">12</div>
+            <div class="text-[12px] mt-1" style="color:#a53f34">15 gün+ güncellenmedi</div>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-[1.7fr_1fr] gap-4">
+          <!-- LIVE STOCK TABLE -->
+          <div class="card overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b" style="border-color:var(--cizgi)">
+              <div class="flex items-center gap-2">
+                <span class="display text-[15px] font-semibold">Canlı stok</span>
+                <span class="flex items-center gap-1.5 text-[11.5px] mono px-2 py-0.5 rounded-full" style="background:rgba(47,179,107,.1);color:#1f7d4d"><span class="live-dot"></span>4 dk</span>
+              </div>
+              <div class="flex items-center gap-1 p-0.5 rounded-full text-[12px]" style="background:var(--zemin)">
+                <button class="seg on px-2.5 py-1 rounded-full">Tablo</button>
+                <button class="seg px-2.5 py-1 rounded-full" style="color:var(--ink-soft)">Bina kesiti</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-[auto_1fr_auto_auto_auto] gap-3 px-4 py-2 text-[11.5px] font-medium" style="background:var(--zemin);color:var(--ink-soft)">
+              <div>Kod</div><div>Tip</div><div class="mono">Net</div><div class="mono">Fiyat</div><div>Durum</div>
+            </div>
+            <div id="tablo"></div>
+          </div>
+
+          <!-- INSIGHT / TALEP RADARI -->
+          <div class="flex flex-col gap-4">
+            <div class="card p-5" style="border-top:3px solid var(--teal)">
+              <div class="text-[12px] mono mb-2" style="color:var(--teal)">TALEP RADARI</div>
+              <p class="text-[14.5px] leading-relaxed">
+                <span class="font-semibold">A Blok 7. kat 3+1</span> daireler son 7 günde diğer tiplere göre <span class="font-semibold" style="color:var(--teal)">%42 daha fazla</span> görüntülendi.
+              </p>
+              <button class="btn mt-4 w-full inline-flex justify-center items-center rounded-full text-[13px] font-medium" style="background:var(--zemin);border:1px solid var(--cizgi)">Fiyat stratejisini gör</button>
+            </div>
+            <div class="card p-5">
+              <div class="text-[12.5px] mb-3" style="color:var(--ink-soft)">Bugünkü hareket</div>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between text-[13.5px]"><span>En çok paylaşılan</span><span class="mono font-medium">B-22</span></div>
+                <div class="flex items-center justify-between text-[13.5px]"><span>En çok WhatsApp</span><span class="mono font-medium">A-07</span></div>
+                <div class="flex items-center justify-between text-[13.5px]"><span>Yeni opsiyon</span><span class="mono font-medium" style="color:#a7761a">C-31</span></div>
+                <div class="flex items-center justify-between text-[13.5px]"><span>Yeni satış</span><span class="mono font-medium" style="color:#a53f34">A-15</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-[12px] mt-6" style="color:var(--ink-soft)">Mockup: Emil design-eng craft + kilitli Projedar tasarım dili. Gerçek veri değildir.</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Rows rendered so we can stagger their entrance (Emil: 30-80ms between items)
+    const rows = [
+      ['A-12','3+1 · Meydan','142','8.75M','musait'],
+      ['A-14','2+1 · Meydan','98','6.20M','opsiyon'],
+      ['A-15','4+1 · Meydan','176','11.40M','satildi'],
+      ['B-07','3+1 · Meydan','138','8.40M','musait'],
+      ['B-22','1+1 · Meydan','64','4.10M','musait'],
+      ['C-31','2+1 · Meydan','101','6.55M','opsiyon'],
+    ];
+    const label = {musait:['Müsait','rgba(47,179,107,.12)','#1f7d4d'],opsiyon:['Opsiyon','rgba(227,161,44,.14)','#a7761a'],satildi:['Satıldı','rgba(209,90,78,.12)','#a53f34']};
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const el = document.getElementById('tablo');
+    rows.forEach((r,i)=>{
+      const [l,bg,fg]=label[r[4]];
+      const div=document.createElement('div');
+      div.className='row grid grid-cols-[auto_1fr_auto_auto_auto] gap-3 px-4 py-2.5 items-center text-[13px] border-t';
+      div.style.borderColor='var(--cizgi)';
+      div.style.opacity=reduce?'1':'0';
+      div.style.transform=reduce?'none':'translateY(8px)';
+      div.style.transition='opacity .45s cubic-bezier(0.23,1,0.32,1), transform .45s cubic-bezier(0.23,1,0.32,1)';
+      div.innerHTML=`<div class="mono font-medium">${r[0]}</div><div style="color:var(--ink-soft)">${r[1]}</div><div class="mono">${r[2]}m²</div><div class="mono font-medium">₺${r[3]}</div><div><span class="inline-block px-2 py-0.5 rounded-full text-[11px]" style="background:${bg};color:${fg}">${l}</span></div>`;
+      el.appendChild(div);
+      if(!reduce){ requestAnimationFrame(()=>setTimeout(()=>{div.style.opacity='1';div.style.transform='translateY(0)';}, 60*i)); }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="tr" class="js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Projedar · Canlı konut stoğu dağıtım ağı</title>
+<script>document.documentElement.classList.add('js');</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;450;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* =========================================================
+   Projedar · ANASAYFA (Emil design-engineering motoru)
+   Gerçek tokenlar: globals.css @theme (Outfit / Inter / Geist Mono)
+   Sinyal: musait #2fb36b · opsiyon #e3a12c · satildi #d15a4e
+   Aksan: teal #1e9b8a · Tek radius olcegi · Tek aksan
+   ========================================================= */
+:root{
+  --ink:#10243a; --ink-soft:#46586b; --ink-faint:#7d8da0;
+  --navy:#13314b; --teal:#1e9b8a; --teal-d:#1a8676;
+  /* AA-safe teal variants: white-on-bg (buttons) and text-on-light */
+  --teal-btn:#147a6a; --teal-btn-h:#116050; --teal-ink:#127060;
+  --musait:#2fb36b; --opsiyon:#e3a12c; --satildi:#d15a4e;
+  --paper:#eef1f6; --paper-2:#e9edf4; --card:#ffffff;
+  --soft:#f5f8fa; --teal-soft:#e2f3f0; --green-soft:#e5f5ec;
+  --amber-soft:#fbf0da; --red-soft:#f8e7e4; --navy-soft:#eaf0f5;
+  --ink-faint:#5e6d84;
+  --cizgi:rgba(16,36,58,.08); --cizgi-2:rgba(16,36,58,.12);
+  --golge-1:0 1px 2px rgba(16,36,58,.04), 0 2px 6px rgba(16,36,58,.05);
+  --golge-2:0 2px 6px rgba(16,36,58,.05), 0 12px 28px rgba(16,36,58,.08);
+  --golge-3:0 4px 12px rgba(16,36,58,.07), 0 24px 56px rgba(16,36,58,.12);
+  /* Emil easing */
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-io:cubic-bezier(0.77,0,0.175,1);
+  --ease-drawer:cubic-bezier(0.32,0.72,0,1);
+  /* tek radius olcegi */
+  --r-xs:8px; --r-sm:11px; --r:14px; --r-lg:20px; --r-xl:26px;
+}
+*{ box-sizing:border-box; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-feature-settings:"cv11" 1,"ss01" 1;
+  background:
+    radial-gradient(1200px 700px at 80% -10%, rgba(30,155,138,.09), transparent 60%),
+    radial-gradient(1000px 620px at -6% 6%, rgba(19,49,75,.06), transparent 55%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  background-attachment:fixed; min-height:100vh;
+}
+.display{ font-family:'Outfit',sans-serif; letter-spacing:-.02em; }
+.mono{ font-family:'Geist Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+h1,h2,h3{ text-wrap:balance; }
+p{ text-wrap:pretty; }
+::selection{ background:rgba(30,155,138,.18); }
+
+/* ---------- typography scale (Apple: size-specific tracking / leading) ---------- */
+.t-display{ font-size:clamp(2.5rem,5.4vw,4.6rem); line-height:1.02; letter-spacing:-.032em; font-weight:600; }
+.t-h2{ font-size:clamp(1.75rem,3.2vw,2.7rem); line-height:1.08; letter-spacing:-.026em; font-weight:600; }
+.t-eyebrow{ font-size:11.5px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--teal-ink); }
+.t-lead{ font-size:clamp(1.02rem,1.5vw,1.22rem); line-height:1.55; color:var(--ink-soft); letter-spacing:-.006em; }
+
+/* ---------- press feedback (Emil: instant, on active) ---------- */
+button,a,[role="button"]{ -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+.press{ transition:transform .13s var(--ease-out), background-color .16s ease, box-shadow .22s var(--ease-out), border-color .16s ease, color .16s ease; }
+.press:active{ transform:scale(0.97); }
+:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; border-radius:4px; }
+
+/* ---------- buttons ---------- */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:46px; padding:0 20px; border-radius:var(--r); font-weight:600; font-size:14.5px; line-height:1;
+  border:1px solid transparent; cursor:pointer; }
+.btn-primary{ background:var(--navy); color:#fff; }
+.btn-primary:hover{ background:#0d2438; box-shadow:0 10px 24px rgba(19,49,75,.24); }
+.btn-action{ background:var(--teal-btn); color:#fff; }
+.btn-action:hover{ background:var(--teal-btn-h); box-shadow:0 10px 24px rgba(20,122,106,.30); }
+.btn-ghost{ background:#fff; color:var(--ink); border-color:var(--cizgi-2); }
+.btn-ghost:hover{ border-color:rgba(16,36,58,.24); background:rgba(16,36,58,.02); }
+
+/* ---------- card ---------- */
+.card{ background:var(--card); border:1px solid var(--cizgi); border-radius:var(--r-lg); box-shadow:var(--golge-2); }
+.lift{ transition:transform .34s var(--ease-out), box-shadow .34s var(--ease-out), border-color .34s ease; }
+@media (hover:hover) and (pointer:fine){
+  .lift:hover{ transform:translateY(-4px); box-shadow:var(--golge-3); border-color:rgba(30,155,138,.22); }
+}
+
+/* ---------- freshness (signature: dot + "X dk önce") ---------- */
+.taze{ display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:500; white-space:nowrap; }
+.taze .nokta{ width:7px; height:7px; border-radius:50%; flex:none; background:var(--musait); position:relative; }
+.taze .nokta::after{ content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid var(--musait); opacity:.45; animation:ping 2.6s var(--ease-out) infinite; }
+@keyframes ping{ 0%{ transform:scale(.6); opacity:.55; } 80%,100%{ transform:scale(1.5); opacity:0; } }
+.taze.t-taze{ color:#1f7d4c; }
+.taze.t-eski{ color:var(--opsiyon); }
+.taze.t-eski .nokta{ background:var(--opsiyon); }
+.taze.t-eski .nokta::after{ border-color:var(--opsiyon); }
+
+/* ---------- durum rozeti ---------- */
+.durum{ display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; font-size:11.5px; font-weight:600; line-height:1; white-space:nowrap; }
+.durum .d{ width:6px; height:6px; border-radius:50%; flex:none; }
+.d-musait{ background:var(--green-soft); color:#1f7d4c; } .d-musait .d{ background:var(--musait); }
+.d-opsiyon{ background:var(--amber-soft); color:#9a6a12; } .d-opsiyon .d{ background:var(--opsiyon); }
+.d-satildi{ background:var(--red-soft); color:#a23f34; } .d-satildi .d{ background:var(--satildi); }
+
+/* ---------- translucent nav (Apple material) ---------- */
+.nav{ position:sticky; top:0; z-index:60;
+  background:rgba(238,241,246,.72); backdrop-filter:blur(18px) saturate(1.5); -webkit-backdrop-filter:blur(18px) saturate(1.5);
+  border-bottom:1px solid transparent; transition:border-color .3s ease, background .3s ease, box-shadow .3s ease; }
+.nav.stuck{ border-bottom-color:var(--cizgi); box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 6px 20px rgba(16,36,58,.05); }
+.nav-link{ font-size:14px; font-weight:500; color:var(--ink-soft); padding:8px 12px; border-radius:var(--r-sm); transition:color .16s ease, background .16s ease; }
+.nav-link:hover{ color:var(--ink); background:rgba(16,36,58,.045); }
+
+/* ---------- wordmark ---------- */
+.mark{ font-family:'Outfit',sans-serif; font-weight:700; font-size:20px; letter-spacing:-.02em; color:var(--ink); }
+.mark b{ color:var(--teal-d); font-weight:700; }
+
+/* ---------- scroll reveal (fallback-safe: only hides when .js) ---------- */
+.js .reveal{ opacity:0; transform:translateY(18px); transition:opacity .66s var(--ease-out), transform .66s var(--ease-out); will-change:opacity,transform; }
+.reveal.gor{ opacity:1; transform:none; }
+.js [data-stag]{ opacity:0; transform:translateY(14px); transition:opacity .5s var(--ease-out), transform .5s var(--ease-out); }
+[data-stag].gor{ opacity:1; transform:none; }
+
+/* ---------- hero ---------- */
+.hero-img{ position:absolute; inset:0; overflow:hidden; }
+.hero-img img{ width:100%; height:100%; object-fit:cover; transform:scale(1.04); animation:heroBreath 24s ease-out both; }
+@keyframes heroBreath{ from{ transform:scale(1.09); } to{ transform:scale(1.0); } }
+.hero-img::after{ content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(238,241,246,.35) 0%, rgba(238,241,246,.05) 26%, rgba(238,241,246,.65) 78%, var(--paper) 100%),
+             linear-gradient(90deg, rgba(238,241,246,.72) 0%, rgba(238,241,246,.20) 44%, transparent 72%); }
+
+/* ---------- segmented toggle (Emil clip-path color transition) ---------- */
+.seg{ position:relative; display:inline-flex; padding:4px; background:var(--soft); border:1px solid var(--cizgi); border-radius:var(--r); }
+.seg button{ position:relative; z-index:2; padding:9px 20px; font-size:13.5px; font-weight:600; color:var(--ink-soft); background:transparent; border:0; cursor:pointer; border-radius:calc(var(--r) - 4px); transition:color .2s var(--ease-out); }
+.seg .glider{ position:absolute; z-index:1; top:4px; bottom:4px; border-radius:calc(var(--r) - 4px); background:#fff; box-shadow:var(--golge-1); transition:transform .32s var(--ease-out), width .32s var(--ease-out); }
+/* clip layer: teal-filled duplicate revealed only over active segment */
+.seg .clip{ position:absolute; z-index:3; top:4px; bottom:4px; display:inline-flex; pointer-events:none; border-radius:calc(var(--r) - 4px);
+  background:var(--teal-btn); transition:clip-path .34s var(--ease-out); overflow:hidden; }
+.seg .clip button{ color:#fff; }
+
+/* role panel visibility (beats Tailwind .grid display) */
+.rol-panel[hidden]{ display:none !important; }
+
+/* ---------- bina kesiti (interactive stock) ---------- */
+.kesit-wrap{ position:relative; }
+.kesit{ display:grid; gap:5px; }
+.kat-row{ display:grid; grid-template-columns:34px repeat(6,1fr); gap:5px; align-items:stretch; }
+.kat-lbl{ display:flex; align-items:center; justify-content:center; font-size:10.5px; font-weight:600; color:var(--ink-faint); }
+.hucre{ position:relative; border-radius:var(--r-xs); min-height:42px; display:flex; align-items:center; justify-content:center;
+  font-size:10.5px; font-weight:600; color:#fff; cursor:pointer; border:0;
+  transition:transform .16s var(--ease-out), box-shadow .16s var(--ease-out), filter .16s ease; }
+@media (hover:hover) and (pointer:fine){
+  .hucre:not(.h-bos):hover{ transform:translateY(-2px) scale(1.04); box-shadow:0 8px 18px rgba(16,36,58,.20); z-index:5; }
+}
+.hucre.sel{ box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--teal); z-index:6; }
+.h-musait{ background:linear-gradient(150deg,#37c178,#2fb36b); }
+.h-opsiyon{ background:linear-gradient(150deg,#eab23f,#e3a12c); }
+.h-satildi{ background:linear-gradient(150deg,#dd6a5e,#d15a4e); }
+.h-bos{ background:rgba(16,36,58,.05); color:var(--ink-faint); cursor:default; }
+
+/* origin-aware popover (scales from clicked cell) */
+.pop{ position:absolute; z-index:40; width:230px; background:#fff; border:1px solid var(--cizgi-2); border-radius:var(--r);
+  box-shadow:var(--golge-3); padding:14px; transform-origin:var(--po,50% 50%);
+  opacity:0; transform:scale(.94); pointer-events:none;
+  transition:opacity .18s var(--ease-out), transform .18s var(--ease-out); }
+.pop.acik{ opacity:1; transform:scale(1); pointer-events:auto; }
+
+/* hold-to-confirm (Emil: slow deliberate press, snappy release) */
+.hold{ position:relative; overflow:hidden; isolation:isolate; }
+.hold .fill{ position:absolute; inset:0; z-index:-1; background:var(--teal-btn-h); clip-path:inset(0 100% 0 0); transition:clip-path .2s var(--ease-out); }
+.hold.holding .fill{ clip-path:inset(0 0 0 0); transition:clip-path 1.15s linear; }
+.hold.done .fill{ background:var(--musait); clip-path:inset(0 0 0 0); transition:clip-path .12s linear; }
+
+/* ---------- tooltip (origin-aware, skip-delay group) ---------- */
+.tip-wrap{ position:relative; display:inline-flex; }
+.tip{ position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%) scale(.96); transform-origin:50% 120%;
+  background:var(--ink); color:#fff; font-size:12px; font-weight:500; line-height:1.35; padding:8px 11px; border-radius:10px; width:max-content; max-width:220px;
+  opacity:0; pointer-events:none; box-shadow:var(--golge-2); z-index:30;
+  transition:opacity .14s var(--ease-out), transform .14s var(--ease-out); transition-delay:.38s; }
+.tip::after{ content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--ink); }
+.tip-wrap:hover .tip, .tip-wrap:focus-within .tip{ opacity:1; transform:translateX(-50%) scale(1); }
+.tips-warm .tip{ transition-delay:0s; }
+
+/* ---------- komuta (dark immersive) ---------- */
+.komuta{ position:relative; color:#eaf1f7; overflow:hidden;
+  background:
+    radial-gradient(1000px 520px at 82% -12%, rgba(30,155,138,.20), transparent 60%),
+    radial-gradient(820px 440px at -4% 112%, rgba(47,179,107,.12), transparent 55%),
+    linear-gradient(165deg,#0a1b2c 0%,#0d2438 52%,#102a44 100%); }
+.komuta-grid{ position:absolute; inset:0; pointer-events:none; opacity:.6;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 100%);
+  mask-image:radial-gradient(120% 100% at 50% 0%, #000 40%, transparent 100%); }
+.deck-kart{ background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035)); border:1px solid rgba(255,255,255,.13); border-radius:var(--r-lg);
+  backdrop-filter:blur(10px); box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 12px 38px rgba(2,10,18,.45); }
+.olay-row{ display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:11px 14px; border-radius:var(--r); background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.07); }
+.olay-row .ol-dot{ width:7px; height:7px; border-radius:50%; }
+@keyframes olayGir{ from{ opacity:0; transform:translateY(-10px); } to{ opacity:1; transform:translateY(0); } }
+.olay-gir{ animation:olayGir .5s var(--ease-out); }
+.komuta-soft{ color:#a8bccc; } .komuta-faint{ color:#6e8496; } .komuta-teal{ color:#2fd3bc; }
+
+/* live scan line */
+.scan{ position:absolute; left:0; right:0; height:64px; pointer-events:none;
+  background:linear-gradient(180deg, transparent, rgba(47,211,188,.09), transparent);
+  animation:scan 5s linear infinite; }
+@keyframes scan{ 0%{ transform:translateY(-70px); opacity:0; } 40%{ opacity:1; } 100%{ transform:translateY(560px); opacity:0; } }
+
+/* stock micro bar */
+.stokbar{ height:8px; border-radius:6px; overflow:hidden; display:flex; background:rgba(16,36,58,.07); }
+.stokbar.dark{ background:rgba(255,255,255,.08); }
+
+/* faq */
+.sss summary{ list-style:none; cursor:pointer; }
+.sss summary::-webkit-details-marker{ display:none; }
+.sss .ok{ transition:transform .24s var(--ease-out); }
+.sss[open] .ok{ transform:rotate(45deg); }
+
+/* number tick */
+.tick{ display:inline-block; }
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .js .reveal, .js [data-stag]{ opacity:1 !important; transform:none !important; }
+  .hero-img img{ transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="nav">
+  <div class="max-w-[1180px] mx-auto px-6 h-[64px] flex items-center justify-between">
+    <a href="#" class="mark press" aria-label="Projedar anasayfa">proje<b>dar</b></a>
+    <nav class="hidden md:flex items-center gap-1" aria-label="Ana menü">
+      <a href="#stok" class="nav-link press">Canlı stok</a>
+      <a href="#roller" class="nav-link press">Roller</a>
+      <a href="#komuta" class="nav-link press">Komuta merkezi</a>
+      <a href="#güven" class="nav-link press">Güven protokolü</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#" class="nav-link press hidden sm:inline-flex">Giriş</a>
+      <a href="#cta" class="btn btn-primary press text-[13.5px] min-h-[42px] px-[18px]">Üretici başvurusu</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="relative overflow-hidden">
+  <div class="hero-img" aria-hidden="true">
+    <img src="/gorseller/hero-bina.jpg" alt="" />
+  </div>
+  <div class="relative max-w-[1180px] mx-auto px-6 pt-[92px] pb-[76px] md:pt-[128px] md:pb-[104px]">
+    <div class="max-w-[720px]">
+      <div class="reveal flex items-center gap-3 mb-6">
+        <span class="taze t-taze"><span class="nokta"></span><span class="mono">2 dk önce</span> güncellendi</span>
+        <span class="text-[var(--cizgi-2)]">·</span>
+        <span class="text-[13px] text-[var(--ink-soft)] font-medium">Canlı konut stoğu ağı</span>
+      </div>
+      <h1 class="reveal t-display display text-[var(--ink)] mb-6">
+        Stok tek yerde canlı.<br>
+        <span style="color:var(--teal-d)">Herkes aynı</span> doğruyu görür.
+      </h1>
+      <p class="reveal t-lead mb-9 max-w-[560px]">
+        Çok müteahhitli, üretici kontrollü bir dağıtım ağı. Üretici fiyatı, durumu ve
+        tahsisi tek noktadan yönetir. Emlakçı yalnız kendisine açık daireleri, canlı havuzdan,
+        her kayıtta ne kadar güncel olduğu yazılı görür.
+      </p>
+      <div class="reveal flex flex-wrap items-center gap-3">
+        <a href="#cta" class="btn btn-action press">Üretici olarak başla</a>
+        <a href="#stok" class="btn btn-ghost press">Canlı stoğu gör</a>
+      </div>
+      <div class="reveal mt-11 flex flex-wrap items-center gap-x-9 gap-y-4">
+        <div>
+          <div class="mono text-[26px] font-semibold text-[var(--ink)] tracking-tight">1.284</div>
+          <div class="text-[12.5px] text-[var(--ink-soft)]">canlı daire</div>
+        </div>
+        <div class="w-px h-9 bg-[var(--cizgi-2)]"></div>
+        <div>
+          <div class="mono text-[26px] font-semibold text-[var(--ink)] tracking-tight">37</div>
+          <div class="text-[12.5px] text-[var(--ink-soft)]">aktif üretici</div>
+        </div>
+        <div class="w-px h-9 bg-[var(--cizgi-2)]"></div>
+        <div>
+          <div class="mono text-[26px] font-semibold text-[var(--ink)] tracking-tight">0</div>
+          <div class="text-[12.5px] text-[var(--ink-soft)]">çift satış</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CANLI STOK (interactive) ===================== -->
+<section id="stok" class="max-w-[1180px] mx-auto px-6 py-20 md:py-28">
+  <div class="reveal max-w-[640px] mb-12">
+    <div class="t-eyebrow mb-3">Canlı stok</div>
+    <h2 class="t-h2 display mb-4">Bina kesiti. Her daire, canlı durum.</h2>
+    <p class="t-lead">Bir daireye dokunun. Fiyat ve durum tek doğru kaynaktan basılır, paylaşımda
+      canlı değer okunur. Opsiyonu basılı tutarak alın.</p>
+  </div>
+
+  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
+    <!-- kesit panel -->
+    <div class="card p-5 md:p-6 reveal kesit-wrap">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-[10px] bg-[var(--navy-soft)] flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2"><path d="M3 21h18M6 21V7l6-4 6 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+          </div>
+          <div>
+            <div class="font-semibold text-[15px] leading-tight">Cankaya Vadi · A Blok</div>
+            <div class="taze t-taze text-[11.5px]"><span class="nokta"></span><span class="mono">2 dk önce</span></div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-[11px]">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:#2fb36b"></span>Müsait</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:#e3a12c"></span>Opsiyon</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm" style="background:#d15a4e"></span>Satıldı</span>
+        </div>
+      </div>
+      <div class="kesit" id="kesit"><!-- JS fills rows --></div>
+      <p class="text-[11.5px] text-[var(--ink-faint)] mt-4">Daireye dokun: canlı fiyat, kat planı özeti ve opsiyon.</p>
+
+      <!-- origin-aware popover -->
+      <div class="pop" id="pop" role="dialog" aria-label="Daire detayı">
+        <div class="flex items-center justify-between mb-2">
+          <div class="font-semibold text-[14px]" id="pop-ad">A-14</div>
+          <span class="durum d-musait" id="pop-durum"><span class="d"></span>Müsait</span>
+        </div>
+        <div class="grid grid-cols-2 gap-y-1.5 gap-x-3 text-[12px] mb-3">
+          <div class="text-[var(--ink-faint)]">Tip</div><div class="text-right font-medium" id="pop-tip">3+1</div>
+          <div class="text-[var(--ink-faint)]">Net m2</div><div class="text-right font-medium mono" id="pop-m2">128</div>
+          <div class="text-[var(--ink-faint)]">Cephe</div><div class="text-right font-medium" id="pop-cephe">Güney</div>
+          <div class="text-[var(--ink-faint)]">Liste fiyatı</div><div class="text-right font-semibold mono" id="pop-fiyat">8.450.000 TL</div>
+        </div>
+        <button class="btn btn-action press hold w-full min-h-[42px] text-[13px]" id="holdBtn">
+          <span class="fill"></span>
+          <span id="holdLbl">Opsiyon için basılı tut</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- yan: canlı fiyat listesi -->
+    <div class="card p-5 md:p-6 reveal">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-[15px]">Sana açık daireler</h3>
+        <span class="text-[11.5px] text-[var(--ink-faint)]">tahsisli havuz</span>
+      </div>
+      <div class="stokbar mb-5">
+        <div style="width:58%;background:#2fb36b"></div>
+        <div style="width:22%;background:#e3a12c"></div>
+        <div style="width:20%;background:#d15a4e"></div>
+      </div>
+      <ul class="divide-y divide-[var(--cizgi)]" data-stag-group>
+        <li data-stag class="flex items-center justify-between py-3">
+          <div><div class="font-medium text-[13.5px]">B-22 · 2+1</div><div class="taze t-taze text-[11px]"><span class="nokta"></span><span class="mono">4 dk önce</span></div></div>
+          <div class="text-right"><div class="mono font-semibold text-[13.5px]">6.120.000</div><span class="durum d-musait mt-1"><span class="d"></span>Müsait</span></div>
+        </li>
+        <li data-stag class="flex items-center justify-between py-3">
+          <div><div class="font-medium text-[13.5px]">B-19 · 3+1</div><div class="taze t-taze text-[11px]"><span class="nokta"></span><span class="mono">11 dk önce</span></div></div>
+          <div class="text-right"><div class="mono font-semibold text-[13.5px]">8.450.000</div><span class="durum d-opsiyon mt-1"><span class="d"></span>Opsiyon</span></div>
+        </li>
+        <li data-stag class="flex items-center justify-between py-3">
+          <div><div class="font-medium text-[13.5px]">C-07 · 4+1</div><div class="taze t-eski text-[11px]"><span class="nokta"></span><span class="mono">3 gün önce</span></div></div>
+          <div class="text-right"><div class="mono font-semibold text-[13.5px]">12.900.000</div><span class="durum d-musait mt-1"><span class="d"></span>Müsait</span></div>
+        </li>
+        <li data-stag class="flex items-center justify-between py-3">
+          <div><div class="font-medium text-[13.5px]">A-14 · 3+1</div><div class="taze t-taze text-[11px]"><span class="nokta"></span><span class="mono">2 dk önce</span></div></div>
+          <div class="text-right"><div class="mono font-semibold text-[13.5px]">8.450.000</div><span class="durum d-musait mt-1"><span class="d"></span>Müsait</span></div>
+        </li>
+      </ul>
+      <a href="#" class="btn btn-ghost press w-full mt-5 min-h-[42px] text-[13px]">Tüm tahsisli havuzu aç</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ROLLER (segmented clip-path toggle) ===================== -->
+<section id="roller" class="max-w-[1180px] mx-auto px-6 py-20 md:py-24">
+  <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+    <div class="max-w-[560px]">
+      <div class="t-eyebrow mb-3">Roller ayrı panel görür</div>
+      <h2 class="t-h2 display mb-4">İki taraf, tek gerçek.</h2>
+      <p class="t-lead">Aynı canlı veri, role göre farklı pencere. Üretici yönetir, emlakçı paylaşır.</p>
+    </div>
+    <div class="seg reveal" id="seg" role="tablist" aria-label="Rol seçimi">
+      <span class="glider" id="glider"></span>
+      <button role="tab" aria-selected="true" data-i="0">Üretici</button>
+      <button role="tab" aria-selected="false" data-i="1">Emlakçı</button>
+      <span class="clip" id="segclip" aria-hidden="true">
+        <button tabindex="-1" data-i="0">Üretici</button>
+        <button tabindex="-1" data-i="1">Emlakçı</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- panel: üretici -->
+  <div class="rol-panel grid lg:grid-cols-[1fr_.9fr] gap-6 items-stretch" data-rol="0">
+    <div class="card p-6 md:p-8 reveal aurora relative overflow-hidden">
+      <span class="durum d-musait mb-5"><span class="d"></span>Üretici komutası</span>
+      <h3 class="display text-[24px] md:text-[28px] font-semibold tracking-tight mb-4 mt-1">Stoğu, fiyatı, tahsisi tek noktadan yönet.</h3>
+      <p class="t-lead mb-6 text-[15px]">Fiyatı bir yerde değiştir; her paylaşımda canlı değer basılır. Kime hangi
+        dairenin açık olduğunu sen belirlersin.</p>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Bina kesiti: blok, kat, daire yapısı</li>
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Liste fiyatı, ödeme planı, durum sinyali</li>
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Tahsis: hangi daire kime görünür</li>
+      </ul>
+    </div>
+    <div class="card p-0 reveal lift overflow-hidden">
+      <div class="relative h-[190px] overflow-hidden">
+        <img src="/gorseller/render-cankaya-vadi.jpg" alt="Cankaya Vadi projesi render" class="w-full h-full object-cover" />
+        <div class="absolute top-3 left-3"><span class="durum" style="background:rgba(255,255,255,.9);color:var(--navy)"><span class="d" style="background:var(--teal)"></span>Doğrulanmış üretici</span></div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="font-semibold text-[15px]">Cankaya Vadi</div>
+          <span class="taze t-taze text-[11.5px]"><span class="nokta"></span><span class="mono">2 dk önce</span></span>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div><div class="mono text-[19px] font-semibold">124</div><div class="text-[11px] text-[var(--ink-faint)]">daire</div></div>
+          <div><div class="mono text-[19px] font-semibold" style="color:#1f7d4c">72</div><div class="text-[11px] text-[var(--ink-faint)]">müsait</div></div>
+          <div><div class="mono text-[19px] font-semibold" style="color:#9a6a12">18</div><div class="text-[11px] text-[var(--ink-faint)]">opsiyon</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- panel: emlakçı (hidden by default) -->
+  <div class="rol-panel grid lg:grid-cols-[.9fr_1fr] gap-6 items-stretch" data-rol="1" hidden>
+    <div class="card p-0 reveal lift overflow-hidden">
+      <div class="relative h-[190px] overflow-hidden">
+        <img src="/gorseller/render-kule-rezidans.jpg" alt="Kule Rezidans projesi render" class="w-full h-full object-cover" />
+        <div class="absolute top-3 left-3"><span class="durum" style="background:rgba(255,255,255,.9);color:var(--navy)"><span class="d" style="background:var(--musait)"></span>Sana tahsisli</span></div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="font-semibold text-[15px]">Kule Rezidans</div>
+          <span class="taze t-taze text-[11.5px]"><span class="nokta"></span><span class="mono">6 dk önce</span></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="#" class="btn btn-action press flex-1 min-h-[40px] text-[12.5px]">Müşteriye paylaş</a>
+          <a href="#" class="btn btn-ghost press min-h-[40px] text-[12.5px] px-3">Opsiyon</a>
+        </div>
+      </div>
+    </div>
+    <div class="card p-6 md:p-8 reveal relative overflow-hidden">
+      <span class="durum d-musait mb-5"><span class="d"></span>Emlakçı penceresi</span>
+      <h3 class="display text-[24px] md:text-[28px] font-semibold tracking-tight mb-4 mt-1">Yalnız sana açık daireler. Tek canlı havuz.</h3>
+      <p class="t-lead mb-6 text-[15px]">Görmediğin daireyi paylaşmazsın. Gördüğün her kayıtta fiyat canlı,
+        tazelik görünür. Tek tıkla paylaş, opsiyon al.</p>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Canlı stok, durum sinyalleri</li>
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Her kayıtta "ne kadar güncel" yazar</li>
+        <li class="flex items-start gap-3 text-[14px]"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-none" style="background:var(--teal)"></span>Çift satış kalkanı: opsiyon anlık kilitler</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KOMUTA (dark immersive) ===================== -->
+<section id="komuta" class="komuta py-20 md:py-28 my-6">
+  <div class="komuta-grid"></div>
+  <div class="scan"></div>
+  <div class="relative max-w-[1180px] mx-auto px-6">
+    <div class="reveal max-w-[620px] mb-12">
+      <div class="t-eyebrow mb-3" style="color:#2fd3bc">Canlı komuta merkezi</div>
+      <h2 class="t-h2 display mb-4" style="color:#fff">Ağ nefes alıyor. Her hareket görünür.</h2>
+      <p class="t-lead" style="color:#a8bccc">Fiyat değişti, opsiyon alındı, daire satıldı. Olaylar aktıkça stok tazelenir;
+        geç kalan veri sarıya döner.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
+      <!-- canlı olay akisi -->
+      <div class="deck-kart p-5 md:p-6 reveal">
+        <div class="flex items-center justify-between mb-4">
+          <div class="font-semibold text-[15px]" style="color:#fff">Canlı olay akisi</div>
+          <span class="taze t-taze text-[11.5px]" style="color:#2fd3bc"><span class="nokta" style="background:#2fd3bc"></span>canlı</span>
+        </div>
+        <div id="akis" class="space-y-2.5"><!-- JS streams rows --></div>
+      </div>
+      <!-- sayaclar -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="deck-kart p-5 reveal" data-stag>
+          <div class="komuta-faint text-[11.5px] mb-2">Bugün paylaşılan</div>
+          <div class="mono text-[34px] font-semibold" style="color:#fff"><span class="tick" data-count="342">342</span></div>
+          <div class="komuta-teal text-[12px] mt-1 mono">+12 son saat</div>
+        </div>
+        <div class="deck-kart p-5 reveal" data-stag>
+          <div class="komuta-faint text-[11.5px] mb-2">Aktif opsiyon</div>
+          <div class="mono text-[34px] font-semibold" style="color:#fff"><span class="tick" data-count="57">57</span></div>
+          <div class="komuta-soft text-[12px] mt-1 mono">18 blok</div>
+        </div>
+        <div class="deck-kart p-5 reveal" data-stag>
+          <div class="komuta-faint text-[11.5px] mb-2">Ort. tazelik</div>
+          <div class="mono text-[34px] font-semibold" style="color:#fff"><span class="tick" data-count="4">4</span> dk</div>
+          <div class="komuta-teal text-[12px] mt-1 mono">eşik: 7 gün</div>
+        </div>
+        <div class="deck-kart p-5 reveal" data-stag>
+          <div class="komuta-faint text-[11.5px] mb-2">Çift satış</div>
+          <div class="mono text-[34px] font-semibold" style="color:#fff">0</div>
+          <div class="komuta-soft text-[12px] mt-1">DB kalkanı</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== GUVEN PROTOKOLU (bento asimetrik) ===================== -->
+<section id="güven" class="max-w-[1180px] mx-auto px-6 py-20 md:py-24">
+  <div class="reveal max-w-[600px] mb-12">
+    <div class="t-eyebrow mb-3">Güven protokolü</div>
+    <h2 class="t-h2 display mb-4">Görünmeyen ayrıntılar, görünür güven.</h2>
+    <p class="t-lead">Üzerine imza atmadığın hiçbir şey yok. Üstüne gel, neyin nasıl çalıştığını gör.</p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-5">
+    <!-- buyuk hucre -->
+    <div class="card p-7 md:col-span-2 reveal lift relative overflow-hidden">
+      <div class="relative z-[2] max-w-[440px]">
+        <div class="w-11 h-11 rounded-[12px] bg-[var(--teal-soft)] flex items-center justify-center mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--teal-d)" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h3 class="display text-[22px] font-semibold tracking-tight mb-2">Tek doğru kaynak</h3>
+        <p class="text-[14.5px] text-[var(--ink-soft)] leading-relaxed mb-5">Fiyat ve durum yalnız birim tablosunda tutulur. Hiçbir yerde kopya yok;
+          paylaşımda değer canlı okunur. Yanlış fiyat imkansız.</p>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="tip-wrap">
+            <span class="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-[var(--cizgi-2)] bg-white press" tabindex="0" role="button">RLS açık</span>
+            <span class="tip">Her tabloda satır bazlı güvenlik. Emlakçı yalnız tahsisli birimleri sorgular.</span>
+          </span>
+          <span class="tip-wrap">
+            <span class="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-[var(--cizgi-2)] bg-white press" tabindex="0" role="button">Çift satış kalkanı</span>
+            <span class="tip">Aktif opsiyon için DB'de unique partial index. Uygulama katmanına güvenilmez.</span>
+          </span>
+          <span class="tip-wrap">
+            <span class="inline-flex items-center gap-1.5 text-[12.5px] font-medium px-3 py-1.5 rounded-full border border-[var(--cizgi-2)] bg-white press" tabindex="0" role="button">Tazelik damgasi</span>
+            <span class="tip">Her yazışta son_guncelleme = now(). 7 günden eski veri sarıya döner.</span>
+          </span>
+        </div>
+      </div>
+      <div class="absolute right-[-40px] top-[-20px] w-[260px] h-[260px] rounded-full pointer-events-none" style="background:radial-gradient(circle at 30% 30%, rgba(30,155,138,.14), transparent 62%)"></div>
+    </div>
+
+    <!-- dar hucre -->
+    <div class="card p-7 reveal lift">
+      <div class="w-11 h-11 rounded-[12px] bg-[var(--green-soft)] flex items-center justify-center mb-5">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1f7d4c" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="display text-[19px] font-semibold tracking-tight mb-2">Doğrulanmış üretici</h3>
+      <p class="text-[14px] text-[var(--ink-soft)] leading-relaxed">Her üretici doğrulama ve güven rozetinden geçer. Komisyon yok, sadece doğru veri.</p>
+    </div>
+  </div>
+
+  <!-- alt satır asimetrik -->
+  <div class="grid md:grid-cols-3 gap-5 mt-5">
+    <div class="card p-7 reveal lift">
+      <div class="mono text-[13px] text-[var(--teal-ink)] mb-3">01</div>
+      <h3 class="display text-[18px] font-semibold tracking-tight mb-2">Mobil önce, PWA</h3>
+      <p class="text-[13.5px] text-[var(--ink-soft)] leading-relaxed">Her ekran telefonda çalışır, çevrimdışı zarif davranır.</p>
+    </div>
+    <div class="card p-7 reveal lift md:col-span-2 flex items-center gap-6">
+      <div class="flex-1">
+        <div class="mono text-[13px] text-[var(--teal-ink)] mb-3">02</div>
+        <h3 class="display text-[18px] font-semibold tracking-tight mb-2">Komisyon yok, abonelik var</h3>
+        <p class="text-[13.5px] text-[var(--ink-soft)] leading-relaxed">Müteahhit anlaşması ana gelir. Emlakçı basic bedava. Modelin kendisi değişmez.</p>
+      </div>
+      <div class="hidden sm:block w-[130px] flex-none">
+        <div class="stokbar mb-2"><div style="width:70%;background:var(--teal)"></div></div>
+        <div class="text-[11px] text-[var(--ink-faint)]">saf altyapı, tekil portal değil</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SSS ===================== -->
+<section class="max-w-[820px] mx-auto px-6 py-16 md:py-20">
+  <h2 class="t-h2 display mb-8 reveal">Sık sorulanlar</h2>
+  <div class="space-y-3">
+    <details class="sss card p-5 reveal" open>
+      <summary class="flex items-center justify-between gap-4">
+        <span class="font-semibold text-[15px]">Emlakçı bütün stoğu görür mu?</span>
+        <span class="ok text-[var(--teal-ink)] text-[20px] leading-none">+</span>
+      </summary>
+      <p class="text-[14px] text-[var(--ink-soft)] leading-relaxed mt-3">Hayır. Görünürlük tahsise bağlıdır. Emlakçı yalnız kendisine açılan daireleri,
+        tek canlı havuzdan görür. RLS bunu veritabanı seviyesinde zorlar.</p>
+    </details>
+    <details class="sss card p-5 reveal">
+      <summary class="flex items-center justify-between gap-4">
+        <span class="font-semibold text-[15px]">Fiyat nerede tutulur?</span>
+        <span class="ok text-[var(--teal-ink)] text-[20px] leading-none">+</span>
+      </summary>
+      <p class="text-[14px] text-[var(--ink-soft)] leading-relaxed mt-3">Tek yerde: birim tablosu. Paylaşımda fiyat canlı değerden basılır, hiçbir yerde
+        kopyalanmaz. Yani ortada eski fiyat dolaşmaz.</p>
+    </details>
+    <details class="sss card p-5 reveal">
+      <summary class="flex items-center justify-between gap-4">
+        <span class="font-semibold text-[15px]">Aynı daire iki kez satılabilir mi?</span>
+        <span class="ok text-[var(--teal-ink)] text-[20px] leading-none">+</span>
+      </summary>
+      <p class="text-[14px] text-[var(--ink-soft)] leading-relaxed mt-3">Aktif opsiyon için veritabanında unique partial index vardır. Çift satış kalkanı
+        uygulama katmanında değil, DB'de çalışır.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section id="cta" class="max-w-[1180px] mx-auto px-6 pb-24">
+  <div class="card reveal relative overflow-hidden px-8 py-14 md:px-16 md:py-20 text-center" style="background:linear-gradient(165deg,#0c2036,#13314b)">
+    <div class="komuta-grid" style="opacity:.5"></div>
+    <div class="relative">
+      <h2 class="t-h2 display mb-4" style="color:#fff">Stoğunu canlı ağa taşı.</h2>
+      <p class="t-lead mb-8 max-w-[520px] mx-auto" style="color:#a8bccc">Üretici olarak başvur; fiyatı, durumu ve tahsisi tek noktadan yönet.
+        Emlakçı ekibin canlı havuzdan paylaşsın.</p>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="#" class="btn btn-action press">Üretici başvurusu</a>
+        <a href="#" class="btn btn-ghost press" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff">Demo iste</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="border-t border-[var(--cizgi)]">
+  <div class="max-w-[1180px] mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-5">
+    <div class="flex items-center gap-3">
+      <span class="mark">proje<b>dar</b></span>
+      <span class="text-[12.5px] text-[var(--ink-faint)]">Canlı konut stoğu dağıtım ağı</span>
+    </div>
+    <div class="flex items-center gap-5 text-[13px] text-[var(--ink-soft)]">
+      <a href="#" class="nav-link press">Üretici</a>
+      <a href="#" class="nav-link press">Emlakçı</a>
+      <a href="#" class="nav-link press">Güven</a>
+      <span class="taze t-taze text-[11.5px]"><span class="nokta"></span>ağ canlı</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- nav stuck ---------- */
+  var nav = document.getElementById('nav');
+  var onScroll = function(){ nav.classList.toggle('stuck', window.scrollY > 8); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* ---------- scroll reveal (IO + hard fallback so never blank) ---------- */
+  var reveals = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  function showAll(){ reveals.forEach(function(el){ el.classList.add('gor'); }); }
+  if(reduce || !('IntersectionObserver' in window)){
+    showAll();
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('gor'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px', threshold:0.08});
+    reveals.forEach(function(el){ io.observe(el); });
+    // reveal anything already in viewport immediately
+    requestAnimationFrame(function(){
+      reveals.forEach(function(el){ var r = el.getBoundingClientRect(); if(r.top < window.innerHeight*0.95){ el.classList.add('gor'); } });
+    });
+    // absolute safety net: if something never fires, reveal after 1200ms
+    setTimeout(showAll, 1200);
+  }
+
+  /* ---------- stagger groups ---------- */
+  document.querySelectorAll('[data-stag-group]').forEach(function(g){
+    var items = g.querySelectorAll('[data-stag]');
+    var reveal = function(){ items.forEach(function(el,i){ setTimeout(function(){ el.classList.add('gor'); }, reduce?0:i*55); }); };
+    if(reduce || !('IntersectionObserver' in window)){ reveal(); return; }
+    var o = new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ reveal(); o.disconnect(); } }); }, {threshold:0.15});
+    o.observe(g);
+    setTimeout(reveal, 1400);
+  });
+  // komuta counter cards stagger
+  (function(){
+    var items = document.querySelectorAll('.komuta [data-stag]');
+    items.forEach(function(el,i){ setTimeout(function(){ el.classList.add('gor'); }, reduce?0:200+i*60); });
+  })();
+
+  /* ---------- bina kesiti build + origin-aware popover ---------- */
+  var STAT = ['musait','opsiyon','satildi','bos'];
+  var layout = [
+    ['K8','musait','musait','opsiyon','musait','satildi','musait'],
+    ['K7','musait','satildi','musait','musait','opsiyon','musait'],
+    ['K6','opsiyon','musait','satildi','musait','musait','satildi'],
+    ['K5','musait','musait','musait','opsiyon','satildi','musait'],
+    ['K4','satildi','opsiyon','musait','musait','musait','opsiyon'],
+    ['K3','musait','satildi','musait','satildi','opsiyon','musait'],
+    ['K2','musait','musait','opsiyon','musait','satildi','musait'],
+    ['K1','satildi','musait','satildi','musait','musait','bos']
+  ];
+  var tipMap = { '2+1':110, '3+1':128, '4+1':164 };
+  var tips = ['3+1','2+1','3+1','4+1','2+1','3+1'];
+  var cepheler = ['Güney','Batı','Doğu','Güney','Kuzey','Batı'];
+  var fiyatBase = { '2+1':6120000, '3+1':8450000, '4+1':12900000 };
+  var kesit = document.getElementById('kesit');
+  var pop = document.getElementById('pop');
+  var wrap = pop.parentElement; // kesit-wrap
+  var selCell = null;
+
+  layout.forEach(function(row){
+    var r = document.createElement('div'); r.className='kat-row';
+    var lbl = document.createElement('div'); lbl.className='kat-lbl'; lbl.textContent=row[0]; r.appendChild(lbl);
+    for(var c=1;c<row.length;c++){
+      var st = row[c];
+      var cell = document.createElement('button');
+      cell.className = 'hucre ' + (st==='bos'?'h-bos':'h-'+st);
+      var no = row[0].replace('K','') + '0' + c;
+      cell.setAttribute('data-no', no);
+      cell.setAttribute('data-durum', st);
+      cell.setAttribute('data-tip', tips[c-1]);
+      cell.setAttribute('data-cephe', cepheler[c-1]);
+      cell.textContent = st==='bos' ? '' : no;
+      if(st!=='bos'){ cell.setAttribute('aria-label','Daire '+no+', '+st); cell.addEventListener('click', onCellClick); }
+      else { cell.disabled = true; cell.setAttribute('aria-hidden','true'); }
+      r.appendChild(cell);
+    }
+    kesit.appendChild(r);
+  });
+
+  function fmt(n){ return n.toLocaleString('tr-TR'); }
+  function onCellClick(e){
+    var cell = e.currentTarget;
+    if(selCell) selCell.classList.remove('sel');
+    selCell = cell; cell.classList.add('sel');
+    var st = cell.getAttribute('data-durum');
+    var tip = cell.getAttribute('data-tip');
+    var no = cell.getAttribute('data-no');
+    // fill
+    document.getElementById('pop-ad').textContent = 'A-'+no;
+    document.getElementById('pop-tip').textContent = tip;
+    document.getElementById('pop-m2').textContent = tipMap[tip];
+    document.getElementById('pop-cephe').textContent = cell.getAttribute('data-cephe');
+    document.getElementById('pop-fiyat').textContent = fmt(fiyatBase[tip]) + ' TL';
+    var dr = document.getElementById('pop-durum');
+    dr.className = 'durum ' + (st==='musait'?'d-musait':st==='opsiyon'?'d-opsiyon':'d-satildi');
+    dr.innerHTML = '<span class="d"></span>' + (st==='musait'?'Müsait':st==='opsiyon'?'Opsiyon':'Satıldı');
+    var hb = document.getElementById('holdBtn');
+    resetHold();
+    hb.style.display = (st==='musait') ? '' : 'none';
+    // position + origin-aware transform-origin
+    var cr = cell.getBoundingClientRect();
+    var wr = wrap.getBoundingClientRect();
+    var pw = 230, gap = 10;
+    var cx = cr.left - wr.left + cr.width/2;
+    var cyTop = cr.top - wr.top;
+    var left = cx - pw/2;
+    left = Math.max(8, Math.min(left, wr.width - pw - 8));
+    var placeAbove = cyTop > 190;
+    var popH = 200;
+    var top = placeAbove ? (cr.top - wr.top - popH - gap) : (cr.bottom - wr.top + gap);
+    top = Math.max(8, top);
+    pop.style.left = left + 'px';
+    pop.style.top = top + 'px';
+    // origin points back toward the cell
+    var ox = (cx - left); ox = Math.max(12, Math.min(ox, pw-12));
+    var oy = placeAbove ? popH : 0;
+    pop.style.setProperty('--po', ox+'px '+oy+'px');
+    pop.classList.add('acik');
+  }
+  // close popover on outside click / esc
+  document.addEventListener('click', function(e){
+    if(!pop.contains(e.target) && !e.target.classList.contains('hucre')){
+      pop.classList.remove('acik'); if(selCell){ selCell.classList.remove('sel'); selCell=null; }
+    }
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ pop.classList.remove('acik'); if(selCell){ selCell.classList.remove('sel'); selCell=null; } } });
+
+  /* ---------- hold-to-confirm (deliberate press, snappy release) ---------- */
+  var holdBtn = document.getElementById('holdBtn');
+  var holdLbl = document.getElementById('holdLbl');
+  var holdTimer = null, holding=false, doneState=false;
+  function resetHold(){ holdBtn.classList.remove('holding','done'); holdLbl.textContent='Opsiyon için basılı tut'; clearTimeout(holdTimer); holding=false; doneState=false; }
+  function holdStart(e){
+    if(doneState) return; e.preventDefault();
+    if(reduce){ holdComplete(); return; } // reduced-motion: instant commit
+    holding=true; holdBtn.classList.add('holding');
+    holdLbl.textContent='Basılı tut...';
+    holdTimer = setTimeout(holdComplete, 1150);
+  }
+  function holdEnd(){
+    if(doneState || !holding) return;
+    holding=false; clearTimeout(holdTimer);
+    holdBtn.classList.remove('holding');
+    holdLbl.textContent='Opsiyon için basılı tut';
+  }
+  function holdComplete(){
+    holding=false; doneState=true;
+    holdBtn.classList.remove('holding'); holdBtn.classList.add('done');
+    holdLbl.textContent='Opsiyon alındı';
+    if(navigator.vibrate) try{ navigator.vibrate(12); }catch(_){}
+    setTimeout(function(){ if(selCell){
+      selCell.className='hucre h-opsiyon sel'; selCell.setAttribute('data-durum','opsiyon');
+      var dr=document.getElementById('pop-durum'); dr.className='durum d-opsiyon'; dr.innerHTML='<span class="d"></span>Opsiyon';
+    } }, 420);
+  }
+  holdBtn.addEventListener('pointerdown', holdStart);
+  holdBtn.addEventListener('pointerup', holdEnd);
+  holdBtn.addEventListener('pointerleave', holdEnd);
+  holdBtn.addEventListener('pointercancel', holdEnd);
+
+  /* ---------- segmented toggle: glider + clip-path color reveal ---------- */
+  var seg = document.getElementById('seg');
+  var glider = document.getElementById('glider');
+  var clip = document.getElementById('segclip');
+  var segBtns = seg.querySelectorAll('button[role="tab"]');
+  function setSeg(i){
+    var btn = segBtns[i];
+    var r = btn.getBoundingClientRect(); var sr = seg.getBoundingClientRect();
+    var x = r.left - sr.left - 4, w = r.width;
+    glider.style.transform = 'translateX(' + x + 'px)';
+    glider.style.width = w + 'px';
+    // clip layer aligned to seg, revealing teal duplicate only over active btn
+    clip.style.left = '4px'; clip.style.right='4px';
+    var innerLeft = r.left - sr.left - 4;
+    var innerRight = (sr.right - 4) - r.right;
+    clip.style.clipPath = 'inset(0 ' + innerRight + 'px 0 ' + innerLeft + 'px round calc(var(--r) - 4px))';
+    segBtns.forEach(function(b,bi){ b.setAttribute('aria-selected', bi===i?'true':'false'); });
+    // panels
+    document.querySelectorAll('.rol-panel').forEach(function(p){ p.hidden = (parseInt(p.getAttribute('data-rol'),10) !== i); });
+    // freshly-revealed panel reveals
+    document.querySelectorAll('.rol-panel[data-rol="'+i+'"] .reveal').forEach(function(el){ el.classList.add('gor'); });
+  }
+  segBtns.forEach(function(b){ b.addEventListener('click', function(){ setSeg(parseInt(b.getAttribute('data-i'),10)); }); });
+  // init after fonts settle
+  function initSeg(){ setSeg(0); }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(initSeg); setTimeout(initSeg,300); } else { setTimeout(initSeg,120); }
+  window.addEventListener('resize', function(){ var cur=0; segBtns.forEach(function(b,i){ if(b.getAttribute('aria-selected')==='true') cur=i; }); setSeg(cur); });
+
+  /* ---------- tooltip skip-delay group ---------- */
+  var tipsWarm=false, warmTimer=null;
+  document.querySelectorAll('.tip-wrap').forEach(function(w){
+    w.addEventListener('mouseenter', function(){
+      document.body.classList.toggle('tips-warm', tipsWarm);
+      tipsWarm=true; clearTimeout(warmTimer);
+    });
+    w.addEventListener('mouseleave', function(){
+      warmTimer=setTimeout(function(){ tipsWarm=false; document.body.classList.remove('tips-warm'); }, 500);
+    });
+  });
+
+  /* ---------- komuta live event stream ---------- */
+  var akis = document.getElementById('akis');
+  var samples = [
+    {t:'fiyat', d:'ol-dot" style="background:#e3a12c', dot:'#e3a12c', ad:'B-19 · 3+1', msg:'Fiyat güncellendi', val:'8.450.000'},
+    {t:'ops', dot:'#2fd3bc', ad:'A-14 · 3+1', msg:'Opsiyon alındı', val:'2 saat'},
+    {t:'satış', dot:'#d15a4e', ad:'C-07 · 4+1', msg:'Satıldı', val:'12.900.000'},
+    {t:'yeni', dot:'#2fb36b', ad:'D-03 · 2+1', msg:'Stoğa eklendi', val:'6.120.000'},
+    {t:'paylaş', dot:'#2fd3bc', ad:'B-22 · 2+1', msg:'Müşteriye paylaşıldı', val:'Emlakçı 12'},
+    {t:'tazele', dot:'#2fb36b', ad:'Cankaya Vadi', msg:'124 daire tazelendi', val:'2 dk önce'}
+  ];
+  function rowHTML(s){
+    return '<div class="olay-row olay-gir">'
+      + '<span class="ol-dot" style="background:'+s.dot+'"></span>'
+      + '<div><div style="color:#fff;font-size:13px;font-weight:500">'+s.ad+' <span class="komuta-soft" style="font-weight:400">'+s.msg+'</span></div></div>'
+      + '<div class="mono" style="color:#cfe0ec;font-size:12.5px">'+s.val+'</div>'
+      + '</div>';
+  }
+  // seed
+  for(var i=0;i<4;i++){ akis.insertAdjacentHTML('beforeend', rowHTML(samples[i])); }
+  var akisEls = Array.prototype.slice.call(akis.children);
+  akisEls.forEach(function(el){ el.classList.remove('olay-gir'); });
+  var si=4;
+  if(!reduce){
+    setInterval(function(){
+      var s = samples[si % samples.length]; si++;
+      akis.insertAdjacentHTML('afterbegin', rowHTML(s));
+      while(akis.children.length>4){ akis.removeChild(akis.lastChild); }
+    }, 2600);
+  }
+
+  /* ---------- count-up (komuta) ---------- */
+  var counters = document.querySelectorAll('.tick[data-count]');
+  function countUp(el){
+    var target = parseInt(el.getAttribute('data-count'),10);
+    if(reduce){ el.textContent = target.toLocaleString('tr-TR'); return; }
+    var dur=900, start=performance.now();
+    function step(now){
+      var p = Math.min(1,(now-start)/dur);
+      var e = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(target*e).toLocaleString('tr-TR');
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window && !reduce){
+    var co = new IntersectionObserver(function(en){ en.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); co.unobserve(e.target); } }); }, {threshold:0.4});
+    counters.forEach(function(c){ co.observe(c); });
+    setTimeout(function(){ counters.forEach(function(c){ if(!c.dataset.done){ countUp(c); } }); }, 1600);
+  } else { counters.forEach(countUp); }
+})();
+</script>
+</body>
+</html>
