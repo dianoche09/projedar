@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { BinaKesiti, type BinaBirim } from "@/components/BinaKesiti";
 import { DaireModal, type ModalBirim } from "@/components/DaireModal";
@@ -69,6 +70,16 @@ export function EmlakciStok({
   const [durumF, setDurumF] = useState<string>("");
   const [tipF, setTipF] = useState<string>("");
   const [secili, setSecili] = useState<ModalBirim | null>(null);
+  // T17: katalog seçimi artık ayrı bileşende değil, bu tek listede — yalnız müsait+satılabilir işaretlenir.
+  const [katalogSecili, setKatalogSecili] = useState<Set<string>>(new Set());
+  const router = useRouter();
+  const katalogToggle = (id: string) =>
+    setKatalogSecili((s) => {
+      const n = new Set(s);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
+      return n;
+    });
 
   useEffect(() => {
     const supabase = createClient();
@@ -243,12 +254,29 @@ export function EmlakciStok({
           filtreli.map((b) => {
             const g = durumGorsel(b.durum);
             const tip = b.tip_id ? tipMap.get(b.tip_id) : null;
+            const katalogaUygun = b.durum === "musait" && b.satilabilir;
             return (
-              <button
+              <div
                 key={b.id}
+                className="flex w-full items-center border-b border-hair transition-colors last:border-b-0 hover:bg-soft"
+              >
+                {/* T17: kataloğa ekle (yalnız müsait+satılabilir); satır tıklaması modalı açar (ayrı) */}
+                {katalogaUygun ? (
+                  <label className="flex-none cursor-pointer pl-3.5" title="Kataloğa ekle">
+                    <input
+                      type="checkbox"
+                      checked={katalogSecili.has(b.id)}
+                      onChange={() => katalogToggle(b.id)}
+                      className="size-4 cursor-pointer accent-teal"
+                    />
+                  </label>
+                ) : (
+                  <span className="w-4 flex-none pl-3.5" aria-hidden />
+                )}
+              <button
                 type="button"
                 onClick={() => setSecili(toModal(b))}
-                className="flex w-full items-center gap-3 border-b border-hair px-3.5 py-2.5 text-left transition-colors last:border-b-0 hover:bg-soft"
+                className="flex flex-1 items-center gap-3 px-3.5 py-2.5 text-left"
               >
                 <span className={`size-2 flex-none rounded-full ${g.dot}`} />
                 <span className="mono w-14 flex-none font-semibold text-ink">{b.daire_no ?? "—"}</span>
@@ -268,13 +296,33 @@ export function EmlakciStok({
                 ) : null}
                 <span className={`hidden flex-none text-[11px] font-bold sm:inline ${g.renk}`}>{g.etiket}</span>
               </button>
+              </div>
             );
           })
         )}
       </div>
       <p className="mt-2 text-center text-[11px] text-gray">
-        {filtreli.length} daire · satıra dokun → detay, paylaşım, opsiyon talebi
+        {filtreli.length} daire · satıra dokun → detay/paylaşım/opsiyon · müsaitleri işaretle → müşteri kataloğu
       </p>
+
+      {/* T17: katalog oluştur barı (KatalogSecici bu tek listeye taşındı) */}
+      {katalogSecili.size > 0 ? (
+        <div className="sticky bottom-4 z-20 mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-teal/30 bg-white/95 px-4 py-3 shadow-cardlg backdrop-blur">
+          <span className="text-[13px] font-bold text-ink">{katalogSecili.size} daire seçildi · müşteri kataloğu</span>
+          <div className="flex items-center gap-2">
+            <button type="button" onClick={() => setKatalogSecili(new Set())} className="text-[12px] font-bold text-gray transition-colors hover:text-ink">
+              Temizle
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push(`/danisman/proje/${projeId}/katalog?b=${[...katalogSecili].join(",")}`)}
+              className="rounded-xl bg-teal px-4 py-2 text-[13px] font-bold text-white transition-colors hover:bg-teal-d"
+            >
+              Katalog oluştur →
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {secili ? (
         <DaireModal

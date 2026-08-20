@@ -12,7 +12,6 @@ import { okuOzellikler, ozellikVarMi } from "@/lib/ozellikler";
 import { GuvenRozeti } from "@/components/GuvenRozeti";
 import { Galeri } from "@/components/Galeri";
 import { DalgaTeaser } from "@/components/DalgaTeaser";
-import { KatalogSecici, type SeciBirim } from "./KatalogSecici";
 
 type Belge = { id: string; tip: string | null; ad: string | null; url: string | null };
 type Mahal = { id: string; mahal: string; zemin: string | null; duvar: string | null; tavan: string | null; marka: string | null };
@@ -207,19 +206,7 @@ export default async function HavuzProjeDetay({
     ]),
   );
 
-  // Katalog seçimi için müsait + satılabilir ana daireler (eklentiler hariç). Oda tipten çözülür.
-  const tipOdaMap = new Map(tipListe.map((t) => [t.id, t.oda]));
-  const katalogBirimler: SeciBirim[] = stok
-    .filter((b) => b.durum === "musait" && b.satilabilir && b.ana_birim_id == null)
-    .map((b) => ({
-      id: b.id as string,
-      daire_no: (b.daire_no as string | null) ?? null,
-      oda: b.tip_id ? tipOdaMap.get(b.tip_id as string) ?? null : null,
-      kat: (b.kat as number | null) ?? null,
-      net_m2: (b.net_m2 as number | null) ?? null,
-      liste_fiyati: (b.liste_fiyati as number | null) ?? null,
-      para_birimi: (b.para_birimi as string | null) ?? null,
-    }));
+  // T17: katalog seçimi artık EmlakciStok tek listesinde (müsait satırlar işaretlenir) — ayrı KatalogSecici kaldırıldı.
 
   // Bu emlakçının KENDİ opsiyonladığı birimler (DaireModal'da "Opsiyonu bırak" yalnız bunlarda)
   const { data: benimOps } = await supabase
@@ -562,8 +549,6 @@ export default async function HavuzProjeDetay({
         </div>
       ) : null}
 
-      {/* ===== MÜŞTERİ KATALOĞU (seçmeli) ===== */}
-      {katalogBirimler.length > 0 ? <KatalogSecici projeId={id} birimler={katalogBirimler} /> : null}
 
       {/* ===== FİYAT LİSTESİ · CANLI STOK ===== */}
       <div className="mt-8">
