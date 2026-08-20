@@ -336,9 +336,17 @@ export default async function PublicBirimPage({
             <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white ${DURUM_BG[bDurum]}`}>
               {DURUM_ETIKET[bDurum]}
             </span>
-            {u?.dogrulanmis ? (
-              <span className="inline-flex items-center rounded-full border border-teal/50 bg-teal/20 px-3 py-1 text-xs font-semibold text-[#8ee6d5]">
-                ✓ Doğrulanmış Üretici
+            {/* T22: alıcıya geliştirici firma bilgisi (güven sinyali) — ad + doğrulanmışsa ✓ */}
+            {u?.ad ? (
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${
+                  u.dogrulanmis ? "border-teal/50 bg-teal/20 text-[#8ee6d5]" : "border-white/20 bg-white/10 text-white/90"
+                }`}
+                title={u.dogrulanmis ? "Projedar doğrulamış geliştirici" : "Geliştirici"}
+              >
+                {u.dogrulanmis ? <span aria-hidden>✓</span> : null}
+                {u.dogrulanmis ? "Doğrulanmış geliştirici · " : "Geliştirici · "}
+                {u.ad}
               </span>
             ) : null}
             {p?.kira_getirisi_pct != null ? (
