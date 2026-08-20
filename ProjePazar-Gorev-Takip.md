@@ -75,14 +75,14 @@
 | T15 | Komisyon kazanç aralığı proje sayfasında görünür + **fiyat/komisyona göre sıralama** | `kazancMap` kısmen hazır (tabloda `+X ₺`) |
 | T16 | Favori proje + sol menüde ("Canlı Ağ" altında) alt başlık + favoriler üstte | yeni tablo `favori` |
 
-### ⏳ Bekleyen — Proje detay `/danisman/proje/[id]` (Batch 4)
-| # | Görev | Not |
-|---|-------|-----|
-| T17 | "Müşteri Kataloğu" + "Daire listesi" → **tek tablo**; katalog yalnız müsait dairelerde | |
-| T18 | Kat planı: her katta **tüm daireler** görünür (satılan/satılmayan dahil) | |
-| T19 | **Firmanın diğer projeleri** + **bölgedeki projeler** (bölge: il → ilçe → 20km, şimdilik il) | |
-| T20 | Proje görselleri/video/broşür → **lightbox** (üstüne basınca ekrana çıksın) | |
-| T21 | Mahal Listesi/Teslim Standardı elden geçirme: malzeme+marka; ev-geneli ortak markalar (Boya-Marshall, Doğrama-Pimapen) üretici girişinden | |
+### Batch 4 — Proje detay `/danisman/proje/[id]` (2026-08-20 kısmi)
+| # | Görev | Durum |
+|---|-------|-------|
+| T17 | "Müşteri Kataloğu" + "Daire listesi" → tek tablo; katalog yalnız müsait | ⏳ (daha büyük refactor) |
+| T18 | Kat planı: her katta tüm daireler (satılan dahil) | ⏳ (floor-map, ayrı feature) |
+| T19 | Firmanın diğer projeleri + bölgedeki projeler (il) | ✅ `f094edb` (RLS tahsis-scoped) |
+| T20 | Görseller → lightbox | ✅ `2e1fc8b` (Galeri paylaşımlı) |
+| T21 | Mahal Listesi/Teslim marka (üretici girişi) | ⏳ (üretici-input + display) |
 
 ### ⏳ Bekleyen — Paylaşım `/p` (Batch 5)
 | # | Görev | Not |
