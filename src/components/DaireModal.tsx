@@ -179,6 +179,12 @@ export function DaireModal({
   );
   const genelToplam = liste != null ? liste + eklentiToplam : null;
 
+  // T14: emlakçı modunda satılan / başkasının opsiyonundaki daire "müsait gibi" fiyat kartı
+  // GÖSTERMEZ — yalnız durum. Fiyat/kazanç/ödeme yalnız kendi satabileceği daire (musait) veya
+  // kendi aktif opsiyonunda görünür. Üretici modu her zaman görür (yönetim). Bu bir GÖSTERİM azaltmadır
+  // (yeni veri sızmaz); yetki/redaksiyon A1'de zaten var.
+  const emlakciSatisAktif = mod !== "emlakci" || birim.durum === "musait" || benimOpsiyon;
+
   // Fiyat mesaja BASILMAZ — WhatsApp'ta bir kez gönderilince metin/OG donar ve eskir;
   // fiyat yalnız linkin arkasındaki canlı mikrositede (DEĞİŞMEZ #2 / tek-doğru-kaynak).
   const paylasMetni = [
@@ -302,7 +308,16 @@ export function DaireModal({
           </div>
         ) : null}
 
-        {taban != null ? (
+        {!emlakciSatisAktif ? (
+          <div className="mt-4 rounded-xl border border-slate-200/60 bg-slate-50 p-4 text-center">
+            <span className={`inline-block rounded-lg px-2.5 py-1 text-[11px] font-bold text-white uppercase tracking-wider ${DURUM_BG[birim.durum]}`}>
+              {DURUM_ETIKET[birim.durum]}
+            </span>
+            <p className="mt-2 text-xs font-medium text-slate-500">
+              Bu daire şu an sana açık değil, fiyat gösterilmiyor.
+            </p>
+          </div>
+        ) : taban != null ? (
           <div className="mt-4 rounded-xl border border-slate-200/60 bg-slate-50 p-4 font-mono text-xs space-y-2 shadow-sm">
             <div className="flex justify-between">
               <span className="text-slate-500 font-bold">Taban fiyat</span>
@@ -338,7 +353,7 @@ export function DaireModal({
           </div>
         ) : null}
 
-        {mod === "emlakci" && kazanc != null ? (
+        {emlakciSatisAktif && mod === "emlakci" && kazanc != null ? (
           <div className="mt-3 flex items-center justify-between rounded-xl border border-teal/30 bg-teal/[0.06] p-4">
             <span className="text-xs font-bold text-teal-d">Bu daireyi satarsan kazancın</span>
             <span className="font-mono text-lg font-extrabold text-teal-d">+{fmt(kazanc)} {psim}</span>
@@ -347,8 +362,9 @@ export function DaireModal({
 
         </div>{/* /sol kolon */}
         <div className="min-w-0">
-        {/* Eklentiler — otopark/depo (ana daireye bağlı). Üretici: ekle/sil; diğer: salt-okunur. */}
-        {eklentiler.length > 0 || mod === "uretici" ? (
+        {/* Eklentiler — otopark/depo (ana daireye bağlı). Üretici: ekle/sil; diğer: salt-okunur.
+            T14: emlakçıya kapalı dairede eklenti fiyatı da gösterilmez. */}
+        {emlakciSatisAktif && (eklentiler.length > 0 || mod === "uretici") ? (
           <div className="mt-4 rounded-xl border border-slate-200/60 bg-slate-50 p-4">
             <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">Eklentiler</p>
 
@@ -431,8 +447,8 @@ export function DaireModal({
           </div>
         ) : null}
 
-        {/* Ödeme planı — proje şablonu × canlı fiyat */}
-        {liste != null && birim.odeme_plani && (birim.odeme_plani.pesinat_pct != null || birim.odeme_plani.taksit_sayisi != null)
+        {/* Ödeme planı — proje şablonu × canlı fiyat (T14: sana açık değilse gizli) */}
+        {emlakciSatisAktif && liste != null && birim.odeme_plani && (birim.odeme_plani.pesinat_pct != null || birim.odeme_plani.taksit_sayisi != null)
           ? (() => {
               const op = birim.odeme_plani!;
               const pesinatPct = op.pesinat_pct ?? 0;
