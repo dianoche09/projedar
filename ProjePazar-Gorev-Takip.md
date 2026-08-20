@@ -66,7 +66,7 @@
 | T10 | Web yatay / cep dikey responsive | ✅ mevcut (`lg:grid-cols-2`) |
 | T11 | Kapatma X kartın dış sağ-üst köşesinde | ✅ `e0ad711` |
 | T12 | "X önce güncellendi" sağ-üst köşeye | ✅ `e0ad711` |
-| T13 | Başka danışmanda opsiyonluysa "opsiyon düşerse haber ver" | ⏳ proper feature (subscription+cron), ayrı ele alınacak |
+| T13 | Başka danışmanda opsiyonluysa "opsiyon düşerse haber ver" | ✅ `c17c3eb` (opsiyon_bekleyen tablo + expiry-fonksiyonu bildirim + modal butonu; MODE B arka planda) |
 | T14 | Satılan/opsiyonlu dairede fiyat gizle, sadece durum | ✅ `61e7ac7` |
 
 ### Batch 3 — Kazanç & keşif (2026-08-20 kısmi)
