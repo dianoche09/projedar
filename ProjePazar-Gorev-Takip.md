@@ -73,7 +73,7 @@
 | # | Görev | Durum |
 |---|-------|-------|
 | T15 | Kazanç aralığı görünür + komisyona göre sıralama | ✅ `1f52e19` (havuz "En çok kazandıran" sort; aralık zaten kart+detayda) |
-| T16 | Favori proje + sol menü | ⏳ (T16↺ ile birlikte — favori yanlış yerde, taşınacak) |
+| T16 | Danışman havuz-favorisi (kart yıldızı + favoriler üstte) | ✅ `987bd90` (proje_favori tablo+RLS; /p buyer-favori ayrı kaldı; sol-nav girişi minor follow-up) |
 
 ### Batch 4 — Proje detay `/danisman/proje/[id]` (2026-08-20 kısmi)
 | # | Görev | Durum |
@@ -82,7 +82,7 @@
 | T18 | Kat planı: her katta tüm daireler (satılan dahil) | ⏳ (floor-map, ayrı feature) |
 | T19 | Firmanın diğer projeleri + bölgedeki projeler (il) | ✅ `f094edb` (RLS tahsis-scoped) |
 | T20 | Görseller → lightbox | ✅ `2e1fc8b` (Galeri paylaşımlı) |
-| T21 | Mahal Listesi/Teslim marka (üretici girişi) | ⏳ (üretici-input + display) |
+| T21 | Mahal Listesi/Teslim marka (üretici girişi) | ✅ zaten mevcut (mahal.marka kolonu + kurulum input + detay tablosu) |
 
 ### ⏳ Bekleyen — Paylaşım `/p` (Batch 5)
 | # | Görev | Not |
