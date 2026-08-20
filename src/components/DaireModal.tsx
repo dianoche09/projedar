@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import { birimDurumGuncelle, birimGuncelle, birimGorselSil, birimGorselYukle, birimSatisKapat, eklentiEkle, eklentiSil } from "@/app/uretici/actions";
-import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz } from "@/app/danisman/actions";
+import { opsiyonTalepGonder, opsiyonAlDogrudan, opsiyonAlGecici, opsiyonBirakSessiz, opsiyonBekleyenEkle } from "@/app/danisman/actions";
 import { DURUM_BG, DURUM_ETIKET, zamanOnce, type BirimDurum } from "@/lib/types";
 import { KatPlani } from "@/components/KatPlani";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
@@ -162,6 +162,7 @@ export function DaireModal({
   // Görsel önceliği: daireye özel görsel → tip planı → şematik plan
   const daireGorsel = birim.gorsel_url ?? birim.plan_url ?? null;
   const [buyut, setBuyut] = useState(false);
+  const [haberVerildi, setHaberVerildi] = useState(false); // T13: opsiyon-düşerse-haber-ver (tek seferlik)
 
   const taban = birim.taban_fiyat;
   const liste = birim.liste_fiyati;
@@ -327,6 +328,27 @@ export function DaireModal({
             <p className="mt-2 text-xs font-medium text-slate-500">
               Bu daire şu an sana açık değil, fiyat gösterilmiyor.
             </p>
+            {/* T13: başka danışmanın opsiyonundaki (henüz düşmemiş) daireyi takibe al */}
+            {mod === "emlakci" && !benimOpsiyon && (birim.durum === "opsiyonlu" || birim.durum === "satis_beklemede") ? (
+              <button
+                type="button"
+                disabled={haberVerildi || bekliyor}
+                onClick={() =>
+                  basla(async () => {
+                    const r = await opsiyonBekleyenEkle(birim.id);
+                    if (r.ok) {
+                      setHaberVerildi(true);
+                      toast.goster("Opsiyon düşerse haber verilecek", "basari");
+                    } else {
+                      toast.goster("İşlem yapılamadı", "hata");
+                    }
+                  })
+                }
+                className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-teal/40 bg-teal/[0.06] px-3.5 py-2 text-xs font-bold text-teal-d transition-colors hover:bg-teal/12 disabled:opacity-60"
+              >
+                {haberVerildi ? "Haber verilecek ✓" : "Opsiyon düşerse haber ver"}
+              </button>
+            ) : null}
           </div>
         ) : taban != null ? (
           <div className="mt-4 rounded-xl border border-slate-200/60 bg-slate-50 p-4 font-mono text-xs space-y-2 shadow-sm">

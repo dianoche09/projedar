@@ -42,6 +42,23 @@ export async function projeFavoriToggle(projeId: string): Promise<{ ok: boolean;
 }
 
 /**
+ * T13: "opsiyon düşerse haber ver" — başka danışmanın opsiyonundaki daireyi takibe al (idempotent).
+ * Opsiyon serbest kalınca (opsiyon_serbest_birak) takipçilere bildirim gider + takip silinir (tek seferlik).
+ */
+export async function opsiyonBekleyenEkle(birimId: string): Promise<{ ok: boolean }> {
+  if (!uuid.safeParse(birimId).success) return { ok: false };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false };
+  const { error } = await supabase
+    .from("opsiyon_bekleyen")
+    .upsert({ emlakci_id: user.id, birim_id: birimId }, { onConflict: "emlakci_id,birim_id", ignoreDuplicates: true });
+  return { ok: !error };
+}
+
+/**
  * OPSİYON TALEP→ONAY (üretici-kontrollü — DEĞİŞMEZ #3 korunur).
  * Emlakçı DOĞRUDAN opsiyon ALAMAZ (RLS opsiyon_insert artık admin-only).
  * Tahsisli + müsait birime "opsiyon talebi" (beklemede) açar; müteahhit onaylarsa
