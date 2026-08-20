@@ -200,6 +200,15 @@ export function DaireModal({
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onKapat} aria-hidden />
+      {/* T11: kapatma X kartın DIŞINDA, sağ-üst köşede (overlay üstünde, dışardan görünür buton) */}
+      <button
+        type="button"
+        onClick={onKapat}
+        aria-label="Kapat"
+        className="fixed right-4 top-4 z-[60] grid size-10 place-items-center rounded-full bg-white/15 text-xl leading-none text-white backdrop-blur-sm transition-colors hover:bg-white/30"
+      >
+        ×
+      </button>
       {buyut && daireGorsel ? (
         <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/85 p-4" onClick={() => setBuyut(false)} role="dialog" aria-label="Görsel önizleme">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -226,9 +235,11 @@ export function DaireModal({
               </span>
             ) : null}
           </div>
-          <button onClick={onKapat} className="rounded-xl px-3 py-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-800 text-xs font-bold" aria-label="Kapat">
-            ✕
-          </button>
+          {/* T12: GÜNCELLİK · "X önce" sağ-üst köşede (tazelik sinyali görünür; kapatma dışarı taşındı) */}
+          <span className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-slate-100 px-2 py-1 font-mono text-[10.5px] font-bold text-slate-500" title="Son güncelleme">
+            <span className={`size-1.5 rounded-full ${tazelikDot(birim.son_guncelleme)}`} />
+            {zamanOnce(birim.son_guncelleme)}
+          </span>
         </div>
 
         {mod === "emlakci" ? (
