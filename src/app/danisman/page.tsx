@@ -6,7 +6,7 @@ export default async function Havuz() {
   const supabase = await createClient();
 
   // RLS: proje_emlakci_select + birim_emlakci_select → yalnız tahsisli projeler/birimler
-  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }, { data: kazancOzet }, { data: fiyatOzet }] = await Promise.all([
+  const [{ data: projeler }, { data: birimler }, { data: tipler }, { data: kapaklar }, { data: kazancOzet }, { data: fiyatOzet }, { data: favoriler }] = await Promise.all([
     supabase
       .from("proje")
       .select("id, ad, il, ilce, mahalle, lat, lng, kunye, belge_dogrulandi, son_guncelleme, insaat_asamasi, ilerleme_yuzde, teslim_tarihi, para_birimi, oturum_uygun, golden_visa_esik, kira_getirisi_pct")
@@ -19,7 +19,10 @@ export default async function Havuz() {
     supabase.rpc("emlakci_kazanc_ozet"),
     // Redakte fiyat özeti (fiyat_gorunur=false birimler banda girmez). Migration yoksa boş → ham fiyata düşülür.
     supabase.rpc("emlakci_fiyat_ozet"),
+    // T16: bu danışmanın havuz-favorileri (RLS self → yalnız kendi satırları)
+    supabase.from("proje_favori").select("proje_id"),
   ]);
+  const favoriSet = new Set((favoriler ?? []).map((f) => f.proje_id as string));
   const kapakMap = new Map((kapaklar ?? []).map((k) => [k.proje_id, k.url as string | null]));
   // proje_id → redakte görünür fiyat bandı (varsa ham min/max yerine bu kullanılır)
   const fiyatOzetMap = new Map<string, { min: number | null; max: number | null }>();
@@ -82,5 +85,5 @@ export default async function Havuz() {
     };
   });
 
-  return <HavuzListe projeler={kartlar} />;
+  return <HavuzListe projeler={kartlar} favoriIds={[...favoriSet]} />;
 }

@@ -13,6 +13,35 @@ import { belgeleriKaydet } from "@/lib/belge";
 const uuid = zUuid;
 
 /**
+ * T16: danışman havuz-favorisi aç/kapa (kişisel bookmark; RLS self). Buyer /p favorisinden ayrı.
+ * Var → sil, yok → ekle. Yeni durumu döner.
+ */
+export async function projeFavoriToggle(projeId: string): Promise<{ ok: boolean; favori: boolean }> {
+  if (!uuid.safeParse(projeId).success) return { ok: false, favori: false };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, favori: false };
+
+  const { data: mevcut } = await supabase
+    .from("proje_favori")
+    .select("proje_id")
+    .eq("emlakci_id", user.id)
+    .eq("proje_id", projeId)
+    .maybeSingle();
+
+  if (mevcut) {
+    await supabase.from("proje_favori").delete().eq("emlakci_id", user.id).eq("proje_id", projeId);
+    revalidatePath("/danisman");
+    return { ok: true, favori: false };
+  }
+  const { error } = await supabase.from("proje_favori").insert({ emlakci_id: user.id, proje_id: projeId });
+  revalidatePath("/danisman");
+  return { ok: !error, favori: !error };
+}
+
+/**
  * OPSİYON TALEP→ONAY (üretici-kontrollü — DEĞİŞMEZ #3 korunur).
  * Emlakçı DOĞRUDAN opsiyon ALAMAZ (RLS opsiyon_insert artık admin-only).
  * Tahsisli + müsait birime "opsiyon talebi" (beklemede) açar; müteahhit onaylarsa

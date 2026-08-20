@@ -6,6 +6,7 @@ import Link from "next/link";
 import { zamanOnce } from "@/lib/types";
 import { HavuzFiltreler } from "./HavuzFiltreler";
 import { projeKapak } from "@/lib/gorsel";
+import { projeFavoriToggle } from "./actions";
 import { PaylasWhatsApp } from "@/components/PaylasWhatsApp";
 
 const HavuzHarita = dynamic(() => import("./HavuzHarita").then((m) => m.HavuzHarita), {
@@ -71,7 +72,7 @@ function tazelikKademe(iso: string): { renk: string; zemin: string; eski: boolea
 }
 
 /** Emlakçı Havuzu — v2-emlakci "Yetkili Projeler" görünümü. Veri: tahsisli RLS sorgusu. */
-export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
+export function HavuzListe({ projeler, favoriIds = [] }: { projeler: ProjeKart[]; favoriIds?: string[] }) {
   const [il, setIl] = useState("");
   const [ilce, setIlce] = useState("");
   const [tip, setTip] = useState<string[]>([]);
@@ -82,6 +83,17 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const [minKira, setMinKira] = useState("");
   const [ozellik, setOzellik] = useState<string[]>([]);
   const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait" | "kazanc">("taze");
+  // T16: danışman havuz-favorileri (optimistic; server action kalıcı yazar). Favoriler listede üstte.
+  const [favoriler, setFavoriler] = useState<Set<string>>(() => new Set(favoriIds));
+  const favoriDegistir = (id: string) => {
+    setFavoriler((s) => {
+      const n = new Set(s);
+      if (n.has(id)) n.delete(id);
+      else n.add(id);
+      return n;
+    });
+    void projeFavoriToggle(id);
+  };
   const [gorunum, setGorunum] = useState<"liste" | "harita">("liste");
   const [arama, setArama] = useState("");
 
@@ -109,12 +121,15 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
         (!ozellik.length || ozellik.every((o) => p.ozellikler.includes(o))),
     );
     return [...l].sort((a, b) => {
+      const fa = favoriler.has(a.id) ? 1 : 0;
+      const fb = favoriler.has(b.id) ? 1 : 0;
+      if (fa !== fb) return fb - fa; // T16: favoriler her zaman üstte
       if (sirala === "ucuz") return (a.min ?? Infinity) - (b.min ?? Infinity);
       if (sirala === "kazanc") return (b.kazancMax ?? 0) - (a.kazancMax ?? 0); // T15: en çok kazandıran önce
       if (sirala === "musait") return b.musait - a.musait;
       return b.son_guncelleme.localeCompare(a.son_guncelleme);
     });
-  }, [projeler, arama, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, ozellik, sirala]);
+  }, [projeler, arama, il, ilce, tip, durum, tur, fiyatMin, fiyatMax, minKira, ozellik, sirala, favoriler]);
 
   // KPI — GERÇEK değerlerden hesap (tahsisli RLS havuzundan).
   const toplamBirim = projeler.reduce((t, p) => t + p.toplam, 0);
@@ -381,14 +396,37 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             >
               <div className="flex gap-0">
                 {/* görsel şerit (kapak HER ZAMAN) */}
-                <Link
-                  href={`/danisman/proje/${p.id}`}
-                  className="proj-thumb relative block w-[92px] flex-none overflow-hidden"
-                  aria-label={`${p.ad} detay`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={kapak} alt={p.ad} className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.04]" />
-                </Link>
+                <div className="relative w-[92px] flex-none">
+                  <Link
+                    href={`/danisman/proje/${p.id}`}
+                    className="proj-thumb relative block h-full w-full overflow-hidden"
+                    aria-label={`${p.ad} detay`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={kapak} alt={p.ad} className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.04]" />
+                  </Link>
+                  {/* T16: havuz-favori yıldızı (favoriler listede üstte) */}
+                  <button
+                    type="button"
+                    onClick={() => favoriDegistir(p.id)}
+                    aria-label={favoriler.has(p.id) ? "Favoriden çıkar" : "Favorile"}
+                    aria-pressed={favoriler.has(p.id)}
+                    className="absolute left-1.5 top-1.5 grid size-7 place-items-center rounded-full bg-black/35 text-white backdrop-blur-sm transition-colors hover:bg-black/55"
+                  >
+                    <svg
+                      className="size-4"
+                      viewBox="0 0 24 24"
+                      fill={favoriler.has(p.id) ? "var(--color-amber)" : "none"}
+                      stroke={favoriler.has(p.id) ? "var(--color-amber)" : "currentColor"}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                    </svg>
+                  </button>
+                </div>
 
                 <div className="min-w-0 flex-1 p-4">
                   <div className="flex items-start justify-between gap-3">
