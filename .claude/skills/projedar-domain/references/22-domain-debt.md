@@ -9,6 +9,11 @@ Real-world not covered: revoke edilen danışmanın aktif opsiyonu/lead'i serbes
 Risk: RISK-TAHSIS-001. Affected: /uretici tahsis, opsiyon, lead.
 Temporary mitigation: yok. Future resolution: revoke policy + cascade. Revisit trigger: ofis konsolu / iç dağıtım Faz-2.
 
+## DOMAIN-DEBT-011 — T13 takip bildirimi yalnız cron-expiry yolunda düşer → RESOLVED (2026-08-20, `8ab1438`)
+Was: `opsiyon_bekleyen` notify+cleanup YALNIZ `opsiyon_serbest_birak` (cron-expiry) içindeydi → gönüllü bırakma/vazgeçme/manuel release bildirmiyor, `satis_beklemede` takibi orphan kalıyordu.
+FIX (`db/2026-08-20b_bekleyen-tum-yollar.sql`, canlı doğrulandı): notify+cleanup mantığı `opsiyon_serbest_birak`'tan ALINDI (fonksiyon pür-N10 expiry'ye döndü, INV-CRON-001/002+B3 saf) ve `birim.durum` trigger'ına (`birim_bekleyen_islet_trg` AFTER UPDATE OF durum ON birim) taşındı. `opsiyon_birim_trg` (AFTER INSERT/**DELETE**/UPDATE ON opsiyon → `opsiyon_birim_senkron`) her release yolunda `birim.durum`'u senkronladığı için (DELETE→'musait', UPDATE→'satildi') trigger EVRENSEL yakalar: →musait (opsiyonlu/satis_beklemede'den) = bildir+sil (tek-seferlik); →satildi/kiralandi = sil (orphan yok). Tüm 4 release yolu artık tek zincirden geçer.
+Ref: INV-BEKLE-001, DDR-016.
+
 ## DOMAIN-DEBT-002 — Lead claim 10dk pencere
 Current: dedup `(telefon_norm, birim_id, 10dk)`.
 Not covered: durable cross-agent first-touch, identity graph, eş/alt-telefon/ofis değişimi.
