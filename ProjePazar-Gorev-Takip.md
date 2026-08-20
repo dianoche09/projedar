@@ -69,11 +69,11 @@
 | T13 | Başka danışmanda opsiyonluysa "opsiyon düşerse haber ver" | ⏳ proper feature (subscription+cron), ayrı ele alınacak |
 | T14 | Satılan/opsiyonlu dairede fiyat gizle, sadece durum | ✅ `61e7ac7` |
 
-### ⏳ Bekleyen — Kazanç & keşif (Batch 3)
-| # | Görev | Not |
-|---|-------|-----|
-| T15 | Komisyon kazanç aralığı proje sayfasında görünür + **fiyat/komisyona göre sıralama** | `kazancMap` kısmen hazır (tabloda `+X ₺`) |
-| T16 | Favori proje + sol menüde ("Canlı Ağ" altında) alt başlık + favoriler üstte | yeni tablo `favori` |
+### Batch 3 — Kazanç & keşif (2026-08-20 kısmi)
+| # | Görev | Durum |
+|---|-------|-------|
+| T15 | Kazanç aralığı görünür + komisyona göre sıralama | ✅ `1f52e19` (havuz "En çok kazandıran" sort; aralık zaten kart+detayda) |
+| T16 | Favori proje + sol menü | ⏳ (T16↺ ile birlikte — favori yanlış yerde, taşınacak) |
 
 ### Batch 4 — Proje detay `/danisman/proje/[id]` (2026-08-20 kısmi)
 | # | Görev | Durum |
@@ -117,11 +117,11 @@
 | T32d | **E-posta/telefon değiştirme + ONAY/DOĞRULAMA sistemi** (email confirm + telefon OTP/admin onay) | kullanıcı özel istedi |
 | T32e | UYARI: `il/ilce/uzmanlik/marka` segment-tahsis RLS'ini besliyor → serbest düzenleme kimin hangi projeyi gördüğünü değiştirir; "hizmet bölgesi (pazarlama)" ile "tahsis-anahtarı" ayrılmalı | mimari karar |
 
-### 🔵 Devam — Sayfa yapısı tutarlılığı (T33) + dil (T34)
-| # | Görev | Not |
-|---|-------|-----|
-| T33 | Tüm danışman sayfalarında ortak `SayfaBaslik` + container `max-w-[1240px]` (pool referans); içerik sağ alanı tam doldursun | |
-| T34 | **"—" (uzun tire) hiçbir yerde kullanma** (kullanıcı-görünür içerik); yeni yazımda uygulanır + mevcut görünür metinlerde temizlik | memory `tire-kullanma` ile aynı; kod yorumlarına dokunma |
+### Sayfa yapısı (T33) + dil (T34) — durum tespiti (2026-08-20)
+| # | Görev | Durum |
+|---|-------|-------|
+| T33 | Ortak başlık + 1240 container | 🔵 büyük ölçüde met: liste sayfaları (leadler/performans/paylastiklarim/hakedis) 1240+navy-h1 var; profil/dogrulama KASITLI dar (form); yalnız bildirimler/eslestir başlık eksik → görsel-feedback ile bitir (blind sweep intentional layout bozar) |
+| T34 | Uzun-tire temizliği (prose) | 🔵 yeni yazımda uygulanıyor (bu oturum hepsi tiresiz); mevcut prose sweep = fuzzy+büyük, ayrı geçiş. NOT: `?? "—"` boş-hücre marker'ı prose değil, kalır |
 
 ### ✅ Bu push
 | # | Görev | Commit |
