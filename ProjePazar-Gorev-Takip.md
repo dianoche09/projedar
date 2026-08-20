@@ -60,14 +60,14 @@
 | T8 | Harita fix: proje koordinat seed + popup "toplam birim" | `4e19a82` |
 | T9 | Daire detay birleştirme: blok grid + tablo → tek merkezi DaireModal (kazanç dahil) | `09f6fb5` |
 
-### ⏳ Bekleyen — DaireModal & kart durumları (Batch 2)
-| # | Görev | Not |
-|---|-------|-----|
-| T10 | DaireModal: web yatay / cep dikey responsive + fiyat/yazı/yerleşim hizalama | |
-| T11 | Kapatma **X** kartın dış sağ-üst köşesinde (dışardan görünür buton) | |
-| T12 | "GÜNCELLİK · X gün önce güncellendi" **sağ-üst köşeye** taşı | |
-| T13 | Başka danışmanda opsiyonluysa **"opsiyon düşerse haber ver"** butonu | bildirim altyapısı var |
-| T14 | Satılan/opsiyonlu dairede **fiyat gizle**, sadece durum göster (müsait-gibi kart olmasın) | |
+### Batch 2 — DaireModal & kart durumları (2026-08-20)
+| # | Görev | Durum |
+|---|-------|-------|
+| T10 | Web yatay / cep dikey responsive | ✅ mevcut (`lg:grid-cols-2`) |
+| T11 | Kapatma X kartın dış sağ-üst köşesinde | ✅ `e0ad711` |
+| T12 | "X önce güncellendi" sağ-üst köşeye | ✅ `e0ad711` |
+| T13 | Başka danışmanda opsiyonluysa "opsiyon düşerse haber ver" | ⏳ proper feature (subscription+cron), ayrı ele alınacak |
+| T14 | Satılan/opsiyonlu dairede fiyat gizle, sadece durum | ✅ `61e7ac7` |
 
 ### ⏳ Bekleyen — Kazanç & keşif (Batch 3)
 | # | Görev | Not |
