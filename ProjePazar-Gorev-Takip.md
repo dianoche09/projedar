@@ -84,10 +84,10 @@
 | T20 | Görseller → lightbox | ✅ `2e1fc8b` (Galeri paylaşımlı) |
 | T21 | Mahal Listesi/Teslim marka (üretici girişi) | ✅ zaten mevcut (mahal.marka kolonu + kurulum input + detay tablosu) |
 
-### ⏳ Bekleyen — Paylaşım `/p` (Batch 5)
-| # | Görev | Not |
-|---|-------|-----|
-| T22 | `/p` paylaşım sayfası tepesine **proje hero** + **üretici firma bilgisi** + media lightbox | |
+### Batch 5 — Paylaşım `/p` (2026-08-21)
+| # | Görev | Durum |
+|---|-------|-------|
+| T22 | /p hero + üretici firma bilgisi + media lightbox | ✅ `013206a` (hero+lightbox zaten vardı; firma adı hero rozetine eklendi) |
 
 ### ⏳ Bekleyen — Opsiyon akışı yeniden tasarım (KİLİT KONU)
 | # | Görev | Not |
