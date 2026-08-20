@@ -78,7 +78,7 @@
 ### Batch 4 — Proje detay `/danisman/proje/[id]` (2026-08-20 kısmi)
 | # | Görev | Durum |
 |---|-------|-------|
-| T17 | "Müşteri Kataloğu" + "Daire listesi" → tek tablo; katalog yalnız müsait | ⏳ (daha büyük refactor) |
+| T17 | "Müşteri Kataloğu" + "Daire listesi" → tek tablo; katalog yalnız müsait | ✅ `f65af7d` (katalog seçimi EmlakciStok'a taşındı, KatalogSecici kaldırıldı) |
 | T18 | Kat planı: her katta tüm daireler (satılan dahil) | ⏳ (floor-map, ayrı feature) |
 | T19 | Firmanın diğer projeleri + bölgedeki projeler (il) | ✅ `f094edb` (RLS tahsis-scoped) |
 | T20 | Görseller → lightbox | ✅ `2e1fc8b` (Galeri paylaşımlı) |
