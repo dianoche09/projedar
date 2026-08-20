@@ -116,6 +116,23 @@ export default async function HavuzProjeDetay({
   const { data: mSkorRaw } = await supabase.rpc("muteahhit_skor", { p_uretici: proje.uretici_id });
   const mSkor = (mSkorRaw ?? null) as { skor: number | null; yanit_oran?: number; sla_oran?: number; dogrulama_oran?: number; tazelik_oran?: number } | null;
 
+  // T19: bu firmanın DİĞER tahsisli projeleri + aynı ildeki (farklı firma) tahsisli projeler.
+  // authenticated client → RLS yalnız bu danışmana tahsisli projeleri döndürür (sızıntı yok). Kapaklar tek batch.
+  type DigerProje = { id: string; ad: string; il: string | null; ilce: string | null; insaat_asamasi: string };
+  const [{ data: firmaProjelerRaw }, { data: bolgeProjelerRaw }] = await Promise.all([
+    supabase.from("proje").select("id, ad, il, ilce, insaat_asamasi").eq("uretici_id", proje.uretici_id).neq("id", proje.id).limit(6),
+    proje.il
+      ? supabase.from("proje").select("id, ad, il, ilce, insaat_asamasi").eq("il", proje.il).neq("id", proje.id).neq("uretici_id", proje.uretici_id).limit(6)
+      : Promise.resolve({ data: [] as DigerProje[] }),
+  ]);
+  const firmaProjeler = (firmaProjelerRaw ?? []) as DigerProje[];
+  const bolgeProjeler = (bolgeProjelerRaw ?? []) as DigerProje[];
+  const digerIds = [...firmaProjeler, ...bolgeProjeler].map((p) => p.id);
+  const { data: digerKapakRaw } = digerIds.length
+    ? await supabase.from("proje_belge").select("proje_id, url").eq("tip", "kapak").in("proje_id", digerIds)
+    : { data: [] as { proje_id: string; url: string | null }[] };
+  const digerKapak = new Map((digerKapakRaw ?? []).map((b) => [b.proje_id as string, (b.url as string | null) ?? null]));
+
   const kapakBelge = belgeler.find((b) => b.tip === "kapak")?.url ?? null;
   const kapak = projeKapak(kapakBelge, proje.id);
   const fotolar = belgeler.filter((b) => b.tip === "foto" && b.url);
@@ -586,6 +603,50 @@ export default async function HavuzProjeDetay({
           )}
         </div>
       </div>
+
+      {/* ===== T19: FİRMANIN DİĞER PROJELERİ + AYNI BÖLGEDE (RLS: yalnız bu danışmana tahsisli) ===== */}
+      {firmaProjeler.length > 0 || bolgeProjeler.length > 0 ? (
+        <div className="mt-10 space-y-8">
+          {([
+            [`${uretici?.ad ?? "Bu firmanın"} diğer projeleri`, firmaProjeler] as const,
+            [`Aynı bölgede${proje.il ? ` · ${proje.il}` : ""}`, bolgeProjeler] as const,
+          ])
+            .filter(([, list]) => list.length > 0)
+            .map(([baslik, list]) => (
+              <section key={baslik}>
+                <h2 className="font-display text-lg font-semibold text-ink">{baslik}</h2>
+                <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {list.map((p) => {
+                    const konum = [p.ilce, p.il].filter(Boolean).join(", ");
+                    return (
+                      <Link
+                        key={p.id}
+                        href={`/danisman/proje/${p.id}`}
+                        className="group block overflow-hidden rounded-2xl border border-hair bg-card transition-shadow hover:shadow-card"
+                      >
+                        <div className="aspect-[4/3] overflow-hidden bg-soft">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={projeKapak(digerKapak.get(p.id) ?? null, p.id)}
+                            alt={p.ad}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="p-3">
+                          <p className="truncate text-[13px] font-bold text-ink">{p.ad}</p>
+                          {konum ? <p className="mt-0.5 truncate text-[11.5px] text-gray">{konum}</p> : null}
+                          <p className="mt-1 text-[10.5px] font-semibold uppercase tracking-wide text-teal-d">
+                            {ASAMA_ETIKET[p.insaat_asamasi as InsaatAsama] ?? ""}
+                          </p>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+        </div>
+      ) : null}
     </div>
   );
 }
