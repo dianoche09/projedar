@@ -81,7 +81,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
   const [fiyatMax, setFiyatMax] = useState("");
   const [minKira, setMinKira] = useState("");
   const [ozellik, setOzellik] = useState<string[]>([]);
-  const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait">("taze");
+  const [sirala, setSirala] = useState<"taze" | "ucuz" | "musait" | "kazanc">("taze");
   const [gorunum, setGorunum] = useState<"liste" | "harita">("liste");
   const [arama, setArama] = useState("");
 
@@ -110,6 +110,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
     );
     return [...l].sort((a, b) => {
       if (sirala === "ucuz") return (a.min ?? Infinity) - (b.min ?? Infinity);
+      if (sirala === "kazanc") return (b.kazancMax ?? 0) - (a.kazancMax ?? 0); // T15: en çok kazandıran önce
       if (sirala === "musait") return b.musait - a.musait;
       return b.son_guncelleme.localeCompare(a.son_guncelleme);
     });
@@ -207,6 +208,7 @@ export function HavuzListe({ projeler }: { projeler: ProjeKart[] }) {
             aria-label="Sıralama"
           >
             <option value="taze">En taze ▾</option>
+            <option value="kazanc">En çok kazandıran</option>
             <option value="musait">En çok müsait</option>
             <option value="ucuz">En uygun</option>
           </select>
